@@ -1,0 +1,70 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+	  <LangVersion>latest</LangVersion>
+	  <DefineConstants>SERVER</DefineConstants>
+	  <AssemblyName>FreeRoamProject.Server.net</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>x64</PlatformTarget>
+    <DefineConstants>$(DefineConstants);SERVER</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>$(DefineConstants);SERVER</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Shared\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CitizenFX.Core.Server" Version="1.0.6947" />
+	  <PackageReference Include="Confuser.MSBuild" Version="2.0.0-alpha-0191">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	  <PackageReference Include="Dapper" Version="2.1.4">
+		  <GeneratePathProperty>False</GeneratePathProperty>
+	  </PackageReference>
+	  <PackageReference Include="FxEvents.Server" Version="2.5.0" />
+	  <PackageReference Include="MySqlConnector" Version="2.2.7" />
+	  <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <Import Project="..\..\FreeRoamProject.Shared\FreeRoamProject.Shared.projitems" Label="Shared" />
+
+  <Import Project="..\..\Settings.Server\Settings.Server.projitems" Label="Shared" />
+
+  <Import Project="..\..\Settings.Shared\Settings.Shared.projitems" Label="Shared" />
+
+	<ItemGroup>
+		<SourceFiles Include="$(OutDir)*.dll" />
+		<SourceFiles Include="$(OutDir)*.pdb" />
+		<SourceFiles Remove="$(OutDir)Citizen*.*" />
+		<SourceFiles Remove="$(OutDir)*.json" />
+		<JsonConfigFiles Include="$(OutDir)\Resources\*.json" />
+	</ItemGroup>
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Copy SkipUnchangedFiles="true" SourceFiles="@(SourceFiles)" DestinationFolder="L:\FiveM\FreeRoamProject\resources\[local]\frp\Server\" />
+		<Copy SkipUnchangedFiles="true" SourceFiles="@(JsonConfigFiles)" DestinationFolder="L:\FiveM\FreeRoamProject\resources\[local]\frp\Server\Resources" />
+	</Target>
+
+</Project>

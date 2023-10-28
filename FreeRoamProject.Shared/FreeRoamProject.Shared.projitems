@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>9da3f140-0a9a-46a8-aee3-c7c03d29c59b</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>FreeRoamProject.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Config\ConfigShared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\AccessingEvents.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Buckets\Bucket.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Character\CharData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Character\DressingShared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ClientList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Encryption.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\ContractResolvers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\Extensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\Math.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\ObjectHash.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\TypeExtensions\Base64Extensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\TypeExtensions\BooleanExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\TypeExtensions\DelegateExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\TypeExtensions\EnumerableExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\TypeExtensions\ObjectExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\TypeExtensions\StringExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\TypeExtensions\TaskExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\TypeExtensions\TypeCache.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\TypeExtensions\TypeConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\BlipInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\FreeRoamWeapons.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\DeathReasons.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Experience.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\FreeRoamChar.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Utils\Rank.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Utils\Settings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Utils\Timer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\WorldEventsShared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\GameLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\PlayerChar\BasePlayerShared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\PlayerChar\StateBagsExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\PlayerClient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\PlayerListShared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Position.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\SharedScript.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\SharedTimer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\StateBag.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\StateBagHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\TimeWeather.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\WeaponData.cs" />
+  </ItemGroup>
+</Project>

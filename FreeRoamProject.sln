@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34202.233
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreeRoamProject.Client", "FreeRoamProject\FreeRoamProject.Client\FreeRoamProject.Client.csproj", "{C05C195B-22B8-47F7-B5CD-25B6888B2197}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreeRoamProject.Server", "FreeRoamProject\FreeRoamProject.Server\FreeRoamProject.Server.csproj", "{F78B222B-61A0-4E19-8D72-61D5760ED687}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FreeRoamProject.Shared", "FreeRoamProject.Shared\FreeRoamProject.Shared.shproj", "{9DA3F140-0A9A-46A8-AEE3-C7C03D29C59B}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Settings.Client", "Settings\Settings.Client.shproj", "{B27E1156-7765-4D03-B901-7FA0C49AA151}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Settings.Server", "Settings.Server\Settings.Server.shproj", "{0FAC129D-C91A-4D14-B6D0-74C82964AEFE}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Settings.Shared", "Settings.Shared\Settings.Shared.shproj", "{F7B7F118-E1FC-4A57-AF61-9FCB3F48D399}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C05C195B-22B8-47F7-B5CD-25B6888B2197}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C05C195B-22B8-47F7-B5CD-25B6888B2197}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C05C195B-22B8-47F7-B5CD-25B6888B2197}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C05C195B-22B8-47F7-B5CD-25B6888B2197}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F78B222B-61A0-4E19-8D72-61D5760ED687}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F78B222B-61A0-4E19-8D72-61D5760ED687}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F78B222B-61A0-4E19-8D72-61D5760ED687}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F78B222B-61A0-4E19-8D72-61D5760ED687}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {505EF20D-FC2E-40F9-A15C-5648971BC08C}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Settings.Server\Settings.Server.projitems*{0fac129d-c91a-4d14-b6d0-74c82964aefe}*SharedItemsImports = 13
+		FreeRoamProject.Shared\FreeRoamProject.Shared.projitems*{9da3f140-0a9a-46a8-aee3-c7c03d29c59b}*SharedItemsImports = 13
+		Settings\Settings.projitems*{b27e1156-7765-4d03-b901-7fa0c49aa151}*SharedItemsImports = 13
+		FreeRoamProject.Shared\FreeRoamProject.Shared.projitems*{c05c195b-22b8-47f7-b5cd-25b6888b2197}*SharedItemsImports = 5
+		Settings.Shared\Settings.Shared.projitems*{c05c195b-22b8-47f7-b5cd-25b6888b2197}*SharedItemsImports = 5
+		Settings\Settings.projitems*{c05c195b-22b8-47f7-b5cd-25b6888b2197}*SharedItemsImports = 5
+		FreeRoamProject.Shared\FreeRoamProject.Shared.projitems*{f78b222b-61a0-4e19-8d72-61d5760ed687}*SharedItemsImports = 5
+		Settings.Server\Settings.Server.projitems*{f78b222b-61a0-4e19-8d72-61d5760ed687}*SharedItemsImports = 5
+		Settings.Shared\Settings.Shared.projitems*{f78b222b-61a0-4e19-8d72-61d5760ed687}*SharedItemsImports = 5
+		Settings.Shared\Settings.Shared.projitems*{f7b7f118-e1fc-4a57-af61-9fcb3f48d399}*SharedItemsImports = 13
+	EndGlobalSection
+EndGlobal
