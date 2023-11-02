@@ -66,7 +66,7 @@ namespace FreeRoamProject.Server.TimeWeather
                 long tt = API.GetGameTimer();
                 Random rand = new Random((int)tt);
                 if (Weather.WeatherTimer > 0)
-                    Weather.WeatherTimer--;
+                    Weather.WeatherTimer -= 5;
                 if (Weather.WeatherTimer == 0)
                 {
                     Weather.RandomWindDirection = Functions.RandomFloatInRange(0, 359);
@@ -78,7 +78,7 @@ namespace FreeRoamProject.Server.TimeWeather
                     if (DateTime.Now.Date < xMasStart || DateTime.Now.Date > xMasEnd) // not xMas
                     {
                         if (Weather.RainPossible) Weather.RainTimer = -5;
-                        else Weather.RainTimer--;
+                        else Weather.RainTimer -= 5;
                         if (Weather.WeatherTimer == 0)
                         {
                             if (ConfigShared.SharedConfig.Main.Weather.Enable_dynamic_weather)
@@ -127,7 +127,6 @@ namespace FreeRoamProject.Server.TimeWeather
                 }
                 if (Weather.WeatherTimer == 0)
                 {
-                    ServerMain.Logger.Warning("ConfigShared.SharedConfig.Main.Weather.Weather_timer * 60: " + ConfigShared.SharedConfig.Main.Weather.Weather_timer * 60);
                     Weather.RandomWindDirection = Functions.RandomFloatInRange(0, 359);
                     Weather.WindSpeed = Functions.RandomFloatInRange(0, 12);
                     _timer = API.GetGameTimer();

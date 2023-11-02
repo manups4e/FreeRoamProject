@@ -92,7 +92,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.Negozi
                 bliparmi.Scale = 1f;
                 bliparmi.Color = BlipColor.Green;
                 bliparmi.IsShortRange = true;
-                bliparmi.Name = "AMMU-NATION";
+                bliparmi.Name = Game.GetGXTEntry("BLIP_110");
                 blips.Add(bliparmi);
                 // this whole code is for experimenting with the vanilla ammunations to replicate them.. i can't make the camera work when pressing E... maybe i'm missing something..
                 // but i don't know what am i missing... old code (commented) is about another ammunation i made with weapons being spawned on the counter and camera centered from above.

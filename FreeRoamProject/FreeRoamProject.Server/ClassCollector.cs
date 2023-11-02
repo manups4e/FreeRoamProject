@@ -1,4 +1,5 @@
-﻿using FreeRoamProject.Server.Core;
+﻿using FivemPlayerlistServer;
+using FreeRoamProject.Server.Core;
 using FreeRoamProject.Server.Core.Buckets;
 using FreeRoamProject.Server.Core.PlayerJoining;
 using FreeRoamProject.Server.Discord;
@@ -24,6 +25,7 @@ namespace FreeRoamProject.Server
             Events.Init();
             EntityCreation.Init();
             ChatServer.Init();
+            PlayerListServer.Init();
             TimeWeather.ServerWeather.Init();
             //TimeWeather.OrarioServer.Init();
             BotDiscordHandler.Init();

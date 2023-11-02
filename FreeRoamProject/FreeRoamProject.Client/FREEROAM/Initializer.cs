@@ -1,6 +1,8 @@
-﻿using FreeRoamProject.Client.GameMode.FREEROAM.Managers;
+﻿using FreeRoamProject.Client.FREEROAM.PlayerList;
+using FreeRoamProject.Client.GameMode.FREEROAM.Managers;
 using FreeRoamProject.Client.GameMode.FREEROAM.Scripts.Negozi;
 using FreeRoamProject.Client.GameMode.FREEROAM.Scripts.PauseMenu;
+using FreeRoamProject.Client.Handlers;
 using FreeRoamProject.Client.IPLs;
 using FreeRoamProject.Client.TimeWeather;
 using System.Threading.Tasks;
@@ -12,11 +14,13 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM
         public static async Task Init()
         {
             IPLInstance.Init();
+            TickController.Init();
             HudManager.Init();
             ExperienceManager.Init();
             WorldEventsManager.Init();
             PlayerBlipsHandler.Init();
             BaseEventsFreeRoam.Init();
+            PlayerListClient.Init();
             PlayerTags.Init();
             WeatherClient.Init();
             TimeClient.Init();

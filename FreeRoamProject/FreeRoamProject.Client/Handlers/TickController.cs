@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using TheLastPlanet.Client.GameMode.ROLEPLAY.Personale;
 
 namespace FreeRoamProject.Client.Handlers
 {
@@ -29,70 +29,73 @@ namespace FreeRoamProject.Client.Handlers
         /// Ticks for all purposes, always active
         /// </summary>
         public static List<Func<Task>> TickGenerics = new();
-        /*
         public static void Init()
         {
-            // TICK HUD \\
-            TickHUD.Add(EventsPersonalMenu.ShowMeStatus);
+            AccessingEvents.OnFreeRoamSpawn += Spawned;
+            /*
+                // TICK HUD \\
+                TickHUD.Add(EventsPersonalMenu.ShowMeStatus);
 
-            // TICK GENERICI \\ ATTIVI SEMPRE
-            TickGenerics.Add(StatsNeeds.StatsSkillHandler);
-            //TickGenerici.Add(StatsNeeds.Agg);
-            TickGenerics.Add(Main.MainTick);
-            TickGenerics.Add(PersonalMenu.Enable);
-            TickGenerics.Add(FuelClient.FuelCount);
-            TickGenerics.Add(FuelClient.FuelTruck);
-            TickGenerics.Add(GasStationsClient.BusinessesPumps);
-            TickGenerics.Add(ProximityChat.Proximity);
+                // TICK GENERICI \\ ATTIVI SEMPRE
+                TickGenerics.Add(StatsNeeds.StatsSkillHandler);
+                //TickGenerici.Add(StatsNeeds.Agg);
+                TickGenerics.Add(Main.MainTick);
+                TickGenerics.Add(PersonalMenu.Enable);
+                TickGenerics.Add(FuelClient.FuelCount);
+                TickGenerics.Add(FuelClient.FuelTruck);
+                TickGenerics.Add(GasStationsClient.BusinessesPumps);
+                TickGenerics.Add(ProximityChat.Proximity);
 
-            // TICK A PIEDI \\
-            TickOnFoot.Add(BankingClient.CheckATM);
-            //TickAPiedi.Add(BankingClient.Markers);
-            TickOnFoot.Add(Death.Injuried);
-            //TickAPiedi.Add(NegozioAbitiClient.OnTick);
-            //TickAPiedi.Add(NegoziClient.OnTick);
-            TickOnFoot.Add(BarberClient.Chairs);
-            //TickAPiedi.Add(VeicoliClient.MostraMenuAffitto);
-            TickOnFoot.Add(MedicsMainClient.MarkersNotMedics);
-            TickOnFoot.Add(TowingClient.StartJob);
-            TickOnFoot.Add(VendingMachines.VendingMachinesTick);
-            TickOnFoot.Add(VendingMachines.ControlMachines);
-            TickOnFoot.Add(PickupsClient.PickupsMain);
-            TickOnFoot.Add(TrashBins.TrashBinsTick);
-            TickOnFoot.Add(TrashBins.CheckTrash);
-            TickOnFoot.Add(HunterClient.HuntCheck);
-            //TickAPiedi.Add(PescatoreClient.ControlloPesca);
-            //TickAPiedi.Add(Hotels.ControlloHotel);
-            TickOnFoot.Add(GameMode.ROLEPLAY.Properties.Manager.MarkerOutside);
-            TickOnFoot.Add(SittingAnimations.CheckChair);
-            TickOnFoot.Add(SittingAnimations.ChairsSit);
-            TickOnFoot.Add(CarDealer.Markers);
-            TickOnFoot.Add(LootingDead.Looting);
+                // TICK A PIEDI \\
+                TickOnFoot.Add(BankingClient.CheckATM);
+                //TickAPiedi.Add(BankingClient.Markers);
+                TickOnFoot.Add(Death.Injuried);
+                //TickAPiedi.Add(NegozioAbitiClient.OnTick);
+                //TickAPiedi.Add(NegoziClient.OnTick);
+                TickOnFoot.Add(BarberClient.Chairs);
+                //TickAPiedi.Add(VeicoliClient.MostraMenuAffitto);
+                TickOnFoot.Add(MedicsMainClient.MarkersNotMedics);
+                TickOnFoot.Add(TowingClient.StartJob);
+                TickOnFoot.Add(VendingMachines.VendingMachinesTick);
+                TickOnFoot.Add(VendingMachines.ControlMachines);
+                TickOnFoot.Add(PickupsClient.PickupsMain);
+                TickOnFoot.Add(TrashBins.TrashBinsTick);
+                TickOnFoot.Add(TrashBins.CheckTrash);
+                TickOnFoot.Add(HunterClient.HuntCheck);
+                //TickAPiedi.Add(PescatoreClient.ControlloPesca);
+                //TickAPiedi.Add(Hotels.ControlloHotel);
+                TickOnFoot.Add(GameMode.ROLEPLAY.Properties.Manager.MarkerOutside);
+                TickOnFoot.Add(SittingAnimations.CheckChair);
+                TickOnFoot.Add(SittingAnimations.ChairsSit);
+                TickOnFoot.Add(CarDealer.Markers);
+                TickOnFoot.Add(LootingDead.Looting);
 
-            // TICK NEL VEICOLO \\
-            TickOnVehicle.Add(VehicleDamage.OnTick);
-            if (VehicleDamage.torqueMultiplierEnabled || VehicleDamage.preventVehicleFlip || VehicleDamage.limpMode) TickOnVehicle.Add(VehicleDamage.IfNeeded);
-            TickOnVehicle.Add(VehiclesClient.Lux);
-            TickOnVehicle.Add(VehiclesClient.vehHandle);
-            TickOnVehicle.Add(Prostitutes.LoopProstitutes);
-            TickOnVehicle.Add(Prostitutes.CheckProstitutes);
-            TickOnVehicle.Add(WheelsEffects.WheelCheck);
-            TickOnVehicle.Add(WheelsEffects.WheelGlow);
+                // TICK NEL VEICOLO \\
+                TickOnVehicle.Add(VehicleDamage.OnTick);
+                if (VehicleDamage.torqueMultiplierEnabled || VehicleDamage.preventVehicleFlip || VehicleDamage.limpMode) TickOnVehicle.Add(VehicleDamage.IfNeeded);
+                TickOnVehicle.Add(VehiclesClient.Lux);
+                TickOnVehicle.Add(VehiclesClient.vehHandle);
+                TickOnVehicle.Add(Prostitutes.LoopProstitutes);
+                TickOnVehicle.Add(Prostitutes.CheckProstitutes);
+                TickOnVehicle.Add(WheelsEffects.WheelCheck);
+                TickOnVehicle.Add(WheelsEffects.WheelGlow);
 
-            // TICK APPARTAMENTO \\
-            TickApartments.Add(SittingAnimations.HouseCouches);
-            TickApartments.Add(Showers.CheckShowersNear);
-            TickApartments.Add(Showers.Shower);
-            TickApartments.Add(Beds.CheckBeds);
-            TickApartments.Add(Manager.MarkerInside);
+                // TICK APPARTAMENTO \\
+                TickApartments.Add(SittingAnimations.HouseCouches);
+                TickApartments.Add(Showers.CheckShowersNear);
+                TickApartments.Add(Showers.Shower);
+                TickApartments.Add(Beds.CheckBeds);
+                TickApartments.Add(Manager.MarkerInside);
+            */
         }
-        */
 
         private static void Spawned(PlayerClient client)
         {
-            TickGenerics.ForEach(x => ClientMain.Instance.AddTick(x));
-            TickOnFoot.ForEach(x => ClientMain.Instance.AddTick(x));
-            TickHUD.ForEach(x => ClientMain.Instance.AddTick(x));
+            TickGenerics.Add(PersonalMenu.Enable);
+            ClientMain.Logger.Warning("GenericAdded");
+            TickGenerics.ForEach(ClientMain.Instance.AddTick);
+            TickOnFoot.ForEach(ClientMain.Instance.AddTick);
+            TickHUD.ForEach(ClientMain.Instance.AddTick);
 
             VehicleChecker.OnPedEnteredVehicle += VehicleChecker_OnPedEnteredVehicle;
             VehicleChecker.OnPedLeftVehicle += VehicleChecker_OnPedLeftVehicle;

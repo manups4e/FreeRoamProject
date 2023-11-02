@@ -57,7 +57,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
                 {
                     Ped ped = player.Character;
 
-                    // Se il player non ha una gamertag o se il player ha cambiato ped o la gamertag non viene mostrata per qualche motivo
+                    // If the player does not have a gamertag or if the player has changed ped or the gamertag is not shown for some reason
                     if (!GamerTags.ContainsKey(player.ServerId) || GamerTags[player.ServerId].Ped.Handle != ped.Handle || !IsMpGamerTagActive(GamerTags[player.ServerId].Tag))
                     {
                         if (GamerTags.ContainsKey(player.ServerId))
@@ -72,7 +72,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 
                     int tag = GamerTags[player.ServerId].Tag;
 
-                    //TODO: aggiungere gestione giocatori in base al multiplayer in se.. (uccisioni.. contratti..)
+                    //TODO: add player management based on the multiplayer itself.. (kills.. contracts..)
 
                     /* keep IN CONSIDERATION
 					        -- should the player be renamed? this is set by events
@@ -94,7 +94,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
                         SetMpGamerTagAlpha(tag, (int)GamerTagType.healthArmour, 255);
 
 
-                        /* DA CONSIDERARE
+                        /* TO BE CONSIDERED
 						-- override settings 
 						local settings = mpGamerTagSettings[i]
 

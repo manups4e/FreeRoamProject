@@ -739,6 +739,38 @@ namespace FreeRoamProject.Client.Core.Utility
         }
         #endregion
 
+        /// <summary>
+        /// Activates the wait for the player to enter text
+        /// </summary>
+        /// <param name="windowTitle">Window title</param>
+        /// <param name="defaultText">Default test if there is one</param>
+        /// <param name="maxLength">Length of the input</param>
+        /// <returns></returns>
+        public static async Task<string> GetUserInput(string windowTitle, string defaultText, int maxLength)
+        {
+            ClearKeyboard(windowTitle, defaultText, maxLength);
+            while (UpdateOnscreenKeyboard() == 0)
+            {
+                Game.DisableAllControlsThisFrame(0);
+                Game.DisableAllControlsThisFrame(1);
+                Game.DisableAllControlsThisFrame(2);
+                Game.EnableControlThisFrame(0, Control.FrontendCancel);
+                Game.EnableControlThisFrame(1, Control.FrontendCancel);
+                Game.EnableControlThisFrame(2, Control.FrontendCancel);
+                Game.EnableControlThisFrame(0, Control.FrontendAccept);
+                Game.EnableControlThisFrame(1, Control.FrontendAccept);
+                Game.EnableControlThisFrame(2, Control.FrontendAccept);
+                await BaseScript.Delay(0);
+            }
+            return UpdateOnscreenKeyboard() == 2 ? "" : GetOnscreenKeyboardResult();
+        }
+
+        private static void ClearKeyboard(string windowTitle, string defaultText, int maxLength)
+        {
+            AddTextEntry("FMlprp_KEY_TIP1", windowTitle);
+            DisplayOnscreenKeyboard(1, "FMlprp_KEY_TIP1", null, defaultText, null, null, null, maxLength + 1);
+        }
+
         public async static Task FadeEntityAsync(this Entity entity, bool fadeIn, bool fadeOutNormal = false, bool slow = true)
         {
             if (fadeIn)
