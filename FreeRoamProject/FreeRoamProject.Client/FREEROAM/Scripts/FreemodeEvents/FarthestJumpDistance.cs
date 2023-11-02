@@ -5,7 +5,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
 {
     public class FarthestJumpDistance : IWorldEvent
     {
-        private float tentativoCorrente = 0;
+        private float currentAttempt = 0;
         public FarthestJumpDistance(int id, string name, double countdownTime, double seconds) : base(id, name, countdownTime, seconds, false, "AMCH_BIG_0", PlayerStats.FarthestJumpDistance, "m", PlayerStatType.Float)
         {
         }
@@ -38,17 +38,17 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
                     Screen.ShowSubtitle(GetLabelText("AMCH_BIG_0"), 50);
                     if (Cache.PlayerCache.MyPlayer.Ped.IsInVehicle())
                     {
-                        StatGetFloat(unchecked((uint)PlayerStat), ref tentativoCorrente, -1);
+                        StatGetFloat(unchecked((uint)PlayerStat), ref currentAttempt, -1);
 
-                        if (tentativoCorrente != 0)
-                            CurrentAttempt = tentativoCorrente;
+                        if (currentAttempt != 0)
+                            CurrentAttempt = currentAttempt;
                         if (CurrentAttempt > BestAttempt)
                             BestAttempt = CurrentAttempt;
 
-                        if (tentativoCorrente == CurrentAttempt)
+                        if (currentAttempt == CurrentAttempt)
                         {
                             StatSetFloat((uint)PlayerStat, 0f, true);
-                            tentativoCorrente = 0;
+                            currentAttempt = 0;
                         }
                     }
                 }

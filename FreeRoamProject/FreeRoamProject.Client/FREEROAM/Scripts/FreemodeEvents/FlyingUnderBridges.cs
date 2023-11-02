@@ -172,7 +172,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
 
                 if (!IsStarted)
                 {
-                    Screen.ShowSubtitle($"Find an aircraft and prepare for ~b~{Name}~w~ challenge.", 50);
+                    Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_PREPAIR").Replace("~a~", Name), 50);
                 }
                 else
                 {

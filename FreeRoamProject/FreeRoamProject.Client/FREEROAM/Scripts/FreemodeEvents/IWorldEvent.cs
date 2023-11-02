@@ -27,7 +27,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
         public TextTimerBar FirstPlaceTimerBar = new("~y~1°: Player 1", "~y~0") { Enabled = true };
         public TextTimerBar SecondPlaceTimerBar = new("~c~2°: Player 2", "~c~0") { Enabled = true };
         public TextTimerBar ThirdPlaceTimerBar = new("~o~3°: Player 3", "~o~0") { Enabled = true };
-        public TextTimerBar EventNameTimerBar = new("Event name:", "") { Enabled = true };
+        public TextTimerBar EventNameTimerBar = new(Game.GetGXTEntry("MP_EVENT_NAME") + ":", "") { Enabled = true };
 
         public virtual Dictionary<Vector4, VehicleHash> VehicleSpawnLocations { get; set; }
 
@@ -169,7 +169,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
                 if (CountdownTime == TimeSpan.Zero)
                 {
                     StartEventTimerBars();
-                    ScaleformUI.Main.MedMessageInstance.ShowColoredShard("Challenge started", ChallengeStartedLabelText, HudColor.HUD_COLOUR_PURPLE, HudColor.HUD_COLOUR_PURPLE, true);
+                    ScaleformUI.Main.MedMessageInstance.ShowColoredShard(Game.GetGXTEntry("AMCH_STARTED"), ChallengeStartedLabelText, HudColor.HUD_COLOUR_PURPLE, HudColor.HUD_COLOUR_PURPLE, true);
                     Audio.PlaySoundFrontend("FLIGHT_SCHOOL_LESSON_PASSED", "HUD_AWARDS");
                     IsStarted = true;
                     CountdownStarted = false;

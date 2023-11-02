@@ -33,7 +33,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
                 if (!IsActive) { return; }
 
                 if (!IsStarted)
-                    Screen.ShowSubtitle($"Prepare yourself for the ~b~{Name}~w~ challenge, you can only use your pistol.", 50);
+                    Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_PREPARE").Replace("~a~", Name), 50);
                 else
                 {
                     Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_19"), 50);

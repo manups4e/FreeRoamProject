@@ -64,7 +64,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
 
                 if (!IsStarted)
                 {
-                    Screen.ShowSubtitle($"Prepare yourself for the {base.Name} challenge.", 50);
+                    Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_PREPARE").Replace("~a~", Name), 50);
                 }
                 else
                 {
