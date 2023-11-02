@@ -11,7 +11,7 @@ namespace FreeRoamProject.Server.Core
     {
         public static void Init()
         {
-            EventDispatcher.Mount("lprp:entity:spawnVehicle", new Func<uint, Position, Task<int>>(async (a, b) =>
+            EventDispatcher.Mount("tlg:entity:spawnVehicle", new Func<uint, Position, Task<int>>(async (a, b) =>
             {
                 try
                 {
@@ -37,7 +37,7 @@ namespace FreeRoamProject.Server.Core
                     return 0;
                 }
             }));
-            EventDispatcher.Mount("lprp:entity:spawnPed", new Func<uint, Position, int, Task<int>>(async (a, b, c) =>
+            EventDispatcher.Mount("tlg:entity:spawnPed", new Func<uint, Position, int, Task<int>>(async (a, b, c) =>
             {
                 try
                 {
@@ -59,7 +59,7 @@ namespace FreeRoamProject.Server.Core
                     return 0;
                 }
             }));
-            EventDispatcher.Mount("lprp:entity:spawnProp", new Func<int, Position, Task<int>>(async (a, b) =>
+            EventDispatcher.Mount("tlg:entity:spawnProp", new Func<int, Position, Task<int>>(async (a, b) =>
             {
                 try
                 {

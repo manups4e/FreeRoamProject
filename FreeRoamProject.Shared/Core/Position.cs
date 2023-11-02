@@ -262,5 +262,22 @@ namespace FreeRoamProject.Shared
             return Equals(ref strongValue);
         }
 
+        public override int GetHashCode()
+        {
+            int hashCode = -297745992;
+            hashCode = hashCode * -1521134295 + X.GetHashCode();
+            hashCode = hashCode * -1521134295 + Y.GetHashCode();
+            hashCode = hashCode * -1521134295 + Z.GetHashCode();
+            hashCode = hashCode * -1521134295 + Heading.GetHashCode();
+            hashCode = hashCode * -1521134295 + Yaw.GetHashCode();
+            hashCode = hashCode * -1521134295 + Pitch.GetHashCode();
+            hashCode = hashCode * -1521134295 + Roll.GetHashCode();
+            hashCode = hashCode * -1521134295 + IsZero.GetHashCode();
+            hashCode = hashCode * -1521134295 + ToVector2.GetHashCode();
+            hashCode = hashCode * -1521134295 + ToVector3.GetHashCode();
+            hashCode = hashCode * -1521134295 + ToVector4.GetHashCode();
+            hashCode = hashCode * -1521134295 + ToRotationVector.GetHashCode();
+            return hashCode;
+        }
     }
 }

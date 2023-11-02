@@ -79,7 +79,7 @@ namespace FreeRoamProject.Server.Core.PlayerChar
                 if (var < 0)
                     if (Character.Finance.Money < 0)
                         Character.Finance.Money = 0;
-                Player.TriggerEvent("lprp:changeMoney", var);
+                Player.TriggerEvent("tlg:changeMoney", var);
             }
         }
 
@@ -92,7 +92,7 @@ namespace FreeRoamProject.Server.Core.PlayerChar
             {
                 int var = value - Character.Finance.Bank;
                 Character.Finance.Bank += var;
-                if (var < 0) Player.TriggerEvent("lprp:rimuoviBank", var);
+                if (var < 0) Player.TriggerEvent("tlg:rimuoviBank", var);
             }
         }
 
@@ -178,7 +178,7 @@ namespace FreeRoamProject.Server.Core.PlayerChar
             if (!hasWeapon(weaponName))
             {
                 Character.Weapons.Add(new Weapons(weaponName, ammo, new List<Components>(), 0));
-                Player.TriggerSubsystemEvent("lprp:addWeapon", weaponName, ammo);
+                Player.TriggerSubsystemEvent("tlg:addWeapon", weaponName, ammo);
             }
         }
 
@@ -193,7 +193,7 @@ namespace FreeRoamProject.Server.Core.PlayerChar
             if (hasWeapon(weaponName))
             {
                 Character.Weapons.Remove(getWeapon(weaponName).Item2);
-                Player.TriggerSubsystemEvent("lprp:removeWeapon", weaponName);
+                Player.TriggerSubsystemEvent("tlg:removeWeapon", weaponName);
 
             }
         }
@@ -204,12 +204,12 @@ namespace FreeRoamProject.Server.Core.PlayerChar
 
             if (hasWeaponComponent(weaponName, weaponComponent))
             {
-                Player.TriggerSubsystemEvent("lprp:possiediArma", weaponName, weaponComponent);
+                Player.TriggerSubsystemEvent("tlg:possiediArma", weaponName, weaponComponent);
             }
             else
             {
                 Character.Weapons[num].Components.Add(new Components(weaponComponent, true));
-                Player.TriggerSubsystemEvent("lprp:addWeaponComponent", weaponName, weaponComponent);
+                Player.TriggerSubsystemEvent("tlg:addWeaponComponent", weaponName, weaponComponent);
 
             }
         }
@@ -224,7 +224,7 @@ namespace FreeRoamProject.Server.Core.PlayerChar
                     if (Character.Weapons[num].Components[i].name == weaponComponent)
                     {
                         Character.Weapons[num].Components.RemoveAt(i);
-                        Player.TriggerSubsystemEvent("lprp:removeWeaponComponent", weaponName, weaponComponent);
+                        Player.TriggerSubsystemEvent("tlg:removeWeaponComponent", weaponName, weaponComponent);
 
                     }
         }
@@ -238,12 +238,12 @@ namespace FreeRoamProject.Server.Core.PlayerChar
             {
                 if (hasWeaponTint(weaponName, tint))
                 {
-                    Player.TriggerSubsystemEvent("lprp:possiediTinta", weaponName, tint);
+                    Player.TriggerSubsystemEvent("tlg:possiediTinta", weaponName, tint);
                 }
                 else
                 {
                     Character.Weapons[num].Tint = tint;
-                    Player.TriggerSubsystemEvent("lprp:addWeaponTint", weaponName, tint);
+                    Player.TriggerSubsystemEvent("tlg:addWeaponTint", weaponName, tint);
                 }
             }
         }

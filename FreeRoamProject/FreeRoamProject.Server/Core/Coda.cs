@@ -42,7 +42,7 @@ namespace FreeRoamProject.Server.Core
 			try
 			{
 				ServerMain.Logger.Info( player.Name + " si sta connettendo");
-				BaseScript.TriggerEvent("lprp:serverLog", time.ToString("dd/MM/yyyy, HH:mm:ss") + " " + player.Name + " si sta connettendo");
+				BaseScript.TriggerEvent("tlg:serverLog", time.ToString("dd/MM/yyyy, HH:mm:ss") + " " + player.Name + " si sta connettendo");
 				deferrals.defer();
 				await BaseScript.Delay(0);
 				//deferrals.update($"Shield 2.0 Controllo credenziali per il Player {player.Name}...");
@@ -197,7 +197,7 @@ namespace FreeRoamProject.Server.Core
 														ServerMain.Logger.Info(
 															"WHITELIST: Sistema Anti-Spam all'ingresso attivo per il player " +
 															player.Name);
-														BaseScript.TriggerEvent("lprp:serverLog",
+														BaseScript.TriggerEvent("tlg:serverLog",
 															DateTime.Now.ToString("dd/MM/yyyy, HH:mm:ss") +
 															" -- WHITELIST: Sistema Anti-Spam all'ingresso attivo per il player " +
 															player.Name);
@@ -214,7 +214,7 @@ namespace FreeRoamProject.Server.Core
 														ServerMain.Logger.Info(
 															"WHITELIST: Sistema Anti-Spam all'ingresso disattivato per il player " +
 															player.Name);
-														BaseScript.TriggerEvent("lprp:serverLog",
+														BaseScript.TriggerEvent("tlg:serverLog",
 															DateTime.Now.ToString("dd/MM/yyyy, HH:mm:ss") +
 															" -- WHITELIST: Sistema Anti-Spam all'ingresso disattivato per il player " +
 															player.Name);
@@ -327,7 +327,7 @@ namespace FreeRoamProject.Server.Core
 				}
 				ServerMain.PlayerList.TryRemove(handle, out ped);
 			}
-			BaseScript.TriggerClientEvent("lprp:aggiornaPlayers", JsonConvert.SerializeObject(ServerMain.PlayerList));
+			BaseScript.TriggerClientEvent("tlg:aggiornaPlayers", JsonConvert.SerializeObject(ServerMain.PlayerList));
 			await Task.FromResult(0);
 		}
 	}

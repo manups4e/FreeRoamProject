@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FreeRoamProject.Client.GameMode.FREEROAM.Spawner;
 
 
 namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
@@ -40,7 +39,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
         public static void OnPlayerLeft(PlayerClient client)
         {
             ClientMain.Instance.RemoveTick(GamerTagsHandler);
-            foreach (var player in ClientMain.Instance.GetPlayers)
+            foreach (Player player in ClientMain.Instance.GetPlayers)
             {
                 if (GamerTags.ContainsKey(player.ServerId))
                 {
@@ -52,7 +51,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 
         public static async Task GamerTagsHandler()
         {
-            foreach (var player in ClientMain.Instance.GetPlayers)
+            foreach (Player player in ClientMain.Instance.GetPlayers)
             {
                 if (NetworkIsPlayerActive(player.Handle) && player.Handle != PlayerCache.MyPlayer.Player.Handle)
                 {
@@ -71,11 +70,11 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
                         };
                     }
 
-                    var tag = GamerTags[player.ServerId].Tag;
+                    int tag = GamerTags[player.ServerId].Tag;
 
                     //TODO: aggiungere gestione giocatori in base al multiplayer in se.. (uccisioni.. contratti..)
 
-                    /* TENGO IN CONSIDERATION
+                    /* keep IN CONSIDERATION
 					        -- should the player be renamed? this is set by events
 						if mpGamerTagSettings[i].rename then
 							SetMpGamerTagName(tag, formatPlayerNameTag(i, templateStr))
@@ -136,10 +135,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
                         GamerTags.Remove(player.ServerId);
                     }
                 }
-                var daRim = GamerTags.Where(x => ClientMain.Instance.GetPlayers.ToList().All(y => y.ServerId != x.Key) || !NetworkIsPlayerActive(GetPlayerFromServerId(x.Key))).ToList();
+                List<KeyValuePair<int, GamerTag>> daRim = GamerTags.Where(x => ClientMain.Instance.GetPlayers.ToList().All(y => y.ServerId != x.Key) || !NetworkIsPlayerActive(GetPlayerFromServerId(x.Key))).ToList();
                 if (daRim.Count > 0)
                 {
-                    foreach (var aa in daRim)
+                    foreach (KeyValuePair<int, GamerTag> aa in daRim)
                     {
                         RemoveMpGamerTag(aa.Value.Tag);
                         GamerTags.Remove(aa.Key);

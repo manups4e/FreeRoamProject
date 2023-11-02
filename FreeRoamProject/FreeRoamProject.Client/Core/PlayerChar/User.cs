@@ -28,7 +28,6 @@ namespace FreeRoamProject.Client.Core.PlayerChar
 
         [JsonIgnore] internal int Bank => Character.Finance.Bank;
 
-        [JsonIgnore] internal int DirtyCash => Character.Finance.DirtyCash;
         public List<Weapons> GetCharWeapons()
         {
             return Character.Weapons;

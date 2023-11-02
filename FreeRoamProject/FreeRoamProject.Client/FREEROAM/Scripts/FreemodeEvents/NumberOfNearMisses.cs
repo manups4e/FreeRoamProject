@@ -38,7 +38,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
                 if (!IsActive) { return; }
 
                 if (!IsStarted)
-                    Screen.ShowSubtitle($"Find a ground vehicle and prepare for the ~b~{Name}~w~ challenge.", 50);
+                    Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_PREPLAND").Replace("~a~", Name), 50);
                 else
                 {
                     Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_BIG_8"), 50);

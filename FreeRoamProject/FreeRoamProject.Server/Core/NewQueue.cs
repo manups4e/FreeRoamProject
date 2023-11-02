@@ -71,7 +71,7 @@ namespace FreeRoamProject.Server.Core
                 //              ServerMain.Instance.AddEventHandler("onResourceStop", new Action<string>(OnResourceStop));
                 ServerMain.Instance.AddEventHandler("playerConnecting", new Action<Player, string, CallbackDelegate, ExpandoObject>(PlayerConnecting));
                 ServerMain.Instance.AddEventHandler("playerDropped", new Action<Player, string>(PlayerDropped));
-                ServerMain.Instance.AddEventHandler("lprp:coda: playerConnected", new Action<Player>(PlayerActivated));
+                ServerMain.Instance.AddEventHandler("tlg:coda: playerConnected", new Action<Player>(PlayerActivated));
                 /*
                 ServerMain.Instance.AddCommand("sessione", new Action<Player, List<string>, string>(QueueSession), ServerMode.UNKNOWN, UserGroup.Admin);
                 ServerMain.Instance.AddCommand("cambiamax", new Action<Player, List<string>, string>(QueueChangeMax), ServerMode.UNKNOWN, UserGroup.Admin);
@@ -466,7 +466,7 @@ namespace FreeRoamProject.Server.Core
                                 if (sentLoading.ContainsKey(license) && ServerMain.Instance.GetPlayers.FirstOrDefault(i => i.Identifiers["license"] == license) != null)
                                 {
                                     Player value = null;
-                                    BaseScript.TriggerEvent("lprp:coda: newloading", sentLoading.TryGetValue(license, out value));
+                                    BaseScript.TriggerEvent("tlg:coda: newloading", sentLoading.TryGetValue(license, out value));
                                     sentLoading.TryRemove(license, out Player oldPlayer);
                                 }
                             }
@@ -584,7 +584,7 @@ namespace FreeRoamProject.Server.Core
                         sessionReturn.Add(temp);
                     });
                     Player requested = ServerMain.Instance.GetPlayers.FirstOrDefault(k => k.Handle == source.Handle);
-                    requested.TriggerEvent("lprp:coda: sessionResponse", sessionReturn.ToJson());
+                    requested.TriggerEvent("tlg:coda: sessionResponse", sessionReturn.ToJson());
                 }
             }
             catch (Exception e)
@@ -626,7 +626,7 @@ namespace FreeRoamProject.Server.Core
         {
             try
             {
-                ExecuteCommand($"sets lprp:coda Enabled");
+                ExecuteCommand($"sets tlg:coda Enabled");
                 int attempts = 0;
 
                 while (attempts < 7)

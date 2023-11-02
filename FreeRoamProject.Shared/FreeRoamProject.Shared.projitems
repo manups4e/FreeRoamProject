@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Config\ConfigShared.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\AccessingEvents.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\BaseEventsShared.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buckets\Bucket.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Character\CharData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Character\DressingShared.cs" />
@@ -34,6 +35,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\DeathReasons.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Experience.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\FreeRoamChar.cs" />
+    <Compile Include="..\..\FreeRoamProject.Shared\Core\Log\Logger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Utils\Rank.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Utils\Settings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Utils\Timer.cs" />

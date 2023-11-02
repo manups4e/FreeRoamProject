@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace FreeRoamProject.Client
 {
     public delegate void VehicleDestroyedEvent(int vehicle, int attacker, uint weaponHash, bool isMeleeDamage, int vehicleDamageTypeFlag);
-    public delegate void PedKilledByVehicleEvent(int ped, int vehicle);
+    public delegate void PedKilledByVehicleEvent(int ped, int vehicle, int weaponHash);
     public delegate void PedKilledByPlayerEvent(int ped, int killer, uint weaponHash, bool isMeleeDamage);
     public delegate void PedKilledByPedEvent(int ped, int attackerPed, uint weaponHash, bool isMeleeDamage);
     public delegate void PedDiedEvent(int ped, int attacker, uint weaponHash, bool isMeleeDamage);
@@ -47,7 +47,7 @@ namespace FreeRoamProject.Client
         {
             OnVehicleDestroyed?.Invoke(vehicle, attacker, weaponHash, isMeleeDamage, vehicleDamageTypeFlag);
             BaseScript.TriggerEvent(damageEventName + ":VehicleDestroyed", vehicle, attacker, weaponHash, isMeleeDamage, vehicleDamageTypeFlag);
-            ClientMain.Logger.Debug($"[{damageEventName}:VehicleDestroyed] vehicle: {vehicle}, attacker: {attacker}, weaponHash: {weaponHash}, isMeleeDamage: {isMeleeDamage}, vehicleDamageTypeFlag: {vehicleDamageTypeFlag}");
+            ClientMain.Logger.Warning($"[{damageEventName}:VehicleDestroyed] vehicle: {vehicle}, attacker: {attacker}, weaponHash: {weaponHash}, isMeleeDamage: {isMeleeDamage}, vehicleDamageTypeFlag: {vehicleDamageTypeFlag}");
         }
 
         /// <summary>
@@ -57,9 +57,9 @@ namespace FreeRoamProject.Client
         /// <param name="vehicle">Vehicle that was used to kill the ped.</param>
         private static void PedKilledByVehicle(int ped, int vehicle)
         {
-            OnPedKilledByVehicle?.Invoke(ped, vehicle);
+            OnPedKilledByVehicle?.Invoke(ped, vehicle, GetEntityModel(vehicle));
             BaseScript.TriggerEvent(damageEventName + ":PedKilledByVehicle", ped, vehicle);
-            ClientMain.Logger.Debug($"[{damageEventName}:PedKilledByVehicle] ped: {ped}, vehicle: {vehicle}");
+            ClientMain.Logger.Warning($"[{damageEventName}:PedKilledByVehicle] ped: {ped}, vehicle: {vehicle}");
         }
 
         /// <summary>
@@ -71,9 +71,9 @@ namespace FreeRoamProject.Client
         /// <param name="isMeleeDamage">True if the ped was killed with a melee weapon (including unarmed).</param>
         private static void PedKilledByPlayer(int ped, int killerPlayer, uint weaponHash, bool isMeleeDamage)
         {
-            OnPedKilledByPlayer(ped, killerPlayer, weaponHash, isMeleeDamage);
+            OnPedKilledByPlayer?.Invoke(ped, killerPlayer, weaponHash, isMeleeDamage);
             BaseScript.TriggerEvent(damageEventName + ":PedKilledByPlayer", ped, killerPlayer, weaponHash, isMeleeDamage);
-            ClientMain.Logger.Debug($"[{damageEventName}:PedKilledByPlayer] ped: {ped}, player: {killerPlayer}, weaponHash: {weaponHash}, isMeleeDamage: {isMeleeDamage}");
+            ClientMain.Logger.Warning($"[{damageEventName}:PedKilledByPlayer] ped: {ped}, killerPlayer: {killerPlayer}, weaponHash: {weaponHash}, isMeleeDamage: {isMeleeDamage}");
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace FreeRoamProject.Client
         {
             OnPedKilledByPed?.Invoke(ped, attackerPed, weaponHash, isMeleeDamage);
             BaseScript.TriggerEvent(damageEventName + ":PedKilledByPed", ped, attackerPed, weaponHash, isMeleeDamage);
-            ClientMain.Logger.Debug($"[{damageEventName}:PedKilledByPed] ped: {ped}, attackerPed: {attackerPed}, weaponHash: {weaponHash}, isMeleeDamage: {isMeleeDamage}");
+            ClientMain.Logger.Warning($"[{damageEventName}:PedKilledByPed] ped: {ped}, attackerPed: {attackerPed}, weaponHash: {weaponHash}, isMeleeDamage: {isMeleeDamage}");
         }
 
         /// <summary>
@@ -99,9 +99,9 @@ namespace FreeRoamProject.Client
         /// <param name="isMeleeDamage">True whenever the ped was killed using a melee weapon (including unarmed).</param>
         private static void PedDied(int ped, int attacker, uint weaponHash, bool isMeleeDamage)
         {
-            OnPedDied.Invoke(ped, attacker, weaponHash, isMeleeDamage);
+            OnPedDied?.Invoke(ped, attacker, weaponHash, isMeleeDamage);
             BaseScript.TriggerEvent(damageEventName + ":PedDied", ped, attacker, weaponHash, isMeleeDamage);
-            ClientMain.Logger.Debug($"[{damageEventName}:PedDied] ped: {ped}, attacker: {attacker}, weaponHash: {weaponHash}, isMeleeDamage: {isMeleeDamage}");
+            ClientMain.Logger.Warning($"[{damageEventName}:PedDied] ped: {ped}, attacker: {attacker}, weaponHash: {weaponHash}, isMeleeDamage: {isMeleeDamage}");
         }
 
         /// <summary>
@@ -112,9 +112,9 @@ namespace FreeRoamProject.Client
         /// <param name="isMeleeDamage">True whenever the entity was killed/destroyed with a melee weapon.</param>
         private static void EntityKilled(int entity, int attacker, uint weaponHash, bool isMeleeDamage)
         {
-            OnEntityKilled.Invoke(entity, attacker, weaponHash, isMeleeDamage);
+            OnEntityKilled?.Invoke(entity, attacker, weaponHash, isMeleeDamage);
             BaseScript.TriggerEvent(damageEventName + ":EntityKilled", entity, attacker, weaponHash, isMeleeDamage);
-            ClientMain.Logger.Debug($"[{damageEventName}:EntityKilled] entity: {entity}, attacker: {attacker}, weaponHash: {weaponHash}, isMeleeDamage: {isMeleeDamage}");
+            ClientMain.Logger.Warning($"[{damageEventName}:EntityKilled] entity: {entity}, attacker: {attacker}, weaponHash: {weaponHash}, isMeleeDamage: {isMeleeDamage}");
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace FreeRoamProject.Client
         {
             OnVehicleDamaged?.Invoke(vehicle, attacker, weaponHash, isMeleeDamage, vehicleDamageTypeFlag);
             BaseScript.TriggerEvent(damageEventName + ":VehicleDamaged", vehicle, attacker, weaponHash, isMeleeDamage, vehicleDamageTypeFlag);
-            ClientMain.Logger.Debug($"[{damageEventName}:VehicleDamaged] vehicle: {vehicle}, attacker: {attacker}, weaponHash: {weaponHash}, vehicleDamageTypeFlag: {vehicleDamageTypeFlag}");
+            ClientMain.Logger.Warning($"[{damageEventName}:VehicleDamaged] vehicle: {vehicle}, attacker: {attacker}, weaponHash: {weaponHash}, vehicleDamageTypeFlag: {vehicleDamageTypeFlag}");
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace FreeRoamProject.Client
         {
             OnEntityDamaged?.Invoke(entity, attacker, weaponHash, isMeleeDamage);
             BaseScript.TriggerEvent(damageEventName + ":EntityDamaged", entity, attacker, weaponHash, isMeleeDamage);
-            ClientMain.Logger.Debug($"[{damageEventName}:EntityDamaged] entity: {entity}, attacker: {attacker}, weaponHash: {weaponHash}, isMeleeDamage: {isMeleeDamage}");
+            ClientMain.Logger.Warning($"[{damageEventName}:EntityDamaged] entity: {entity}, attacker: {attacker}, weaponHash: {weaponHash}, isMeleeDamage: {isMeleeDamage}");
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace FreeRoamProject.Client
         /// <param name="data"></param>
         private static void GameEventTriggered(string eventName, List<object> data)
         {
-            ClientMain.Logger.Debug($"game event {eventName} ({string.Join(", ", data.ToArray())})");
+            ClientMain.Logger.Warning($"game event {eventName} ({string.Join(", ", data.ToArray())})");
             switch (eventName)
             {
                 case "CEventNetworkEntityDamage":
@@ -186,6 +186,7 @@ namespace FreeRoamProject.Client
                                 {
                                     // victim is a ped
                                     if (victim is Ped ped)
+                                    {
                                         switch (attacker)
                                         {
                                             case Vehicle veh:
@@ -206,6 +207,7 @@ namespace FreeRoamProject.Client
 
                                                 break;
                                         }
+                                    }
                                     // victim is not a ped
                                     else
                                         EntityKilled(victim.Handle, attacker.Handle, weaponHash, isMeleeDamage);

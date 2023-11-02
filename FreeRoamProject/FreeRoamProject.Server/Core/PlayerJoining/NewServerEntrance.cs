@@ -22,7 +22,7 @@ namespace FreeRoamProject.Server.Core.PlayerJoining
             ServerMain.Instance.AddEventHandler("playerConnecting", new Action<Player, string, CallbackDelegate, ExpandoObject>(PlayerConnecting));
             ServerMain.Instance.AddEventHandler("playerJoining", new Action<Player, string>(PlayerJoining));
             ServerMain.Instance.AddEventHandler("playerDropped", new Action<Player, string>(Dropped));
-            EventDispatcher.Mount("lprp:setupUser", new Func<PlayerClient, Task<Tuple<Snowflake, BasePlayerShared>>>(SetupUser));
+            EventDispatcher.Mount("tlg:setupUser", new Func<PlayerClient, Task<Tuple<Snowflake, BasePlayerShared>>>(SetupUser));
 
 #if DEBUG
             ServerMain.Instance.AddEventHandler("onResourceStart", new Action<string>(async (resName) =>

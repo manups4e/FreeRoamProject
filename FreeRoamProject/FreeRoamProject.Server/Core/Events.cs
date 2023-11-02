@@ -1,5 +1,4 @@
 ﻿using FreeRoamProject.Server.Core.Buckets;
-using FreeRoamProject.Server.Core.PlayerChar;
 using FreeRoamProject.Shared.PlayerChar;
 using System;
 using System.Collections.Generic;
@@ -14,23 +13,26 @@ namespace FreeRoamProject.Server.Core
 
         public static void Init()
         {
-            EventDispatcher.Mount("lprp:dropPlayer", new Action<PlayerClient, string>(Drop));
-            EventDispatcher.Mount("lprp:kickPlayerClient", new Action<string, string, int>(Kick));
-            EventDispatcher.Mount("lprp:CheckPing", new Action<PlayerClient>(Ping));
-            EventDispatcher.Mount("lprp:checkAFK", new Action<PlayerClient>(AFK));
-            EventDispatcher.Mount("lprp:bannaPlayer", new Action<string, string, bool, long, int>(BanPlayer));
+            EventDispatcher.Mount("tlg:dropPlayer", new Action<PlayerClient, string>(Drop));
+            EventDispatcher.Mount("tlg:kickPlayerClient", new Action<string, string, int>(Kick));
+            EventDispatcher.Mount("tlg:CheckPing", new Action<PlayerClient>(Ping));
+            EventDispatcher.Mount("tlg:checkAFK", new Action<PlayerClient>(AFK));
+            EventDispatcher.Mount("tlg:bannaPlayer", new Action<string, string, bool, long, int>(BanPlayer));
             EventDispatcher.Mount("tlg:setStateBag", new Action<PlayerClient, string, string>(SetStateBag));
             EventDispatcher.Mount("tlg:GetUserFromServerId", new Func<int, Task<BasePlayerShared>>(GetUserFromHandle));
             EventDispatcher.Mount("tlg:getPlayers", new Func<Task<List<Player>>>(GetAllPlayers));
             EventDispatcher.Mount("tlg:getClients", new Func<PlayerClient, Task<List<PlayerClient>>>(GetAllClients));
-
-            EventDispatcher.Mount("tlg:callPlayers", new Func<PlayerClient, Position, Task<int>>(
-            async ([FromSource] a, b) =>
+            EventDispatcher.Mount("tlg:sendPlayerJoinedMessage", new Action<PlayerClient>(([FromSource] client) =>
             {
-                User user = a.User;
+                Shared.Core.Buckets.Bucket bucket = BucketsHandler.FreeRoam.GetPlayerBucket(client.Handle);
+                EventDispatcher.Send(bucket.Players, "tlg:onPlayerEntrance", client);
+            }));
+
+            EventDispatcher.Mount("tlg:callPlayers", new Func<PlayerClient, Position, Task<int>>(async ([FromSource] a, b) =>
+            {
                 if (a.Status.PlayerStates.Spawned)
                 {
-                    user.Character.Position = b;
+                    a.User.Character.Position = b;
                 }
                 return BucketsHandler.FreeRoam.GetTotalPlayers();
             }));
@@ -126,7 +128,7 @@ namespace FreeRoamProject.Server.Core
             if (pippo.content.FromJson<bool>())
             {
                 ServerMain.Logger.Warning($"{(banner > 0 ? $"Player {Functions.GetPlayerFromId(banner).Name}" : "The anticheat")} Banned {Target.Name}, end date {TempoBan.ToString("yyyy-MM-dd HH:mm:ss")}");
-                BaseScript.TriggerEvent("lprp:serverLog", $"{(banner > 0 ? $"Okater {Functions.GetPlayerFromId(banner).Name}" : "The anticheat")} Banned {Target.Name}, end date {TempoBan.ToString("yyyy-MM-dd HH:mm:ss")}");
+                BaseScript.TriggerEvent("tlg:serverLog", $"{(banner > 0 ? $"Okater {Functions.GetPlayerFromId(banner).Name}" : "The anticheat")} Banned {Target.Name}, end date {TempoBan.ToString("yyyy-MM-dd HH:mm:ss")}");
                 //Target.Drop($"SHIELD 2.0 Sei stato bannato dal server:\nMotivazione: {motivazione},\nBannato da: {(banner > 0 ? Funzioni.GetPlayerFromId(banner).Name : "Sistema anticheat")}"); // modificare con introduzione in stile anticheat
             }
             else
@@ -140,7 +142,7 @@ namespace FreeRoamProject.Server.Core
             Player Target = Functions.GetPlayerFromId(target);
             Player Kicker = Functions.GetPlayerFromId(kicker);
             ServerMain.Logger.Warning($"Player {Kicker.Name} kicked {Target.Name} out of the server, Reason: {reason}");
-            BaseScript.TriggerEvent("lprp:serverLog", $"Player {Kicker.Name} kicked {Target.Name} out of the server, Reason: {reason}");
+            BaseScript.TriggerEvent("tlg:serverLog", $"Player {Kicker.Name} kicked {Target.Name} out of the server, Reason: {reason}");
             Target.Drop($"SHIELD 2.0 You have been kicked off the server:\nReason: {reason},\nKicked by: {Kicker.Name}");
         }
     }

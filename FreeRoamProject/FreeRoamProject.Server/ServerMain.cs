@@ -6,6 +6,8 @@ global using FxEvents.Shared;
 global using FxEvents.Shared.Snowflakes;
 global using Logger;
 global using static CitizenFX.Core.Native.API;
+using FreeRoamProject.Server.Core;
+using FreeRoamProject.Shared.Core.Log;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,7 +16,7 @@ namespace FreeRoamProject.Server
 {
     public class ServerMain : BaseScript
     {
-        public static Log Logger { get; set; }
+        public static DebugLog Logger { get; set; }
         public static ServerMain Instance { get; protected set; }
         public static ServerConfiguration Settings { get; set; }
         public ExportDictionary GetExports => Exports;
@@ -30,7 +32,7 @@ namespace FreeRoamProject.Server
         {
             EventDispatcher.Initalize("qIFBYn6qv7ZxbGLT7uzpFHa1wPCpmIHbDTWGJ8fy", "QNrAF12UC1qOvnhL6JEShdEdNiCyASUbbNpvyZPG", "Pi5V5nvCki0BcwppyczIfgy3ZZCJPqaYAeQsLZOs");
             Instance = this;
-            Logger = new Log();
+            Logger = new DebugLog();
 #if DEBUG
             SetConvarReplicated("DEBUG", "1");
             Debug = true;
@@ -122,5 +124,25 @@ namespace FreeRoamProject.Server
         {
             GetExports.Add(name, action);
         }
+
+        /// <summary>
+        /// registra un comando di chat
+        /// </summary>
+        /// <param name="commandName">Nome comando</param>
+        /// <param name="handler">Una nuova Action<int source, List<dynamic> args, string rawCommand</param>
+        /// <param name="restricted">tutti o solo chi può?</param>
+        //public void AddCommand(string commandName, InputArgument handler, bool restricted) => API.RegisterCommand(commandName, handler, restricted);
+        public void AddCommand(string commandName, Delegate handler, UserGroup restricted = UserGroup.User, ChatSuggestion suggestion = null)
+        {
+            //API.RegisterCommand(commandName, handler, restricted);
+            ChatServer.Commands.Add(new ChatCommand(commandName, restricted, handler));
+
+            if (suggestion != null)
+            {
+                suggestion.name = "/" + commandName;
+                ChatServer.Suggestions.Add(suggestion);
+            }
+        }
+
     }
 }

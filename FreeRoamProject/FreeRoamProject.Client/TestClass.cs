@@ -11,6 +11,7 @@ namespace FreeRoamProject.Client
         public static async void Init()
         {
             ClientMain.Instance.AddTick(TestTick);
+            ClientMain.Logger.Debug(Game.GetGXTEntry("AMCH_PREPLAND").Replace("~a~", "Example"));
         }
 
 

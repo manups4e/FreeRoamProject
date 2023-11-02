@@ -17,7 +17,9 @@ global using ScaleformUI.PauseMenu;
 global using ScaleformUI.Scaleforms;
 global using static CitizenFX.Core.Native.API;
 using FreeRoamProject.Client.Core.Ingresso;
+using FreeRoamProject.Client.GameMode.FREEROAM;
 using FreeRoamProject.Client.Handlers;
+using FreeRoamProject.Shared.Core.Log;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -26,7 +28,7 @@ namespace FreeRoamProject.Client
 {
     public class ClientMain : BaseScript
     {
-        public static Log Logger;
+        public static DebugLog Logger;
         public static ClientMain Instance { get; protected set; }
         public ExportDictionary GetExports => Exports;
         public CitizenFX.Core.PlayerList GetPlayers => Players;
@@ -46,16 +48,13 @@ namespace FreeRoamProject.Client
             Clients = new();
             NuiManager = new();
             TestClass.Init(); // TO BE REMOVED
-            //ClientManager.Init();
-            //DevManager.Init();
             InputHandler.Init();
-            //PlayerList.FivemPlayerlist.Init();
             InternalGameEvents.Init();
             StateBagsHandler = new StateBagsHandler();
             PlayerStatesHandler.Init();
             VehicleChecker.Init();
             ServerJoining.Init();
-            //Minimap.Init();
+            Initializer.Init();
             // for custom streamed minimap... honestly i don't think we need this.. i prefer the stock one being this a free-roam server
             SetMapZoomDataLevel(0, 2.73f, 0.9f, 0.08f, 0.0f, 0.0f);
             SetMapZoomDataLevel(1, 2.8f, 0.9f, 0.08f, 0.0f, 0.0f);

@@ -339,13 +339,13 @@ namespace FreeRoamProject.Client.Core.Utility
             while (!IsScreenFadedOut()) await BaseScript.Delay(0);
             RequestCollisionAtCoord(coords.X, coords.Y, coords.Z);
             NewLoadSceneStart(coords.X, coords.Y, coords.Z, coords.X, coords.Y, coords.Z, 50f, 0);
-            int tempTimer = GetGameTimer();
+            int tempTimer = GetNetworkTimeAccurate();
 
             // Wait for the new scene to be loaded.
             while (IsNetworkLoadingScene())
             {
                 // If this takes longer than 1 second, just abort. It's not worth waiting that long.
-                if (GetGameTimer() - tempTimer > 1000)
+                if (GetNetworkTimeAccurate() - tempTimer > 1000)
                 {
                     ClientMain.Logger.Warning("Waiting for the scene to load is taking too long (more than 1s). Breaking from wait loop.");
                     break;
@@ -353,12 +353,12 @@ namespace FreeRoamProject.Client.Core.Utility
                 await BaseScript.Delay(0);
             }
             SetEntityCoords(playerPed.Handle, coords.X, coords.Y, coords.Z, false, false, false, false);
-            tempTimer = GetGameTimer();
+            tempTimer = GetNetworkTimeAccurate();
             // Wait for the collision to be loaded around the entity in this new location.
             while (!HasCollisionLoadedAroundEntity(playerPed.Handle))
             {
                 // If this takes too long, then just abort, it's not worth waiting that long since we haven't found the real ground coord yet anyway.
-                if (GetGameTimer() - tempTimer > 1000)
+                if (GetNetworkTimeAccurate() - tempTimer > 1000)
                 {
                     ClientMain.Logger.Warning("Waiting for the collision is taking too long (more than 1s). Breaking from wait loop.");
                     break;
@@ -381,13 +381,13 @@ namespace FreeRoamProject.Client.Core.Utility
             while (!IsScreenFadedOut()) await BaseScript.Delay(0);
             RequestCollisionAtCoord(coords.X, coords.Y, coords.Z);
             NewLoadSceneStart(coords.X, coords.Y, coords.Z, coords.X, coords.Y, coords.Z, 50f, 0);
-            int tempTimer = GetGameTimer();
+            int tempTimer = GetNetworkTimeAccurate();
 
             // Wait for the new scene to be loaded.
             while (IsNetworkLoadingScene())
             {
                 // If this takes longer than 1 second, just abort. It's not worth waiting that long.
-                if (GetGameTimer() - tempTimer > 1000)
+                if (GetNetworkTimeAccurate() - tempTimer > 1000)
                 {
                     ClientMain.Logger.Warning("Waiting for the scene to load is taking too long (more than 1s). Breaking from wait loop.");
 
@@ -398,13 +398,13 @@ namespace FreeRoamProject.Client.Core.Utility
             }
 
             SetPedCoordsKeepVehicle(playerPed.Handle, coords.X, coords.Y, coords.Z);
-            tempTimer = GetGameTimer();
+            tempTimer = GetNetworkTimeAccurate();
 
             // Wait for the collision to be loaded around the entity in this new location.
             while (!HasCollisionLoadedAroundEntity(playerPed.Handle))
             {
                 // If this takes too long, then just abort, it's not worth waiting that long since we haven't found the real ground coord yet anyway.
-                if (GetGameTimer() - tempTimer > 1000)
+                if (GetNetworkTimeAccurate() - tempTimer > 1000)
                 {
                     ClientMain.Logger.Warning("Waiting for the collision is taking too long (more than 1s). Breaking from wait loop.");
 
@@ -478,7 +478,7 @@ namespace FreeRoamProject.Client.Core.Utility
                     GetVehiclesInArea(coords, 2).ToList().ForEach(x => x.Delete());
 
                 int callback =
-                    await EventDispatcher.Get<int>("lprp:entity:spawnVehicle", (uint)vehicleModel.Hash, new Position(coords.X, coords.Y, -190f, heading));
+                    await EventDispatcher.Get<int>("tlg:entity:spawnVehicle", (uint)vehicleModel.Hash, new Position(coords.X, coords.Y, -190f, heading));
                 Vehicle result = (Vehicle)Entity.FromNetworkId(callback);
                 while (result == null || !result.Exists()) await BaseScript.Delay(50);
 
@@ -536,7 +536,7 @@ namespace FreeRoamProject.Client.Core.Utility
                 if (!IsSpawnPointClear(coords, 2f))
                     ClearArea(coords.X, coords.Y, coords.Z, 2f, true, false, false, true);
 
-                int callback = await EventDispatcher.Get<int>("lprp:entity:spawnVehicle", (uint)vehicleModel.Hash, new Position(
+                int callback = await EventDispatcher.Get<int>("tlg:entity:spawnVehicle", (uint)vehicleModel.Hash, new Position(
                     coords.X, coords.Y, coords.Z, heading));
                 Vehicle result = (Vehicle)Entity.FromNetworkId(callback);
                 while (result == null || !result.Exists()) await BaseScript.Delay(50);
@@ -635,7 +635,7 @@ namespace FreeRoamProject.Client.Core.Utility
                 if (!IsSpawnPointClear(coords, 2f))
                     ClearArea(coords.X, coords.Y, coords.Z, 2f, true, false, false, true);
 
-                int callback = await EventDispatcher.Get<int>("lprp:entity:spawnProp", propModel.Hash,
+                int callback = await EventDispatcher.Get<int>("tlg:entity:spawnProp", propModel.Hash,
                     new Position(coords, rot));
                 Prop result = (Prop)Entity.FromNetworkId(callback);
                 while (result == null || !result.Exists()) await BaseScript.Delay(50);
@@ -719,7 +719,7 @@ namespace FreeRoamProject.Client.Core.Utility
                     ClearArea(position.ToVector3.X, position.ToVector3.Y, position.ToVector3.Z, 2f, true, false, false, true);
             }
 
-            int callback = await EventDispatcher.Get<int>("lprp:entity:spawnPed", (uint)pedModel.Hash, position, (int)pedType);
+            int callback = await EventDispatcher.Get<int>("tlg:entity:spawnPed", (uint)pedModel.Hash, position, (int)pedType);
 
             Ped ped = (Ped)Entity.FromNetworkId(callback);
             while (!ped.Exists()) await BaseScript.Delay(50);
@@ -986,7 +986,7 @@ namespace FreeRoamProject.Client.Core.Utility
         /// <returns></returns>
         public static async Task<Dictionary<string, User>> GetAllPlayersAndTheirData()
         {
-            return await EventDispatcher.Get<Dictionary<string, User>>("lprp:callDBPlayers");
+            return await EventDispatcher.Get<Dictionary<string, User>>("tlg:callDBPlayers");
         }
 
         public static bool IsSpawnPointClear(this Vector3 pos, float Radius)

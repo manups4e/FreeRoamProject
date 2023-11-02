@@ -89,7 +89,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
         {
             if (justDestroyed)
             {
-                if (GetGameTimer() - start < 25000)
+                if (GetNetworkTimeAccurate() - start < 25000)
                     Cache.PlayerCache.MyPlayer.Player.WantedLevel = 0;
                 else
                     justDestroyed = false;
@@ -140,7 +140,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
             }
 
             justDestroyed = true;
-            start = GetGameTimer();
+            start = GetNetworkTimeAccurate();
 
             foreach (int activeVehicle in ActiveVehicles)
             {

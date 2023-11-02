@@ -10,8 +10,8 @@ namespace FreeRoamProject.Client.Core.Utility.HUD
     {
         public static void Init()
         {
-            ClientMain.Instance.AddEventHandler("lprp:triggerProximityDisplay", new Action<int, string, string>(TriggerProximtyDisplay));
-            EventDispatcher.Mount("lprp:triggerProximityDisplay", new Action<int, string, string>(TriggerProximtyDisplay));
+            ClientMain.Instance.AddEventHandler("tlg:triggerProximityDisplay", new Action<int, string, string>(TriggerProximtyDisplay));
+            EventDispatcher.Mount("tlg:triggerProximityDisplay", new Action<int, string, string>(TriggerProximtyDisplay));
         }
 
         private static Dictionary<int, List<ProxMess>> Messages = new Dictionary<int, List<ProxMess>>();

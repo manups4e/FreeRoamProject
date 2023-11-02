@@ -1,4 +1,5 @@
-﻿using FreeRoamProject.Client.GameMode.FREEROAM.Spawner;
+﻿using FreeRoamProject.Client.GameMode.FREEROAM.CharCreation;
+using FreeRoamProject.Client.GameMode.FREEROAM.Spawner;
 using System;
 using System.Threading.Tasks;
 
@@ -20,6 +21,7 @@ namespace FreeRoamProject.Client.Core.Ingresso
 
         private static void InternalGameEvents_PlayerJoined()
         {
+            Screen.Fading.FadeIn(0);
             PlayerSpawned();
         }
 
@@ -46,15 +48,12 @@ namespace FreeRoamProject.Client.Core.Ingresso
             _firstTick = false;
             Screen.Fading.FadeOut(800);
             while (!Screen.Fading.IsFadedOut) await BaseScript.Delay(1000);
-            // we spawn in the hangar.. but i'm not sure this is definitive.. i'd prefer somewhere else
-            IPLs.IPLInstance.SmugglerHangar.LoadDefault();
             await PlayerCache.InitPlayer();
             while (!NetworkIsPlayerActive(PlayerCache.MyPlayer.Player.Handle)) await BaseScript.Delay(0);
-            BaseScript.TriggerServerEvent("lprp:coda:playerConnected");
-            ClientMain.Instance.NuiManager.SendMessage(new { resname = GetCurrentResourceName() });
             if (PlayerCache.MyPlayer.Ped.Model.Hash != (int)PedHash.FreemodeMale01)
+            {
                 await PlayerCache.MyPlayer.Player.ChangeModel(new Model(PedHash.FreemodeMale01));
-            NetworkSetTalkerProximity(-1000f);
+            }
 
             // utility events.. to be fixed (remove non utility events and move them)
             Events.Init();
@@ -70,14 +69,35 @@ namespace FreeRoamProject.Client.Core.Ingresso
         // TODO: READ CAREFULLY
         // THIS METHOD WAS INTENDED TO SPAWN THE PLAYER INTO THE HANGAR FOR THE LOBBY...
         // SINCE AT THE END OF THIS WE CALL FreeRoamLogin.Initialize() THAT CHECKS FOR THE PLAYER DATA (CREATE OR LOGIN?) WE CAN DIRECTLY SHIFT TO THAT?
-        // ALSO WE NEED TO ADD THE PLAYER TO A BUCKET BECAUSE.. MY IDEA IS TO USE BUCKET 0 FOR PLAYER JOINING.. AND THEN FROM BUCKET 1 AND ABOVE FOR EVERYTHING ELSE
+        // ALSO WE NEED TO ADD THE PLAYER TO A BUCKET BECAUSE.. GAME USES BUCKET 0 FOR PLAYER JOINING.. SO I WANT TO USE BUCKET 10 AND ABOVE FOR EVERYTHING ELSE..
+        // WE CAN KEEP BUCKETS 1-9 FOR ANYTHING WE COULD USE THEM.. 
         public static async void CharLoad()
         {
+            FreeRoamChar roamchar = await EventDispatcher.Get<FreeRoamChar>("tlg:Select_FreeRoamChar", Cache.PlayerCache.MyPlayer.User.ID);
+            PlayerCache.MyPlayer.User.Character = roamchar;
+            if (roamchar.CharID == 0 && roamchar.Skin is null)
+            {
+                DoScreenFadeOut(800);
+                await BaseScript.Delay(800);
+                StopPlayerSwitch();
+                RequestModel((uint)PedHash.FreemodeMale01);
+                RequestModel((uint)PedHash.FreemodeFemale01);
+                FreeRoamCreator.Init();
+                string sex = SharedMath.GetRandomInt(0, 100) > 50 ? "Male" : "Female";
+                await FreeRoamCreator.CharCreationMenu(sex);
+                return;
+            }
             PlayerCache.MyPlayer.Player.CanControlCharacter = false;
             if (PlayerCache.MyPlayer.Ped.IsVisible) NetworkFadeOutEntity(PlayerCache.MyPlayer.Ped.Handle, true, false);
-            RequestCollisionAtCoord(0, 0, 0);
+            RequestCollisionAtCoord(0, 0, -199);
+            Vector3 vector = (await PlayerCache.MyPlayer.User.Character.Position.GetPositionWithGroundZ()).ToVector3;
+            Vector3 loadVect = vector;
+            GetSafeCoordForPed(loadVect.X, loadVect.Y, loadVect.Z, false, ref vector, 16);
+            PlayerCache.MyPlayer.User.Character.Position = await new Position(vector, PlayerCache.MyPlayer.User.Character.Position.ToRotationVector).GetPositionWithGroundZ();
             PlayerCache.MyPlayer.Ped.Position = new Vector3(0);
-            SwitchOutPlayer(PlayerPedId(), 1 | 32 | 128 | 16384, 1);
+            SwitchOutPlayer(PlayerPedId(), 0, 1);
+            // wait until the camera has done the 3 steps.. only after we start
+            while (GetPlayerSwitchState() != 5) await BaseScript.Delay(0);
             Ped p = PlayerCache.MyPlayer.Ped;
             p.Style.SetDefaultClothes();
             await PlayerCache.Loaded();
@@ -87,12 +107,10 @@ namespace FreeRoamProject.Client.Core.Ingresso
             ClampGameplayCamPitch(0, 0);
             ClampGameplayCamYaw(0, 0);
             Screen.Fading.FadeIn(1000);
+            await FreeRoamLogin.LoadPlayer();
             //MainChooser.Bucket_n_Players = await EventDispatcher.Get<Dictionary<ModalitaServer, int>>("tlg:richiediContoBuckets");
             //SpawnParticle.StartNonLoopedOnEntityNetworked("scr_powerplay_beast_appear", PlayerCache.MyPlayer.Ped);
-            Function.Call(Hash.NETWORK_FADE_IN_ENTITY, PlayerCache.MyPlayer.Ped.Handle, true, 1);
-            await BaseScript.Delay(10000);
-            FreeRoamLogin.Initialize();
-            PlayerCache.MyPlayer.Status.PlayerStates.PassiveMode = true;
+            //PlayerCache.MyPlayer.Status.PlayerStates.PassiveMode = true;
         }
     }
 }

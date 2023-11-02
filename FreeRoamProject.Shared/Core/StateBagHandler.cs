@@ -1,8 +1,8 @@
-﻿using System;
+﻿using FreeRoamProject.Shared.Core.Log;
+using System;
 
 namespace FreeRoamProject.Shared
 {
-    public delegate void RoleplayStateBagChaged(int userId, string type, bool value);
     public delegate void PlayerStateBagChaged(int userId, string type, bool value);
     public delegate void InstanceBagChanged(int userId, InstanceBag value);
     public delegate void EntityStateBagChaged(Entity entity, string type, bool value);
@@ -12,7 +12,6 @@ namespace FreeRoamProject.Shared
 
     public class StateBagsHandler
     {
-        public event RoleplayStateBagChaged OnRoleplayStateBagChange;
         public event PlayerStateBagChaged OnPlayerStateBagChange;
         public event EntityStateBagChaged OnEntityStateBagChange;
         public event InstanceBagChanged OnInstanceBagChange;
@@ -20,7 +19,8 @@ namespace FreeRoamProject.Shared
         public event WeatherChangedEvent OnWeatherChange;
         public event PassiveModeEvent OnPassiveMode;
 
-        private readonly Logger.Log logger = new();
+        //TODO: ADD FREEROAM EVENTS
+        private readonly DebugLog logger = new();
         public StateBagsHandler()
         {
             AddStateBagChangeHandler("", "", new Action<string, string, dynamic, dynamic, bool>((bagName, key, value, _unused, replicated) =>
@@ -36,11 +36,11 @@ namespace FreeRoamProject.Shared
                     //logger.Warning($"{bagName}, {key}, {value}, {_unused}, {replicated}");
                     switch (key.ToLower())
                     {
-                        case "orario":
+                        case "time":
                             ServerTime time = (value as byte[]).FromBytes<ServerTime>();
                             OnTimeChange?.Invoke(time);
                             break;
-                        case "meteo":
+                        case "weather":
                             SharedWeather meteo = (value as byte[]).FromBytes<SharedWeather>();
                             OnWeatherChange?.Invoke(meteo);
                             break;
@@ -95,7 +95,6 @@ namespace FreeRoamProject.Shared
                                         case "Dying":
                                         case "InVehicle":
                                             bool res = (value as byte[]).FromBytes<bool>();
-                                            OnRoleplayStateBagChange?.Invoke(userId, state, res);
                                             break;
                                     }
                                     break;
@@ -114,10 +113,9 @@ namespace FreeRoamProject.Shared
             }));
 
             OnPlayerStateBagChange += (a, b, c) => logger.Debug($"OnPlayerStateBagChange => PlayerId:{a}, State:{b}, Value:{c}");
-
-            OnRoleplayStateBagChange += (a, b, c) => logger.Debug($"OnRoleplayStateBagChange => PlayerId:{a}, State:{b}, Value:{c}");
-
             OnInstanceBagChange += (a, b) => logger.Debug($"OnInstanceBagChange => PlayerId:{a}, Data:{b.ToJson()}");
+            //OnTimeChange += (a) => logger.Debug($"OnWeatherChange => {a.ToJson()}");
+            //OnWeatherChange += (a) => logger.Debug($"OnTimeChange => {a.ToJson()}");
         }
     }
 }

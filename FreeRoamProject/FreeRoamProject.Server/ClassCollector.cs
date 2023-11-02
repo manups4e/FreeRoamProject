@@ -18,7 +18,7 @@ namespace FreeRoamProject.Server
             {
                 await BaseScript.Delay(0);
             }
-
+            ChatEvents.Init();
             //ServerManager.Init();
             Main.Init();
             Events.Init();
@@ -29,7 +29,6 @@ namespace FreeRoamProject.Server
             BotDiscordHandler.Init();
             WorldEventsManager.Init();
             VehicleManager.Init();
-            //PlayerBlipsHandler.Init();
             BaseEventsFreeRoam.Init();
             FreeRoamEvents.Init();
             await Task.FromResult(0);

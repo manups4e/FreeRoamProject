@@ -17,7 +17,7 @@ namespace FreeRoamProject.Client.Cache
 
         public static async Task InitPlayer()
         {
-            Tuple<Snowflake, BasePlayerShared> player = await EventDispatcher.Get<Tuple<Snowflake, BasePlayerShared>>("lprp:setupUser");
+            Tuple<Snowflake, BasePlayerShared> player = await EventDispatcher.Get<Tuple<Snowflake, BasePlayerShared>>("tlg:setupUser");
             MyPlayer = new PlayerClient(player);
             _checkTimer = new(5000);
             ClientMain.Instance.AddTick(TickStatus);

@@ -64,16 +64,16 @@ namespace FreeRoamProject.Server.FreeRoam.Scripts.FreeroamEvents
                 if (CurrentEvent.CountdownTime > TimeSpan.Zero)
                 {
                     // TODO: HANDLE EACH BUCKET ON ITS OWN..
-                    foreach (Shared.Core.Buckets.Bucket server in BucketsHandler.FreeRoam.Servers)
+                    foreach (KeyValuePair<int, Shared.Core.Buckets.Bucket> server in BucketsHandler.FreeRoam.Servers)
                     {
-                        EventDispatcher.Send(server.Players, "worldEventsManage.Client:PeriodicSync", (int)CurrentEvent.CountdownTime.TotalSeconds, false);
+                        EventDispatcher.Send(server.Value.Players, "worldEventsManage.Client:PeriodicSync", (int)CurrentEvent.CountdownTime.TotalSeconds, false);
                     }
                     return;
                 }
                 // TODO: HANDLE EACH BUCKET ON ITS OWN..
-                foreach (Shared.Core.Buckets.Bucket server in BucketsHandler.FreeRoam.Servers)
+                foreach (KeyValuePair<int, Shared.Core.Buckets.Bucket> server in BucketsHandler.FreeRoam.Servers)
                 {
-                    EventDispatcher.Send(server.Players, "worldEventsManage.Client:PeriodicSync", (int)CurrentEvent.EventTime.TotalSeconds, true);
+                    EventDispatcher.Send(server.Value.Players, "worldEventsManage.Client:PeriodicSync", (int)CurrentEvent.EventTime.TotalSeconds, true);
                 }
             }
             catch (Exception e)
@@ -101,9 +101,9 @@ namespace FreeRoamProject.Server.FreeRoam.Scripts.FreeroamEvents
                         ChooseNextEvent();
 
                         ServerMain.Logger.Info($"Current Event [{CurrentEvent.Name}] | Next Event [{NextEvent.Name}]");
-                        foreach (Shared.Core.Buckets.Bucket server in BucketsHandler.FreeRoam.Servers)
+                        foreach (KeyValuePair<int, Shared.Core.Buckets.Bucket> server in BucketsHandler.FreeRoam.Servers)
                         {
-                            EventDispatcher.Send(server.Players, "worldEventsManage.Client:EventActivate", CurrentEvent.Id, NextEvent.Id);
+                            EventDispatcher.Send(server.Value.Players, "worldEventsManage.Client:EventActivate", CurrentEvent.Id, NextEvent.Id);
                         }
                     }
                 }
@@ -115,9 +115,9 @@ namespace FreeRoamProject.Server.FreeRoam.Scripts.FreeroamEvents
                         if (CurrentEvent.CountdownTime == TimeSpan.Zero)
                         {
                             CurrentEvent.IsStarted = true;
-                            foreach (Shared.Core.Buckets.Bucket server in BucketsHandler.FreeRoam.Servers)
+                            foreach (KeyValuePair<int, Shared.Core.Buckets.Bucket> server in BucketsHandler.FreeRoam.Servers)
                             {
-                                EventDispatcher.Send(server.Players, "worldEventsManage.Client:EventStart", CurrentEvent.Id);
+                                EventDispatcher.Send(server.Value.Players, "worldEventsManage.Client:EventStart", CurrentEvent.Id);
                             }
                         }
                     }
@@ -137,10 +137,10 @@ namespace FreeRoamProject.Server.FreeRoam.Scripts.FreeroamEvents
                             CurrentEvent.IsActive = false;
                             TimeUntilNextEvent = TimeSpan.FromMinutes(SharedMath.GetRandomInt(45, 90));
                             await BaseScript.Delay(3500); // Wait until we start the next event (total 5 seconds)
-                            foreach (Shared.Core.Buckets.Bucket server in BucketsHandler.FreeRoam.Servers)
+                            foreach (KeyValuePair<int, Shared.Core.Buckets.Bucket> server in BucketsHandler.FreeRoam.Servers)
                             {
-                                EventDispatcher.Send(server.Players, "worldEventsManage.Client:DestroyEventVehicles");
-                                EventDispatcher.Send(server.Players, "worldEventsManage.Client:NextEventIn", (int)TimeUntilNextEvent.TotalSeconds);
+                                EventDispatcher.Send(server.Value.Players, "worldEventsManage.Client:DestroyEventVehicles");
+                                EventDispatcher.Send(server.Value.Players, "worldEventsManage.Client:NextEventIn", (int)TimeUntilNextEvent.TotalSeconds);
                             }
                         }
                         else
@@ -163,9 +163,9 @@ namespace FreeRoamProject.Server.FreeRoam.Scripts.FreeroamEvents
         {
             try
             {
-                foreach (Shared.Core.Buckets.Bucket server in BucketsHandler.FreeRoam.Servers)
+                foreach (KeyValuePair<int, Shared.Core.Buckets.Bucket> server in BucketsHandler.FreeRoam.Servers)
                 {
-                    if (server.Players.Any(x => x.Handle == client.Handle))
+                    if (server.Value.Players.Any(x => x.Handle == client.Handle))
                     {
                         if (client.Status.PlayerStates.Spawned)
                         {

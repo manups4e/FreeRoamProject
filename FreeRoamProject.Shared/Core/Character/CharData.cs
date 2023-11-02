@@ -62,16 +62,14 @@ namespace FreeRoamProject.Shared.Core.Character
     {
         public int Money { get; set; } = 1000;
         public int Bank { get; set; } = 3000;
-        public int DirtyCash { get; set; } = 0;
-        public List<BankTransaction> Transactions { get; set; }
+        public List<BankTransaction> Transactions = new();
 
         public Finance() { }
 
-        public Finance(int cash, int bank, int dirtyCash)
+        public Finance(int cash, int bank)
         {
             Money = cash;
             Bank = bank;
-            DirtyCash = dirtyCash;
         }
 
     }

@@ -16,7 +16,7 @@ namespace FreeRoamProject.Server.Core
         {
             ServerMain.Instance.AddEventHandler("chatMessage", new Action<int, string, string>(chatMessage));
             //ServerMain.Instance.AddEventHandler("consoleCommand", new Action<string, string>(ConsoleCommand));
-            ServerMain.Instance.AddEventHandler("lprp:chat:commands", new Action<Player>(SendComms));
+            ServerMain.Instance.AddEventHandler("tlg:chat:commands", new Action<Player>(SendComms));
         }
 
         public static void chatMessage(int id, string name, string message)
@@ -61,7 +61,7 @@ namespace FreeRoamProject.Server.Core
                             args = new[] { name, message }
                         });
                     }
-                    //BaseScript.TriggerClientEvent("lprp:triggerProximityDisplay", Convert.ToInt32(p.Handle), /*user.FullName + ":",*/ message);
+                    //BaseScript.TriggerClientEvent("tlg:triggerProximityDisplay", Convert.ToInt32(p.Handle), /*user.FullName + ":",*/ message);
                 }
                 CancelEvent();
             }

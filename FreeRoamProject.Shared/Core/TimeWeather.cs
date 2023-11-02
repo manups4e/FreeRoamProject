@@ -20,7 +20,7 @@ namespace FreeRoamProject.Shared
         public int WeatherTimer { get; set; }
         public int RainTimer { get; set; }
         public float RandomWindDirection { get; set; }
-        public bool DynamicMeteo { get; set; }
+        public bool DynamicWeather { get; set; }
         public bool StartUp { get; set; }
         public float WindSpeed { get; set; }
 

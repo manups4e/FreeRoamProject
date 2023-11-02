@@ -1,4 +1,3 @@
-using Logger;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -6,7 +5,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
-using CitizenFX.Core;
 #if CLIENT
 using ScaleformUI.Menu;
 using ScaleformUI;
@@ -47,10 +45,10 @@ namespace FreeRoamProject.Shared
             try
             {
                 float h = position.Z;
-                int time = GetGameTimer();
+                int time = GetNetworkTimeAccurate();
                 while (z == 0)
                 {
-                    if (GetGameTimer() - time > 5000)
+                    if (GetNetworkTimeAccurate() - time > 5000)
                     {
                         Logger.Debug($"Vector3 FindGroundZ: Troppo tempo a caricare la coordinata Z, esco dall'attesa..");
                         return -199.99f;
@@ -99,12 +97,12 @@ namespace FreeRoamProject.Shared
             try
             {
                 float h = position.Z;
-                int time = GetGameTimer();
+                int time = GetNetworkTimeAccurate();
                 while (z == 0)
                 {
-                    if (GetGameTimer() - time > 5000)
+                    if (GetNetworkTimeAccurate() - time > 5000)
                     {
-                        Logger.Debug($"Position FindGroundZ: Troppo tempo a caricare la coordinata Z, esco dall'attesa..");
+                        Logger.Debug($"Position FindGroundZ: Taking too much to load Z, exiting from await..");
                         return -199.99f;
                     }
                     await BaseScript.Delay(50);

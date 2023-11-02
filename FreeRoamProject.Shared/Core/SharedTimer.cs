@@ -29,7 +29,12 @@
                         await = _awaitable * 1000 * 60;
                         break;
                 }
+#if CLIENT
+                bool passed = GetNetworkTimeAccurate() - Timer > await;
+#elif SERVER
                 bool passed = GetGameTimer() - Timer > await;
+#endif
+
                 if (passed) ResetTimer();
                 return passed;
             }
@@ -44,7 +49,11 @@
 
         public void ResetTimer()
         {
+#if CLIENT
+            Timer = GetNetworkTimeAccurate();
+#elif SERVER
             Timer = GetGameTimer();
+#endif
         }
     }
 }

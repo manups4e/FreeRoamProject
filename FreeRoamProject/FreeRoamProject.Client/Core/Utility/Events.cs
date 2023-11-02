@@ -1,5 +1,4 @@
-﻿using FreeRoamProject.Shared.Core.Character;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace FreeRoamProject.Client.Core.Utility
@@ -10,26 +9,34 @@ namespace FreeRoamProject.Client.Core.Utility
 
         public static void Init()
         {
-            EventDispatcher.Mount("lprp:teleportCoords", new Action<Position>(teleportCoords));
-            //EventDispatcher.Mount("lprp:onPlayerDeath", new Action<dynamic>(onPlayerDeath));
-            EventDispatcher.Mount("lprp:sendUserInfo", new Action<string, string>(sendUserInfo));
-            EventDispatcher.Mount("lprp:ObjectDeleteGun", new Action<string>(DelGun));
+            EventDispatcher.Mount("tlg:teleportCoords", new Action<Position>(teleportCoords));
+            //EventDispatcher.Mount("tlg:onPlayerDeath", new Action<dynamic>(onPlayerDeath));
+            EventDispatcher.Mount("tlg:sendUserInfo", new Action<string, string>(sendUserInfo));
+            EventDispatcher.Mount("tlg:ObjectDeleteGun", new Action<string>(DelGun));
             EventDispatcher.Mount("tlg:ShowNotification", new Action<string>(notification));
-            EventDispatcher.Mount("lpop:ShowNotification", new Action<string>(notification));
-            EventDispatcher.Mount("lprp:death", new Action(death));
-            EventDispatcher.Mount("lprp:announce", new Action<string>(announce));
-            EventDispatcher.Mount("lprp:reviveChar", new Action(Revive));
-            EventDispatcher.Mount("lprp:spawnVehicle", new Action<string>(SpawnVehicle));
-            EventDispatcher.Mount("lprp:deleteVehicle", new Action(DeleteVehicle));
-            EventDispatcher.Mount("lprp:showSaving", new Action(Save));
+            EventDispatcher.Mount("tlg:death", new Action(death));
+            EventDispatcher.Mount("tlg:announce", new Action<string>(announce));
+            EventDispatcher.Mount("tlg:reviveChar", new Action(Revive));
+            EventDispatcher.Mount("tlg:spawnVehicle", new Action<string>(SpawnVehicle));
+            EventDispatcher.Mount("tlg:deleteVehicle", new Action(DeleteVehicle));
+            EventDispatcher.Mount("tlg:showSaving", new Action(Save));
             EventDispatcher.Mount("tlg:onPlayerEntrance", new Action<PlayerClient>(PlayerJoined));
-            timer = GetGameTimer();
+            EventDispatcher.Mount("tlg:PlayerLeft", new Action<string, string>(PlayerLeft));
+            EventDispatcher.Mount("tlg:removeWeaponComponent", new Action<string, string>(RemoveWeaponComponent));
+            EventDispatcher.Mount("tlg:removeWeapon", new Action<string>(RemoveWeapon));
+            EventDispatcher.Mount("tlg:addWeapon", new Action<string, int>(AddWeapon));
+            EventDispatcher.Mount("tlg:addWeaponComponent", new Action<string, string>(AddWeaponComponent));
+            EventDispatcher.Mount("tlg:addWeaponTint", new Action<string, int>(AddWeaponTint));
+            timer = GetNetworkTimeAccurate();
             AccessingEvents.OnFreeRoamSpawn += OnSpawn;
         }
 
         private static void OnSpawn(PlayerClient client)
         {
-            AggiornaPlayers();
+            updatePlayers();
+            // TODO: MOVE THIS TO WHEN THE PLAYER IS DONE WITH THE SWITCH CAMERA ANIMATION.
+            EventDispatcher.Send("tlg:sendPlayerJoinedMessage");
+
         }
 
         public static void PlayerJoined(PlayerClient client)
@@ -37,24 +44,31 @@ namespace FreeRoamProject.Client.Core.Utility
             if (client.Status == null)
                 client.Status = new(client.Player);
             ClientMain.Instance.Clients.Add(client);
+            //TODO: shownotification with additional text, to be added as a separate function?
+            BeginTextCommandThefeedPost("TICK_JOIN");
+            AddTextComponentSubstringPlayerName("<C>" + client.Player.Name + "</C>~s~");
+            EndTextCommandThefeedPostTicker(false, true);
         }
 
-        public static async void AggiornaPlayers()
+        public static void PlayerLeft(string name, string reason)
+        {
+            // TODO: HANDLE BUCKETS FOR MISSIONS/RACES/EVENTS 
+            if (name == null) return;
+            //TODO: shownotification with additional text, to be added as a separate function?
+            if (reason == "kick")
+                BeginTextCommandThefeedPost("TICK_LEFTKICK");
+            else if (reason == "cheater")
+                BeginTextCommandThefeedPost("TICK_LEFTCHEAT");
+            else
+                BeginTextCommandThefeedPost("TICK_LEFT");
+            AddTextComponentSubstringPlayerName("<C>" + name + "</C>~s~");
+            EndTextCommandThefeedPostTicker(false, true);
+        }
+
+        public static async void updatePlayers()
         {
             ClientMain.Instance.Clients = await EventDispatcher.Get<List<PlayerClient>>("tlg:callPlayers", PlayerCache.MyPlayer.Position);
             foreach (PlayerClient client in ClientMain.Instance.Clients) client.Status = new(client.Player);
-        }
-
-        public static async void LoadModel()
-        {
-            uint hash = PlayerCache.MyPlayer.User.Character.Skin.Model;
-            RequestModel(hash);
-            while (!HasModelLoaded(hash)) await BaseScript.Delay(1);
-            SetPlayerModel(PlayerId(), hash);
-            Functions.UpdateFace(PlayerCache.MyPlayer.Ped.Handle, PlayerCache.MyPlayer.User.Character.Skin);
-            Functions.UpdateDress(PlayerCache.MyPlayer.Ped.Handle, PlayerCache.MyPlayer.User.Character.Dressing);
-            // TODO: Cambiare con request
-            RestoreWeapons();
         }
 
         public static async void teleportCoords(Position pos)
@@ -124,8 +138,8 @@ namespace FreeRoamProject.Client.Core.Utility
             while (Screen.Fading.IsFadingOut) await BaseScript.Delay(50);
             // TODO: PLAYER MUST BE REVIVED NEAR THE HOSPITAL AS IN ONLINE
             Functions.RespawnPed(PlayerCache.MyPlayer.Position);
-            //BaseScript.TriggerServerEvent("lprp:updateCurChar", "needs", nee.ToJson());
-            //BaseScript.TriggerServerEvent("lprp:setDeathStatus", false);
+            //BaseScript.TriggerServerEvent("tlg:updateCurChar", "needs", nee.ToJson());
+            //BaseScript.TriggerServerEvent("tlg:setDeathStatus", false);
             Screen.Effects.Stop(ScreenEffect.DeathFailOut);
             Screen.Fading.FadeIn(800);
         }
@@ -146,7 +160,6 @@ namespace FreeRoamProject.Client.Core.Utility
             vehicle.Delete();
         }
 
-
         public static async void Save()
         {
             Screen.LoadingPrompt.Show("Saving...", LoadingSpinnerType.SocialClubSaving);
@@ -154,39 +167,43 @@ namespace FreeRoamProject.Client.Core.Utility
             Screen.LoadingPrompt.Hide();
         }
 
-        public static void RestoreWeapons()
+        public static void AddWeapon(string weaponName, int ammo)
         {
-            Dictionary<int, bool> ammoTypes = new();
+            WeaponHash weaponHash = (WeaponHash)GetHashKey(weaponName);
+            GiveWeaponToPed(PlayerPedId(), (uint)weaponHash, ammo, true, false);
+            SetPedAmmo(PlayerPedId(), (uint)weaponHash, 0);
+        }
 
-            if (PlayerCache.MyPlayer.User.Character.Weapons.Count > 0)
+        public static void RemoveWeapon(string weaponName)
+        {
+            WeaponHash weaponHash = (WeaponHash)GetHashKey(weaponName);
+            RemoveWeaponFromPed(PlayerPedId(), (uint)weaponHash);
+            SetPedAmmo(PlayerPedId(), (uint)weaponHash, 0);
+        }
+
+        public static void AddWeaponComponent(string weaponName, string weaponComponent)
+        {
+            uint weaponHash = Functions.HashUint(weaponName);
+            uint componentHash = Functions.HashUint(weaponComponent);
+
+            if (!Cache.PlayerCache.MyPlayer.User.HasWeaponComponent(weaponName, weaponComponent))
             {
-                PlayerCache.MyPlayer.Ped.Weapons.RemoveAll();
-                List<Weapons> weaps = PlayerCache.MyPlayer.User.GetCharWeapons();
-
-                for (int i = 0; i < weaps.Count; i++)
-                {
-                    string weaponName = weaps[i].Name;
-                    uint weaponHash = Functions.HashUint(weaponName);
-                    int tint = weaps[i].Tint;
-                    PlayerCache.MyPlayer.Ped.Weapons.Give((WeaponHash)weaponHash, 0, false, false);
-                    int ammoType = GetPedAmmoTypeFromWeapon(PlayerPedId(), weaponHash);
-
-                    if (weaps[i].Components.Count > 0)
-                    {
-                        foreach (Components weaponComponent in weaps[i].Components)
-                        {
-                            uint componentHash = Functions.HashUint(weaponComponent.name);
-                            if (weaponComponent.active) GiveWeaponComponentToPed(PlayerPedId(), weaponHash, componentHash);
-                        }
-                    }
-
-                    SetPedWeaponTintIndex(PlayerPedId(), weaponHash, tint);
-                    if (ammoTypes.ContainsKey(ammoType)) continue;
-                    AddAmmoToPed(PlayerPedId(), weaponHash, weaps[i].Ammo);
-                    ammoTypes[ammoType] = true;
-                }
+                GiveWeaponComponentToPed(PlayerPedId(), weaponHash, componentHash);
             }
-            //Main.LoadoutLoaded = true;
+        }
+
+        public static void RemoveWeaponComponent(string weaponName, string weaponComponent)
+        {
+            uint weaponHash = Functions.HashUint(weaponName);
+            uint componentHash = Functions.HashUint(weaponComponent);
+            RemoveWeaponComponentFromPed(PlayerPedId(), weaponHash, componentHash);
+            Notifications.ShowNotification("Removed/a ~b~" + Functions.GetWeaponLabel(componentHash));
+        }
+
+        public static void AddWeaponTint(string weaponName, int tint)
+        {
+            uint weaponHash = Functions.HashUint(weaponName);
+            SetPedWeaponTintIndex(PlayerPedId(), weaponHash, tint);
         }
     }
 }
