@@ -169,14 +169,12 @@ namespace FreeRoamProject.Shared
     public class Status
     {
         public PlayerStates PlayerStates { get; set; }
-        public RPStates RolePlayStates { get; set; }
         public InstanceBags Instance { get; set; }
         public FreeRoamStates FreeRoamStates { get; set; }
 
         public Status(Player player)
         {
             PlayerStates = new(player, "PlayerStates");
-            RolePlayStates = new(player, "RolePlayStates");
             FreeRoamStates = new(player, "FreeRoamStates");
             Instance = new(player, "PlayerInstance");
         }
@@ -188,11 +186,6 @@ namespace FreeRoamProject.Shared
             PlayerStates.Paused = false;
             PlayerStates.AdminSpectating = false;
             PlayerStates.Wanted = false;
-            RolePlayStates.InHome = false;
-            RolePlayStates.Fainted = false;
-            RolePlayStates.OnDuty = false;
-            RolePlayStates.Cuffed = false;
-            RolePlayStates.Dying = false;
             Instance.RemoveInstance();
         }
 
@@ -203,11 +196,6 @@ namespace FreeRoamProject.Shared
             PlayerStates.Paused = PlayerStates._paused.State;
             PlayerStates.AdminSpectating = PlayerStates._adminSpectating.State;
             PlayerStates.Wanted = PlayerStates._wanted.State;
-            RolePlayStates.InHome = RolePlayStates._inHome.State;
-            RolePlayStates.Fainted = RolePlayStates._fainted.State;
-            RolePlayStates.OnDuty = RolePlayStates._onDuty.State;
-            RolePlayStates.Cuffed = RolePlayStates._cuffed.State;
-            RolePlayStates.Dying = RolePlayStates._dying.State;
             InstanceBag p = Instance._instanceBag.State;
             Instance.Instanced = p.Instanced;
             Instance.ServerIdOwner = p.ServerIdOwner;

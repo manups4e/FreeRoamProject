@@ -3,6 +3,7 @@ using System.Linq;
 
 #if SERVER
 using FreeRoamProject.Server;
+using FreeRoamProject.Server.Core;
 #endif
 namespace FreeRoamProject.Shared.Core.Buckets
 {
@@ -22,6 +23,8 @@ namespace FreeRoamProject.Shared.Core.Buckets
         public string Name;
         public List<PlayerClient> Players = new();
         public List<Entity> Entities = new();
+        public SharedWeather Weather { get; set; }
+
         public int TotalPlayers => Players.Count;
         private BucketLockdownMode _lockdownMode;
         private bool _populationEnabled;
@@ -57,6 +60,15 @@ namespace FreeRoamProject.Shared.Core.Buckets
         {
             ID = id;
             Name = name;
+            Weather = new SharedWeather()
+            {
+                DynamicWeather = ConfigShared.SharedConfig.Main.Weather.Enable_dynamic_weather,
+                CurrentWeather = ConfigShared.SharedConfig.Main.Weather.Default_weather,
+                WeatherTimer = SharedMath.GetRandomInt(ConfigShared.SharedConfig.Main.Weather.Weather_timer, ConfigShared.SharedConfig.Main.Weather.Weather_timer + 30) * 60,
+                RainTimer = SharedMath.GetRandomInt(ConfigShared.SharedConfig.Main.Weather.Rain_timeout, ConfigShared.SharedConfig.Main.Weather.Rain_timeout + 30) * 60,
+                RandomWindDirection = SharedMath.GetRandomFloat(1, 360),
+                WindSpeed = SharedMath.GetRandomFloat(0, 12),
+            };
         }
 
         public virtual void AddPlayer(PlayerClient client)
@@ -67,6 +79,7 @@ namespace FreeRoamProject.Shared.Core.Buckets
             if (API.GetPlayerRoutingBucket(client.Handle.ToString()) != ID)
                 API.SetPlayerRoutingBucket(client.Handle.ToString(), ID);
 #endif
+            client.Player.State.Set("serverID", ID, true);
             OnPlayerJoin?.Invoke(client);
         }
 

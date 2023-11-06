@@ -80,4 +80,97 @@ namespace Settings.Client.FreeRoam
         public CratesSettings Crate { get; set; }
         public List<WeaponTintSettings> WeaponTints { get; set; }
     }
+
+    public class ConfigPropertiesRP
+    {
+        public Dictionary<string, ConfigHouses> Apartments { get; set; }
+        public ConfigGarages Garages { get; set; }
+    }
+
+    public class ConfigApartments
+    {
+        public Dictionary<string, ConfigHouses> LowEnd { get; set; }
+        public Dictionary<string, ConfigHouses> MidEnd { get; set; }
+        public Dictionary<string, ConfigHouses> HighEnd { get; set; }
+    }
+
+    public class ConfigGarages
+    {
+        public ConfigGarage LowEnd { get; set; }
+        public ConfigGarage MidEnd4 { get; set; }
+        public ConfigGarage MidEnd6 { get; set; }
+        public ConfigGarage HighEnd { get; set; }
+        public Dictionary<string, Garages> Garages { get; set; }
+        // aggiungere uffici
+    }
+
+    public class ConfigGarage
+    {
+        public Position Pos { get; set; }
+        public int NVehs { get; set; }
+        public Position OutMarker { get; set; }
+        public Position ModifyMarker { get; set; }
+        public Position[] ModifyCam { get; set; } = new Position[2];
+        public Position SpawnInLocation { get; set; }
+        public List<Position> PosVehs { get; set; }
+    }
+
+    public class Garages
+    {
+        public string Label { get; set; }
+        public int Type { get; set; }
+        public int VehCapacity { get; set; }
+        public Position MarkerEntrance { get; set; }
+        public Position MarkerExit { get; set; }
+        public Position SpawnInside { get; set; }
+        public Position SpawnOutside { get; set; }
+        public ConfigHouseCamExt CameraOutside { get; set; }
+        public ConfigHouseCamExt CameraEditorInside { get; set; }
+        public int Price { get; set; }
+    }
+
+    public class ConfigHouses
+    {
+        public string Label { get; set; }
+        public int VehCapacity { get; set; }
+        public int Type { get; set; }
+        public Position MarkerEntrance { get; set; }
+        public Position MarkerExit { get; set; }
+        public Position SpawnInside { get; set; }
+        public Position SpawnOutside { get; set; }
+        public ConfigHouseCamExt CameraOutside { get; set; }
+        public ConfigCaseCamInt CameraInside { get; set; }
+        public List<string> Ipls { get; set; }
+        public string Gateway { get; set; }
+        public bool Is_single { get; set; }
+        public bool Is_room { get; set; }
+        public bool Is_gateway { get; set; }
+        public bool HasRoof { get; set; }
+        public Position MarkerRoof { get; set; }
+        public Position SpawnRoof { get; set; }
+        public bool GarageIncluded { get; set; }
+        public Position MarkerGarageExtern { get; set; }
+        public Position MarkerGarageInternal { get; set; }
+        public Position SpawnGarageWalkInside { get; set; }
+        public Position SpawnGarageVehicleOutside { get; set; }
+        public int Price { get; set; }
+        public int Style { get; set; } = 0;
+        public bool Strip { get; set; }
+        public bool Booze { get; set; }
+        public bool Smoke { get; set; }
+    }
+
+    public class ConfigCaseCamInt
+    {
+        public ConfigHouseCamExt Inside { get; set; }
+        public ConfigHouseCamExt Bathroom { get; set; }
+        public ConfigHouseCamExt Garage { get; set; }
+    }
+
+    public class ConfigHouseCamExt
+    {
+        public Position Pos { get; set; }
+        public Position Rotation { get; set; }
+    }
+
 }

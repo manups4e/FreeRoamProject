@@ -42,14 +42,16 @@ namespace FreeRoamProject.Shared
         public Gang Gang { get; set; }
         public Skin Skin { get; set; }
         public List<Weapons> Weapons { get; set; }
-        public List<string> Properties { get; set; } // to be added
-        //public List<OwnedVehicle> Vehigles { get; set; } // to be added
+        //TODO: SAVE ALSO PROPERTY PREFERENCES, MAKE A CLASS FOR IT
+        public List<string?> Properties { get; set; }
+        public List<OwnedVehicle> Vehicles { get; set; }
         public Dressing Dressing { get; set; }
         public FreeRoamStats Stats { get; set; }
         public int Level { get; set; } = 1;
         public int TotalXp { get; set; }
 
-        public FreeRoamChar() { }
+        public FreeRoamChar()
+        { }
 
         public FreeRoamChar(ulong id)
         {
@@ -58,18 +60,22 @@ namespace FreeRoamProject.Shared
             Gang = new();
             Skin = new();
             Dressing = new();
+            Properties = new(); // to be added
+            Vehicles = new(); // to be added
             Weapons = new();
             Stats = new();
         }
 
-        public FreeRoamChar(ulong id, Finance finance, Gang gang, Skin skin, Dressing dressing, List<Weapons> weapons, FreeRoamStats statistiche)
+        public FreeRoamChar(ulong id, Finance finance, Gang gang, Skin skin, Dressing dressing, FreeRoamStats statistiche)
         {
             CharID = id;
             Finance = finance;
             Gang = gang;
             Skin = skin;
             Dressing = dressing;
-            Weapons = weapons;
+            Weapons = new List<Weapons>();
+            Properties = new List<string?>();
+            Vehicles = new List<OwnedVehicle>();
             Stats = statistiche;
         }
     }

@@ -317,13 +317,13 @@ namespace FreeRoamProject.Server.Core
 				if (ped.Status.PlayerStates.Spawned)
 				{
 					Funzioni.SalvaPersonaggio(player);
-					ServerMain.Logger.Info( "Salvato personaggio: '" + ped.FullName + "' appartenente a '" + name + "' all'uscita dal gioco -- Discord:" + ped.identifiers.discord);
-					BaseScript.TriggerEvent(DateTime.Now.ToString("dd/MM/yyyy, HH:mm:ss") + " Salvato personaggio: '" + ped.FullName + "' appartenente a '" + name + "' all'uscita dal gioco -- Discord:" + ped.identifiers.discord);
+					ServerMain.Logger.Info( "Salvato personaggio: '" + ped.FullName + "' appartenente a '" + name + "' all'uscita dal gioco -- Discord:" + ped.Identifiers.License);
+					BaseScript.TriggerEvent(DateTime.Now.ToString("dd/MM/yyyy, HH:mm:ss") + " Salvato personaggio: '" + ped.FullName + "' appartenente a '" + name + "' all'uscita dal gioco -- Discord:" + ped.Identifiers.License);
 				}
 				else
 				{
-					ServerMain.Logger.Info( "Il Player'" + name + "' - " + ped.identifiers.discord + " è uscito dal server senza selezionare un personaggio");
-					BaseScript.TriggerEvent(DateTime.Now.ToString("dd/MM/yyyy, HH:mm:ss") + " Il Player'" + name + "' - " + ped.identifiers.discord + " è uscito dal server senza selezionare un personaggio");
+					ServerMain.Logger.Info( "Il Player'" + name + "' - " + ped.Identifiers.License + " è uscito dal server senza selezionare un personaggio");
+					BaseScript.TriggerEvent(DateTime.Now.ToString("dd/MM/yyyy, HH:mm:ss") + " Il Player'" + name + "' - " + ped.Identifiers.License + " è uscito dal server senza selezionare un personaggio");
 				}
 				ServerMain.PlayerList.TryRemove(handle, out ped);
 			}

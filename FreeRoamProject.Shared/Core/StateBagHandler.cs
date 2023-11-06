@@ -23,7 +23,7 @@ namespace FreeRoamProject.Shared
         private readonly DebugLog logger = new();
         public StateBagsHandler()
         {
-            AddStateBagChangeHandler("", "", new Action<string, string, dynamic, dynamic, bool>((bagName, key, value, _unused, replicated) =>
+            AddStateBagChangeHandler("", "", new Action<string, string, dynamic, dynamic, bool>(async (bagName, key, value, _unused, replicated) =>
             {
 #if CLIENT
                 if (replicated) return;
@@ -33,17 +33,24 @@ namespace FreeRoamProject.Shared
 
                 if (bagName == "global")
                 {
-                    //logger.Warning($"{bagName}, {key}, {value}, {_unused}, {replicated}");
-                    switch (key.ToLower())
+                    if (key.ToLower().StartsWith("time"))
                     {
-                        case "time":
-                            ServerTime time = (value as byte[]).FromBytes<ServerTime>();
-                            OnTimeChange?.Invoke(time);
-                            break;
-                        case "weather":
+                        ServerTime time = (value as byte[]).FromBytes<ServerTime>();
+                        OnTimeChange?.Invoke(time);
+                    }
+                    if (key.ToLower().StartsWith("weather"))
+                    {
+#if CLIENT
+                        await PlayerCache.Loaded();
+                        if (key.EndsWith(PlayerCache.MyPlayer.Player.State["serverID"] + ""))
+                        {
                             SharedWeather meteo = (value as byte[]).FromBytes<SharedWeather>();
                             OnWeatherChange?.Invoke(meteo);
-                            break;
+                        }
+#elif SERVER
+                        SharedWeather meteo = (value as byte[]).FromBytes<SharedWeather>();
+                        OnWeatherChange?.Invoke(meteo);
+#endif
                     }
                 }
                 else
@@ -85,6 +92,11 @@ namespace FreeRoamProject.Shared
                                             break;
                                     }
                                     break;
+                                case "FreeRoamStates":
+                                    {
+
+                                    }
+                                    break;
                                 case "RolePlayStates":
                                     switch (state)
                                     {
@@ -114,8 +126,8 @@ namespace FreeRoamProject.Shared
 
             OnPlayerStateBagChange += (a, b, c) => logger.Debug($"OnPlayerStateBagChange => PlayerId:{a}, State:{b}, Value:{c}");
             OnInstanceBagChange += (a, b) => logger.Debug($"OnInstanceBagChange => PlayerId:{a}, Data:{b.ToJson()}");
-            //OnTimeChange += (a) => logger.Debug($"OnWeatherChange => {a.ToJson()}");
-            //OnWeatherChange += (a) => logger.Debug($"OnTimeChange => {a.ToJson()}");
+            //OnTimeChange += (a) => logger.Debug($"OnTimeChange => {a.ToJson()}");
+            //OnWeatherChange += (a) => logger.Debug($"OnWeatherChange => {a.ToJson()}");
         }
     }
 }

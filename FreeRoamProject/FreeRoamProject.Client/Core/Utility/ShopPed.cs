@@ -4,6 +4,14 @@ using System.Runtime.InteropServices;
 
 namespace FreeRoamProject.Client.Core.Utility
 {
+    public enum ShopCharacterType
+    {
+        Michael,
+        Franklin,
+        Trevor,
+        MPMale,
+        MPFemale,
+    }
     public static class ShopPed
     {
         [StructLayout(LayoutKind.Explicit, Size = 0x88)]
@@ -142,7 +150,6 @@ namespace FreeRoamProject.Client.Core.Utility
             }
         }
 
-
         /// <summary>
         /// 
         /// </summary>
@@ -229,7 +236,7 @@ namespace FreeRoamProject.Client.Core.Utility
         }
 
         #region Query components
-        private static PedComponentData _GetShopPedQueryComponent(int componentId, int componentType, int characterType)
+        private static PedComponentData _GetShopPedQueryComponent(int componentId, int componentType, ShopCharacterType characterType)
         {
             UnsafePedComponentData data;
             long ptr;
@@ -239,7 +246,7 @@ namespace FreeRoamProject.Client.Core.Utility
                 CitizenFX.Core.Native.Function.Call(CitizenFX.Core.Native.Hash.INIT_SHOP_PED_COMPONENT, ptr);
             }
 
-            int max = CitizenFX.Core.Native.Function.Call<int>(CitizenFX.Core.Native.Hash._GET_NUM_PROPS_FROM_OUTFIT, characterType, 0, -1, 0/*0=component/1=props*/, -1, componentType);
+            int max = CitizenFX.Core.Native.Function.Call<int>(CitizenFX.Core.Native.Hash.SETUP_SHOP_PED_APPAREL_QUERY_TU, (int)characterType, 0, -1, 0/*0=component/1=props*/, -1, componentType);
 
             if (componentId > max)
                 return new PedComponentData();
@@ -251,7 +258,7 @@ namespace FreeRoamProject.Client.Core.Utility
             }
             return data.GetData();
         }
-        private static PedComponentData[] _GetShopPedQueryComponents(int componentType, int characterType, int locate = -1)
+        private static PedComponentData[] _GetShopPedQueryComponents(int componentType, ShopCharacterType characterType, int locate = -1)
         {
             UnsafePedComponentData data;
             long ptr;
@@ -261,7 +268,7 @@ namespace FreeRoamProject.Client.Core.Utility
                 CitizenFX.Core.Native.Function.Call(CitizenFX.Core.Native.Hash.INIT_SHOP_PED_COMPONENT, ptr);
             }
 
-            int max = CitizenFX.Core.Native.Function.Call<int>(CitizenFX.Core.Native.Hash._GET_NUM_PROPS_FROM_OUTFIT, characterType, 0, locate, 0/*0=component/1=props*/, -1/*propreleated?*/, componentType);
+            int max = CitizenFX.Core.Native.Function.Call<int>(CitizenFX.Core.Native.Hash.SETUP_SHOP_PED_APPAREL_QUERY_TU, (int)characterType, 0, locate, 0/*0=component/1=props*/, -1/*propreleated?*/, componentType);
 
             if (max == 0)
                 return null;
@@ -276,7 +283,7 @@ namespace FreeRoamProject.Client.Core.Utility
             }
             return items;
         }
-        private static int _QueryGetComponentIndex(uint nameHash, int characterType, int componentType)
+        private static int _QueryGetComponentIndex(uint nameHash, ShopCharacterType characterType, int componentType)
         {
             UnsafePedComponentData data;
             long ptr;
@@ -285,7 +292,7 @@ namespace FreeRoamProject.Client.Core.Utility
                 ptr = new IntPtr(&data).ToInt64();
                 CitizenFX.Core.Native.Function.Call(CitizenFX.Core.Native.Hash.INIT_SHOP_PED_COMPONENT, ptr);
             }
-            int max = CitizenFX.Core.Native.Function.Call<int>(CitizenFX.Core.Native.Hash._GET_NUM_PROPS_FROM_OUTFIT, characterType, 0, -1, 0/*0=component/1=props*/, -1, componentType);
+            int max = CitizenFX.Core.Native.Function.Call<int>(CitizenFX.Core.Native.Hash.SETUP_SHOP_PED_APPAREL_QUERY_TU, (int)characterType, 0, -1, 0/*0=component/1=props*/, -1, componentType);
             if (max <= 0)
                 return -1;
 
@@ -306,31 +313,31 @@ namespace FreeRoamProject.Client.Core.Utility
             return -1;
         }
 
-        public static PedComponentData GetShopPedQueryComponent(int componentId, int componentType, int characterType)
+        public static PedComponentData GetShopPedQueryComponent(int componentId, int componentType, ShopCharacterType characterType)
         {
-            //return _GetShopPedQueryComponent(componentId, componentType, characterType);
-            dynamic obj = ClientMain.Instance.GetExports["frp"].GetShopPedQueryComponent(componentId, componentType, characterType);
+            //return _GetShopPedQueryComponent(componentId, componentType, (int)characterType);
+            dynamic obj = ClientMain.Instance.GetExports["frp"].GetShopPedQueryComponent(componentId, componentType, (int)characterType);
             PedComponentData data = new(obj);
             return data;
         }
-        public static PedComponentData[] GetShopPedQueryComponents(int componentType, int characterType, int locate = -1)
+        public static PedComponentData[] GetShopPedQueryComponents(int componentType, ShopCharacterType characterType, int locate = -1)
         {
-            //return _GetShopPedQueryComponents(componentType, characterType, locate);
+            //return _GetShopPedQueryComponents(componentType, (int)characterType, locate);
             List<PedComponentData> comps = new();
-            dynamic obj = ClientMain.Instance.GetExports["frp"].GetShopPedQueryComponents(componentType, characterType, locate);
+            dynamic obj = ClientMain.Instance.GetExports["frp"].GetShopPedQueryComponents(componentType, (int)characterType, locate);
             foreach (dynamic o in obj) comps.Add(new(o));
             return comps.ToArray();
         }
-        public static int QueryGetComponentIndex(uint nameHash, int characterType, int componentType)
+        public static int QueryGetComponentIndex(uint nameHash, ShopCharacterType characterType, int componentType)
         {
-            //return _QueryGetComponentIndex(nameHash, characterType, componentType);
-            int idx = ClientMain.Instance.GetExports["frp"].QueryGetComponentIndex(nameHash, characterType, componentType);
+            //return _QueryGetComponentIndex(nameHash, (int)characterType, componentType);
+            int idx = ClientMain.Instance.GetExports["frp"].QueryGetComponentIndex(nameHash, (int)characterType, componentType);
             return idx;
         }
         #endregion
 
         #region Query Props
-        private static PedComponentData _GetShopPedQueryProp(int propId, int characterType)
+        private static PedComponentData _GetShopPedQueryProp(int propId, ShopCharacterType characterType)
         {
             UnsafePedComponentData data;
             long ptr;
@@ -339,7 +346,7 @@ namespace FreeRoamProject.Client.Core.Utility
                 ptr = new IntPtr(&data).ToInt64();
                 CitizenFX.Core.Native.Function.Call(CitizenFX.Core.Native.Hash.INIT_SHOP_PED_PROP, ptr);
             }
-            int max = CitizenFX.Core.Native.Function.Call<int>(CitizenFX.Core.Native.Hash._GET_NUM_PROPS_FROM_OUTFIT, characterType, 0, -1, 1/*0=component/1=props*/, -1, -1);
+            int max = CitizenFX.Core.Native.Function.Call<int>(CitizenFX.Core.Native.Hash.SETUP_SHOP_PED_APPAREL_QUERY_TU, (int)characterType, 0, -1, 1/*0=component/1=props*/, -1, -1);
             if (propId > max)
                 return new PedComponentData();
 
@@ -349,7 +356,7 @@ namespace FreeRoamProject.Client.Core.Utility
             }
             return data.GetData();
         }
-        private static PedComponentData[] _GetShopPedQueryProps(int characterType)
+        private static PedComponentData[] _GetShopPedQueryProps(ShopCharacterType characterType)
         {
 
             UnsafePedComponentData data;
@@ -359,7 +366,7 @@ namespace FreeRoamProject.Client.Core.Utility
                 ptr = new IntPtr(&data).ToInt64();
                 CitizenFX.Core.Native.Function.Call(CitizenFX.Core.Native.Hash.INIT_SHOP_PED_PROP, ptr);
             }
-            int max = CitizenFX.Core.Native.Function.Call<int>(CitizenFX.Core.Native.Hash._GET_NUM_PROPS_FROM_OUTFIT, characterType, 0, -1, 1, -1, -1);
+            int max = CitizenFX.Core.Native.Function.Call<int>(CitizenFX.Core.Native.Hash.SETUP_SHOP_PED_APPAREL_QUERY_TU, (int)characterType, 0, -1, 1, -1, -1);
             if (max == 0)
                 return null;
             PedComponentData[] items = new PedComponentData[max];
@@ -373,7 +380,7 @@ namespace FreeRoamProject.Client.Core.Utility
             }
             return items;
         }
-        private static int _QueryGetPropIndex(uint nameHash, int characterType)
+        private static int _QueryGetPropIndex(uint nameHash, ShopCharacterType characterType)
         {
             UnsafePedComponentData data;
             long ptr;
@@ -382,7 +389,7 @@ namespace FreeRoamProject.Client.Core.Utility
                 ptr = new IntPtr(&data).ToInt64();
                 CitizenFX.Core.Native.Function.Call(CitizenFX.Core.Native.Hash.INIT_SHOP_PED_PROP, ptr);
             }
-            int max = CitizenFX.Core.Native.Function.Call<int>(CitizenFX.Core.Native.Hash._GET_NUM_PROPS_FROM_OUTFIT, characterType, 0, -1, 1/*0=component/1=props*/, -1, -1);
+            int max = CitizenFX.Core.Native.Function.Call<int>(CitizenFX.Core.Native.Hash.SETUP_SHOP_PED_APPAREL_QUERY_TU, (int)characterType, 0, -1, 1/*0=component/1=props*/, -1, -1);
             if (max <= 0)
                 return -1;
 
@@ -402,34 +409,34 @@ namespace FreeRoamProject.Client.Core.Utility
 
             return -1;
         }
-        public static PedComponentData GetShopPedQueryProp(int propId, int characterType)
+        public static PedComponentData GetShopPedQueryProp(int propId, ShopCharacterType characterType)
         {
-            //return _GetShopPedQueryProp(propId, characterType);
-            dynamic obj = ClientMain.Instance.GetExports["frp"].GetShopPedQueryProp(propId, characterType);
+            //return _GetShopPedQueryProp(propId, (int)characterType);
+            dynamic obj = ClientMain.Instance.GetExports["frp"].GetShopPedQueryProp(propId, (int)characterType);
             PedComponentData data = new(obj);
             return data;
         }
 
-        public static PedComponentData[] GetShopPedQueryProps(int characterType)
+        public static PedComponentData[] GetShopPedQueryProps(ShopCharacterType characterType)
         {
-            //return _GetShopPedQueryProps(characterType);
+            //return _GetShopPedQueryProps((int)characterType);
             List<PedComponentData> comps = new();
-            dynamic obj = ClientMain.Instance.GetExports["frp"].GetShopPedQueryProps(characterType);
+            dynamic obj = ClientMain.Instance.GetExports["frp"].GetShopPedQueryProps((int)characterType);
             foreach (dynamic o in obj) comps.Add(new(o));
             return comps.ToArray();
         }
-        public static int QueryGetPropIndex(uint nameHash, int characterType)
+        public static int QueryGetPropIndex(uint nameHash, ShopCharacterType characterType)
         {
-            //return _QueryGetPropIndex(nameHash, characterType);
-            int idx = ClientMain.Instance.GetExports["frp"].QueryGetPropIndex(nameHash, characterType);
+            //return _QueryGetPropIndex(nameHash, (int)characterType);
+            int idx = ClientMain.Instance.GetExports["frp"].QueryGetPropIndex(nameHash, (int)characterType);
             return idx;
         }
         #endregion
 
-        private static PedOutfitData _GetShopPedQueryOutfit(int outfitId, int characterType)
+        private static PedOutfitData _GetShopPedQueryOutfit(int outfitId, ShopCharacterType characterType)
         {
             UnsafePedOutfitData data;
-            int max = CitizenFX.Core.Native.API.N_0xf3fbe2d50a6a8c28(characterType, false);
+            int max = CitizenFX.Core.Native.API.N_0xf3fbe2d50a6a8c28((int)characterType, false);
             if (outfitId > max)
                 return new PedOutfitData();
 
@@ -439,10 +446,10 @@ namespace FreeRoamProject.Client.Core.Utility
             }
             return data.GetData();
         }
-        private static PedOutfitData[] _GetShopPedQueryOutfits(int characterType)
+        private static PedOutfitData[] _GetShopPedQueryOutfits(ShopCharacterType characterType)
         {
             UnsafePedOutfitData data;
-            int max = CitizenFX.Core.Native.API.N_0xf3fbe2d50a6a8c28(characterType, false);
+            int max = CitizenFX.Core.Native.API.N_0xf3fbe2d50a6a8c28((int)characterType, false);
 
             if (max == 0)
                 return null;
@@ -458,17 +465,17 @@ namespace FreeRoamProject.Client.Core.Utility
             }
             return items;
         }
-        public static PedOutfitData GetShopPedQueryOutfit(int outfitId, int characterType)
+        public static PedOutfitData GetShopPedQueryOutfit(int outfitId, ShopCharacterType characterType)
         {
-            //return _GetShopPedQueryOutfit(outfitId, characterType);
-            string json = ClientMain.Instance.GetExports["frp"].GetShopPedQueryOutfit(outfitId, characterType);
+            //return _GetShopPedQueryOutfit(outfitId, (int)characterType);
+            string json = ClientMain.Instance.GetExports["frp"].GetShopPedQueryOutfit(outfitId, (int)characterType);
             PedOutfitData data = new(json);
             return data;
         }
-        public static PedOutfitData[] GetShopPedQueryOutfits(int characterType)
+        public static PedOutfitData[] GetShopPedQueryOutfits(ShopCharacterType characterType)
         {
-            //return _GetShopPedQueryOutfits(characterType);
-            List<object> obj = ClientMain.Instance.GetExports["frp"].GetShopPedQueryOutfits(characterType);
+            //return _GetShopPedQueryOutfits((int)characterType);
+            List<object> obj = ClientMain.Instance.GetExports["frp"].GetShopPedQueryOutfits((int)characterType);
             PedOutfitData[] result = new PedOutfitData[obj.Count];
             for (int i = 0; i < obj.Count; i++)
             {

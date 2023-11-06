@@ -395,11 +395,11 @@ namespace FreeRoamProject.Shared.Core.Character
     {
 
         [JsonIgnore]
-        Vehicle Vehicle = null;
-        public string Plate { get; set; }
+        internal Vehicle Vehicle = null;
+        public string? Plate { get; set; }
         public VehicleData VehData { get; set; }
         public VehGarage Garage { get; set; }
-        public string State { get; set; }
+        public string? State { get; set; }
 
         public OwnedVehicle() { }
         public OwnedVehicle(Vehicle veh, string targa, VehicleData data, VehGarage garage, string stato)
@@ -438,36 +438,31 @@ namespace FreeRoamProject.Shared.Core.Character
     public class VehGarage
     {
         public bool InGarage { get; set; }
-        public string Garage { get; set; }
-        public int Posto { get; set; }
+        public string? ID { get; set; }
+        public int Place { get; set; }
         public VehGarage() { }
         public VehGarage(bool ingarage, string garageName, int posto)
         {
             InGarage = ingarage;
-            Garage = garageName;
-            Posto = posto;
+            ID = garageName;
+            Place = posto;
         }
         public VehGarage(dynamic data)
         {
             InGarage = data.ingarage;
-            Garage = data.garageName;
-            Posto = data.posto;
+            ID = data.garageName;
+            Place = data.posto;
         }
     }
 
     public class VehicleData
     {
-
-        [JsonIgnore]
-        public long Insurance;
-
         [JsonIgnore]
         public VehProp Props = new();
         public bool Stolen { get; set; }
         public VehicleData() { }
-        public VehicleData(long insurance, VehProp dati, bool stolen)
+        public VehicleData(VehProp dati, bool stolen)
         {
-            Insurance = insurance;
             Props = dati;
             Stolen = stolen;
         }
@@ -476,8 +471,8 @@ namespace FreeRoamProject.Shared.Core.Character
     public class VehProp
     {
         public int Model { get; set; }
-        public string Name { get; set; }
-        public string Plate { get; set; }
+        public string? Name { get; set; }
+        public string? Plate { get; set; }
         public int PlateIndex { get; set; }
         public float BodyHealth { get; set; }
         public float EngineHealth { get; set; }
@@ -501,7 +496,7 @@ namespace FreeRoamProject.Shared.Core.Character
         public bool ModKitInstalled { get; set; }
         public int ModLivery { get; set; }
         public VehProp() { }
-        public VehProp(int model, string name, string plate, int plateIndex, float bodyHealth, float engineHealth, float fuelLevel, float dirtLevel, int color1, int color2, Color custom1, Color custom2, bool hasCustom1, bool hasCustom2, int pearlescentColor, int wheelColor, int wheels, int windowTint, bool[] neonEnabled, bool[] extras, Color neonColor, Color tyreSmokeColor, bool modkit, List<VehMod> mods, int modLivery)
+        public VehProp(int model, string? name, string? plate, int plateIndex, float bodyHealth, float engineHealth, float fuelLevel, float dirtLevel, int color1, int color2, Color custom1, Color custom2, bool hasCustom1, bool hasCustom2, int pearlescentColor, int wheelColor, int wheels, int windowTint, bool[] neonEnabled, bool[] extras, Color neonColor, Color tyreSmokeColor, bool modkit, List<VehMod> mods, int modLivery)
         {
             Model = model;
             Name = name;

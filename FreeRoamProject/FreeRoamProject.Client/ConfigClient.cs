@@ -17,6 +17,8 @@ namespace FreeRoamProject.Client
     {
         public ConfigPrincipaleFR Main { get; set; }
         public OutfitCreatorFR Outfits { get; set; }
+        public ConfigPropertiesRP Properties { get; set; }
+
     }
 
     public class ConfigPrincipaleFR

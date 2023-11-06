@@ -9,6 +9,7 @@ namespace FreeRoamProject.Client.Core.Utility
 
         public static void Init()
         {
+            timer = GetNetworkTimeAccurate();
             EventDispatcher.Mount("tlg:teleportCoords", new Action<Position>(teleportCoords));
             //EventDispatcher.Mount("tlg:onPlayerDeath", new Action<dynamic>(onPlayerDeath));
             EventDispatcher.Mount("tlg:sendUserInfo", new Action<string, string>(sendUserInfo));
@@ -27,7 +28,6 @@ namespace FreeRoamProject.Client.Core.Utility
             EventDispatcher.Mount("tlg:addWeapon", new Action<string, int>(AddWeapon));
             EventDispatcher.Mount("tlg:addWeaponComponent", new Action<string, string>(AddWeaponComponent));
             EventDispatcher.Mount("tlg:addWeaponTint", new Action<string, int>(AddWeaponTint));
-            timer = GetNetworkTimeAccurate();
             AccessingEvents.OnFreeRoamSpawn += OnSpawn;
         }
 

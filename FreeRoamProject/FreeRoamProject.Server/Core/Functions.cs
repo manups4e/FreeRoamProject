@@ -338,10 +338,5 @@ namespace FreeRoamProject.Server.Core
 
         public static User GetCurrentChar(this Player player)
             => ServerMain.Instance.Clients.SingleOrDefault(x => player.Handle == x.Handle.ToString()).User;
-
-        public static float RandomFloatInRange(float minimum, float maximum)
-        {
-            return (float)new Random(DateTime.Now.Millisecond + new Random().Next()).NextDouble() * (maximum - minimum) + minimum;
-        }
     }
 }

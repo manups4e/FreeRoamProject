@@ -16,18 +16,18 @@ namespace FreeRoamProject.Server.FreeRoam.Scripts.FreeroamEvents
 
         public static void SaveCharacter([FromSource] PlayerClient client)
         {
-            client.User.Character.Position = client.Ped.Position.ToPosition();
-            API.SetResourceKvpNoSync($"freeroam:player_{client.User.Identifiers.Discord}:char_model", BitConverter.ToString(client.User.Character.ToBytes()));
+            Position pos = new(client.Ped.Position, client.Ped.Rotation);
+            client.User.Character.Position = pos;
+            API.SetResourceKvpNoSync($"freeroam:player_{client.User.Identifiers.License}:char_model", client.User.Character.ToBytes().BytesToString(true));
         }
 
         public static void FinishChar([FromSource] PlayerClient client, FreeRoamChar data)
         {
             try
             {
-                FreeRoamChar Char = data;
-                client.User.Character = Char;
-                API.SetResourceKvpNoSync($"freeroam:player_{client.User.Identifiers.Discord}:char_model", BitConverter.ToString(Char.ToBytes()));
-                //API.DeleteResourceKvpNoSync($"freeroam:player_{client.User.Identifiers.Discord}:char_model");
+                client.User.Character = data;
+                API.SetResourceKvp($"freeroam:player_{client.User.Identifiers.License}:char_model", data.ToBytes().BytesToString(true));
+                //API.DeleteResourceKvpNoSync($"freeroam:player_{client.User.Identifiers.License}:char_model");
             }
             catch (Exception e)
             {

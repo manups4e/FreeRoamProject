@@ -10,11 +10,6 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 {
     internal static class PersonalMenu
     {
-        private static UIMenuItem hu = new UIMenuItem("Hunger");
-        private static UIMenuItem th = new UIMenuItem("Thirst");
-        private static UIMenuItem ti = new UIMenuItem("Tireness");
-        private static UIMenuItem si = new UIMenuItem("Sickness");
-
         public static List<dynamic> chars = new List<dynamic>();
         public static float interactionDistance = 3.5f;
         public static int lockDistance = 25;
@@ -26,15 +21,48 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
         public static bool CinematicGrain = false;
         private static bool open = false;
         private static float fuelint = 0;
+        // TODO: THE QUICK GPS MUST BE HANDLED ON MENU BUILDING.. SO THAT WE CAN CHECK WHAT TO ADD AND WHAT NOT
+        // FOR EXAMPLE GARAGES, PERSONAL VEHICLES, SIMEON, LESTER, HOME, ETC
         public static List<dynamic> gps = new List<dynamic>()
         {
-            "None",
-            Game.GetGXTEntry("BLIP_HOSP"),
-            Game.GetGXTEntry("FMMC_HS_2"),
-            Game.GetGXTEntry("RE_SR_BL_SHP"),
-            Game.GetGXTEntry("BLIP_110"),
-            "Clothes shop",
-            "Barber shop",
+            Game.GetGXTEntry("PIM_QGPS0"), // None
+            Game.GetGXTEntry("PIM_QGPS1"), // Mission Objective
+            Game.GetGXTEntry("PIM_QGPS1B"), // Garage
+            Game.GetGXTEntry("PIM_QGPS2"), // Simeon
+            Game.GetGXTEntry("PIM_QGPS3"), // Lester
+            Game.GetGXTEntry("PIM_QGPS4"), // Trevor
+            Game.GetGXTEntry("PIM_QGPS5"), // Personal Vehicle
+            Game.GetGXTEntry("PIM_QGPS6"), // Mors Mutual
+            Game.GetGXTEntry("PIM_QGPS7"), // Wanted Vehicle
+            Game.GetGXTEntry("PIM_QGPS8"), // Target
+            Game.GetGXTEntry("PIM_QGPS8B"), // Garage
+            Game.GetGXTEntry("PIM_QGPS9"), // Home
+            Game.GetGXTEntry("PIM_QGPS9B"), // Garage
+            Game.GetGXTEntry("PIM_QGPS10"), // Home 2
+            Game.GetGXTEntry("PIM_QGPS10B"), // Garage 2
+            Game.GetGXTEntry("PIM_QGPS11"), // Home 3
+            Game.GetGXTEntry("PIM_QGPS11B"), // Garage 3
+            Game.GetGXTEntry("PIM_QGPS12"), // Home 4
+            Game.GetGXTEntry("PIM_QGPS12B"), // Garage 4
+            Game.GetGXTEntry("PIM_QGPS13"), // Ammu-Nation
+            Game.GetGXTEntry("PIM_QGPS14"), // ATM
+            Game.GetGXTEntry("PIM_QGPS15"), // Barber Shop
+            Game.GetGXTEntry("PIM_QGPS16"), // Tattoo Parlor
+            Game.GetGXTEntry("PIM_QGPS17"), // Pegasus Vehicle
+            Game.GetGXTEntry("PIM_QGPS18"), // Mod Shop
+            Game.GetGXTEntry("PIM_QGPS19"), // Clothes Store
+            Game.GetGXTEntry("PIM_QGPS20"), // Time Trial
+            Game.GetGXTEntry("PIM_QGPS21"), // Dead Drop
+            Game.GetGXTEntry("PIM_QGPS22"), // Hot Property
+            Game.GetGXTEntry("PIM_QGPS23"), // Moving Target
+            Game.GetGXTEntry("PIM_QGPS24"), // King of the Castle
+            Game.GetGXTEntry("PIM_QGPS25"), // Penned In
+            Game.GetGXTEntry("PIM_QGPS26"), // Kill List
+            Game.GetGXTEntry("PIM_QGPS26X"), // Kill List Competitive
+            Game.GetGXTEntry("PIM_QGPS27"), // Hold the Wheel
+            Game.GetGXTEntry("PIM_QGPS28"), // Lamar
+            Game.GetGXTEntry("PIM_QGPSC"), // Capture Objective
+            Game.GetGXTEntry("PIM_QGPSDO"), // Destination
         };
 
         private static List<dynamic> portiere = new List<dynamic>()
@@ -56,8 +84,9 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             MenuHandler.CloseAndClearHistory();
             Ped playerPed = PlayerCache.MyPlayer.Ped;
             Player me = PlayerCache.MyPlayer.Player;
-            Point pos = new Point(50, 50);
-            UIMenu PersonalMenu = new UIMenu(Game.Player.Name, Game.GetGXTEntry("PIM_TITLE1"), pos, "commonmenu", "interaction_bgd", false, true);
+            Point pos = new Point(5, 5);
+            UIMenu PersonalMenu = new UIMenu(Game.Player.Name, Game.GetGXTEntry("PIM_TITLE1"), pos, "commonmenu", "interaction_bgd", true, true);
+            PersonalMenu.BuildingAnimation = MenuBuildingAnimation.NONE;
 
             #region Quick GPS
             UIMenuListItem gpsItem = new UIMenuListItem(Game.GetGXTEntry("PIM_TQGPS"), gps, 0);

@@ -8,10 +8,12 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Spawner
     {
         public static async Task LoadPlayer()
         {
+            bool safe = false;
             PlayerCache.MyPlayer.Player.CanControlCharacter = false;
             PlayerCache.MyPlayer.Ped.IsPositionFrozen = true;
 
-            if (PlayerCache.MyPlayer.Ped.IsVisible) NetworkFadeOutEntity(PlayerCache.MyPlayer.Ped.Handle, true, false);
+            if (PlayerCache.MyPlayer.Ped.IsVisible)
+                NetworkFadeOutEntity(PlayerCache.MyPlayer.Ped.Handle, true, false);
             await BaseScript.Delay(2000);
             if (Screen.Fading.IsFadedOut) Screen.Fading.FadeIn(1000);
 
@@ -30,31 +32,37 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Spawner
 
             if (Screen.LoadingPrompt.IsActive) Screen.LoadingPrompt.Hide();
             Screen.LoadingPrompt.Show("Syncing with the server", LoadingSpinnerType.Clockwise1);
+            // TODO: TURN THIS INTO A GET (CALLBACK) RETURNING THE BUCKET ID
             EventDispatcher.Send("tlg:addPlayerToBucket");
             NetworkClearClockTimeOverride();
             await BaseScript.Delay(7000);
             EventDispatcher.Send("SyncWeatherForMe", true);
             await BaseScript.Delay(2000);
-            if (Screen.LoadingPrompt.IsActive) Screen.LoadingPrompt.Hide();
+            if (Screen.LoadingPrompt.IsActive)
+                Screen.LoadingPrompt.Hide();
 
+            ClientMain.Logger.Warning("PlayerCache.MyPlayer.User.Character.Position: " + PlayerCache.MyPlayer.User.Character.Position);
+            ClientMain.Logger.Warning("Ped.Position: " + PlayerCache.MyPlayer.Ped.Position);
             if (PlayerCache.MyPlayer.User.Character.Position is null)
             {
-                ClientMain.Logger.Warning("player coord are null");
+                ClientMain.Logger.Debug("player coord are null");
                 Vector3 vect = await new Vector3(0).GetVector3WithGroundZ();
                 GetSafeCoordForPed(vect.X, vect.Y, vect.Z, true, ref vect, 16);
                 PlayerCache.MyPlayer.Ped.Position = vect;
             }
             else
             {
-                Vector3 vector = PlayerCache.MyPlayer.User.Character.Position.ToVector3;
-                RequestCollisionAtCoord(vector.X, vector.Y, vector.Z);
-                PlayerCache.MyPlayer.Ped.Position = vector;
+                PlayerCache.MyPlayer.Ped.Position = (await PlayerCache.MyPlayer.User.Character.Position.GetPositionWithGroundZ()).ToVector3;
             }
 
             // TODO: LOADING PROPERTIES (AND SPAWN IN PROPERTY IF DISCONNECTED INSIDE)
             // TODO: LOAD VEHICLES (AND SPAWN LAST USED VEHICLE IF DISCONNECTED ON THE STREET WITH ITS PERSONAL VEHICLE OUT)
-            SwitchInPlayer(PlayerCache.MyPlayer.Ped.Handle);
-            while (IsPlayerSwitchInProgress()) await BaseScript.Delay(0);
+            while (!HasCollisionLoadedAroundEntity(PlayerCache.MyPlayer.Ped.Handle))
+                await BaseScript.Delay(0);
+            ClearFocus();
+            SwitchInPlayer(PlayerPedId());
+            while (IsPlayerSwitchInProgress())
+                await BaseScript.Delay(0);
             DisplayHud(true);
             Function.Call(Hash.NETWORK_FADE_IN_ENTITY, PlayerCache.MyPlayer.Ped.Handle, true, 1);
             if (!PlayerCache.MyPlayer.Ped.IsVisible)

@@ -22,20 +22,30 @@ namespace FreeRoamProject.Server.Core
             EventDispatcher.Mount("tlg:GetUserFromServerId", new Func<int, Task<BasePlayerShared>>(GetUserFromHandle));
             EventDispatcher.Mount("tlg:getPlayers", new Func<Task<List<Player>>>(GetAllPlayers));
             EventDispatcher.Mount("tlg:getClients", new Func<PlayerClient, Task<List<PlayerClient>>>(GetAllClients));
+            EventDispatcher.Mount("tlg:removeCharMoney", new Action<PlayerClient, int, int>(RemoveCharMoney));
             EventDispatcher.Mount("tlg:sendPlayerJoinedMessage", new Action<PlayerClient>(([FromSource] client) =>
             {
                 Shared.Core.Buckets.Bucket bucket = BucketsHandler.FreeRoam.GetPlayerBucket(client.Handle);
                 EventDispatcher.Send(bucket.Players, "tlg:onPlayerEntrance", client);
             }));
 
-            EventDispatcher.Mount("tlg:callPlayers", new Func<PlayerClient, Position, Task<int>>(async ([FromSource] a, b) =>
+            EventDispatcher.Mount("tlg:callPlayers", new Func<PlayerClient, Position, Task<List<PlayerClient>>>(async ([FromSource] a, b) =>
             {
                 if (a.Status.PlayerStates.Spawned)
                 {
                     a.User.Character.Position = b;
                 }
-                return BucketsHandler.FreeRoam.GetTotalPlayers();
+                Shared.Core.Buckets.Bucket buck = BucketsHandler.FreeRoam.GetPlayerBucket(a.Handle);
+                return buck.Players;
             }));
+        }
+
+        public static void RemoveCharMoney([FromSource] PlayerClient player, int type, int amount)
+        {
+            if (type == 0)
+                player.User.Character.Finance.Money -= amount;
+            else if (type == 1)
+                player.User.Character.Finance.Bank -= amount;
         }
 
         public static async Task<List<PlayerClient>> GetAllClients([FromSource] PlayerClient sender)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FreeRoamProject.Client.Handlers;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
 
@@ -104,7 +105,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.Negozi
 				*/
             }
             Weapons = await EventDispatcher.Get<List<SharedWeapon>>("tlg:getWeaponsConfig");
-            ClientMain.Instance.AddTick(ArmeriaTick);
+            TickController.TickOnFoot.Add(ArmeriaTick);
         }
 
         public static void Stop()
@@ -115,7 +116,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.Negozi
 			inputs.ForEach(x => InputHandler.RemoveInput(x));
 			inputs.Clear();
 			*/
-            ClientMain.Instance.RemoveTick(ArmeriaTick);
+            TickController.TickOnFoot.Remove(ArmeriaTick);
         }
 
         public static async Task ArmeriaTick()

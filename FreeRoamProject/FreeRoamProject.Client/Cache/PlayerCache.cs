@@ -52,7 +52,7 @@ namespace FreeRoamProject.Client.Cache
         public static async Task TickStatus()
         {
             #region Position
-            // TODO: DO NOT SAVE PLAYER IF INSIDE INTERIOR, ALWAYS SAVE PLAYER BEFORE ENTERING INTERIOR, AND SPAWNING OUTSIDE
+            // TODO: PLAYERS SAVED INSIDE INTERIORS HAVE SPAWNPOINTS INSIDE + THE CAMERA ANIMATION LIKE IN GTA:O
 
             MyPlayer.Position = new Position(MyPlayer.Ped.Position, MyPlayer.Ped.Rotation);
             #endregion

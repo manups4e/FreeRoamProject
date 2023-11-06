@@ -31,6 +31,7 @@ namespace FreeRoamProject.Client
         public static DebugLog Logger;
         public static ClientMain Instance { get; protected set; }
         public ExportDictionary GetExports => Exports;
+        public static Configuration Settings = new Configuration();
         public CitizenFX.Core.PlayerList GetPlayers => Players;
         // public static Configuration Settings = new Configuration();
         public List<PlayerClient> Clients { get; set; }
@@ -47,13 +48,14 @@ namespace FreeRoamProject.Client
             Instance = this;
             Clients = new();
             NuiManager = new();
+            Settings = new();
             TestClass.Init(); // TO BE REMOVED
             InputHandler.Init();
             InternalGameEvents.Init();
-            StateBagsHandler = new StateBagsHandler();
-            PlayerStatesHandler.Init();
             VehicleChecker.Init();
             ServerJoining.Init();
+            StateBagsHandler = new StateBagsHandler();
+            PlayerStatesHandler.Init();
             Initializer.Init();
             // for custom streamed minimap... honestly i don't think we need this.. i prefer the stock one being this a free-roam server
             SetMapZoomDataLevel(0, 2.73f, 0.9f, 0.08f, 0.0f, 0.0f);

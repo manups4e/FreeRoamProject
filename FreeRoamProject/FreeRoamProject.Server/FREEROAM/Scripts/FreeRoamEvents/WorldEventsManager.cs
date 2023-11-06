@@ -63,7 +63,7 @@ namespace FreeRoamProject.Server.FreeRoam.Scripts.FreeroamEvents
             {
                 if (CurrentEvent.CountdownTime > TimeSpan.Zero)
                 {
-                    // TODO: HANDLE EACH BUCKET ON ITS OWN..
+                    // TODO: HANDLE EACH BUCKET ON ITS OWN.. and use statebag instead of event for periodic syncs
                     foreach (KeyValuePair<int, Shared.Core.Buckets.Bucket> server in BucketsHandler.FreeRoam.Servers)
                     {
                         EventDispatcher.Send(server.Value.Players, "worldEventsManage.Client:PeriodicSync", (int)CurrentEvent.CountdownTime.TotalSeconds, false);
@@ -170,7 +170,7 @@ namespace FreeRoamProject.Server.FreeRoam.Scripts.FreeroamEvents
                         if (client.Status.PlayerStates.Spawned)
                         {
                             FreeRoamEvents.SaveCharacter(client);
-                            ServerMain.Logger.Info($"Saved freeroam char owned by '{client.Player.Name}' - {client.User.Identifiers.Discord}");
+                            ServerMain.Logger.Info($"Saved freeroam char owned by '{client.Player.Name}' - {client.User.Identifiers.License}");
                         }
                     }
                 }

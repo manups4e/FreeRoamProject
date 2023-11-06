@@ -1,6 +1,5 @@
 ﻿using FreeRoamProject.Client.GameMode.FREEROAM.CharCreation;
 using FreeRoamProject.Client.GameMode.FREEROAM.Spawner;
-using System;
 using System.Threading.Tasks;
 
 namespace FreeRoamProject.Client.Core.Ingresso
@@ -11,7 +10,6 @@ namespace FreeRoamProject.Client.Core.Ingresso
 
         public static async void Init()
         {
-            EventDispatcher.Mount("tlg:SetBucketsPlayers", new Action<int>(UpdateCountPlayers));
 #if DEBUG
             // this is to enable script restart.. without this script restart won't work.. (expected behaviour as we won't restart gamemode on production)
             ClientMain.Instance.AddTick(Entra);
@@ -21,7 +19,7 @@ namespace FreeRoamProject.Client.Core.Ingresso
 
         private static void InternalGameEvents_PlayerJoined()
         {
-            Screen.Fading.FadeIn(0);
+            //Screen.Fading.FadeIn(0);
             PlayerSpawned();
         }
 
@@ -38,10 +36,6 @@ namespace FreeRoamProject.Client.Core.Ingresso
             await Task.FromResult(0);
         }
 
-        private static void UpdateCountPlayers(int count)
-        {
-        }
-
         // this is the first thing happening when entering the server
         public static async void PlayerSpawned()
         {
@@ -49,10 +43,13 @@ namespace FreeRoamProject.Client.Core.Ingresso
             Screen.Fading.FadeOut(800);
             while (!Screen.Fading.IsFadedOut) await BaseScript.Delay(1000);
             await PlayerCache.InitPlayer();
-            while (!NetworkIsPlayerActive(PlayerCache.MyPlayer.Player.Handle)) await BaseScript.Delay(0);
+            await PlayerCache.Loaded();
+            while (!NetworkIsPlayerActive(PlayerCache.MyPlayer.Player.Handle))
+                await BaseScript.Delay(0);
             if (PlayerCache.MyPlayer.Ped.Model.Hash != (int)PedHash.FreemodeMale01)
             {
                 await PlayerCache.MyPlayer.Player.ChangeModel(new Model(PedHash.FreemodeMale01));
+                PlayerCache.MyPlayer.Ped.Style.SetDefaultClothes();
             }
 
             // utility events.. to be fixed (remove non utility events and move them)
@@ -73,13 +70,28 @@ namespace FreeRoamProject.Client.Core.Ingresso
         // WE CAN KEEP BUCKETS 1-9 FOR ANYTHING WE COULD USE THEM.. 
         public static async void CharLoad()
         {
+            if (PlayerCache.MyPlayer.Ped.IsVisible)
+                NetworkFadeOutEntity(PlayerCache.MyPlayer.Ped.Handle, true, false);
+            StopPlayerSwitch();
+            RequestCollisionAtCoord(-103.310f, -1215.578f, 1000);
+            PlayerCache.MyPlayer.Ped.Position = new Vector3(-103.310f, -1215.578f, 1000);
+            PlayerCache.MyPlayer.Ped.Heading = 270.975f;
+            PlayerCache.MyPlayer.Player.CanControlCharacter = false;
+            if (PlayerCache.MyPlayer.Ped.IsVisible)
+                NetworkFadeOutEntity(PlayerCache.MyPlayer.Ped.Handle, true, false);
+
+            string settings = await EventDispatcher.Get<string>("Config.CallClientConfig");
+            string sharedSettings = await EventDispatcher.Get<string>("Config.CallSharedConfig");
+            ConfigShared.SharedConfig = sharedSettings.FromJson<SharedConfig>();
+            ClientMain.Settings.LoadConfig(settings);
+
             FreeRoamChar roamchar = await EventDispatcher.Get<FreeRoamChar>("tlg:Select_FreeRoamChar", Cache.PlayerCache.MyPlayer.User.ID);
             PlayerCache.MyPlayer.User.Character = roamchar;
             if (roamchar.CharID == 0 && roamchar.Skin is null)
             {
-                DoScreenFadeOut(800);
-                await BaseScript.Delay(800);
                 StopPlayerSwitch();
+                ShutdownLoadingScreen();
+                ShutdownLoadingScreenNui();
                 RequestModel((uint)PedHash.FreemodeMale01);
                 RequestModel((uint)PedHash.FreemodeFemale01);
                 FreeRoamCreator.Init();
@@ -87,30 +99,46 @@ namespace FreeRoamProject.Client.Core.Ingresso
                 await FreeRoamCreator.CharCreationMenu(sex);
                 return;
             }
-            PlayerCache.MyPlayer.Player.CanControlCharacter = false;
-            if (PlayerCache.MyPlayer.Ped.IsVisible) NetworkFadeOutEntity(PlayerCache.MyPlayer.Ped.Handle, true, false);
-            RequestCollisionAtCoord(0, 0, -199);
-            Vector3 vector = (await PlayerCache.MyPlayer.User.Character.Position.GetPositionWithGroundZ()).ToVector3;
-            Vector3 loadVect = vector;
-            GetSafeCoordForPed(loadVect.X, loadVect.Y, loadVect.Z, false, ref vector, 16);
-            PlayerCache.MyPlayer.User.Character.Position = await new Position(vector, PlayerCache.MyPlayer.User.Character.Position.ToRotationVector).GetPositionWithGroundZ();
-            PlayerCache.MyPlayer.Ped.Position = new Vector3(0);
-            SwitchOutPlayer(PlayerPedId(), 0, 1);
+            await BaseScript.Delay(1000);
+            if (PlayerCache.MyPlayer.User.Character.Position is not null)
+            {
+                Vector3 newVec = new Vector3();
+                Position coords = PlayerCache.MyPlayer.User.Character.Position;
+                SetFocusPosAndVel(coords.X, coords.Y, coords.Z, 0, 0, 0);
+                RequestCollisionAtCoord(coords.X, coords.Y, coords.Z);
+                Vector3 loadVect = (await PlayerCache.MyPlayer.User.Character.Position.GetPositionWithGroundZ()).ToVector3;
+                int tempTimer = GetNetworkTimeAccurate();
+                bool safe = GetSafeCoordForPed(loadVect.X, loadVect.Y, loadVect.Z, true, ref newVec, 0);
+                while (!safe)
+                {
+                    safe = GetSafeCoordForPed(loadVect.X, loadVect.Y, loadVect.Z, true, ref newVec, 0);
+                    if (GetNetworkTimeAccurate() - tempTimer > 5000)
+                    {
+                        ClientMain.Logger.Warning("Waiting for the safest coord to load is taking too long (more than 5s). Breaking from wait loop.");
+                        break;
+                    }
+                    await BaseScript.Delay(1000);
+                }
+                if (safe)
+                {
+                    PlayerCache.MyPlayer.User.Character.Position = await new Position(newVec, PlayerCache.MyPlayer.User.Character.Position.ToRotationVector).GetPositionWithGroundZ();
+                    ClearFocus();
+                }
+            }
+            await BaseScript.Delay(1000);
+
+            SwitchOutPlayer(PlayerCache.MyPlayer.Ped.Handle, 1, 1);
             // wait until the camera has done the 3 steps.. only after we start
             while (GetPlayerSwitchState() != 5) await BaseScript.Delay(0);
-            Ped p = PlayerCache.MyPlayer.Ped;
-            p.Style.SetDefaultClothes();
-            await PlayerCache.Loaded();
-            PlayerCache.MyPlayer.Ped.IsPositionFrozen = false;
+
+            await BaseScript.Delay(2000);
+
             ShutdownLoadingScreen();
             ShutdownLoadingScreenNui();
             ClampGameplayCamPitch(0, 0);
             ClampGameplayCamYaw(0, 0);
             Screen.Fading.FadeIn(1000);
             await FreeRoamLogin.LoadPlayer();
-            //MainChooser.Bucket_n_Players = await EventDispatcher.Get<Dictionary<ModalitaServer, int>>("tlg:richiediContoBuckets");
-            //SpawnParticle.StartNonLoopedOnEntityNetworked("scr_powerplay_beast_appear", PlayerCache.MyPlayer.Ped);
-            //PlayerCache.MyPlayer.Status.PlayerStates.PassiveMode = true;
         }
     }
 }

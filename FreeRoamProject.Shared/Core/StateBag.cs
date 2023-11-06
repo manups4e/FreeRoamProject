@@ -140,6 +140,7 @@ namespace FreeRoamProject.Shared
         }
     }
 
+    /* // kept for reference
     public class RPStates : BaseBag
     {
         internal readonly PlayerStateBag<bool> _fainted;
@@ -191,6 +192,7 @@ namespace FreeRoamProject.Shared
             _dying = new(player, _name + ":Dying", true);
         }
     }
+    */
 
     public class InstanceBags : BaseBag
     {

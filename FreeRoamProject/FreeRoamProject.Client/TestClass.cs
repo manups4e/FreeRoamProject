@@ -7,11 +7,10 @@ namespace FreeRoamProject.Client
     // REMOVED IN PRODUCTION :D THIS IS JUST A TEST CLASS
     internal static class TestClass
     {
-        static ClientList list = new ClientList();
+        //static ClientList list = new ClientList();
         public static async void Init()
         {
             ClientMain.Instance.AddTick(TestTick);
-            ClientMain.Logger.Debug(Game.GetGXTEntry("AMCH_PREPLAND").Replace("~a~", "Example"));
         }
 
 
@@ -22,6 +21,10 @@ namespace FreeRoamProject.Client
             //ClientMain.Logger.Debug(IplManager.Global.ToJson());
             if (Input.IsControlJustPressed(Control.Detonate, PadCheck.Keyboard, ControlModifier.Shift) && !MenuHandler.IsAnyMenuOpen)
             {
+                Vector3 newVec = new Vector3();
+                Vector3 loadVect = PlayerCache.MyPlayer.Position.ToVector3;
+                bool safe = GetSafeCoordForPed(loadVect.X, loadVect.Y, loadVect.Z, true, ref newVec, 0);
+                PlayerCache.MyPlayer.Ped.Position = newVec;
                 //await PlayerCache.InitPlayer();
 
                 //PlayerCache.MyPlayer.Ped.Weapons.Give(WeaponHash.Pistol, 100, true, true);

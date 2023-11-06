@@ -351,6 +351,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             Game.GetGXTEntry("CC_LIPSTICK_9")
         };
 
+        // TODO: CHANGE THEM WITH THE ONLINE ONES!
         private static List<Suit> SuitsMale = new List<Suit>
         {
             new Suit("The drug dealer", "For the weekly production", 0, new ComponentDrawables(-1, 0, -1, 0, 0, -1, 15, 0, 15, 0, 0, 56), new ComponentDrawables(-1, 0, -1, 0, 4, -1, 14, 0, 0, 0, 0, 0), new PropIndices(13, -1, -1, -1, -1, -1, -1, -1, -1), new PropIndices(1, -1, -1, -1, -1, -1, -1, -1, -1)),
@@ -812,7 +813,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             while (!HasModelLoaded(hash)) await BaseScript.Delay(1);
             SetPlayerModel(PlayerId(), hash);
             int id = PlayerCache.MyPlayer.Ped.Handle;
-            int[][] aa = func_1278(_selected == "Male", 0);
+            int[][] aa = GetCreatorSuit(_selected == "Male", 0);
             ComponentDrawables comp = new ComponentDrawables(aa[0][0], aa[0][1], aa[0][2], aa[0][3], aa[0][4], aa[0][5], aa[0][6], aa[0][7], aa[0][8], aa[0][9], aa[0][10], aa[0][11]);
             ComponentDrawables text = new ComponentDrawables(aa[1][0], aa[1][1], aa[1][2], aa[1][3], aa[1][4], aa[1][5], aa[1][6], aa[1][7], aa[1][8], aa[1][9], aa[1][10], aa[1][11]);
             PropIndices _prop = new PropIndices(GetPedPropIndex(id, 0), GetPedPropIndex(id, 1), GetPedPropIndex(id, 2), GetPedPropIndex(id, 3), GetPedPropIndex(id, 4), GetPedPropIndex(id, 5), GetPedPropIndex(id, 6), GetPedPropIndex(id, 7), GetPedPropIndex(id, 8));
@@ -846,8 +847,8 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 sub_8d2b2();
                 //TODO: ADD CHECK FOR UNIQUE INSTANCE FOR EACH PLAYER
                 Cache.PlayerCache.MyPlayer.Status.Instance.InstancePlayer("CharCreation");
-                _dataMale = new FreeRoamChar(SnowflakeGenerator.Instance.Next().ToInt64(), new Finance(1000, 3000), new Gang("Uncensored", 0), new Skin("Male", (uint)PedHash.FreemodeMale01, 0, GetRandomFloatInRange(.5f, 1f), new Face(0, 0, new float[20] { Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(1f, -1, 1) }), new A2(GetRandomIntInRange(0, Ageing.Count), GetRandomFloatInRange(0f, 1f)), new A2(255, 0f), new A2(GetRandomIntInRange(0, Blemishes.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Complexions.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_Damage.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_moles_and_leeks.Count), GetRandomFloatInRange(0f, 1f)), new A3(255, 0f, new int[2] { 0, 0 }), new A3(255, 0f, new int[2] { 0, 0 }), new Facial(new A3(GetRandomIntInRange(0, Beards.Count), GetRandomFloatInRange(0f, 1f), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) }), new A3(GetRandomIntInRange(0, eyebrow.Count), GetRandomFloatInRange(0f, 1f), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) })), new Hair(GetRandomIntInRange(0, HairMale.Count), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) }), new Eye(GetRandomIntInRange(0, EyesColor.Count)), new Ears(255, 0)), new Dressing("Iniziale", "Per cominciare", new ComponentDrawables(-1, 0, GetPedDrawableVariation(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), 0, 0, -1, 15, 0, 15, 0, 0, 56), new ComponentDrawables(-1, 0, GetPedTextureVariation(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), 0, 4, -1, 14, 0, 0, 0, 0, 0), new PropIndices(-1, GetPedPropIndex(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1), new PropIndices(-1, GetPedPropTextureIndex(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1)), new List<Weapons>(), new FreeRoamStats());
-                _dataFemale = new FreeRoamChar(SnowflakeGenerator.Instance.Next().ToInt64(), new Finance(1000, 3000), new Gang("Uncensored", 0), new Skin("Female", (uint)PedHash.FreemodeFemale01, 0, GetRandomFloatInRange(.5f, 1f), new Face(21, 0, new float[20] { Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1) }), new A2(GetRandomIntInRange(0, Ageing.Count), GetRandomFloatInRange(0f, 1f)), new A2(255, 0f), new A2(GetRandomIntInRange(0, Blemishes.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Complexions.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_Damage.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_moles_and_leeks.Count), GetRandomFloatInRange(0f, 1f)), new A3(255, 0f, new int[2] { 0, 0 }), new A3(255, 0f, new int[2] { 0, 0 }), new Facial(new A3(255, 0f, new int[2] { 0, 0 }), new A3(GetRandomIntInRange(0, eyebrow.Count), GetRandomFloatInRange(0f, 1f), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) })), new Hair(GetRandomIntInRange(0, HairMale.Count), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) }), new Eye(GetRandomIntInRange(0, EyesColor.Count)), new Ears(255, 0)), new Dressing("Iniziale", "Per cominciare", new ComponentDrawables(-1, 0, GetPedDrawableVariation(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), 0, 0, -1, 15, 0, 15, 0, 0, 56), new ComponentDrawables(-1, 0, GetPedTextureVariation(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), 0, 4, -1, 14, 0, 0, 0, 0, 0), new PropIndices(-1, GetPedPropIndex(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1), new PropIndices(-1, GetPedPropTextureIndex(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1)), new List<Weapons>(), new FreeRoamStats());
+                _dataMale = new FreeRoamChar(SnowflakeGenerator.Instance.Next().ToInt64(), new Finance(1000, 3000), new Gang("Uncensored", 0), new Skin("Male", (uint)PedHash.FreemodeMale01, 0, GetRandomFloatInRange(.5f, 1f), new Face(0, 0, new float[20] { Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(1f, -1, 1) }), new A2(GetRandomIntInRange(0, Ageing.Count), GetRandomFloatInRange(0f, 1f)), new A2(255, 0f), new A2(GetRandomIntInRange(0, Blemishes.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Complexions.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_Damage.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_moles_and_leeks.Count), GetRandomFloatInRange(0f, 1f)), new A3(255, 0f, new int[2] { 0, 0 }), new A3(255, 0f, new int[2] { 0, 0 }), new Facial(new A3(GetRandomIntInRange(0, Beards.Count), GetRandomFloatInRange(0f, 1f), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) }), new A3(GetRandomIntInRange(0, eyebrow.Count), GetRandomFloatInRange(0f, 1f), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) })), new Hair(GetRandomIntInRange(0, HairMale.Count), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) }), new Eye(GetRandomIntInRange(0, EyesColor.Count)), new Ears(255, 0)), new Dressing("Iniziale", "Per cominciare", new ComponentDrawables(-1, 0, GetPedDrawableVariation(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), 0, 0, -1, 15, 0, 15, 0, 0, 56), new ComponentDrawables(-1, 0, GetPedTextureVariation(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), 0, 4, -1, 14, 0, 0, 0, 0, 0), new PropIndices(-1, GetPedPropIndex(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1), new PropIndices(-1, GetPedPropTextureIndex(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1)), new FreeRoamStats());
+                _dataFemale = new FreeRoamChar(SnowflakeGenerator.Instance.Next().ToInt64(), new Finance(1000, 3000), new Gang("Uncensored", 0), new Skin("Female", (uint)PedHash.FreemodeFemale01, 0, GetRandomFloatInRange(.5f, 1f), new Face(21, 0, new float[20] { Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1) }), new A2(GetRandomIntInRange(0, Ageing.Count), GetRandomFloatInRange(0f, 1f)), new A2(255, 0f), new A2(GetRandomIntInRange(0, Blemishes.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Complexions.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_Damage.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_moles_and_leeks.Count), GetRandomFloatInRange(0f, 1f)), new A3(255, 0f, new int[2] { 0, 0 }), new A3(255, 0f, new int[2] { 0, 0 }), new Facial(new A3(255, 0f, new int[2] { 0, 0 }), new A3(GetRandomIntInRange(0, eyebrow.Count), GetRandomFloatInRange(0f, 1f), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) })), new Hair(GetRandomIntInRange(0, HairMale.Count), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) }), new Eye(GetRandomIntInRange(0, EyesColor.Count)), new Ears(255, 0)), new Dressing("Iniziale", "Per cominciare", new ComponentDrawables(-1, 0, GetPedDrawableVariation(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), 0, 0, -1, 15, 0, 15, 0, 0, 56), new ComponentDrawables(-1, 0, GetPedTextureVariation(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), 0, 4, -1, 14, 0, 0, 0, 0, 0), new PropIndices(-1, GetPedPropIndex(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1), new PropIndices(-1, GetPedPropTextureIndex(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1)), new FreeRoamStats());
                 _data = _selected.ToLower() == "male" ? _dataMale : _dataFemale;
                 UpdateModel(_data.ToJson());
                 await BaseScript.Delay(1000);
@@ -900,21 +901,19 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
         public static UIMenu Apparel = new UIMenu("", "", false);
         public static UIMenu Statistics = new UIMenu("", "", false);
         public static UIMenuItem Save = new("", "");
-        private static List<dynamic> _eyebArchList = new List<dynamic> { "Standard", "High", "Low" };
-        private static List<dynamic> _eyesList = new List<dynamic> { "Standard", "Wide", "Tight" };
-        private static List<dynamic> _noseList = new List<dynamic> { "Standard", "Big", "Tiny" };
-        private static UIMenuListItem _eyebArch = new UIMenuListItem(Game.GetGXTEntry("FACE_F_BROW"), _eyebArchList, 0);
-        private static UIMenuListItem _eyes = new UIMenuListItem(Game.GetGXTEntry("FACE_F_EYES"), _eyesList, 0, "Look closely at the ~o~eyelids~w~!");
-        private static UIMenuListItem _nose = new UIMenuListItem(Game.GetGXTEntry("FACE_F_NOSE"), _noseList, 0);
-        private static UIMenuListItem _nosePro = new UIMenuListItem(Game.GetGXTEntry("FACE_F_NOSEP"), new List<dynamic>() { "Standard", "Short", "Long" }, 0);
-        private static UIMenuListItem _noseTip = new UIMenuListItem(Game.GetGXTEntry("FACE_F_NOSET"), new List<dynamic>() { "Standard", "Points up", "Points down" }, 0);
-        private static UIMenuListItem _cheekbone = new UIMenuListItem(Game.GetGXTEntry("FACE_F_CHEEK"), new List<dynamic>() { "Standard", "Inward", "Outward" }, 0);
-        private static UIMenuListItem _cheeks = new UIMenuListItem(Game.GetGXTEntry("FACE_F_CHEEKS"), new List<dynamic>() { "Standard", "Thin", "Chubby" }, 0);
-        private static UIMenuListItem _lips = new UIMenuListItem(Game.GetGXTEntry("FACE_F_LIPS"), new List<dynamic>() { "Standard", "Thin", "Meaty" }, 0);
-        private static UIMenuListItem _jaw = new UIMenuListItem(Game.GetGXTEntry("FACE_F_JAW"), new List<dynamic>() { "Standard", "Tight", "Wide" }, 0);
-        private static UIMenuListItem _jawPro = new UIMenuListItem(Game.GetGXTEntry("FACE_F_CHIN"), new List<dynamic>() { "Standard", "Inward", "Outward" }, 0);
-        private static UIMenuListItem _jawFor = new UIMenuListItem(Game.GetGXTEntry("FACE_F_CHINS"), new List<dynamic>() { "Standard", "Squared", "Pointed" }, 0);
-        private static UIMenuListItem _neck = new UIMenuListItem("Collo", new List<dynamic>() { "Standard", "Tight", "Wide" }, 0);
+
+        private static UIMenuListItem _eyebArch = new UIMenuListItem(Game.GetGXTEntry("FACE_F_BROW"), new List<dynamic> { Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P3_0"), Game.GetGXTEntry("FACE_F_P3_1") }, 0);
+        private static UIMenuListItem _eyes = new UIMenuListItem(Game.GetGXTEntry("FACE_F_EYES"), new List<dynamic> { Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P6_0"), Game.GetGXTEntry("FACE_F_P6_1") }, 0);
+        private static UIMenuListItem _nose = new UIMenuListItem(Game.GetGXTEntry("FACE_F_NOSE"), new List<dynamic> { Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P4_0"), Game.GetGXTEntry("FACE_F_P4_1") }, 0);
+        private static UIMenuListItem _nosePro = new UIMenuListItem(Game.GetGXTEntry("FACE_F_NOSEP"), new List<dynamic>() { Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P1_0"), Game.GetGXTEntry("FACE_F_P1_1") }, 0);
+        private static UIMenuListItem _noseTip = new UIMenuListItem(Game.GetGXTEntry("FACE_F_NOSET"), new List<dynamic>() { Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P2_0"), Game.GetGXTEntry("FACE_F_P2_1") }, 0);
+        private static UIMenuListItem _cheekbone = new UIMenuListItem(Game.GetGXTEntry("FACE_F_CHEEK"), new List<dynamic>() { Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P7_0"), Game.GetGXTEntry("FACE_F_P7_1") }, 0);
+        private static UIMenuListItem _cheeks = new UIMenuListItem(Game.GetGXTEntry("FACE_F_CHEEKS"), new List<dynamic>() { Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P5_0"), Game.GetGXTEntry("FACE_F_P5_0") }, 0);
+        private static UIMenuListItem _lips = new UIMenuListItem(Game.GetGXTEntry("FACE_F_LIPS"), new List<dynamic>() { Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P9_0"), Game.GetGXTEntry("FACE_F_P9_1") }, 0);
+        private static UIMenuListItem _jaw = new UIMenuListItem(Game.GetGXTEntry("FACE_F_JAW"), new List<dynamic>() { Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P8_0"), Game.GetGXTEntry("FACE_F_P8_1") }, 0);
+        private static UIMenuListItem _jawPro = new UIMenuListItem(Game.GetGXTEntry("FACE_F_CHIN"), new List<dynamic>() { Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P0_0"), Game.GetGXTEntry("FACE_F_P0_1") }, 0);
+        private static UIMenuListItem _jawFor = new UIMenuListItem(Game.GetGXTEntry("FACE_F_CHINS"), new List<dynamic>() { Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P10_0"), Game.GetGXTEntry("FACE_F_P10_1") }, 0);
+        //private static UIMenuListItem _neck = new UIMenuListItem("Collo", new List<dynamic>() { Game.GetGXTEntry("FACE_F_P_ST"), "Tight", "Wide" }, 0);
 
         #endregion
 
@@ -930,34 +929,40 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
 
                 Screen.Fading.FadeIn(800);
                 Point offset = new Point(50, 50);
-                Creation = new(PlayerCache.MyPlayer.Player.Name, "Create a new Character", offset, "commonmenu", "interaction_bgd", false, true)
+                Creation = new(Game.GetGXTEntry("FACE_TITLE"), Game.GetGXTEntry("FACE_MMT"), offset, "commonmenu", "interaction_bgd", false, false)
                 {
+                    EnableAnimation = false,
+                    BuildingAnimation = MenuBuildingAnimation.NONE,
+                    MaxItemsOnScreen = 8,
                     ControlDisablingEnabled = true
                 };
-                UIMenuListItem sex = new UIMenuListItem(Game.GetGXTEntry("FACE_SEX"), new List<dynamic>() { "Male", "Female" }, _selected == "Male" ? 0 : 1);
+                UIMenuListItem sex = new UIMenuListItem(Game.GetGXTEntry("FACE_SEX"), new List<dynamic>() { Game.GetGXTEntry("FACE_MALE"), Game.GetGXTEntry("FACE_FEMALE") }, _selected == "Male" ? 0 : 1, Game.GetGXTEntry("FACE_MM_H2"));
                 Creation.AddItem(sex);
                 UIMenuItem GenitoriItem = new UIMenuItem(Game.GetGXTEntry("FACE_HERI"), Game.GetGXTEntry("FACE_MM_H3"));
-                Parents = new(Game.GetGXTEntry("FACE_HERI"), "Create a new Character")
+                Parents = new(Game.GetGXTEntry("FACE_TITLE"), Game.GetGXTEntry("FACE_HERI"))
                 {
                     ControlDisablingEnabled = true
                 };
                 UIMenuItem DettagliItem = new UIMenuItem(Game.GetGXTEntry("FACE_FEAT"), Game.GetGXTEntry("FACE_MM_H4"));
-                Details = new(Game.GetGXTEntry("FACE_FEAT"), "Create a new Character")
+                Details = new(Game.GetGXTEntry("FACE_TITLE"), Game.GetGXTEntry("FACE_FEAT"))
                 {
                     ControlDisablingEnabled = true
                 };
                 UIMenuItem ApparenzeItem = new UIMenuItem(Game.GetGXTEntry("FACE_APP"), Game.GetGXTEntry("FACE_MM_H6"));
-                Appearances = new(Game.GetGXTEntry("FACE_APP"), "Create a new Character")
+                Appearances = new(Game.GetGXTEntry("FACE_TITLE"), Game.GetGXTEntry("FACE_APP"))
                 {
                     ControlDisablingEnabled = true
                 };
                 UIMenuItem ApparelItem = new UIMenuItem(Game.GetGXTEntry("FACE_APPA"), Game.GetGXTEntry("FACE_APPA_H"));
-                Apparel = new(Game.GetGXTEntry("FACE_APPA"), "Create a new Character")
+                Apparel = new(Game.GetGXTEntry("FACE_TITLE"), Game.GetGXTEntry("FACE_APPA"))
                 {
                     ControlDisablingEnabled = true
                 };
                 UIMenuItem StatisticheItem = new UIMenuItem(Game.GetGXTEntry("FACE_STATS"), Game.GetGXTEntry("FACE_MM_H5"));
-                Statistics = new(Game.GetGXTEntry("FACE_STATS"), "Create a new Character");
+                Statistics = new(Game.GetGXTEntry("FACE_TITLE"), Game.GetGXTEntry("FACE_STATS"))
+                {
+                    ControlDisablingEnabled = true
+                };
 
                 GenitoriItem.Activated += async (a, b) => await Creation.SwitchTo(Parents, 0, true);
                 DettagliItem.Activated += async (a, b) => await Creation.SwitchTo(Details, 0, true);
@@ -971,10 +976,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 Creation.AddItem(ApparelItem);
                 Creation.AddItem(StatisticheItem);
 
-                InstructionalButton button1 = new InstructionalButton(Control.LookLeftRight, "Look left/right");
-                InstructionalButton button2 = new InstructionalButton(Control.FrontendLb, "Look left");
-                InstructionalButton button3 = new InstructionalButton(Control.FrontendRb, "Look right");
-                InstructionalButton button4 = new InstructionalButton(InputGroup.INPUTGROUP_LOOK, "Change details");
+                InstructionalButton button2 = new InstructionalButton(Control.FrontendLb, Game.GetGXTEntry("FACES_TL"));
+                InstructionalButton button3 = new InstructionalButton(Control.FrontendRb, Game.GetGXTEntry("FACES_TR"));
+                InstructionalButton button4 = new InstructionalButton(InputGroup.INPUTGROUP_LOOK, Game.GetGXTEntry("FACE_COPAC"));
                 InstructionalButton button5 = new InstructionalButton(InputGroup.INPUTGROUP_LOOK, "Handle panels", ScaleformUI.Scaleforms.PadCheck.Keyboard);
                 Creation.InstructionalButtons.Add(button3);
                 Creation.InstructionalButtons.Add(button2);
@@ -995,10 +999,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 Parents.AddWindow(heritageWindow);
                 List<dynamic> lista = new List<dynamic>();
                 for (int i = 0; i < 101; i++) lista.Add(i);
-                UIMenuListItem mom = new UIMenuListItem(Game.GetGXTEntry("FACE_MUMS"), momfaces, _data.Skin.Face.Mom);
-                UIMenuListItem dad = new UIMenuListItem(Game.GetGXTEntry("FACE_DADS"), dadfaces, _data.Skin.Face.Dad);
-                UIMenuSliderItem resemblance = new UIMenuSliderItem(Game.GetGXTEntry("FACE_H_DOM"), "", true) { Multiplier = 2, Value = (int)Math.Round(_data.Skin.Resemblance * 100) };
-                UIMenuSliderItem skinmix = new UIMenuSliderItem(Game.GetGXTEntry("FACE_H_STON"), "", true) { Multiplier = 2, Value = (int)Math.Round(_data.Skin.Skinmix * 100) };
+                UIMenuListItem mom = new UIMenuListItem(Game.GetGXTEntry("FACE_MUMS"), momfaces, _data.Skin.Face.Mom, Game.GetGXTEntry("CHARC_H_30"));
+                UIMenuListItem dad = new UIMenuListItem(Game.GetGXTEntry("FACE_DADS"), dadfaces, _data.Skin.Face.Dad, Game.GetGXTEntry("CHARC_H_31"));
+                UIMenuSliderItem resemblance = new UIMenuSliderItem(Game.GetGXTEntry("FACE_H_DOM"), Game.GetGXTEntry("CHARC_H_9"), true) { Multiplier = 2, Value = (int)Math.Round(_data.Skin.Resemblance * 100) };
+                UIMenuSliderItem skinmix = new UIMenuSliderItem(Game.GetGXTEntry("FACE_H_STON"), Game.GetGXTEntry("FACE_HER_ST_H"), true) { Multiplier = 2, Value = (int)Math.Round(_data.Skin.Skinmix * 100) };
                 Parents.AddItem(mom);
                 Parents.AddItem(dad);
                 Parents.AddItem(resemblance);
@@ -1032,7 +1036,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 _jaw.AddPanel(gridJaw);
                 _jawPro.AddPanel(gridJawPro);
                 _jawFor.AddPanel(gridJawFor);
-                _neck.AddPanel(gridNeck);
+                //_neck.AddPanel(gridNeck);
                 Details.AddItem(_eyebArch);
                 Details.AddItem(_eyes);
                 Details.AddItem(_nose);
@@ -1044,7 +1048,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 Details.AddItem(_jaw);
                 Details.AddItem(_jawPro);
                 Details.AddItem(_jawFor);
-                Details.AddItem(_neck);
+                //Details.AddItem(_neck);
 
                 #endregion
 
@@ -1123,6 +1127,8 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 List<dynamic> outfitList = new List<dynamic>();
                 for (int i = 0; i < 8; i++) outfitList.Add(Game.GetGXTEntry(getOutfit(i, _selected == "Male")));
 
+                // TODO: ADD HATS AND GLASSES (look at func_1300 for glasses, func_1304 for hats)
+                // also GET_HASH_NAME_FOR_PROP for hats and GET_NUMBER_OF_PED_PROP_DRAWABLE_VARIATIONS
                 List<dynamic> hatList = new() { Game.GetGXTEntry("FACE_OFF") };
 
                 List<dynamic> glassesList = new List<dynamic>() { Game.GetGXTEntry("FACE_OFF") };
@@ -1138,17 +1144,17 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                     foreach (ShopPed.PedComponentData _glas in FemaleGlasses) glassesList.Add(Game.GetGXTEntry(_glas.Label));
                 }
 
-                UIMenuListItem stile = new(Game.GetGXTEntry("FACE_APP_STY"), styleList, 0, Game.GetGXTEntry("FACE_APPA_H"));
+                UIMenuListItem style = new(Game.GetGXTEntry("FACE_APP_STY"), styleList, 0, Game.GetGXTEntry("FACE_APPA_H"));
                 UIMenuListItem outfit = new(Game.GetGXTEntry("FACE_APP_OUT"), outfitList, 0, Game.GetGXTEntry("FACE_APPA_H"));
 
-                UIMenuListItem hat = new(Game.GetGXTEntry("FACE_HAT"), hatList, 0, Game.GetGXTEntry("FACE_APPA_H"));
-                UIMenuListItem glasses = new(Game.GetGXTEntry("FACE_GLS"), glassesList, 0, Game.GetGXTEntry("FACE_APPA_H"));
+                UIMenuListItem hatsListItem = new(Game.GetGXTEntry("FACE_HAT"), hatList, 0, Game.GetGXTEntry("FACE_APPA_H"));
+                UIMenuListItem glassesListItem = new(Game.GetGXTEntry("FACE_GLS"), glassesList, 0, Game.GetGXTEntry("FACE_APPA_H"));
 
                 //UIMenuListItem outfit = new UIMenuListItem(Game.GetGXTEntry("FACE_APP_OUT"));
-                Apparel.AddItem(stile);
+                Apparel.AddItem(style);
                 Apparel.AddItem(outfit);
-                Apparel.AddItem(hat);
-                Apparel.AddItem(glasses);
+                Apparel.AddItem(hatsListItem);
+                Apparel.AddItem(glassesListItem);
 
                 #endregion
 
@@ -1209,14 +1215,14 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                     {
                         case 0:
                             _dataFemale = _data;
-                            _data = _dataMale;
+                            var data = _dataMale;
                             _boardScalep1.CallFunction("SET_BOARD", Game.GetGXTEntry("FACE_N_CHAR"), _data.CharID.ToString(), "THE LAST GALAXY BY MANUPS4E", "", 0, 1, 0);
                             _selezionato = "Male";
 
                             break;
                         case 1:
                             _dataMale = _data;
-                            _data = _dataFemale;
+                            var data = _dataFemale;
                             _boardScalep1.CallFunction("SET_BOARD", Game.GetGXTEntry("FACE_N_CHAR"), _data.CharID.ToString(), "THE LAST GALAXY BY MANUPS4E", "", 0, 1, 0);
                             _selezionato = "Female";
 
@@ -1232,17 +1238,21 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                     switch (_newIndex)
                     {
                         case 0:
-                            _dataFemale = _data;
-                            _data = _dataMale;
-                            _boardScalep1.CallFunction("SET_BOARD", Game.GetGXTEntry("FACE_N_CHAR"), _data.CharID.ToString(), "THE LAST GALAXY BY MANUPS4E", "", 0, 1, 0);
-                            _selected = "Male";
+                            {
+                                _dataFemale = _data;
+                                FreeRoamChar data = _dataMale;
+                                _boardScalep1.CallFunction("SET_BOARD", Game.GetGXTEntry("FACE_N_CHAR"), _data.CharID.ToString(), "THE LAST GALAXY BY MANUPS4E", "", 0, 1, 0);
+                                _selected = "Male";
+                            }
 
                             break;
                         case 1:
-                            _dataMale = _data;
-                            _data = _dataFemale;
-                            _boardScalep1.CallFunction("SET_BOARD", Game.GetGXTEntry("FACE_N_CHAR"), _data.CharID.ToString(), "THE LAST GALAXY BY MANUPS4E", "", 0, 1, 0);
-                            _selected = "Female";
+                            {
+                                _dataMale = _data;
+                                FreeRoamChar data = _dataFemale;
+                                _boardScalep1.CallFunction("SET_BOARD", Game.GetGXTEntry("FACE_N_CHAR"), _data.CharID.ToString(), "THE LAST GALAXY BY MANUPS4E", "", 0, 1, 0);
+                                _selected = "Female";
+                            }
 
                             break;
                     }
@@ -1470,10 +1480,12 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                     {
                         _data.Skin.Face.Traits[10] = Functions.Denormalize(-c.X, -1f, 1f);
                     }
+                    /*
                     else if (a == _neck)
                     {
                         _data.Skin.Face.Traits[19] = Functions.Denormalize(c.X, -1f, 1f);
                     }
+                    */
                     else if (a == _lips)
                     {
                         _data.Skin.Face.Traits[12] = Functions.Denormalize(-c.X, -1f, 1f);
@@ -1668,6 +1680,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                         PointF var = (_listItem.Panels[0] as UIMenuGridPanel).CirclePosition;
                         _data.Skin.Face.Traits[10] = Functions.Denormalize(-var.X, -1, 1);
                     }
+                    /*
                     else if (_listItem == _neck)
                     {
                         if (!(IsControlPressed(0, 24) || IsDisabledControlPressed(0, 24)))
@@ -1691,6 +1704,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                         PointF var = (_listItem.Panels[0] as UIMenuGridPanel).CirclePosition;
                         _data.Skin.Face.Traits[19] = Functions.Denormalize(var.X, -1, 1);
                     }
+                    */
                     else if (_listItem == _lips)
                     {
                         if (!(IsControlPressed(0, 24) || IsDisabledControlPressed(0, 24)))
@@ -1797,8 +1811,8 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 int first = 0;
                 Apparel.OnListChange += async (sender, item, index) =>
                 {
-                    int id = PlayerPedId();
-                    if (item == stile)
+                    int handle = PlayerCache.MyPlayer.Ped.Handle;
+                    if (item == style)
                     {
                         List<dynamic> list = new();
                         for (int i = 0; i < 8; i++)
@@ -1807,28 +1821,35 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                             list.Add(Game.GetGXTEntry(getOutfit(first + i, _selected == "Male")));
                         }
                         outfit.ChangeList(list, 0);
-                        int[][] aa = func_1278(_selected == "Male", first);
+                        int[][] aa = GetCreatorSuit(_selected == "Male", first);
                         ComponentDrawables comp = new ComponentDrawables(aa[0][0], aa[0][1], aa[0][2], aa[0][3], aa[0][4], aa[0][5], aa[0][6], aa[0][7], aa[0][8], aa[0][9], aa[0][10], aa[0][11]);
                         ComponentDrawables text = new ComponentDrawables(aa[1][0], aa[1][1], aa[1][2], aa[1][3], aa[1][4], aa[1][5], aa[1][6], aa[1][7], aa[1][8], aa[1][9], aa[1][10], aa[1][11]);
-                        PropIndices _prop = new PropIndices(GetPedPropIndex(id, 0), GetPedPropIndex(id, 1), GetPedPropIndex(id, 2), GetPedPropIndex(id, 3), GetPedPropIndex(id, 4), GetPedPropIndex(id, 5), GetPedPropIndex(id, 6), GetPedPropIndex(id, 7), GetPedPropIndex(id, 8));
-                        PropIndices _proptxt = new PropIndices(GetPedPropTextureIndex(id, 0), GetPedPropTextureIndex(id, 1), GetPedPropTextureIndex(id, 2), GetPedPropTextureIndex(id, 3), GetPedPropTextureIndex(id, 4), GetPedPropTextureIndex(id, 5), GetPedPropTextureIndex(id, 6), GetPedPropTextureIndex(id, 7), GetPedPropTextureIndex(id, 8));
+                        PropIndices _prop = new PropIndices(GetPedPropIndex(handle, 0), GetPedPropIndex(handle, 1), GetPedPropIndex(handle, 2), GetPedPropIndex(handle, 3), GetPedPropIndex(handle, 4), GetPedPropIndex(handle, 5), GetPedPropIndex(handle, 6), GetPedPropIndex(handle, 7), GetPedPropIndex(handle, 8));
+                        PropIndices _proptxt = new PropIndices(GetPedPropTextureIndex(handle, 0), GetPedPropTextureIndex(handle, 1), GetPedPropTextureIndex(handle, 2), GetPedPropTextureIndex(handle, 3), GetPedPropTextureIndex(handle, 4), GetPedPropTextureIndex(handle, 5), GetPedPropTextureIndex(handle, 6), GetPedPropTextureIndex(handle, 7), GetPedPropTextureIndex(handle, 8));
                         _data.Dressing = new("", "", comp, text, _prop, _proptxt);
-
                     }
                     else if (item == outfit)
                     {
-                        int[][] aa = func_1278(_selected == "Male", (index + first));
+                        int[][] aa = GetCreatorSuit(_selected == "Male", (index + first));
                         ComponentDrawables comp = new ComponentDrawables(aa[0][0], aa[0][1], aa[0][2], aa[0][3], aa[0][4], aa[0][5], aa[0][6], aa[0][7], aa[0][8], aa[0][9], aa[0][10], aa[0][11]);
                         ComponentDrawables text = new ComponentDrawables(aa[1][0], aa[1][1], aa[1][2], aa[1][3], aa[1][4], aa[1][5], aa[1][6], aa[1][7], aa[1][8], aa[1][9], aa[1][10], aa[1][11]);
-                        PropIndices _prop = new PropIndices(GetPedPropIndex(id, 0), GetPedPropIndex(id, 1), GetPedPropIndex(id, 2), GetPedPropIndex(id, 3), GetPedPropIndex(id, 4), GetPedPropIndex(id, 5), GetPedPropIndex(id, 6), GetPedPropIndex(id, 7), GetPedPropIndex(id, 8));
-                        PropIndices _proptxt = new PropIndices(GetPedPropTextureIndex(id, 0), GetPedPropTextureIndex(id, 1), GetPedPropTextureIndex(id, 2), GetPedPropTextureIndex(id, 3), GetPedPropTextureIndex(id, 4), GetPedPropTextureIndex(id, 5), GetPedPropTextureIndex(id, 6), GetPedPropTextureIndex(id, 7), GetPedPropTextureIndex(id, 8));
+                        PropIndices _prop = new PropIndices(GetPedPropIndex(handle, 0), GetPedPropIndex(handle, 1), GetPedPropIndex(handle, 2), GetPedPropIndex(handle, 3), GetPedPropIndex(handle, 4), GetPedPropIndex(handle, 5), GetPedPropIndex(handle, 6), GetPedPropIndex(handle, 7), GetPedPropIndex(handle, 8));
+                        PropIndices _proptxt = new PropIndices(GetPedPropTextureIndex(handle, 0), GetPedPropTextureIndex(handle, 1), GetPedPropTextureIndex(handle, 2), GetPedPropTextureIndex(handle, 3), GetPedPropTextureIndex(handle, 4), GetPedPropTextureIndex(handle, 5), GetPedPropTextureIndex(handle, 6), GetPedPropTextureIndex(handle, 7), GetPedPropTextureIndex(handle, 8));
                         _data.Dressing = new("", "", comp, text, _prop, _proptxt);
                     }
 
-                    else if (item == hat)
+                    else if (item == hatsListItem)
                     {
                         ClientMain.Logger.Debug("hat id = " + index);
-                        if (index == 0) ClearPedProp(id, 0);
+                        if (index == 0)
+                        {
+                            ClearPedProp(handle, 0);
+                            ComponentDrawables comp = new ComponentDrawables(GetPedDrawableVariation(handle, 0), GetPedDrawableVariation(handle, 1), GetPedDrawableVariation(handle, 2), GetPedDrawableVariation(handle, 3), GetPedDrawableVariation(handle, 4), GetPedDrawableVariation(handle, 5), GetPedDrawableVariation(handle, 6), GetPedDrawableVariation(handle, 7), GetPedDrawableVariation(handle, 8), GetPedDrawableVariation(handle, 9), GetPedDrawableVariation(handle, 10), GetPedDrawableVariation(handle, 11));
+                            ComponentDrawables text = new ComponentDrawables(GetPedTextureVariation(handle, 0), GetPedTextureVariation(handle, 1), GetPedTextureVariation(handle, 2), GetPedTextureVariation(handle, 3), GetPedTextureVariation(handle, 4), GetPedTextureVariation(handle, 5), GetPedTextureVariation(handle, 6), GetPedTextureVariation(handle, 7), GetPedTextureVariation(handle, 8), GetPedTextureVariation(handle, 9), GetPedTextureVariation(handle, 10), GetPedTextureVariation(handle, 11));
+                            PropIndices _prop = new PropIndices(GetPedPropIndex(handle, 0), GetPedPropIndex(handle, 1), GetPedPropIndex(handle, 2), GetPedPropIndex(handle, 3), GetPedPropIndex(handle, 4), GetPedPropIndex(handle, 5), GetPedPropIndex(handle, 6), GetPedPropIndex(handle, 7), GetPedPropIndex(handle, 8));
+                            PropIndices _proptxt = new PropIndices(GetPedPropTextureIndex(handle, 0), GetPedPropTextureIndex(handle, 1), GetPedPropTextureIndex(handle, 2), GetPedPropTextureIndex(handle, 3), GetPedPropTextureIndex(handle, 4), GetPedPropTextureIndex(handle, 5), GetPedPropTextureIndex(handle, 6), GetPedPropTextureIndex(handle, 7), GetPedPropTextureIndex(handle, 8));
+                            _data.Dressing = new("", "", comp, text, _prop, _proptxt);
+                        }
                         else
                         {
                             ShopPed.PedComponentData prop = new();
@@ -1836,16 +1857,24 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                                 prop = MaleHats[index - 1];
                             else
                                 prop = FemaleHats[index - 1];
-                            ComponentDrawables comp = new ComponentDrawables(GetPedDrawableVariation(id, 0), GetPedDrawableVariation(id, 1), GetPedDrawableVariation(id, 2), GetPedDrawableVariation(id, 3), GetPedDrawableVariation(id, 4), GetPedDrawableVariation(id, 5), GetPedDrawableVariation(id, 6), GetPedDrawableVariation(id, 7), GetPedDrawableVariation(id, 8), GetPedDrawableVariation(id, 9), GetPedDrawableVariation(id, 10), GetPedDrawableVariation(id, 11));
-                            ComponentDrawables text = new ComponentDrawables(GetPedTextureVariation(id, 0), GetPedTextureVariation(id, 1), GetPedTextureVariation(id, 2), GetPedTextureVariation(id, 3), GetPedTextureVariation(id, 4), GetPedTextureVariation(id, 5), GetPedTextureVariation(id, 6), GetPedTextureVariation(id, 7), GetPedTextureVariation(id, 8), GetPedTextureVariation(id, 9), GetPedTextureVariation(id, 10), GetPedTextureVariation(id, 11));
-                            PropIndices _prop = new PropIndices(prop.Drawable, GetPedPropIndex(id, 1), GetPedPropIndex(id, 2), GetPedPropIndex(id, 3), GetPedPropIndex(id, 4), GetPedPropIndex(id, 5), GetPedPropIndex(id, 6), GetPedPropIndex(id, 7), GetPedPropIndex(id, 8));
-                            PropIndices _proptxt = new PropIndices(prop.Texture, GetPedPropTextureIndex(id, 1), GetPedPropTextureIndex(id, 2), GetPedPropTextureIndex(id, 3), GetPedPropTextureIndex(id, 4), GetPedPropTextureIndex(id, 5), GetPedPropTextureIndex(id, 6), GetPedPropTextureIndex(id, 7), GetPedPropTextureIndex(id, 8));
+                            ComponentDrawables comp = new ComponentDrawables(GetPedDrawableVariation(handle, 0), GetPedDrawableVariation(handle, 1), GetPedDrawableVariation(handle, 2), GetPedDrawableVariation(handle, 3), GetPedDrawableVariation(handle, 4), GetPedDrawableVariation(handle, 5), GetPedDrawableVariation(handle, 6), GetPedDrawableVariation(handle, 7), GetPedDrawableVariation(handle, 8), GetPedDrawableVariation(handle, 9), GetPedDrawableVariation(handle, 10), GetPedDrawableVariation(handle, 11));
+                            ComponentDrawables text = new ComponentDrawables(GetPedTextureVariation(handle, 0), GetPedTextureVariation(handle, 1), GetPedTextureVariation(handle, 2), GetPedTextureVariation(handle, 3), GetPedTextureVariation(handle, 4), GetPedTextureVariation(handle, 5), GetPedTextureVariation(handle, 6), GetPedTextureVariation(handle, 7), GetPedTextureVariation(handle, 8), GetPedTextureVariation(handle, 9), GetPedTextureVariation(handle, 10), GetPedTextureVariation(handle, 11));
+                            PropIndices _prop = new PropIndices(prop.Drawable, GetPedPropIndex(handle, 1), GetPedPropIndex(handle, 2), GetPedPropIndex(handle, 3), GetPedPropIndex(handle, 4), GetPedPropIndex(handle, 5), GetPedPropIndex(handle, 6), GetPedPropIndex(handle, 7), GetPedPropIndex(handle, 8));
+                            PropIndices _proptxt = new PropIndices(prop.Texture, GetPedPropTextureIndex(handle, 1), GetPedPropTextureIndex(handle, 2), GetPedPropTextureIndex(handle, 3), GetPedPropTextureIndex(handle, 4), GetPedPropTextureIndex(handle, 5), GetPedPropTextureIndex(handle, 6), GetPedPropTextureIndex(handle, 7), GetPedPropTextureIndex(handle, 8));
                             _data.Dressing = new("", "", comp, text, _prop, _proptxt);
                         }
                     }
-                    else if (item == glasses)
+                    else if (item == glassesListItem)
                     {
-                        if (index == 0) ClearPedProp(id, 1);
+                        if (index == 0)
+                        {
+                            ClearPedProp(handle, 1);
+                            ComponentDrawables comp = new ComponentDrawables(GetPedDrawableVariation(handle, 0), GetPedDrawableVariation(handle, 1), GetPedDrawableVariation(handle, 2), GetPedDrawableVariation(handle, 3), GetPedDrawableVariation(handle, 4), GetPedDrawableVariation(handle, 5), GetPedDrawableVariation(handle, 6), GetPedDrawableVariation(handle, 7), GetPedDrawableVariation(handle, 8), GetPedDrawableVariation(handle, 9), GetPedDrawableVariation(handle, 10), GetPedDrawableVariation(handle, 11));
+                            ComponentDrawables text = new ComponentDrawables(GetPedTextureVariation(handle, 0), GetPedTextureVariation(handle, 1), GetPedTextureVariation(handle, 2), GetPedTextureVariation(handle, 3), GetPedTextureVariation(handle, 4), GetPedTextureVariation(handle, 5), GetPedTextureVariation(handle, 6), GetPedTextureVariation(handle, 7), GetPedTextureVariation(handle, 8), GetPedTextureVariation(handle, 9), GetPedTextureVariation(handle, 10), GetPedTextureVariation(handle, 11));
+                            PropIndices _prop = new PropIndices(GetPedPropIndex(handle, 0), GetPedPropIndex(handle, 1), GetPedPropIndex(handle, 2), GetPedPropIndex(handle, 3), GetPedPropIndex(handle, 4), GetPedPropIndex(handle, 5), GetPedPropIndex(handle, 6), GetPedPropIndex(handle, 7), GetPedPropIndex(handle, 8));
+                            PropIndices _proptxt = new PropIndices(GetPedPropTextureIndex(handle, 0), GetPedPropTextureIndex(handle, 1), GetPedPropTextureIndex(handle, 2), GetPedPropTextureIndex(handle, 3), GetPedPropTextureIndex(handle, 4), GetPedPropTextureIndex(handle, 5), GetPedPropTextureIndex(handle, 6), GetPedPropTextureIndex(handle, 7), GetPedPropTextureIndex(handle, 8));
+                            _data.Dressing = new("", "", comp, text, _prop, _proptxt);
+                        }
                         else
                         {
                             ShopPed.PedComponentData prop = new();
@@ -1856,10 +1885,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                                 prop = FemaleGlasses[index - 1];
                             }
 
-                            ComponentDrawables comp = new ComponentDrawables(GetPedDrawableVariation(id, 0), GetPedDrawableVariation(id, 1), GetPedDrawableVariation(id, 2), GetPedDrawableVariation(id, 3), GetPedDrawableVariation(id, 4), GetPedDrawableVariation(id, 5), GetPedDrawableVariation(id, 6), GetPedDrawableVariation(id, 7), GetPedDrawableVariation(id, 8), GetPedDrawableVariation(id, 9), GetPedDrawableVariation(id, 10), GetPedDrawableVariation(id, 11));
-                            ComponentDrawables text = new ComponentDrawables(GetPedTextureVariation(id, 0), GetPedTextureVariation(id, 1), GetPedTextureVariation(id, 2), GetPedTextureVariation(id, 3), GetPedTextureVariation(id, 4), GetPedTextureVariation(id, 5), GetPedTextureVariation(id, 6), GetPedTextureVariation(id, 7), GetPedTextureVariation(id, 8), GetPedTextureVariation(id, 9), GetPedTextureVariation(id, 10), GetPedTextureVariation(id, 11));
-                            PropIndices _prop = new PropIndices(GetPedPropIndex(id, 0), prop.Drawable, GetPedPropIndex(id, 2), GetPedPropIndex(id, 3), GetPedPropIndex(id, 4), GetPedPropIndex(id, 5), GetPedPropIndex(id, 6), GetPedPropIndex(id, 7), GetPedPropIndex(id, 8));
-                            PropIndices _proptxt = new PropIndices(GetPedPropTextureIndex(id, 0), prop.Texture, GetPedPropTextureIndex(id, 2), GetPedPropTextureIndex(id, 3), GetPedPropTextureIndex(id, 4), GetPedPropTextureIndex(id, 5), GetPedPropTextureIndex(id, 6), GetPedPropTextureIndex(id, 7), GetPedPropTextureIndex(id, 8));
+                            ComponentDrawables comp = new ComponentDrawables(GetPedDrawableVariation(handle, 0), GetPedDrawableVariation(handle, 1), GetPedDrawableVariation(handle, 2), GetPedDrawableVariation(handle, 3), GetPedDrawableVariation(handle, 4), GetPedDrawableVariation(handle, 5), GetPedDrawableVariation(handle, 6), GetPedDrawableVariation(handle, 7), GetPedDrawableVariation(handle, 8), GetPedDrawableVariation(handle, 9), GetPedDrawableVariation(handle, 10), GetPedDrawableVariation(handle, 11));
+                            ComponentDrawables text = new ComponentDrawables(GetPedTextureVariation(handle, 0), GetPedTextureVariation(handle, 1), GetPedTextureVariation(handle, 2), GetPedTextureVariation(handle, 3), GetPedTextureVariation(handle, 4), GetPedTextureVariation(handle, 5), GetPedTextureVariation(handle, 6), GetPedTextureVariation(handle, 7), GetPedTextureVariation(handle, 8), GetPedTextureVariation(handle, 9), GetPedTextureVariation(handle, 10), GetPedTextureVariation(handle, 11));
+                            PropIndices _prop = new PropIndices(GetPedPropIndex(handle, 0), prop.Drawable, GetPedPropIndex(handle, 2), GetPedPropIndex(handle, 3), GetPedPropIndex(handle, 4), GetPedPropIndex(handle, 5), GetPedPropIndex(handle, 6), GetPedPropIndex(handle, 7), GetPedPropIndex(handle, 8));
+                            PropIndices _proptxt = new PropIndices(GetPedPropTextureIndex(handle, 0), prop.Texture, GetPedPropTextureIndex(handle, 2), GetPedPropTextureIndex(handle, 3), GetPedPropTextureIndex(handle, 4), GetPedPropTextureIndex(handle, 5), GetPedPropTextureIndex(handle, 6), GetPedPropTextureIndex(handle, 7), GetPedPropTextureIndex(handle, 8));
                             _data.Dressing = new("", "", comp, text, _prop, _proptxt);
                         }
                     }
@@ -2067,7 +2096,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
 
                 #region CREA_BUTTON_FINISH
 
-                Save = new UIMenuItem(Game.GetGXTEntry("FACE_SAVE"), "Ready to ~y~join the game~w~?", SColor.HUD_Freemode_dark, SColor.HUD_Freemode);
+                Save = new UIMenuItem(Game.GetGXTEntry("FACE_SAVE"), Game.GetGXTEntry("FACE_MM_H8").Replace("GTA Online", "The Last Galaxy"), SColor.HUD_Freemode_dark, SColor.HUD_Freemode);
                 Save.SetRightBadge(BadgeIcon.TICK);
                 Save.Activated += async (_selectedItem, _index) =>
                 {
@@ -2089,8 +2118,6 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                     ClientMain.Instance.RemoveTick(Controls);
                     ClientMain.Instance.RemoveTick(Scaleform);
                     ClientMain.Instance.RemoveTick(menuKeys);
-                    //TODO: GESTIRE CAMFIRSTTIME
-                    //CamerasFirstTime.FirstTimeTransition(_data.CharID == 1);
 
                     //TODO: CONTINUARE DA QUI
                     FreeRoamCamerasFirstTime.FirstTimeTransition();
@@ -2107,7 +2134,6 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 #endregion
 
                 Creation.Visible = true;
-                ClientMain.Logger.Debug(Creation.MenuItems.Count.ToString());
                 ClientMain.Instance.AddTick(menuKeys);
             }
             catch (Exception e)
@@ -2284,7 +2310,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                             (_lips.Panels[0] as UIMenuGridPanel).CirclePosition = new PointF(CoordX, .5f);
                         }
                     }
-
+                    /*
                     if (_neck.Selected)
                     {
                         PointF var = (_neck.Panels[0] as UIMenuGridPanel).CirclePosition;
@@ -2311,7 +2337,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                             (_neck.Panels[0] as UIMenuGridPanel).CirclePosition = new PointF(CoordX, .5f);
                         }
                     }
-
+                    */
                     if (_nose.Selected)
                     {
                         PointF var = (_nose.Panels[0] as UIMenuGridPanel).CirclePosition;
@@ -3415,7 +3441,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             return "";
         }
 
-        static int[][] func_1278(bool isMale, int iParam1)
+        static int[][] GetCreatorSuit(bool isMale, int iParam1)
         {
             ShopPed.PedComponentData Var1;
 
@@ -6560,6 +6586,1203 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                     break;
             }
             return new int[][] { new int[12] { components[0], components[1], components[2], components[3], components[4], components[5], components[6], components[7], components[8], components[9], components[10], components[11] }, new int[12] { textures[0], textures[1], textures[2], textures[3], textures[4], textures[5], textures[6], textures[7], textures[8], textures[9], textures[10], textures[11] } };
+        }
+
+
+
+        static CreatorPropData GetGlasses(string sex, int index)//Position - 0x9D4BE
+        {
+            CreatorPropData returned = null;
+            if (sex == "Male")
+            {
+                switch (index)
+                {
+                    case 0:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(1, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 1);
+                        }
+                        break;
+                    case 1:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BEACH_M_EYES0_1"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 2:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BEACH_M_EYES0_5"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 3:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(2, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 4:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(2, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 1);
+                        }
+                        break;
+                    case 5:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(2, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 7);
+                        }
+                        break;
+                    case 6:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(3, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 7:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(3, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 3);
+                        }
+                        break;
+                    case 8:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(3, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 4);
+                        }
+                        break;
+                    case 9:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(4, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 1);
+                        }
+                        break;
+                    case 10:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(4, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 2);
+                        }
+                        break;
+                    case 11:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(4, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 3);
+                        }
+                        break;
+                    case 12:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(5, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 13:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(5, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 1);
+                        }
+                        break;
+                    case 14:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(5, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 6);
+                        }
+                        break;
+                    case 15:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(7, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 16:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(7, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 2);
+                        }
+                        break;
+                    case 17:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(7, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 7);
+                        }
+                        break;
+                    case 18:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(8, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 19:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(8, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 4);
+                        }
+                        break;
+                    case 20:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(8, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 7);
+                        }
+                        break;
+                    case 21:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(9, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 22:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(9, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 2);
+                        }
+                        break;
+                    case 23:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(9, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 5);
+                        }
+                        break;
+                    case 24:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(10, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 25:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(10, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 1);
+                        }
+                        break;
+                    case 26:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(10, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 6);
+                        }
+                        break;
+                    case 27:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(12, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 1);
+                        }
+                        break;
+                    case 28:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(12, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 2);
+                        }
+                        break;
+                    case 29:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(12, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 7);
+                        }
+                        break;
+                    case 30:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(13, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 31:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(13, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 2);
+                        }
+                        break;
+                    case 32:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(13, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 6);
+                        }
+                        break;
+                    case 33:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(15, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 34:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(15, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 1);
+                        }
+                        break;
+                    case 35:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(15, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 7);
+                        }
+                        break;
+                    case 36:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_M_GLASSES0_0"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 37:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_M_GLASSES0_2"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 38:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_M_GLASSES0_7"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 39:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_M_GLASSES1_0"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 40:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_M_GLASSES1_1"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 41:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_M_GLASSES1_2"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 42:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_HIPS_M_GLASSES_0_0"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 43:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_HIPS_M_GLASSES_0_2"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 44:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_HIPS_M_GLASSES_0_7"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 45:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_HIPS_M_GLASSES_1_0"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 46:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_HIPS_M_GLASSES_1_6"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 47:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_HIPS_M_GLASSES_1_7"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                switch (index)
+                {
+                    case 0:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(0, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 1);
+                        }
+                        break;
+                    case 1:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(0, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 3);
+                        }
+                        break;
+                    case 2:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(0, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 7);
+                        }
+                        break;
+                    case 3:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(1, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 4:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(1, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 2);
+                        }
+                        break;
+                    case 5:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(1, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 4);
+                        }
+                        break;
+                    case 6:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(2, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 7:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(2, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 2);
+                        }
+                        break;
+                    case 8:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(2, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 5);
+                        }
+                        break;
+                    case 9:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(3, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 10:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(3, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 2);
+                        }
+                        break;
+                    case 11:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(3, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 4);
+                        }
+                        break;
+                    case 12:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(4, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 1);
+                        }
+                        break;
+                    case 13:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(4, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 5);
+                        }
+                        break;
+                    case 14:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(4, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 7);
+                        }
+                        break;
+                    case 15:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(6, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 16:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BEACH_F_EYES0_0"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 17:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BEACH_F_EYES0_5"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 18:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(7, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 19:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(7, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 3);
+                        }
+                        break;
+                    case 20:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(7, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 5);
+                        }
+                        break;
+                    case 21:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(8, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 22:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BEACH_F_EYES1_4"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 23:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BEACH_F_EYES1_6"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 24:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(9, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 25:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(9, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 2);
+                        }
+                        break;
+                    case 26:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(9, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 3);
+                        }
+                        break;
+                    case 27:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(10, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 1);
+                        }
+                        break;
+                    case 28:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(10, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 6);
+                        }
+                        break;
+                    case 29:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(10, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 7);
+                        }
+                        break;
+                    case 30:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(11, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 31:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(11, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 1);
+                        }
+                        break;
+                    case 32:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(11, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 2);
+                        }
+                        break;
+                    case 33:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(14, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 34:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(14, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 1);
+                        }
+                        break;
+                    case 35:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(14, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 4);
+                        }
+                        break;
+                    case 36:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_F_GLASSES0_0"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 37:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_F_GLASSES0_2"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 38:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_F_GLASSES0_3"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 39:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_F_GLASSES1_0"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 40:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_F_GLASSES1_3"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 41:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_F_GLASSES1_5"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 42:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_HIPS_F_GLASSES_0_0"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 43:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_HIPS_F_GLASSES_0_2"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 44:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_HIPS_F_GLASSES_0_5"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 45:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_HIPS_F_GLASSES_1_0"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 46:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_HIPS_F_GLASSES_1_3"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 47:
+                        {
+
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_HIPS_F_GLASSES_1_7"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                }
+            }
+            return returned;
+        }
+
+        static CreatorPropData GetHats(string sex, int index)//Position - 0x9DF3A
+        {
+            CreatorPropData returned = null;
+            if (sex == "Male")
+            {
+                switch (index)
+                {
+                    case 0:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(2, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 1:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(2, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 3);
+                        }
+                        break;
+                    case 2:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(2, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 7);
+                        }
+                        break;
+                    case 3:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(4, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 4:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(4, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 1);
+                        }
+                        break;
+                    case 5:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(5, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 6:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_HIPS_M_HAT_0_0"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 7:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_HIPS_M_HAT_0_2"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 8:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(6, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 9:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(6, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 5);
+                        }
+                        break;
+                    case 10:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(6, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 7);
+                        }
+                        break;
+                    case 11:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(7, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 12:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(7, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 2);
+                        }
+                        break;
+                    case 13:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(7, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 5);
+                        }
+                        break;
+                    case 14:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(9, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 5);
+                        }
+                        break;
+                    case 15:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(9, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 7);
+                        }
+                        break;
+                    case 16:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(10, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 5);
+                        }
+                        break;
+                    case 17:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(10, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 7);
+                        }
+                        break;
+                    case 18:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(12, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 19:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(12, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 1);
+                        }
+                        break;
+                    case 20:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_HIPS_M_HAT_2_0"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 21:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(13, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 22:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(13, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 1);
+                        }
+                        break;
+                    case 23:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(13, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 2);
+                        }
+                        break;
+                    case 24:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(14, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 25:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(14, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 1);
+                        }
+                        break;
+                    case 26:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(14, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 6);
+                        }
+                        break;
+                    case 27:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(15, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 28:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(15, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 1);
+                        }
+                        break;
+                    case 29:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(15, ShopCharacterType.MPMale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 2);
+                        }
+                        break;
+                    case 30:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BEACH_M_HEAD0_3"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 31:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BEACH_M_HEAD0_4"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 32:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BEACH_M_HEAD0_5"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 33:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BEACH_M_HEAD1_0"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 34:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BEACH_M_HEAD1_4"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 35:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BEACH_M_HEAD1_5"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 36:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_M_HAT0_0"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 37:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_M_HAT0_8"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 38:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_M_HAT0_10"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 39:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_M_HAT1_0"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 40:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_M_HAT1_8"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 41:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_M_HAT1_10"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 42:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_HIPS_M_HAT_1_3"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 43:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_HIPS_M_HAT_1_5"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 44:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_HIPS_M_HAT_1_7"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                switch (index)
+                {
+                    case 0:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(4, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 1:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(4, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 2);
+                        }
+                        break;
+                    case 2:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(4, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 5);
+                        }
+                        break;
+                    case 3:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(5, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 4:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(5, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 1);
+                        }
+                        break;
+                    case 5:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(5, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 7);
+                        }
+                        break;
+                    case 6:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(6, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 7:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(6, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 3);
+                        }
+                        break;
+                    case 8:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(6, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 7);
+                        }
+                        break;
+                    case 9:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(7, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 10:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(7, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 2);
+                        }
+                        break;
+                    case 11:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(7, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 3);
+                        }
+                        break;
+                    case 12:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(9, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 13:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(9, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 3);
+                        }
+                        break;
+                    case 14:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(9, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 7);
+                        }
+                        break;
+                    case 15:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(11, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 1);
+                        }
+                        break;
+                    case 16:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_F_HAT0_0"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 17:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_F_HAT0_8"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 18:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(12, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 19:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(12, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 7);
+                        }
+                        break;
+                    case 20:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_HIPS_F_HAT_1_2"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 21:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(13, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 22:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(13, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 3);
+                        }
+                        break;
+                    case 23:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(13, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 7);
+                        }
+                        break;
+                    case 24:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(14, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 25:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(14, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 1);
+                        }
+                        break;
+                    case 26:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(14, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 4);
+                        }
+                        break;
+                    case 27:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(15, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 0);
+                        }
+                        break;
+                    case 28:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(15, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 1);
+                        }
+                        break;
+                    case 29:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedQueryProp(15, ShopCharacterType.MPFemale);
+                            returned = new CreatorPropData(data.Label, data.Drawable, 2);
+                        }
+                        break;
+                    case 30:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BEACH_F_HEAD2_0"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 31:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BEACH_F_HEAD2_2"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 32:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BEACH_F_HEAD2_3"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 33:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BEACH_F_HEAD3_0"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 34:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BEACH_F_HEAD3_1"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 35:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BEACH_F_HEAD3_3"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 36:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BEACH_F_HEAD4_1"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 37:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BEACH_F_HEAD4_6"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 38:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_F_HAT0_10"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 39:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_F_HAT1_0"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 40:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_F_HAT1_8"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 41:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_BUSINESS_F_HAT1_10"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 42:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_HIPS_F_HAT_0_1"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 43:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_HIPS_F_HAT_0_3"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                    case 44:
+                        {
+                            ShopPed.PedComponentData data = ShopPed.GetShopPedProp(Functions.HashUint("DLC_MP_HIPS_F_HAT_0_6"));
+                            returned = new CreatorPropData(data.Label, data.Drawable, data.Texture);
+                        }
+                        break;
+                }
+            }
+            return returned;
+        }
+    }
+
+    public class CreatorPropData
+    {
+        public string Label { get; set; }
+        public int Drawable { get; set; }
+        public int Texture { get; set; }
+        public CreatorPropData(string label, int drawable, int texture)
+        {
+            Label = label;
+            Drawable = drawable;
+            Texture = texture;
         }
     }
 

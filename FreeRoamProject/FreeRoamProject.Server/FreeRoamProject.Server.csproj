@@ -21,12 +21,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CitizenFX.Core.Server" Version="1.0.6947" />
+    <PackageReference Include="CitizenFX.Core.Server" Version="1.0.7074" />
 	  <PackageReference Include="Confuser.MSBuild" Version="2.0.0-alpha-0191">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
-	  <PackageReference Include="Dapper" Version="2.1.4">
+	  <PackageReference Include="Dapper" Version="2.1.15">
 		  <GeneratePathProperty>False</GeneratePathProperty>
 	  </PackageReference>
 	  <PackageReference Include="FxEvents.Server" Version="2.5.0" />

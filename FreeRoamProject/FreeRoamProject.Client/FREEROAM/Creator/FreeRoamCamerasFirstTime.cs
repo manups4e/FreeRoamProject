@@ -251,6 +251,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             AccessingEvents.FreeRoamSpawn(PlayerCache.MyPlayer);
             PlayerCache.MyPlayer.Status.PlayerStates.Spawned = true;
             PlayerCache.MyPlayer.Player.CanControlCharacter = true;
+            FreeRoamCreator.Stop();
         }
 
         private static async Task Control()

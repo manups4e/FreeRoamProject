@@ -56,30 +56,30 @@ namespace FreeRoamProject.Server
         }
 
         /// <summary>
-        /// registra un evento (TriggerEvent)
+        /// Mount generic event (TriggerEvent)
         /// </summary>
-        /// <param name="name">Nome evento</param>
-        /// <param name="action">Azione legata all'evento</param>
+        /// <param name="name">Event name</param>
+        /// <param name="action">Action binded</param>
         public void AddEventHandler(string eventName, Delegate action)
         {
             EventHandlers[eventName] += action;
         }
 
         /// <summary>
-        /// registra un evento (TriggerEvent)
+        /// Unmount generic event (TriggerEvent)
         /// </summary>
-        /// <param name="name">Nome evento</param>
-        /// <param name="action">Azione legata all'evento</param>
+        /// <param name="name">Event name</param>
+        /// <param name="action">Action binded</param>
         public void RemoveEventHandler(string eventName, Delegate action)
         {
             EventHandlers[eventName] -= action;
         }
 
         /// <summary>
-        /// Chiama il db ed esegue una Query con risultato dynamic
+        /// Calls the db to fetch anything in a dynamic result
         /// </summary>
-        /// <param name="query">Testo della query</param>
-        /// <param name="parameters">Parametri da passare</param>
+        /// <param name="query">Query text</param>
+        /// <param name="parameters">Parameters to pass</param>
         /// <returns>dynamic List if more than one or a dynamic object if only one</returns>
         public async Task<dynamic> Query(string query, object parameters = null)
         {
@@ -87,10 +87,21 @@ namespace FreeRoamProject.Server
         }
 
         /// <summary>
-        /// Esegue una query sul db modificandone il contenuto
+        /// Calls the db to fetch anything in a T result
         /// </summary>
-        /// <param name="query">Testo della query</param>
-        /// <param name="parameters">Parametri da passare</param>
+        /// <param name="query">Query text</param>
+        /// <param name="parameters">Parameters to pass</param>
+        /// <returns>dynamic List if more than one or a dynamic object if only one</returns>
+        public async Task<IEnumerable<T>> Query<T>(string query, object parameters = null)
+        {
+            return await MySQL.QueryListAsync<T>(query, parameters);
+        }
+
+        /// <summary>
+        /// Executes a query on the db modifying its contents
+        /// </summary>
+        /// <param name="query">Query text</param>
+        /// <param name="parameters">Parameters to pass</param>
         /// <returns></returns>
         public async Task Execute(string query, object parameters = null)
         {
@@ -98,7 +109,7 @@ namespace FreeRoamProject.Server
         }
 
         /// <summary>
-        /// Registra una funzione OnTick
+        /// Register an OnTick function
         /// </summary>
         /// <param name="action"></param>
         public void AddTick(Func<Task> onTick)
@@ -107,7 +118,7 @@ namespace FreeRoamProject.Server
         }
 
         /// <summary>
-        /// Rimuove la funzione OnTick
+        /// Remove the OnTick function
         /// </summary>
         /// <param name="action"></param>
         public void RemoveTick(Func<Task> onTick)
@@ -116,7 +127,7 @@ namespace FreeRoamProject.Server
         }
 
         /// <summary>
-        /// registra un export, Registered GetExports still have to be defined in the __resource.lua file
+        /// register an export, Registered GetExports still have to be defined in the __resource.lua file
         /// </summary>
         /// <param name="name"></param>
         /// <param name="action"></param>
@@ -126,11 +137,11 @@ namespace FreeRoamProject.Server
         }
 
         /// <summary>
-        /// registra un comando di chat
+        /// register a chat command
         /// </summary>
-        /// <param name="commandName">Nome comando</param>
-        /// <param name="handler">Una nuova Action<int source, List<dynamic> args, string rawCommand</param>
-        /// <param name="restricted">tutti o solo chi può?</param>
+        /// <param name="commandName">Command name</param>
+        /// <param name="handler">A new Action<int source, List<dynamic> args, string rawCommand</param>
+        /// <param name="restricted">everyone or just those who can?</param>
         //public void AddCommand(string commandName, InputArgument handler, bool restricted) => API.RegisterCommand(commandName, handler, restricted);
         public void AddCommand(string commandName, Delegate handler, UserGroup restricted = UserGroup.User, ChatSuggestion suggestion = null)
         {

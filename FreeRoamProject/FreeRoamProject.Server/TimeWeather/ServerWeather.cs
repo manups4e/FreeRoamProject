@@ -1,4 +1,4 @@
-﻿using FreeRoamProject.Server.Core;
+﻿using FreeRoamProject.Server.Core.Buckets;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,131 +8,134 @@ namespace FreeRoamProject.Server.TimeWeather
 {
     static class ServerWeather
     {
-        public static SharedWeather Weather;
+        //public static SharedWeather Weather;
         private static long _timer = 0;
         private static DateTime xMasStart = new DateTime(DateTime.Now.Year, 12, 8);
         private static DateTime xMasEnd = new DateTime(DateTime.Now.Year + 1, 1, 6);
         public static async void Init()
         {
-            EventDispatcher.Mount("changeWeatherWithParams", new Action<int, bool, bool>(ChangeWeatherWithParams));
-            EventDispatcher.Mount("changeWeatherDynamic", new Action<bool>(ChangeWeatherDynamic));
-            EventDispatcher.Mount("changeWeather", new Action<bool>(ChangeWeather));
+            EventDispatcher.Mount("changeWeatherWithParams", new Action<PlayerClient, int, bool, bool>(ChangeWeatherWithParams));
+            EventDispatcher.Mount("changeWeatherDynamic", new Action<PlayerClient, bool>(ChangeWeatherDynamic));
+            EventDispatcher.Mount("changeWeather", new Action<int, bool>(ChangeWeather));
             EventDispatcher.Mount("SyncWeatherForMe", new Action<PlayerClient, bool>(SyncWeatherForMe));
-            Weather = new SharedWeather()
-            {
-                DynamicWeather = ConfigShared.SharedConfig.Main.Weather.Enable_dynamic_weather,
-                CurrentWeather = ConfigShared.SharedConfig.Main.Weather.Default_weather,
-                WeatherTimer = ConfigShared.SharedConfig.Main.Weather.Weather_timer * 60,
-                RainTimer = ConfigShared.SharedConfig.Main.Weather.Rain_timeout * 60,
-                RandomWindDirection = Functions.RandomFloatInRange(1, 360),
-                WindSpeed = Functions.RandomFloatInRange(0, 12),
-            };
 
             ServerMain.Instance.AddTick(Count);
         }
 
         private static void SyncWeatherForMe([FromSource] PlayerClient p, bool startup)
         {
-            Weather.StartUp = startup;
-            EventDispatcher.Send(p, "tlg:getMeteo", Weather);
-            Weather.StartUp = false;
+            Shared.Core.Buckets.Bucket server = BucketsHandler.FreeRoam.GetPlayerBucket(p.Handle);
+            server.Weather.StartUp = startup;
+            EventDispatcher.Send(p, "tlg:getMeteo", server.Weather);
+            server.Weather.StartUp = false;
         }
 
-        private static void ChangeWeatherWithParams(int meteo, bool black, bool startup)
+        private static void ChangeWeatherWithParams([FromSource] PlayerClient p, int meteo, bool black, bool startup)
         {
-            Weather.CurrentWeather = meteo;
-            Weather.WeatherTimer = ConfigShared.SharedConfig.Main.Weather.Weather_timer * 60;
-            Weather.Blackout = black;
-            ServerMain.Instance.ServerState.Set("Weather", Weather.ToBytes(), true);
+            Shared.Core.Buckets.Bucket server = BucketsHandler.FreeRoam.GetPlayerBucket(p.Handle);
+            server.Weather.CurrentWeather = meteo;
+            server.Weather.WeatherTimer = ConfigShared.SharedConfig.Main.Weather.Weather_timer * 60;
+            server.Weather.Blackout = black;
+
+            ServerMain.Instance.ServerState.Set("Weather_" + server.ID, server.Weather.ToBytes(), true);
         }
 
-        private static void ChangeWeatherDynamic(bool dynamic)
+        private static void ChangeWeatherDynamic([FromSource] PlayerClient p, bool dynamic)
         {
+            Shared.Core.Buckets.Bucket server = BucketsHandler.FreeRoam.GetPlayerBucket(p.Handle);
             ConfigShared.SharedConfig.Main.Weather.Enable_dynamic_weather = dynamic;
-            ServerMain.Instance.ServerState.Set("Weather", Weather.ToBytes(), true);
+            ServerMain.Instance.ServerState.Set("Weather_" + server.ID, server.Weather.ToBytes(), true);
         }
 
-        public static void ChangeWeather(bool startup)
+        public static void ChangeWeather(int id, bool startup)
         {
-            if (startup) Weather.StartUp = startup;
-            byte[] bytes = Weather.ToBytes();
-            ServerMain.Instance.ServerState.Set("Weather", bytes, true);
+            Shared.Core.Buckets.Bucket server = BucketsHandler.FreeRoam.GetServerFromId(id);
+            if (startup) server.Weather.StartUp = startup;
+            byte[] bytes = server.Weather.ToBytes();
+            ServerMain.Instance.ServerState.Set("Weather_" + id, bytes, true);
         }
 
         public static async Task Count()
         {
+            // timer is set on every 10 seconds.. maybe we can add more time between each check?
             try
             {
-                long tt = API.GetGameTimer();
-                Random rand = new Random((int)tt);
-                if (Weather.WeatherTimer > 0)
-                    Weather.WeatherTimer -= 5;
-                if (Weather.WeatherTimer == 0)
+                foreach (KeyValuePair<int, Shared.Core.Buckets.Bucket> server in BucketsHandler.FreeRoam.Servers)
                 {
-                    Weather.RandomWindDirection = Functions.RandomFloatInRange(0, 359);
-                    Weather.WindSpeed = Functions.RandomFloatInRange(0, 12);
-                    _timer = API.GetGameTimer();
-                }
-                if (Weather.DynamicWeather)
-                {
-                    if (DateTime.Now.Date < xMasStart || DateTime.Now.Date > xMasEnd) // not xMas
+                    long tt = API.GetGameTimer();
+                    Random rand = new Random((int)tt);
+                    if (server.Value.Weather.WeatherTimer > 0)
+                        server.Value.Weather.WeatherTimer -= 10;
+                    if (server.Value.Weather.WeatherTimer == 0)
                     {
-                        if (Weather.RainPossible) Weather.RainTimer = -5;
-                        else Weather.RainTimer -= 5;
-                        if (Weather.WeatherTimer == 0)
+                        server.Value.Weather.RandomWindDirection = SharedMath.GetRandomFloat(0, 359);
+                        server.Value.Weather.WindSpeed = SharedMath.GetRandomFloat(0, 12);
+                        _timer = API.GetGameTimer();
+                    }
+                    if (server.Value.Weather.DynamicWeather)
+                    {
+                        if (DateTime.Now.Date < xMasStart || DateTime.Now.Date > xMasEnd) // not xMas
                         {
-                            if (ConfigShared.SharedConfig.Main.Weather.Enable_dynamic_weather)
+                            if (server.Value.Weather.RainPossible)
+                                server.Value.Weather.RainTimer = -1;
+                            else
+                                server.Value.Weather.RainTimer -= 5;
+                            if (server.Value.Weather.WeatherTimer == 0)
                             {
-                                List<int> currentOptions = ConfigShared.SharedConfig.Main.Weather.Weather_Transition[Weather.CurrentWeather];
-                                Weather.CurrentWeather = currentOptions[rand.Next(currentOptions.Count - 1)];
-                                if (ConfigShared.SharedConfig.Main.Weather.Reduce_rain_chance)
+                                if (ConfigShared.SharedConfig.Main.Weather.Enable_dynamic_weather)
                                 {
-                                    foreach (int p in currentOptions)
+                                    List<int> currentOptions = ConfigShared.SharedConfig.Main.Weather.Weather_Transition[server.Value.Weather.CurrentWeather];
+                                    server.Value.Weather.CurrentWeather = currentOptions[rand.Next(currentOptions.Count - 1)];
+                                    if (ConfigShared.SharedConfig.Main.Weather.Reduce_rain_chance)
                                     {
-                                        if (p == 7 || p == 8)
+                                        foreach (int p in currentOptions)
                                         {
-                                            Weather.CurrentWeather = currentOptions[rand.Next(currentOptions.Count - 1)];
+                                            if (p == 7 || p == 8)
+                                            {
+                                                server.Value.Weather.CurrentWeather = currentOptions[rand.Next(currentOptions.Count - 1)];
+                                            }
                                         }
                                     }
-                                }
 
-                                if (Weather.RainPossible == false)
-                                {
-                                    while (Weather.CurrentWeather == 7 || Weather.CurrentWeather == 8)
+                                    if (server.Value.Weather.RainPossible == false)
                                     {
-                                        Weather.CurrentWeather = currentOptions[rand.Next(currentOptions.Count - 1)];
+                                        while (server.Value.Weather.CurrentWeather == 7 || server.Value.Weather.CurrentWeather == 8)
+                                        {
+                                            server.Value.Weather.CurrentWeather = currentOptions[rand.Next(currentOptions.Count - 1)];
+                                        }
                                     }
-                                }
 
-                                if (Weather.CurrentWeather == 7 || Weather.CurrentWeather == 8)
-                                {
-                                    Weather.RainTimer = ConfigShared.SharedConfig.Main.Weather.Rain_timeout * 60;
-                                    Weather.RainPossible = false;
+                                    if (server.Value.Weather.CurrentWeather == 7 || server.Value.Weather.CurrentWeather == 8)
+                                    {
+                                        server.Value.Weather.RainTimer = ConfigShared.SharedConfig.Main.Weather.Rain_timeout * 60;
+                                        server.Value.Weather.RainPossible = false;
+                                    }
+                                    server.Value.Weather.WeatherTimer = ConfigShared.SharedConfig.Main.Weather.Weather_timer * 60;
                                 }
-                                Weather.WeatherTimer = ConfigShared.SharedConfig.Main.Weather.Weather_timer * 60;
                             }
+                            if (server.Value.Weather.RainTimer == 0)
+                                server.Value.Weather.RainPossible = true;
                         }
-                        if (Weather.RainTimer == 0)
-                            Weather.RainPossible = true;
-                    }
-                    else
-                    {
-                        if (Weather.CurrentWeather != 13)
+                        else
                         {
-                            Weather.CurrentWeather = 13;
+                            if (server.Value.Weather.CurrentWeather != 13)
+                            {
+                                server.Value.Weather.CurrentWeather = 13;
+                            }
+                            if (server.Value.Weather.WeatherTimer == 0)
+                                server.Value.Weather.WeatherTimer = ConfigShared.SharedConfig.Main.Weather.Weather_timer * 60;
                         }
-                        if (Weather.WeatherTimer == 0)
-                            Weather.WeatherTimer = ConfigShared.SharedConfig.Main.Weather.Weather_timer * 60;
                     }
+                    if (server.Value.Weather.WeatherTimer == 0)
+                    {
+                        server.Value.Weather.RandomWindDirection = SharedMath.GetRandomFloat(0, 359);
+                        server.Value.Weather.WindSpeed = SharedMath.GetRandomFloat(0, 12);
+                        _timer = API.GetGameTimer();
+                    }
+                    ChangeWeather(server.Key, false);
                 }
-                if (Weather.WeatherTimer == 0)
-                {
-                    Weather.RandomWindDirection = Functions.RandomFloatInRange(0, 359);
-                    Weather.WindSpeed = Functions.RandomFloatInRange(0, 12);
-                    _timer = API.GetGameTimer();
-                }
-                ChangeWeather(false);
-                await BaseScript.Delay(5000);
+
+                await BaseScript.Delay(10000);
             }
             catch (Exception e)
             {

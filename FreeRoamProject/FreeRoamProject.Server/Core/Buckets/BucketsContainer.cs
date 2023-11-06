@@ -49,11 +49,11 @@ namespace FreeRoamProject.Server.Core.Buckets
             {
                 int missing = FindFirstMissingBucket();
                 int id = missing != -1 ? missing : Servers.Count;
-                Bucket b = new Bucket(id, "freeroam");
+                Bucket b = new Bucket(id, "freeroam") { PopulationEnabled = true, LockdownMode = BucketLockdownMode.relaxed };
                 Servers.Add(id, b);
                 b.AddPlayer(client);
             }
-            ServerMain.Logger.Warning($"Player {client.Player.Name} joined bucket {GetPlayerBucket(client.Handle).ID}, total players: {GetPlayerBucket(client.Handle).Players.Count}");
+            ServerMain.Logger.Info($"Player {client.Player.Name} joined bucket {GetPlayerBucket(client.Handle).ID}, total players: {GetPlayerBucket(client.Handle).Players.Count}");
             client.Status.Clear();
 
 
@@ -84,7 +84,7 @@ namespace FreeRoamProject.Server.Core.Buckets
                 // 3. (possible) WE CAN KEEP ALL THE BUCKETS AND NEVER DELETE THEM KEEPING THEM AS ALWAYS AVAILABLE
                 Servers.Remove(bucketID);
             }
-            ServerMain.Logger.Info($"Player {client.Player.Name} [{client.Identifiers.Discord}] left.");
+            ServerMain.Logger.Info($"Player {client.Player.Name} [{client.Identifiers.License}] left.");
         }
 
         // TODO: PORT THIS INTO THE PLUGINS
@@ -331,9 +331,9 @@ namespace FreeRoamProject.Server.Core.Buckets
 
         private async Task<FreeRoamChar> LoadFreeRoamChar([FromSource] PlayerClient source, int id)
         {
-            //API.DeleteResourceKvpNoSync($"freeroam:player_{source.User.Identifiers.Discord}:char_model");
+            //API.DeleteResourceKvpNoSync($"freeroam:player_{source.User.Identifiers.License}:char_model");
             if (source.User.ID != id) return null;
-            string sbytes = API.GetResourceKvpString($"freeroam:player_{source.User.Identifiers.Discord}:char_model");
+            string sbytes = API.GetResourceKvpString($"freeroam:player_{source.User.Identifiers.License}:char_model");
             if (string.IsNullOrWhiteSpace(sbytes) || sbytes == "00")
             {
                 source.User.Character = new();
@@ -343,15 +343,15 @@ namespace FreeRoamProject.Server.Core.Buckets
                 byte[] bytes = sbytes.StringToBytes();
                 source.User.Character = bytes.FromBytes<FreeRoamChar>();
             }
-            await BaseScript.Delay(0);
             return source.User.Character;
         }
 
         private void SavePlayerData([FromSource] PlayerClient client)
         {
             if (client == null || client.User == null || client.User.Character == null) return;
-            client.User.Character.Position = client.Ped.Position.ToPosition();
-            API.SetResourceKvpNoSync($"freeroam:player_{client.User.Identifiers.Discord}:char_model", BitConverter.ToString(client.User.Character.ToBytes()));
+            Position pos = new Position(client.Ped.Position, client.Ped.Rotation);
+            client.User.Character.Position = pos;
+            API.SetResourceKvp($"freeroam:player_{client.User.Identifiers.License}:char_model", client.User.Character.ToBytes().BytesToString(true));
         }
 
         // TODO: will be externalized for plugins api

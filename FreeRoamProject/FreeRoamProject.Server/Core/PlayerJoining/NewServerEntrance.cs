@@ -149,7 +149,7 @@ namespace FreeRoamProject.Server.Core.PlayerJoining
 
                 if (ped != null)
                 {
-                    string disc = ped.Identifiers.Discord;
+                    string disc = ped.Identifiers.License;
                     BucketsHandler.FreeRoam.RemovePlayer(client, reason);
                 }
 
@@ -168,7 +168,7 @@ namespace FreeRoamProject.Server.Core.PlayerJoining
         {
             try
             {
-                await ServerMain.Instance.Execute($"UPDATE users SET last_connection = @last WHERE discord = @id", new { last = DateTime.Now, id = source.GetLicense(Identifier.Discord) });
+                await ServerMain.Instance.Execute($"UPDATE users SET last_connection = @last WHERE license = @id", new { last = DateTime.Now, id = source.GetLicense(Identifier.License) });
                 return new Tuple<Snowflake, BasePlayerShared>(source.Id, source.User);
             }
             catch (Exception e)

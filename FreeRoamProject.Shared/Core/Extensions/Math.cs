@@ -1,5 +1,4 @@
-﻿using Logger;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -324,7 +323,7 @@ namespace FreeRoamProject.Shared
         /// <returns>A 64-bit signed integer that is greater than or equal to 0 and less than MaxValue.</returns>
         public static long NextLong(this Random rand)
         {
-            return (long)rand.NextULong((ulong)long.MaxValue);
+            return (long)rand.NextULong(long.MaxValue);
         }
 
         /// <summary>
@@ -354,13 +353,13 @@ namespace FreeRoamProject.Shared
                 return minValue;
             ulong umin = minValue < 0 ?
                 (ulong)(minValue - long.MinValue) :
-                (ulong)minValue + (ulong)long.MaxValue + 1;
+                (ulong)minValue + long.MaxValue + 1;
             ulong umax = maxValue < 0 ?
                 (ulong)(maxValue - long.MinValue) :
-                (ulong)maxValue + (ulong)long.MaxValue + 1;
+                (ulong)maxValue + long.MaxValue + 1;
             ulong result = rand.NextULong(umin, umax);
             return result >= (ulong)long.MaxValue + 1 ?
-                (long)(result - (ulong)long.MaxValue) - 1 :
+                (long)(result - long.MaxValue) - 1 :
                 long.MaxValue + (long)result;
         }
 
@@ -495,7 +494,7 @@ namespace FreeRoamProject.Shared
 
         public static string GetRandomString(int size, bool lowerCase = false)
         {
-            var builder = new StringBuilder(size);
+            StringBuilder builder = new StringBuilder(size);
             // Unicode/ASCII Letters are divided into two blocks
             // (Letters 65�90 / 97�122):
             // The first group containing the uppercase letters and
@@ -505,9 +504,9 @@ namespace FreeRoamProject.Shared
             char offset = lowerCase ? 'a' : 'A';
             const int lettersOffset = 26; // A...Z or a..z: length=26  
 
-            for (var i = 0; i < size; i++)
+            for (int i = 0; i < size; i++)
             {
-                var @char = (char)random.Next(offset, offset + lettersOffset);
+                char @char = (char)random.Next(offset, offset + lettersOffset);
                 builder.Append(@char);
             }
 

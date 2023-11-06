@@ -4,6 +4,7 @@ using FreeRoamProject.Server.Core.Buckets;
 using FreeRoamProject.Server.Core.PlayerJoining;
 using FreeRoamProject.Server.Discord;
 using FreeRoamProject.Server.FreeRoam.Scripts.FreeroamEvents;
+using FreeRoamProject.Server.TimeWeather;
 using System.Threading.Tasks;
 
 namespace FreeRoamProject.Server
@@ -26,7 +27,7 @@ namespace FreeRoamProject.Server
             EntityCreation.Init();
             ChatServer.Init();
             PlayerListServer.Init();
-            TimeWeather.ServerWeather.Init();
+            ServerWeather.Init();
             //TimeWeather.OrarioServer.Init();
             BotDiscordHandler.Init();
             WorldEventsManager.Init();

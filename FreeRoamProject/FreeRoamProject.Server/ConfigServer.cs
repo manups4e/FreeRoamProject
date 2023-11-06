@@ -29,7 +29,7 @@ namespace FreeRoamProject.Server
 
         private static async Task<string> ClientSharedCallback([FromSource] PlayerClient client)
         {
-            return null;
+            return Resources.SharedConfig;
         }
         private static async Task<string> ClientConfigCallback([FromSource] PlayerClient client)
         {

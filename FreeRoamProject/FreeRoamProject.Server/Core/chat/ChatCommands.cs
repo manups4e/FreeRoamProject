@@ -28,7 +28,7 @@ namespace FreeRoamProject.Server.Core
             ServerMain.Instance.AddCommand("saveall", new Action<PlayerClient, List<string>, string>(Saveall), UserGroup.Moderator, new ChatSuggestion("Save all players now"));
             ServerMain.Instance.AddCommand("developer", new Action<PlayerClient, List<string>, string>(Developer), UserGroup.Developer, new ChatSuggestion("Enable developer functions", new SuggestionParam[1] { new("Power", "On/Off") }));
             ServerMain.Instance.AddCommand("setgang", new Action<PlayerClient, List<string>, string>(SetGang), UserGroup.Moderator, new ChatSuggestion("Change a player's gang", new SuggestionParam[3] { new("Player ID", "The player's Server ID"), new("Gang", "The gang to set"), new("Rank", "The gang rank") }));
-            ServerMain.Instance.AddCommand("setmeteo", new Action<PlayerClient, List<string>, string>(Weather), UserGroup.Admin, new ChatSuggestion("Change the weather in game", new SuggestionParam[1] { new("Weather", "Enter the number") }));
+            //ServerMain.Instance.AddCommand("setmeteo", new Action<PlayerClient, List<string>, string>(Weather), UserGroup.Admin, new ChatSuggestion("Change the weather in game", new SuggestionParam[1] { new("Weather", "Enter the number") }));
             ServerMain.Instance.AddCommand("delchar", new Action<PlayerClient, List<string>, string>(delchar), UserGroup.Moderator);
             RegisterCommand("status", new Action<int, List<object>, string>(async (a, b, c) =>
             {
@@ -38,7 +38,7 @@ namespace FreeRoamProject.Server.Core
                     if (ServerMain.Instance.GetPlayers.Count() > 0)
                     {
                         ServerMain.Logger.Info($"Total Players: {ServerMain.Instance.GetPlayers.Count()}.");
-                        foreach (PlayerClient player in ServerMain.Instance.Clients) ServerMain.Logger.Info($"ID:{player.Handle}, {player.Player.Name}, {player.Ped.Position}, Discord:{player.Player.Identifiers["discord"]}, Ping:{player.Player.Ping}, serverID:{GetPlayerRoutingBucket(player.Handle.ToString())}");
+                        foreach (PlayerClient player in ServerMain.Instance.Clients) ServerMain.Logger.Info($"ID:{player.Handle}, {player.Player.Name}, {player.Ped.Position}, License:{player.Player.Identifiers["license2"]}, Ping:{player.Player.Ping}, serverID:{GetPlayerRoutingBucket(player.Handle.ToString())}");
                     }
                     else
                         ServerMain.Logger.Warning("No players in the server");
@@ -52,7 +52,7 @@ namespace FreeRoamProject.Server.Core
                         ServerMain.Logger.Info($"FreeRoam -- Total Players: {ServerMain.Instance.GetPlayers.Count()}");
                         server.Players.ForEach(client =>
                         {
-                            ServerMain.Logger.Info($"ID:{client.Handle}, {client.Player.Name}, Discord:{client.Identifiers.Discord}, Ping:{client.Player.Ping}");
+                            ServerMain.Logger.Info($"ID:{client.Handle}, {client.Player.Name}, License:{client.Identifiers.License}, Ping:{client.Player.Ping}");
                         });
                     }
                 }
@@ -70,8 +70,8 @@ namespace FreeRoamProject.Server.Core
         private static void delchar(PlayerClient sender, List<string> args, string rawCommand)
         {
             /*
-            string bytes = GetResourceKvpString($"freeroam:player_{sender.User.Identifiers.Discord}:char_model");
-            DeleteResourceKvpNoSync($"freeroam:player_{sender.User.Identifiers.Discord}:char_model");
+            string bytes = GetResourceKvpString($"freeroam:player_{sender.User.Identifiers.License}:char_model");
+            DeleteResourceKvpNoSync($"freeroam:player_{sender.User.Identifiers.License}:char_model");
             */
             string bytes = GetResourceKvpString($"freeroam:player_306134422434873346:char_model");
             DeleteResourceKvpNoSync($"freeroam:player_306134422434873346:char_model");
@@ -261,7 +261,7 @@ namespace FreeRoamProject.Server.Core
                         group_level = (int)UserGroup.Developer;
                     }
 
-                    await ServerMain.Instance.Execute("UPDATE `users` SET `group` = @gruppo,  `group_level` = @groupL WHERE `discord` = @disc", new { gruppo = group, groupL = group_level, disc = user.Identifiers.Discord });
+                    await ServerMain.Instance.Execute("UPDATE `users` SET `group` = @gruppo,  `group_level` = @groupL WHERE `license` = @license", new { gruppo = group, groupL = group_level, license = user.Identifiers.License });
                     user.group = group;
                     user.group_level = (UserGroup)group_level;
                     ServerMain.Logger.Info($"Il player {ricevitore.Name} e' stato settato come gruppo {group}");
@@ -311,20 +311,18 @@ namespace FreeRoamProject.Server.Core
         {
             try
             {
-                DateTime now = DateTime.Now;
-
                 foreach (PlayerClient player in ServerMain.Instance.Clients)
                 {
                     int freer = 0;
-                    int rp = 0;
                     if (player.Status.PlayerStates.Spawned)
                     {
                         player.TriggerSubsystemEvent("tlg:freeroam:showLoading", 4, "Synchronization", 5000);
                         FreeRoamEvents.SaveCharacter(player);
-                        ServerMain.Logger.Info($"Saved character freeroam owned by '{player.Player.Name}' - {player.User.Identifiers.Discord}");
+                        ServerMain.Logger.Info($"Saved character freeroam owned by '{player.Player.Name}' - {player.User.Identifiers.License}");
                         freer++;
                     }
-                    ServerMain.Logger.Info($"Saved {freer} players FreeRoam and {rp} players RP");
+                    FlushResourceKvp();
+                    ServerMain.Logger.Info($"Saved {freer} players");
                 }
                 //BaseScript.TriggerClientEvent("tlg:aggiornaPlayers", ServerSession.PlayerList.ToJson());
             }
@@ -361,6 +359,7 @@ namespace FreeRoamProject.Server.Core
             }
         }
 
+        /*
         public static void Weather(PlayerClient sender, List<string> args, string rawCommand)
         {
             if (sender.Handle == 0)
@@ -465,5 +464,6 @@ namespace FreeRoamProject.Server.Core
                 }
             }
         }
+        */
     }
 }
