@@ -41,6 +41,8 @@ namespace FreeRoamProject.Client.Core.Utility
 
         public static void PlayerJoined(PlayerClient client)
         {
+            if (client.Handle == PlayerCache.MyPlayer.Handle) return;
+
             if (client.Status == null)
                 client.Status = new(client.Player);
             ClientMain.Instance.Clients.Add(client);
