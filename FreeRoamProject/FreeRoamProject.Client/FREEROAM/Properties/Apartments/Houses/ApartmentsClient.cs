@@ -1,4 +1,5 @@
-﻿using FreeRoamProject.Shared.Core.Character;
+﻿using FreeRoamProject.Client.FREEROAM.Vehicles;
+using FreeRoamProject.Shared.Core.Character;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -317,7 +318,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
             if (InCasa == null) return;
             if (!Cache.PlayerCache.MyPlayer.Ped.IsInRangeOf(app.Value.MarkerEntrance.ToVector3, 3f)) return;
             if (Cache.PlayerCache.MyPlayer.Status.Instance.Instanced) return;
-            Cache.PlayerCache.MyPlayer.Status.Instance.Istanzia(InCasa.ServerId, app.Key);
+            Cache.PlayerCache.MyPlayer.Status.Instance.InstancePlayer(InCasa.ServerId, app.Key);
             Functions.Teleport(app.Value.SpawnInside.ToVector3);
         }
 

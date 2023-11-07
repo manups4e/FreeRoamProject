@@ -138,7 +138,7 @@ namespace FreeRoamProject.Client.Core.Utility
         {
             Screen.Fading.FadeOut(800);
             while (Screen.Fading.IsFadingOut) await BaseScript.Delay(50);
-            // TODO: PLAYER MUST BE REVIVED NEAR THE HOSPITAL AS IN ONLINE
+            // TODO: PLAYER MUST BE REVIVED NEAR THEIR CURRENT POSITION
             Functions.RespawnPed(PlayerCache.MyPlayer.Position);
             //BaseScript.TriggerServerEvent("tlg:updateCurChar", "needs", nee.ToJson());
             //BaseScript.TriggerServerEvent("tlg:setDeathStatus", false);

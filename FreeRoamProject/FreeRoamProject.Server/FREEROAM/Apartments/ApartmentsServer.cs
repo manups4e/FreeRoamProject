@@ -44,6 +44,8 @@ namespace FreeRoamProject.Server.FREEROAM.Apartments
             // after that, we need the apartment settings, customizations.
             // apartments internal data such as coordinates for armories, wardrobes, garages, enter, exit, this kind of data goes in the settings..
             // no need to be saved
+            // The settings are then applied when player decides to enter home.. not before or after..
+            // there's a video and a camera animation for the player to see while waiting
 
             string sbytes = GetResourceKvpString($"freeroam:player_{source.User.Identifiers.License}:apartmentsList");
             //TODO: KEEP ONLY THE STRINGS? WE NEED ALL THE APARTMENTS DATA

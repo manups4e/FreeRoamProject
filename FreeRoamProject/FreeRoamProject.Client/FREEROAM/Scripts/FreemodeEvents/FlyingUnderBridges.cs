@@ -1,4 +1,5 @@
 ﻿using FreeRoamProject.Client.GameMode.FREEROAM.Managers;
+using FreeRoamProject.Client.Handlers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -127,7 +128,8 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
             uint hash = (uint)GetHashKey("mp0_fly_under_bridges");
             StatSetInt(hash, 0, true);
 
-            HudManager.OnEnableMap(true);
+            MinimapHandler.EnableMinimap = true;
+            //HudManager.OnEnableMap(true);
             ActiveBlips.Clear();
 
             await VehicleManager.SpawnEventVehicles(VehicleSpawnLocations);

@@ -124,6 +124,7 @@ namespace FreeRoamProject.Client.Core.Utility
 			SendNuiMessage(message.ToJson());
 		}*/
 
+
         public static void ConcealPlayersNearby(Vector3 coord, float radius)
         {
             List<Player> players = GetPlayersInArea(coord, radius);
@@ -131,7 +132,9 @@ namespace FreeRoamProject.Client.Core.Utility
                 if (!NetworkIsPlayerConcealed(pl.Handle) && pl.Handle != PlayerCache.MyPlayer.Player.Handle)
                     NetworkConcealPlayer(pl.Handle, true, true);
         }
-
+        /// <summary>
+        /// Useful for when 2 players agree to do a VS match
+        /// </summary>
         public static void ConcealAllPlayers()
         {
             ClientMain.Instance.GetPlayers.ToList().ForEach(pl =>
@@ -148,6 +151,9 @@ namespace FreeRoamProject.Client.Core.Utility
                     NetworkConcealPlayer(pl.Handle, false, false);
         }
 
+        /// <summary>
+        /// Useful for when 2 players end a VS match
+        /// </summary>
         public static void RevealAllPlayers()
         {
             ClientMain.Instance.GetPlayers.ToList().ForEach(pl =>
@@ -273,45 +279,6 @@ namespace FreeRoamProject.Client.Core.Utility
 
         public static bool IsAnyControlPressed() { return Enum.GetValues(typeof(Control)).Cast<Control>().ToList().Any(value => Input.IsControlPressed(value)); }
 
-        public static async Task<VehProp> GetVehicleProperties(this Vehicle veh)
-        {
-            bool[] extras = new bool[13];
-            for (int i = 0; i < 13; i++) extras[i] = veh.IsExtraOn(i);
-            List<VehMod> mods = veh.Mods.GetAllMods().Select(mod => new VehMod((int)mod.ModType, mod.Index, mod.LocalizedModName, mod.LocalizedModTypeName)).ToList();
-            VehProp vehi = new VehProp(veh.Model, veh.LocalizedName, veh.Mods.LicensePlate, (int)veh.Mods.LicensePlateStyle, veh.BodyHealth, veh.EngineHealth, veh.FuelLevel, veh.DirtLevel, (int)veh.Mods.PrimaryColor, (int)veh.Mods.SecondaryColor, veh.Mods.CustomPrimaryColor, veh.Mods.CustomSecondaryColor, veh.Mods.IsPrimaryColorCustom, veh.Mods.IsSecondaryColorCustom, (int)veh.Mods.PearlescentColor, (int)veh.Mods.RimColor, (int)veh.Mods.WheelType, (int)veh.Mods.WindowTint, new bool[4] { veh.Mods.HasNeonLight(VehicleNeonLight.Left), veh.Mods.HasNeonLight(VehicleNeonLight.Right), veh.Mods.HasNeonLight(VehicleNeonLight.Front), veh.Mods.HasNeonLight(VehicleNeonLight.Back) }, extras, veh.Mods.NeonLightsColor, veh.Mods.TireSmokeColor, !(GetVehicleModKit(veh.Handle) == 65535), mods, veh.Mods.Livery);
-            return vehi;
-        }
-
-        public static async void SetVehicleProperties(this Vehicle veh, VehProp props)
-        {
-            veh.Mods.LicensePlate = props.Plate;
-            if (props.ModKitInstalled) veh.Mods.InstallModKit();
-            veh.Mods.LicensePlateStyle = (LicensePlateStyle)props.PlateIndex;
-            veh.BodyHealth = props.BodyHealth;
-            veh.EngineHealth = props.EngineHealth;
-            //veh.SetVehicleFuelLevel(props.FuelLevel);
-            veh.DirtLevel = props.DirtLevel;
-            veh.Mods.PrimaryColor = (VehicleColor)props.PrimaryColor;
-            veh.Mods.SecondaryColor = (VehicleColor)props.SecondaryColor;
-            veh.Mods.CustomPrimaryColor = props.CustomPrimaryColor;
-            veh.Mods.CustomSecondaryColor = props.CustomSecondaryColor;
-            //veh.Mods.IsPrimaryColorCustom = props.HasCustomPrimaryColor;
-            //veh.Mods.IsSecondaryColorCustom = props.HasCustomSecondaryColor;
-            veh.Mods.PearlescentColor = (VehicleColor)props.PearlescentColor;
-            veh.Mods.RimColor = (VehicleColor)props.WheelColor;
-            veh.Mods.WheelType = (VehicleWheelType)props.Wheels;
-            veh.Mods.WindowTint = (VehicleWindowTint)props.WindowTint;
-            for (int i = 0; i < props.NeonEnabled.Length; i++) veh.Mods.SetNeonLightsOn((VehicleNeonLight)i, props.NeonEnabled[i]);
-            for (int i = 0; i < 13; i++) veh.ToggleExtra(i, props.Extras[i]);
-            veh.Mods.NeonLightsColor = props.NeonColor;
-            veh.Mods.TireSmokeColor = props.TireSmokeColor;
-            VehicleMod[] mods = veh.Mods.GetAllMods();
-            foreach (VehMod mod in props.Mods) SetVehicleMod(veh.Handle, mod.ModIndex, mod.Value, mods.ToList().FirstOrDefault(x => (int)x.ModType == mod.ModIndex).Variation);
-            veh.Mods.Livery = props.ModLivery;
-        }
-
-        // Apparently there's a built-in native for this...
-        // TODO: Replace with that
         public static string GetEntityType(int entityHandle)
         {
             try
@@ -769,12 +736,12 @@ namespace FreeRoamProject.Client.Core.Utility
             DisplayOnscreenKeyboard(1, "FMlprp_KEY_TIP1", null, defaultText, null, null, null, maxLength + 1);
         }
 
-        public async static Task FadeEntityAsync(this Entity entity, bool fadeIn, bool fadeOutNormal = false, bool slow = true)
+        public async static Task FadeEntityAsync(this Entity entity, bool fadeIn, bool fadeNormal = false, bool slow = true)
         {
             if (fadeIn)
-                Function.Call(Hash.NETWORK_FADE_IN_ENTITY, entity.Handle, fadeOutNormal, slow);
+                Function.Call(Hash.NETWORK_FADE_IN_ENTITY, entity.Handle, fadeNormal, slow);
             else
-                NetworkFadeOutEntity(entity.Handle, fadeOutNormal, slow);
+                NetworkFadeOutEntity(entity.Handle, fadeNormal, slow);
 
             while (NetworkIsEntityFading(entity.Handle)) await BaseScript.Delay(0);
         }

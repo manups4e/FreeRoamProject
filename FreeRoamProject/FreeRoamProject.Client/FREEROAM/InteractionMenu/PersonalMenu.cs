@@ -980,6 +980,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 TaskPlayAnim(PlayerPedId(), "MP_SUICIDE", Anim, 8f, -8f, -1, 270540800, 0, false, false, false);
                 while (GetEntityAnimCurrentTime(PlayerPedId(), "MP_SUICIDE", Anim) < 0.99f) await BaseScript.Delay(0);
                 playerPed.Weapons.Select(WeaponHash.Unarmed);
+                // change events
                 BaseScript.TriggerEvent("DamageEvents:PedDied", playerPed.Handle, playerPed.Handle, 3452007600, false);
             };
 

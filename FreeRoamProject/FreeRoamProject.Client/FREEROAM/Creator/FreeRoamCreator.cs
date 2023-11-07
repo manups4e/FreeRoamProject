@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
-using static FreeRoamProject.Shared.Core.Character.DressingShared;
 
 namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
 {
@@ -349,20 +348,6 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             Game.GetGXTEntry("CC_LIPSTICK_7"),
             Game.GetGXTEntry("CC_LIPSTICK_8"),
             Game.GetGXTEntry("CC_LIPSTICK_9")
-        };
-
-        // TODO: CHANGE THEM WITH THE ONLINE ONES!
-        private static List<Suit> SuitsMale = new List<Suit>
-        {
-            new Suit("The drug dealer", "For the weekly production", 0, new ComponentDrawables(-1, 0, -1, 0, 0, -1, 15, 0, 15, 0, 0, 56), new ComponentDrawables(-1, 0, -1, 0, 4, -1, 14, 0, 0, 0, 0, 0), new PropIndices(13, -1, -1, -1, -1, -1, -1, -1, -1), new PropIndices(1, -1, -1, -1, -1, -1, -1, -1, -1)),
-            new Suit("The elegant", "Not too much tho!", 0, new ComponentDrawables(-1, 0, -1, 1, 4, -1, 10, 0, 12, 0, 0, 4), new ComponentDrawables(-1, 0, -1, 0, 1, -1, 12, 0, 10, 0, 0, 0), new PropIndices(-1, -1, -1, -1, -1, -1, -1, -1, -1), new PropIndices(-1, -1, -1, -1, -1, -1, -1, -1, -1)),
-            new Suit("The hipster", "Don't look at me but look at me", 0, new ComponentDrawables(-1, 0, -1, 11, 26, -1, 22, 11, 15, 0, 0, 42), new ComponentDrawables(-1, 0, -1, 0, 3, -1, 7, 2, 0, 0, 0, 0), new PropIndices(-1, -1, -1, -1, -1, -1, -1, -1, -1), new PropIndices(-1, -1, -1, -1, -1, -1, -1, -1, -1))
-        };
-        private static List<Suit> SuitsFemale = new List<Suit>
-        {
-            new Suit("The rancher", "Mooooooh!", 0, new ComponentDrawables(-1, 0, -1, 9, 1, -1, 3, 5, 3, 0, 0, 9), new ComponentDrawables(-1, 0, -1, 0, 10, -1, 8, 4, 0, 0, 0, 13), new PropIndices(-1, -1, -1, -1, -1, -1, -1, -1, -1), new PropIndices(-1, -1, -1, -1, -1, -1, -1, -1, -1)),
-            new Suit("The Elegant Ragged Woman", "Law and Order", 0, new ComponentDrawables(-1, 0, -1, 88, 1, -1, 29, 20, 37, 0, 0, 52), new ComponentDrawables(-1, 0, -1, 0, 6, -1, 0, 5, 0, 0, 0, 0), new PropIndices(-1, -1, -1, -1, -1, -1, -1, -1, -1), new PropIndices(-1, -1, -1, -1, -1, -1, -1, -1, -1)),
-            new Suit("Casual", "Good 366/365", 0, new ComponentDrawables(-1, 0, -1, 3, 0, -1, 10, 1, 3, 0, 0, 3), new ComponentDrawables(-1, 0, -1, 0, 0, -1, 2, 1, 0, 0, 0, 1), new PropIndices(-1, -1, -1, -1, -1, -1, -1, -1, -1), new PropIndices(-1, -1, -1, -1, -1, -1, -1, -1, -1))
         };
 
         private static List<ShopPed.PedComponentData> MaleHats = new List<ShopPed.PedComponentData>()
@@ -839,14 +824,12 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 _dummyPed.BlockPermanentEvents = true;
                 _selected = sesso;
                 ClientMain.Instance.AddTick(Controls);
-                //TODO: ADD CHECK FOR UNIQUE INSURANCE
-                long assicurazione = SharedMath.GetRandomLong(999999999999999);
                 //Vector3 spawna = new Vector3(Main.charCreateCoords.X, Main.charCreateCoords.Y, Main.charCreateCoords.Z);
                 if (IsValidInterior(94722)) LoadInterior(94722);
                 while (!IsInteriorReady(94722)) await BaseScript.Delay(1000);
                 sub_8d2b2();
-                //TODO: ADD CHECK FOR UNIQUE INSTANCE FOR EACH PLAYER
-                Cache.PlayerCache.MyPlayer.Status.Instance.InstancePlayer("CharCreation");
+                Cache.PlayerCache.MyPlayer.Status.Instance.InstancePlayer(Cache.PlayerCache.MyPlayer.Handle, "CharCreation");
+                // TODO: CHANGE THE FINANCE ACCORDINGLY I THINK? 1000, 3000 SOUNDS SO EARLY ESX...
                 _dataMale = new FreeRoamChar(SnowflakeGenerator.Instance.Next().ToInt64(), new Finance(1000, 3000), new Gang("Uncensored", 0), new Skin("Male", (uint)PedHash.FreemodeMale01, 0, GetRandomFloatInRange(.5f, 1f), new Face(0, 0, new float[20] { Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(1f, -1, 1) }), new A2(GetRandomIntInRange(0, Ageing.Count), GetRandomFloatInRange(0f, 1f)), new A2(255, 0f), new A2(GetRandomIntInRange(0, Blemishes.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Complexions.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_Damage.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_moles_and_leeks.Count), GetRandomFloatInRange(0f, 1f)), new A3(255, 0f, new int[2] { 0, 0 }), new A3(255, 0f, new int[2] { 0, 0 }), new Facial(new A3(GetRandomIntInRange(0, Beards.Count), GetRandomFloatInRange(0f, 1f), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) }), new A3(GetRandomIntInRange(0, eyebrow.Count), GetRandomFloatInRange(0f, 1f), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) })), new Hair(GetRandomIntInRange(0, HairMale.Count), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) }), new Eye(GetRandomIntInRange(0, EyesColor.Count)), new Ears(255, 0)), new Dressing("Iniziale", "Per cominciare", new ComponentDrawables(-1, 0, GetPedDrawableVariation(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), 0, 0, -1, 15, 0, 15, 0, 0, 56), new ComponentDrawables(-1, 0, GetPedTextureVariation(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), 0, 4, -1, 14, 0, 0, 0, 0, 0), new PropIndices(-1, GetPedPropIndex(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1), new PropIndices(-1, GetPedPropTextureIndex(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1)), new FreeRoamStats());
                 _dataFemale = new FreeRoamChar(SnowflakeGenerator.Instance.Next().ToInt64(), new Finance(1000, 3000), new Gang("Uncensored", 0), new Skin("Female", (uint)PedHash.FreemodeFemale01, 0, GetRandomFloatInRange(.5f, 1f), new Face(21, 0, new float[20] { Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1) }), new A2(GetRandomIntInRange(0, Ageing.Count), GetRandomFloatInRange(0f, 1f)), new A2(255, 0f), new A2(GetRandomIntInRange(0, Blemishes.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Complexions.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_Damage.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_moles_and_leeks.Count), GetRandomFloatInRange(0f, 1f)), new A3(255, 0f, new int[2] { 0, 0 }), new A3(255, 0f, new int[2] { 0, 0 }), new Facial(new A3(255, 0f, new int[2] { 0, 0 }), new A3(GetRandomIntInRange(0, eyebrow.Count), GetRandomFloatInRange(0f, 1f), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) })), new Hair(GetRandomIntInRange(0, HairMale.Count), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) }), new Eye(GetRandomIntInRange(0, EyesColor.Count)), new Ears(255, 0)), new Dressing("Iniziale", "Per cominciare", new ComponentDrawables(-1, 0, GetPedDrawableVariation(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), 0, 0, -1, 15, 0, 15, 0, 0, 56), new ComponentDrawables(-1, 0, GetPedTextureVariation(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), 0, 4, -1, 14, 0, 0, 0, 0, 0), new PropIndices(-1, GetPedPropIndex(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1), new PropIndices(-1, GetPedPropTextureIndex(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1)), new FreeRoamStats());
                 _data = _selected.ToLower() == "male" ? _dataMale : _dataFemale;
@@ -1127,8 +1110,6 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 List<dynamic> outfitList = new List<dynamic>();
                 for (int i = 0; i < 8; i++) outfitList.Add(Game.GetGXTEntry(getOutfit(i, _selected == "Male")));
 
-                // TODO: ADD HATS AND GLASSES (look at func_1300 for glasses, func_1304 for hats)
-                // also GET_HASH_NAME_FOR_PROP for hats and GET_NUMBER_OF_PED_PROP_DRAWABLE_VARIATIONS
                 List<dynamic> hatList = new() { Game.GetGXTEntry("FACE_OFF") };
 
                 List<dynamic> glassesList = new List<dynamic>() { Game.GetGXTEntry("FACE_OFF") };
@@ -1160,7 +1141,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
 
                 #region Stats
                 int StatMax = 100;
-                // TODO: TRY ADDING ONLY 1 PANEL TO ALL THE ITEMS.. INSTEAD 1 PANEL FOR EACH ITEM..
+
                 UIMenuStatsItem stamina = new UIMenuStatsItem(Game.GetGXTEntry("FACE_STAM"), Game.GetGXTEntry("FACE_H_STA"), 0, SColor.HUD_Freemode);
                 UIMenuPercentagePanel maxstat = new("Remaining points", "0", "100", StatMax);
                 stamina.AddPanel(maxstat);
@@ -2119,15 +2100,13 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                     ClientMain.Instance.RemoveTick(Scaleform);
                     ClientMain.Instance.RemoveTick(menuKeys);
 
-                    //TODO: CONTINUARE DA QUI
-                    FreeRoamCamerasFirstTime.FirstTimeTransition();
-
                     RemoveAnimDict("mp_character_creation@lineup@male_a");
                     RemoveAnimDict("mp_character_creation@lineup@male_b");
                     RemoveAnimDict("mp_character_creation@lineup@female_a");
                     RemoveAnimDict("mp_character_creation@lineup@female_b");
                     RemoveAnimDict("mp_character_creation@customise@male_a");
                     RemoveAnimDict("mp_character_creation@customise@female_a");
+                    FreeRoamCamerasFirstTime.FirstTimeTransition();
                 };
                 Creation.AddItem(Save);
 
@@ -2802,8 +2781,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                         ClientMain.Instance.RemoveTick(Controls);
                         ClientMain.Instance.RemoveTick(Scaleform);
                         ClientMain.Instance.RemoveTick(menuKeys);
-                        // TODO: IF PLAYER REFUSES TO CONTINUE, DISCONNECT THEM .. OR HANDLE THEM    SOMEHOW
-                        //ServerJoining.ReturnToLobby();
+                        // TODO: IF PLAYER REFUSES TO CONTINUE, DISCONNECT THEM... OR HANDLE THEM SOMEHOW
+                        //ServerJoining.ReturnToLobby(); is the old multimode method.. we need to handle the player...
+                        //best solution is to disconnect them if it's first player and to go back to char selection if it's not the first character
                         RenderScriptCams(false, false, 300, false, false);
                     }
                 };

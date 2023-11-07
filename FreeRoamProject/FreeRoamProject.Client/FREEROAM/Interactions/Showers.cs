@@ -106,11 +106,13 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
         public static void Init()
         {
             //TODO: ADD EVENTS FOR WHEN PED ENTERED APARTMENT, AND PASS PARAMETER IF IT'S OWNER OR NOT
+            // maybe we can use the PlayerStateBag or FreeRoamStateBag handlers events and check them..
 
             AccessingEvents.OnFreeRoamSpawn += Spawned;
             AccessingEvents.OnFreeRoamLeave += onPlayerLeft;
         }
 
+        // TODO: ON PLAYER LEFT WHAT? BUCKET? APARTMENT I'D SAY
         public static void onPlayerLeft(PlayerClient client)
         {
             RemoveAnimDict(sLocal_436);

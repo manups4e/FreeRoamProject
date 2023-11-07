@@ -399,7 +399,7 @@ namespace FreeRoamProject.Shared.Core.Character
         public string? Plate { get; set; }
         public VehicleData VehData { get; set; }
         public VehGarage Garage { get; set; }
-        public string? State { get; set; }
+
 
         public OwnedVehicle() { }
         public OwnedVehicle(Vehicle veh, string targa, VehicleData data, VehGarage garage, string stato)
@@ -408,21 +408,18 @@ namespace FreeRoamProject.Shared.Core.Character
             Plate = targa;
             VehData = data;
             Garage = garage;
-            State = stato;
         }
         public OwnedVehicle(string targa, VehicleData data, VehGarage garage, string stato)
         {
             Plate = targa;
             VehData = data;
             Garage = garage;
-            State = stato;
         }
         public OwnedVehicle(string targa, string veh_data, string garage, string stato)
         {
             Plate = targa;
             VehData = veh_data.FromJson<VehicleData>(settings: JsonHelper.IgnoreJsonIgnoreAttributes);
             Garage = garage.FromJson<VehGarage>(settings: JsonHelper.IgnoreJsonIgnoreAttributes);
-            State = stato;
         }
 
         public OwnedVehicle(dynamic data)
@@ -430,7 +427,6 @@ namespace FreeRoamProject.Shared.Core.Character
             Plate = data.targa;
             VehData = (data.vehicle_data as string).FromJson<VehicleData>(settings: JsonHelper.IgnoreJsonIgnoreAttributes);
             Garage = (data.garage as string).FromJson<VehGarage>(settings: JsonHelper.IgnoreJsonIgnoreAttributes);
-            State = data.stato;
         }
     }
 
@@ -457,14 +453,12 @@ namespace FreeRoamProject.Shared.Core.Character
 
     public class VehicleData
     {
-        [JsonIgnore]
         public VehProp Props = new();
-        public bool Stolen { get; set; }
+        public bool HasInsurance { get; set; }
         public VehicleData() { }
-        public VehicleData(VehProp dati, bool stolen)
+        public VehicleData(VehProp dati)
         {
             Props = dati;
-            Stolen = stolen;
         }
     }
 
@@ -474,9 +468,6 @@ namespace FreeRoamProject.Shared.Core.Character
         public string? Name { get; set; }
         public string? Plate { get; set; }
         public int PlateIndex { get; set; }
-        public float BodyHealth { get; set; }
-        public float EngineHealth { get; set; }
-        public float FuelLevel { get; set; }
         public float DirtLevel { get; set; }
         public int PrimaryColor { get; set; }
         public int SecondaryColor { get; set; }
@@ -502,9 +493,6 @@ namespace FreeRoamProject.Shared.Core.Character
             Name = name;
             Plate = plate;
             PlateIndex = plateIndex;
-            BodyHealth = bodyHealth;
-            EngineHealth = engineHealth;
-            FuelLevel = fuelLevel;
             DirtLevel = dirtLevel;
             PrimaryColor = color1; SecondaryColor = color2;
             CustomPrimaryColor = custom1; CustomSecondaryColor = custom2;

@@ -1,4 +1,5 @@
 ﻿using FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case;
+using FreeRoamProject.Client.FREEROAM.Vehicles;
 using FreeRoamProject.Shared.Core.Character;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,7 +63,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
                         {
                             Player pl = Functions.GetPlayerFromPed(p);
                             PlayerClient pp = Functions.GetPlayerClientFromServerId(pl.ServerId);
-                            pp.Status.Instance.Istanzia(Cache.PlayerCache.MyPlayer.Player.ServerId, Cache.PlayerCache.MyPlayer.Status.Instance.Instance);
+                            pp.Status.Instance.InstancePlayer(Cache.PlayerCache.MyPlayer.Player.ServerId, Cache.PlayerCache.MyPlayer.Status.Instance.Instance);
                             // TODO: DO WE REALLY NEED TO HANDLE THIS FROM THE SERVER?
                             EventDispatcher.Send("tlg:enterGarageWithOwner", app.Value.SpawnGarageWalkInside);
                         }

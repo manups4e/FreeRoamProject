@@ -3,6 +3,7 @@ using System;
 
 namespace FreeRoamProject.Shared
 {
+    public delegate void FreeRoamStateBagChanged(int userId, string type, bool value);
     public delegate void PlayerStateBagChaged(int userId, string type, bool value);
     public delegate void InstanceBagChanged(int userId, InstanceBag value);
     public delegate void EntityStateBagChaged(Entity entity, string type, bool value);
@@ -12,6 +13,7 @@ namespace FreeRoamProject.Shared
 
     public class StateBagsHandler
     {
+        public event FreeRoamStateBagChanged OnFreeRoamStateBagChanged;
         public event PlayerStateBagChaged OnPlayerStateBagChange;
         public event EntityStateBagChaged OnEntityStateBagChange;
         public event InstanceBagChanged OnInstanceBagChange;
@@ -77,11 +79,6 @@ namespace FreeRoamProject.Shared
                                     switch (state)
                                     {
                                         case "PassiveMode":
-                                            {
-                                                bool res = (value as byte[]).FromBytes<bool>();
-                                                OnPlayerStateBagChange?.Invoke(userId, state, res);
-                                            }
-                                            break;
                                         case "Paused":
                                         case "InVehicle":
                                         case "Spawned":
@@ -94,20 +91,8 @@ namespace FreeRoamProject.Shared
                                     break;
                                 case "FreeRoamStates":
                                     {
-
-                                    }
-                                    break;
-                                case "RolePlayStates":
-                                    switch (state)
-                                    {
-                                        case "Fainted":
-                                        case "Cuffed":
-                                        case "AtHome":
-                                        case "OnDuty":
-                                        case "Dying":
-                                        case "InVehicle":
-                                            bool res = (value as byte[]).FromBytes<bool>();
-                                            break;
+                                        bool res = (value as byte[]).FromBytes<bool>();
+                                        OnFreeRoamStateBagChanged?.Invoke(userId, state, res);
                                     }
                                     break;
                                 case "PlayerInstance":

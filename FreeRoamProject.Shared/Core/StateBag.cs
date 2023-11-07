@@ -211,7 +211,7 @@ namespace FreeRoamProject.Shared
         /// <summary>
         /// Istanza generica
         /// </summary>
-        public void Istanzia()
+        public void InstancePlayer()
         {
             Instanced = true;
 #if CLIENT
@@ -245,7 +245,7 @@ namespace FreeRoamProject.Shared
         /// <summary>
         /// Istanza specifica
         /// </summary>
-        public void Istanzia(int ServerId, string instance)
+        public void InstancePlayer(int ServerId, string instance)
         {
             Instanced = true;
             ServerIdOwner = ServerId;

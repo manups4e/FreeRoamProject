@@ -1,18 +1,49 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-
-namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
+namespace FreeRoamProject.Client.Handlers
 {
-    static class PlayerBlipsHandler
+    internal static class MinimapHandler
     {
-        private static readonly List<int> JetHashes = new() { 970385471, -1281684762, 1824333165 };
+        private static bool hideRadar;
+        private static bool enableMinimap;
+        private static bool showPlayerBlips;
+
+        public static bool HideRadar { get => hideRadar; set => hideRadar = value; }
+        public static bool EnableMinimap { get => enableMinimap; set => enableMinimap = value; }
+        public static bool ShowPlayerBlips { get => showPlayerBlips; set => showPlayerBlips = value; }
 
         public static void Init()
         {
+            TickController.TickHUD.Add(MinimapTick);
             AccessingEvents.OnFreeRoamSpawn += OnPlayerJoined;
             AccessingEvents.OnFreeRoamLeave += OnPlayerLeft;
         }
+
+        private static async Task MinimapTick()
+        {
+            if (hideRadar)
+            {
+                DisableRadarThisFrame();
+            }
+            if (!enableMinimap)
+            {
+                if (IsRadarEnabled() && !IsRadarHidden())
+                {
+                    DisplayRadar(false);
+                }
+            }
+            else
+            {
+                if (!IsRadarEnabled() && IsRadarHidden())
+                {
+                    DisplayRadar(true);
+                }
+            }
+            await Task.FromResult(0);
+        }
+
+        private static readonly List<int> JetHashes = new() { 970385471, -1281684762, 1824333165 };
 
         private static void OnPlayerJoined(PlayerClient client)
         {

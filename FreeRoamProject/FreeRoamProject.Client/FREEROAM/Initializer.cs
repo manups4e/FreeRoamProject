@@ -15,7 +15,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM
         {
             IPLInstance.Init();
             TickController.Init();
+            //TODO: THE XP THINGS IN THERE SHOLUD BE SHIFTED IN THEIR OWN CLASSES
             HudManager.Init();
+            MinimapHandler.Init();
             ExperienceManager.Init();
             WorldEventsManager.Init();
             PlayerBlipsHandler.Init();

@@ -12,7 +12,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Spawner
             PlayerCache.MyPlayer.Ped.IsPositionFrozen = true;
 
             if (PlayerCache.MyPlayer.Ped.IsVisible)
-                NetworkFadeOutEntity(PlayerCache.MyPlayer.Ped.Handle, true, false);
+                await Functions.FadeEntityAsync(PlayerCache.MyPlayer.Ped, false, false, false);
             await BaseScript.Delay(2000);
             if (Screen.Fading.IsFadedOut) Screen.Fading.FadeIn(1000);
 
@@ -65,7 +65,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Spawner
             DisplayHud(true);
             Function.Call(Hash.NETWORK_FADE_IN_ENTITY, PlayerCache.MyPlayer.Ped.Handle, true, 1);
             if (!PlayerCache.MyPlayer.Ped.IsVisible)
-                NetworkFadeInEntity(PlayerCache.MyPlayer.Ped.Handle, true);
+                await Functions.FadeEntityAsync(PlayerCache.MyPlayer.Ped, true, false, true);
             PlayerCache.MyPlayer.Ped.IsPositionFrozen = false;
             PlayerCache.MyPlayer.Player.CanControlCharacter = true;
             EventDispatcher.Send("worldEventsManage.Server:AddParticipant");

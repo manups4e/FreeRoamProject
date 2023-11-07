@@ -63,22 +63,15 @@ namespace FreeRoamProject.Client.Core.Ingresso
             CharLoad();
         }
 
-        // TODO: READ CAREFULLY
-        // THIS METHOD WAS INTENDED TO SPAWN THE PLAYER INTO THE HANGAR FOR THE LOBBY...
-        // SINCE AT THE END OF THIS WE CALL FreeRoamLogin.Initialize() THAT CHECKS FOR THE PLAYER DATA (CREATE OR LOGIN?) WE CAN DIRECTLY SHIFT TO THAT?
-        // ALSO WE NEED TO ADD THE PLAYER TO A BUCKET BECAUSE.. GAME USES BUCKET 0 FOR PLAYER JOINING.. SO I WANT TO USE BUCKET 10 AND ABOVE FOR EVERYTHING ELSE..
-        // WE CAN KEEP BUCKETS 1-9 FOR ANYTHING WE COULD USE THEM.. 
         public static async void CharLoad()
         {
             if (PlayerCache.MyPlayer.Ped.IsVisible)
-                NetworkFadeOutEntity(PlayerCache.MyPlayer.Ped.Handle, true, false);
+                await Functions.FadeEntityAsync(PlayerCache.MyPlayer.Ped, false, false, false);
             StopPlayerSwitch();
             RequestCollisionAtCoord(-103.310f, -1215.578f, 1000);
             PlayerCache.MyPlayer.Ped.Position = new Vector3(-103.310f, -1215.578f, 1000);
             PlayerCache.MyPlayer.Ped.Heading = 270.975f;
             PlayerCache.MyPlayer.Player.CanControlCharacter = false;
-            if (PlayerCache.MyPlayer.Ped.IsVisible)
-                NetworkFadeOutEntity(PlayerCache.MyPlayer.Ped.Handle, true, false);
 
             string settings = await EventDispatcher.Get<string>("Config.CallClientConfig");
             string sharedSettings = await EventDispatcher.Get<string>("Config.CallSharedConfig");

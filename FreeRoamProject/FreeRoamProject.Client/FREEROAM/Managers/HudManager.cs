@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 {
+    // veeeeery old class... 
     static class HudManager
     {
         public static bool MapEnabled = false;
@@ -101,13 +102,14 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 
             }
         }
+
         private static void DrawPlayerBlips()
         {
             for (int i = 0; i < 64; i++)
             {
                 if (!NetworkIsPlayerActive(i) || GetPlayerPed(i) == PlayerPedId()) continue;
-                var player = GetPlayerPed(i);
-                var blip = GetBlipFromEntity(player);
+                int player = GetPlayerPed(i);
+                int blip = GetBlipFromEntity(player);
                 if (!DoesBlipExist(blip))
                 {
                     blip = AddBlipForEntity(player);
@@ -116,11 +118,11 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
                 }
                 else
                 {
-                    var playerVeh = GetVehiclePedIsUsing(player);
-                    var blipSprite = GetBlipSprite(blip);
+                    int playerVeh = GetVehiclePedIsUsing(player);
+                    int blipSprite = GetBlipSprite(blip);
                     if (playerVeh != 0)
                     {
-                        var currentVehicle = new Vehicle(playerVeh);
+                        Vehicle currentVehicle = new Vehicle(playerVeh);
                         switch (currentVehicle.ClassType)
                         {
                             case VehicleClass.Helicopters:
@@ -171,10 +173,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
                     }
                     else
                     {
-                        var playerCoords = GetEntityCoords(player, true);
-                        var myCoords = Cache.PlayerCache.MyPlayer.Ped.Position;
+                        Vector3 playerCoords = GetEntityCoords(player, true);
+                        Vector3 myCoords = Cache.PlayerCache.MyPlayer.Ped.Position;
 
-                        var alpha = 0;
+                        int alpha = 0;
                         if (myCoords.DistanceToSquared(playerCoords) < 40000f)
                         {
                             alpha = 255;
