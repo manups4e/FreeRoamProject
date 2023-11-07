@@ -1,5 +1,6 @@
 ﻿using FreeRoamProject.Client.GameMode.FREEROAM.CharCreation;
 using FreeRoamProject.Client.GameMode.FREEROAM.Spawner;
+using FreeRoamProject.Client.Handlers;
 using System.Threading.Tasks;
 
 namespace FreeRoamProject.Client.Core.Ingresso
@@ -42,6 +43,7 @@ namespace FreeRoamProject.Client.Core.Ingresso
             _firstTick = false;
             Screen.Fading.FadeOut(800);
             while (!Screen.Fading.IsFadedOut) await BaseScript.Delay(1000);
+            MinimapHandler.EnableMinimap = false;
             await PlayerCache.InitPlayer();
             await PlayerCache.Loaded();
             while (!NetworkIsPlayerActive(PlayerCache.MyPlayer.Player.Handle))

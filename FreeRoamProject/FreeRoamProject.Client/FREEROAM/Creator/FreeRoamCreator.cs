@@ -1,4 +1,5 @@
-﻿using FreeRoamProject.Shared.Core.Character;
+﻿using FreeRoamProject.Client.Handlers;
+using FreeRoamProject.Shared.Core.Character;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -770,6 +771,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
 
         public static void Init()
         {
+            MinimapHandler.EnableMinimap = false;
             ClientMain.Instance.AddTick(Scaleform);
             sub_8d2b2();
         }
@@ -1182,40 +1184,6 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
 
                 sex.OnListChanged += async (item, _newIndex) =>
                 {
-                    /*
-                    MenuHandler.CloseAndClearHistory();
-                    Screen.Effects.Start(ScreenEffect.MpCelebWin);
-                    await BaseScript.Delay(1000);
-                    Screen.Fading.FadeOut(1000);
-                    await BaseScript.Delay(1000);
-                    MenuHandler.CloseAndClearHistory();
-                    Creazione.Clear();
-                    Screen.Effects.Stop(ScreenEffect.MpCelebWin);
-
-                    switch (_newIndex)
-                    {
-                        case 0:
-                            _dataFemale = _data;
-                            var data = _dataMale;
-                            _boardScalep1.CallFunction("SET_BOARD", Game.GetGXTEntry("FACE_N_CHAR"), _data.CharID.ToString(), "THE LAST GALAXY BY MANUPS4E", "", 0, 1, 0);
-                            _selezionato = "Male";
-
-                            break;
-                        case 1:
-                            _dataMale = _data;
-                            var data = _dataFemale;
-                            _boardScalep1.CallFunction("SET_BOARD", Game.GetGXTEntry("FACE_N_CHAR"), _data.CharID.ToString(), "THE LAST GALAXY BY MANUPS4E", "", 0, 1, 0);
-                            _selezionato = "Female";
-
-                            break;
-                    }
-
-                    AggiornaModel(_data.ToJson());
-                    foreach (Prop obj in World.GetAllProps())
-                        if (obj.Model.Hash == GetHashKey("prop_police_id_board") || obj.Model.Hash == GetHashKey("prop_police_id_text"))
-                            CharCreationMenu(_data.Skin.sex);
-                    */
-
                     switch (_newIndex)
                     {
                         case 0:

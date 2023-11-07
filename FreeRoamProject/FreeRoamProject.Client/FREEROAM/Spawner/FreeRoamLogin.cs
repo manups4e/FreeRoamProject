@@ -1,4 +1,5 @@
-﻿using FreeRoamProject.Shared.Core.Character;
+﻿using FreeRoamProject.Client.Handlers;
+using FreeRoamProject.Shared.Core.Character;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -63,6 +64,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Spawner
             while (IsPlayerSwitchInProgress())
                 await BaseScript.Delay(0);
             DisplayHud(true);
+            MinimapHandler.EnableMinimap = true;
             Function.Call(Hash.NETWORK_FADE_IN_ENTITY, PlayerCache.MyPlayer.Ped.Handle, true, 1);
             if (!PlayerCache.MyPlayer.Ped.IsVisible)
                 await Functions.FadeEntityAsync(PlayerCache.MyPlayer.Ped, true, false, true);

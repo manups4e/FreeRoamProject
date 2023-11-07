@@ -20,7 +20,6 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM
             MinimapHandler.Init();
             ExperienceManager.Init();
             WorldEventsManager.Init();
-            PlayerBlipsHandler.Init();
             BaseEventsFreeRoam.Init();
             PlayerListClient.Init();
             PlayerTags.Init();
