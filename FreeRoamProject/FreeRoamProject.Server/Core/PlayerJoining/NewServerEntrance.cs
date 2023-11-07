@@ -134,6 +134,9 @@ namespace FreeRoamProject.Server.Core.PlayerJoining
             }
         }
 
+        // TODO: MAKE IT BETTER.. IT'S WORKING.. IT'S FINE.. BUT CAN BE DEFINITELY ENHANCED
+        // TODO: NOW THAT I THINK OF IT... WE SHOULD ALSO HANDLE BANS / KICK IN THE SERVER..
+        // I WAS THINKING TO GIVE PEOPLE THE ABILITY TO DO THAT BY VOTING IN THE PAUSE MENU.
         public static async void Dropped([FromSource] Player player, string reason)
         {
             Player p = player;
@@ -155,8 +158,6 @@ namespace FreeRoamProject.Server.Core.PlayerJoining
 
                 ServerMain.Instance.Clients.RemoveAll(x => x.Handle.ToString() == player.Handle);
                 ServerMain.Logger.Info(text);
-                // TODO: creare funzione per sapere il bucket del player come oggetto
-                BaseScript.TriggerClientEvent("tlg:ShowNotification", "~r~" + text);
             }
             catch (Exception e)
             {

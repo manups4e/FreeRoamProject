@@ -8,7 +8,6 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Spawner
     {
         public static async Task LoadPlayer()
         {
-            bool safe = false;
             PlayerCache.MyPlayer.Player.CanControlCharacter = false;
             PlayerCache.MyPlayer.Ped.IsPositionFrozen = true;
 

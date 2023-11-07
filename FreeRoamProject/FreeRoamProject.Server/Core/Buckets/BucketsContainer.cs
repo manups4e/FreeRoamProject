@@ -352,6 +352,7 @@ namespace FreeRoamProject.Server.Core.Buckets
             Position pos = new Position(client.Ped.Position, client.Ped.Rotation);
             client.User.Character.Position = pos;
             API.SetResourceKvp($"freeroam:player_{client.User.Identifiers.License}:char_model", client.User.Character.ToBytes().BytesToString(true));
+            ServerMain.Logger.Debug($"Saved Player {client.Player.Name}, license: {client.Identifiers.License}");
         }
 
         // TODO: will be externalized for plugins api
