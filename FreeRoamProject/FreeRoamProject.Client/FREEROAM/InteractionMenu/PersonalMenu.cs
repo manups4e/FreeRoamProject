@@ -89,6 +89,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             PersonalMenu.BuildingAnimation = MenuBuildingAnimation.NONE;
 
             #region Quick GPS
+            // TODO: MAKE THE QUICK_GPS LIST ON RUNTIME.. YOU NEVER KNOW WHAT MUST BE ADDED AND WHAT NOT..
+            // SO WE CAN'T CHECK BY THE INDEX, BUT BY THE LIST CURRENT INDEX LABEL.
             UIMenuListItem gpsItem = new UIMenuListItem(Game.GetGXTEntry("PIM_TQGPS"), gps, 0);
             PersonalMenu.AddItem(gpsItem);
             PersonalMenu.OnListSelect += async (menu, _item, _itemIndex) =>
@@ -179,8 +181,127 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             #endregion
 
-            #region Vehicle controls
-            UIMenuItem vehContrItem = new UIMenuItem("Vehicle controls");
+            #region Gangs
+
+            UIMenuItem gangsItem = new(Game.GetGXTEntry("PIM_REGBOSS"), Game.GetGXTEntry("PIM_REGMAGHELPB"));
+            UIMenu gangsMenu = new(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("PIM_REGBOSSTIT"));
+            gangsItem.BindItemToMenu(gangsMenu);
+            PersonalMenu.AddItem(gangsItem);
+
+            // TODO: UNCENSORED IS SO ESX... WE WANT A GANG NAME BUT ALSO A SIMPLE CHECK IsBoss true/false...
+            if (me.GetPlayerData().Character.Gang.Name == "Uncensored")
+            {
+                UIMenuItem becomeBoss = new UIMenuItem("Become a gang boss!");
+                List<dynamic> job = new List<dynamic>() { Game.GetGXTEntry("FE_HLP31"), Game.GetGXTEntry("FE_HLP29") };
+                UIMenuListItem lookingForJob = new UIMenuListItem("Looking for a \"Job\"", job, 0, GetLabelText("PIM_MAGH0D"));
+                gangsMenu.AddItem(becomeBoss);
+                gangsMenu.AddItem(lookingForJob);
+                // GB_BECOMEB = You are now the CEO of ~a~~s~
+                // GB_GOON_OPEN = Hold ~INPUT_VEH_EXIT~to open the door for your Boss
+                becomeBoss.Activated += async (menu, item) =>
+                {
+                    if (me.GetPlayerData().Bank > 5000)
+                    {
+                        // TODO: ADD CHECK FOR ACTIVE CONCURRENT GANGS (CEO, BIKERS, WHATEVER) PER BUCKET
+                        //if (Main.ActiveGangs.Count < 3)
+                        {
+                            string gname = await Functions.GetUserInput("Gang name", "", 15);
+                            MenuHandler.CloseAndClearHistory();
+                            ScaleformUI.Main.BigMessageInstance.ShowSimpleShard("Boss", $"You have become the Boss of the ~o~{gname}~w~ gang.");
+                            Game.PlaySound("Boss_Message_Orange", "GTAO_Boss_Goons_FM_Soundset");
+                            PlayerCache.MyPlayer.User.Character.Gang = new Gang(gname, 5);
+                            //Main.ActiveGangs.Add(new Gang(gname, Main.ActiveGangs.Count + 1));
+
+                        }
+                        /*
+                        else
+                        {
+                            Notifications.ShowNotification("There are already too many active Criminal Gangs in session.~n~Please try again at another time.", NotificationColor.Red, true);
+                        }
+                        */
+                    }
+                    else
+                    {
+                        Notifications.ShowNotification("You don't have enough bank funds to become a Boss!", NotificationColor.Red, true);
+                    }
+                };
+            }
+            else
+            {
+                if (me.GetPlayerData().Character.Gang.Grade > 4)
+                {
+                    UIMenuItem hireItem = new UIMenuItem("Recruit members");
+                    UIMenu hire = new("Recruit members", Game.GetGXTEntry("PIM_TITLE1"));
+                    UIMenuItem manageItem = new UIMenuItem("Gang management");
+                    UIMenu manage = new("Gang management", Game.GetGXTEntry("PIM_TITLE1"));
+                    UIMenuItem featuresBossItem = new UIMenuItem("Boss's features");
+                    UIMenu featuresBoss = new("Boss's features", Game.GetGXTEntry("PIM_TITLE1"));
+                    hireItem.BindItemToMenu(hire);
+                    manageItem.BindItemToMenu(manage);
+                    featuresBossItem.BindItemToMenu(featuresBoss);
+                    gangsMenu.AddItem(hireItem);
+                    gangsMenu.AddItem(manageItem);
+                    gangsMenu.AddItem(featuresBossItem);
+
+
+                    UIMenuItem retire = new UIMenuItem("Retire", "Warning.. you won't be able to set up a new gang before 6 hours!");
+                    gangsMenu.AddItem(retire);
+                    retire.Activated += (menu, item) =>
+                    {
+                        MenuHandler.CloseAndClearHistory();
+                        //Main.ActiveGangs.Remove(me.GetPlayerData().Character.Gang);
+                        ScaleformUI.Main.BigMessageInstance.ShowSimpleShard("Retired", $"You're no longer the boss of the ~o~{me.GetPlayerData().Character.Gang.Name}~w~ gang.");
+                        Game.PlaySound("Boss_Message_Orange", "GTAO_Boss_Goons_FM_Soundset");
+                        PlayerCache.MyPlayer.User.Character.Gang = new Gang("Uncensored", 0);
+                    };
+                }
+                else
+                {
+                    UIMenuItem retire = new UIMenuItem("Retire", "Stop working for your current boss");
+                    gangsMenu.AddItem(retire);
+                    retire.Activated += (menu, item) =>
+                    {
+                        MenuHandler.CloseAndClearHistory();
+                        ScaleformUI.Main.BigMessageInstance.ShowSimpleShard("Retired", $"You're not a member of the ~o~{me.GetPlayerData().Character.Gang.Name}~w~ gang anymore.");
+                        Game.PlaySound("Boss_Message_Orange", "GTAO_Boss_Goons_FM_Soundset");
+                        PlayerCache.MyPlayer.User.Character.Gang = new Gang("Uncensored", 0);
+                    };
+                }
+            }
+
+            #endregion
+
+            #region Objectives
+
+            UIMenuItem objectives = new UIMenuItem(Game.GetGXTEntry("PIM_TDOBJ"), Game.GetGXTEntry("frp_8ee9d6d0_9oa94ap"));
+            UIMenu objectivesMenu = new UIMenu(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("PIM_TITLE_67"));
+            objectives.BindItemToMenu(objectivesMenu);
+            PersonalMenu.AddItem(objectives);
+
+            #endregion
+
+            #region Inventory
+
+            //TODO: FIND HELP LABLE FOR THE INVENTORY IN GTA:O AND LABELS.JSON
+            UIMenuItem inventory = new UIMenuItem(Game.GetGXTEntry("PIM_TINVE"), Game.GetGXTEntry("PIM_HINVE"));
+            UIMenu inventoryMenu = new UIMenu(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("PIM_TITLE2"));
+            inventory.BindItemToMenu(inventoryMenu);
+            PersonalMenu.AddItem(inventory);
+
+            #endregion
+
+            #region Style
+
+            UIMenuItem style = new UIMenuItem(Game.GetGXTEntry("PIM_TSTYL"), Game.GetGXTEntry("PIM_HSTYL"));
+            UIMenu styleMenu = new UIMenu(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("PIM_TITLESTYL"));
+            style.BindItemToMenu(styleMenu);
+            PersonalMenu.AddItem(style);
+
+            #endregion
+
+            #region Vehicles
+            // also PIM_HVEHIUNAVIL for when inside the Moblie Operations Center
+            UIMenuItem vehContrItem = new UIMenuItem(Game.GetGXTEntry("PIM_TVEHI"), Game.GetGXTEntry("PIM_HVEHI"));
             UIMenu vehContr = new("Vehicle controls", Game.GetGXTEntry("PIM_TITLE1"));
             vehContrItem.BindItemToMenu(vehContr);
             PersonalMenu.AddItem(vehContrItem);
@@ -251,10 +372,89 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             #endregion
 
+
+            #region Services
+            //TODO: FIND CORRECT LABEL AND DESCRIPTION IN GTA:O
+            UIMenuItem services = new UIMenuItem("Services", "");
+            UIMenu servicesMenu = new UIMenu(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("PIM_HSECTIT"));
+            services.BindItemToMenu(servicesMenu);
+            PersonalMenu.AddItem(services);
+
+            #endregion
+
+            #region MapBlipOptions
+
+            // TODO: FIND CORRECT DESCRIPTION IN GTA:O
+            UIMenuItem mapBlipOpt = new UIMenuItem(Game.GetGXTEntry("PIM_THIDE"), Game.GetGXTEntry(""));
+            UIMenu mapBlipOptMenu = new UIMenu(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("PIM_TITHS"));
+            mapBlipOpt.BindItemToMenu(mapBlipOptMenu);
+            PersonalMenu.AddItem(mapBlipOpt);
+
+            #endregion
+
+            #region ImpromptuRace
+
+            // TODO: FIND CORRECT DESCRIPTION IN GTA:O
+            UIMenuItem impromptuRace = new UIMenuItem(Game.GetGXTEntry("PIM_TITLE11"), Game.GetGXTEntry(""));
+            UIMenu impromptuRaceMenu = new UIMenu(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("R2P_MENU"));
+            impromptuRace.BindItemToMenu(impromptuRaceMenu);
+            PersonalMenu.AddItem(impromptuRace);
+
+            #endregion
+
+            #region Highlight player
+
+            // TODO: FIND CORRECT DESCRIPTION IN GTA:O
+            UIMenuItem highlightPlayer = new UIMenuItem(Game.GetGXTEntry("PIM_THIGH"), Game.GetGXTEntry(""));
+            UIMenu highlightPlayerMenu = new UIMenu(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("PIM_TITLE12"));
+            highlightPlayer.BindItemToMenu(highlightPlayerMenu);
+            PersonalMenu.AddItem(highlightPlayer);
+
+            #endregion
+
+            #region VoiceChat
+
+            // TODO: FIND CORRECT DESCRIPTION IN GTA:O
+            // TODO: SAVE, APPLY AND REAPPLY ON JOIN
+            //ADD CHECK FOR ORGANIZATION, GANG, MC TO ADD VOICE OPTION ONLY FOR TEAM
+            /*
+            "PM_CHT5": "Organization",
+            "PM_CHT5X0": "Gang",
+            "PM_CHT5X1": "Motorcycle Club",
+             */
+            List<dynamic> voices = new List<dynamic>()
+            {
+                Game.GetGXTEntry("PM_CHT0"),
+                Game.GetGXTEntry("PM_CHT1"),
+                Game.GetGXTEntry("PM_CHT2"),
+                Game.GetGXTEntry("PM_CHT3"),
+                Game.GetGXTEntry("PM_CHT4"),
+            };
+
+            UIMenuListItem voiceChat = new UIMenuListItem(Game.GetGXTEntry("PIM_TCHT"), voices, 0);
+            PersonalMenu.AddItem(voiceChat);
+
+            #endregion
+
+            #region Spawn Location
+
+            // TODO: add spawn locations... maybe this item is avail only when properties are purchased? if not.. we can choose only last one or random..
+            // TODO: SAVE, APPLY AND REAPPLY ON JOIN
+            List<dynamic> spawnLocsList = new List<dynamic>()
+            {
+                Game.GetGXTEntry("PM_SPAWN_LL"),
+                Game.GetGXTEntry("PM_SPAWN_R")
+            };
+            UIMenuListItem spawnLoc = new UIMenuListItem(Game.GetGXTEntry("PIM_TSPL"), spawnLocsList, 0, Game.GetGXTEntry("PIM_HSPL").Replace("GTA Online", "The Last Galaxy"));
+            PersonalMenu.AddItem(spawnLoc);
+
+            #endregion
+
+
             #region Animations and style
 
             List<dynamic> moods = new List<dynamic>()
-            {
+                {
                 "Determined",
                 "Sad",
                 "Depressed",
@@ -264,7 +464,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 "Moody",
                 "Stressed",
                 "Lazy"
-            };
+                };
             List<dynamic> attitude = new List<dynamic>()
             {
                 "Fierce",
@@ -851,94 +1051,6 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             #endregion
 
-            #region Gangs
-
-            UIMenuItem gangsItem = new("Criminal gangs", "Establish and manage your own criminal gang!");
-            UIMenu gangsMenu = new("Criminal gangs", Game.GetGXTEntry("PIM_TITLE1"));
-            gangsItem.BindItemToMenu(gangsMenu);
-            PersonalMenu.AddItem(gangsItem);
-
-            if (me.GetPlayerData().Character.Gang.Name == "Uncensored")
-            {
-                UIMenuItem becomeBoss = new UIMenuItem("Become a gang boss!");
-                List<dynamic> job = new List<dynamic>() { Game.GetGXTEntry("FE_HLP31"), Game.GetGXTEntry("FE_HLP29") };
-                UIMenuListItem lookingForJob = new UIMenuListItem("Looking for a \"Job\"", job, 0, GetLabelText("PIM_MAGH0D"));
-                gangsMenu.AddItem(becomeBoss);
-                gangsMenu.AddItem(lookingForJob);
-                // GB_BECOMEB = You are now the CEO of ~a~~s~
-                // GB_GOON_OPEN = Hold ~INPUT_VEH_EXIT~to open the door for your Boss
-                becomeBoss.Activated += async (menu, item) =>
-                {
-                    if (me.GetPlayerData().Bank > 5000)
-                    {
-                        // TODO: ADD CHECK FOR ACTIVE CONCURRENT GANGS (CEO, BIKERS, WHATEVER) PER BUCKET
-                        //if (Main.ActiveGangs.Count < 3)
-                        {
-                            string gname = await Functions.GetUserInput("Gang name", "", 15);
-                            MenuHandler.CloseAndClearHistory();
-                            ScaleformUI.Main.BigMessageInstance.ShowSimpleShard("Boss", $"You have become the Boss of the ~o~{gname}~w~ gang.");
-                            Game.PlaySound("Boss_Message_Orange", "GTAO_Boss_Goons_FM_Soundset");
-                            PlayerCache.MyPlayer.User.Character.Gang = new Gang(gname, 5);
-                            //Main.ActiveGangs.Add(new Gang(gname, Main.ActiveGangs.Count + 1));
-
-                        }
-                        /*
-                        else
-                        {
-                            Notifications.ShowNotification("There are already too many active Criminal Gangs in session.~n~Please try again at another time.", NotificationColor.Red, true);
-                        }
-                        */
-                    }
-                    else
-                    {
-                        Notifications.ShowNotification("You don't have enough bank funds to become a Boss!", NotificationColor.Red, true);
-                    }
-                };
-            }
-            else
-            {
-                if (me.GetPlayerData().Character.Gang.Grade > 4)
-                {
-                    UIMenuItem hireItem = new UIMenuItem("Recruit members");
-                    UIMenu hire = new("Recruit members", Game.GetGXTEntry("PIM_TITLE1"));
-                    UIMenuItem manageItem = new UIMenuItem("Gang management");
-                    UIMenu manage = new("Gang management", Game.GetGXTEntry("PIM_TITLE1"));
-                    UIMenuItem featuresBossItem = new UIMenuItem("Boss's features");
-                    UIMenu featuresBoss = new("Boss's features", Game.GetGXTEntry("PIM_TITLE1"));
-                    hireItem.BindItemToMenu(hire);
-                    manageItem.BindItemToMenu(manage);
-                    featuresBossItem.BindItemToMenu(featuresBoss);
-                    gangsMenu.AddItem(hireItem);
-                    gangsMenu.AddItem(manageItem);
-                    gangsMenu.AddItem(featuresBossItem);
-
-
-                    UIMenuItem retire = new UIMenuItem("Retire", "Warning.. you won't be able to set up a new gang before 6 hours!");
-                    gangsMenu.AddItem(retire);
-                    retire.Activated += (menu, item) =>
-                    {
-                        MenuHandler.CloseAndClearHistory();
-                        //Main.ActiveGangs.Remove(me.GetPlayerData().Character.Gang);
-                        ScaleformUI.Main.BigMessageInstance.ShowSimpleShard("Retired", $"You're no longer the boss of the ~o~{me.GetPlayerData().Character.Gang.Name}~w~ gang.");
-                        Game.PlaySound("Boss_Message_Orange", "GTAO_Boss_Goons_FM_Soundset");
-                        PlayerCache.MyPlayer.User.Character.Gang = new Gang("Uncensored", 0);
-                    };
-                }
-                else
-                {
-                    UIMenuItem retire = new UIMenuItem("Retire", "Stop working for your current boss");
-                    gangsMenu.AddItem(retire);
-                    retire.Activated += (menu, item) =>
-                    {
-                        MenuHandler.CloseAndClearHistory();
-                        ScaleformUI.Main.BigMessageInstance.ShowSimpleShard("Retired", $"You're not a member of the ~o~{me.GetPlayerData().Character.Gang.Name}~w~ gang anymore.");
-                        Game.PlaySound("Boss_Message_Orange", "GTAO_Boss_Goons_FM_Soundset");
-                        PlayerCache.MyPlayer.User.Character.Gang = new Gang("Uncensored", 0);
-                    };
-                }
-            }
-
-            #endregion
 
             #region Suicide
 

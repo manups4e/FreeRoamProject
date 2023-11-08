@@ -242,6 +242,8 @@ namespace FreeRoamProject.Client
                         PlayerJoined?.Invoke();
                     }
                     break;
+                case "CEventNetworkVehicleUndrivable": // (veh Handle, int, int) (9443078, -1, 0)...
+                    break;
             }
         }
     }

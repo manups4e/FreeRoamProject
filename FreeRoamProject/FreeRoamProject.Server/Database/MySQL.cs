@@ -1,5 +1,4 @@
-﻿using CitizenFX.Core.Native;
-using Dapper;
+﻿using Dapper;
 using MySqlConnector;
 using System;
 using System.Collections.Generic;
