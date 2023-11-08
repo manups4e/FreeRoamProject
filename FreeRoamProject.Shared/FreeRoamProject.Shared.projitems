@@ -35,7 +35,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\DeathReasons.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Experience.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\FreeRoamChar.cs" />
-    <Compile Include="..\..\FreeRoamProject.Shared\Core\Log\Logger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Log\Logger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Utils\Rank.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Utils\Settings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Utils\Timer.cs" />
