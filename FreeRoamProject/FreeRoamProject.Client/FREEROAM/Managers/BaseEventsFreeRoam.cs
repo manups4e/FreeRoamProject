@@ -22,7 +22,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
         {
             _timerBarPool.Draw();
             _respawnTimerBar.Percentage += 0.0015f;
-            if (Input.IsControlPressed(Control.Jump)) // Why doesn't this work?
+            if (Input.IsControlPressed(Control.Jump))
             {
                 _respawnTimerBar.Percentage += 0.0030f;
             }
