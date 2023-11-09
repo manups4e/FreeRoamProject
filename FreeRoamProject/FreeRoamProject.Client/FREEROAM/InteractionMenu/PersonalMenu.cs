@@ -10,6 +10,12 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 {
     internal static class PersonalMenu
     {
+
+        // TODO: MAKE THE GAME COUNT IDLING OF PLAYER, IF MORE THAN 15 MINUTES THEN KICK IT..
+        // WE CAN SEND SHOWNOTIFICATION WITH LABEL "HUD_ILDETIME" WITH TIME REMAINING
+        // IF TIME FINISH.. PLAYER IS KICKED OUT OF THE SERVER.
+        // game checks using IsInPowerSavingMode() and GetPowerSavingModeDuration()
+
         public static List<dynamic> chars = new List<dynamic>();
         public static float interactionDistance = 3.5f;
         public static int lockDistance = 25;
@@ -83,7 +89,9 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
         {
             MenuHandler.CloseAndClearHistory();
             Ped playerPed = PlayerCache.MyPlayer.Ped;
-            Player me = PlayerCache.MyPlayer.Player;
+            Player player = PlayerCache.MyPlayer.Player;
+            string playerName = player.Name;
+
             Point pos = new Point(5, 5);
             UIMenu interactionMenu = new UIMenu(Game.Player.Name, Game.GetGXTEntry("PIM_TITLE1"), pos, "commonmenu", "interaction_bgd", true, true);
             interactionMenu.BuildingAnimation = MenuBuildingAnimation.NONE;
@@ -181,10 +189,11 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             #endregion
 
+            // TODO: IN THE ONLINE THIS IS A DYNAMIC OPTION.. THAT APPEAR/DISAPPEAR BASED ON NUMBER OF GANGS IN THE GAME..
             #region Gangs
 
             UIMenuItem gangsItem = new(Game.GetGXTEntry("PIM_REGBOSS"), Game.GetGXTEntry("PIM_REGMAGHELPB"));
-            UIMenu gangsMenu = new(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("PIM_REGBOSSTIT"));
+            UIMenu gangsMenu = new(playerName, Game.GetGXTEntry("PIM_REGBOSSTIT"));
             gangsItem.BindItemToMenu(gangsMenu);
             interactionMenu.AddItem(gangsItem);
 
@@ -274,7 +283,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             #region Objectives
 
             UIMenuItem objectives = new UIMenuItem(Game.GetGXTEntry("PIM_TDOBJ"), Game.GetGXTEntry("PIM_HDOBJ"));
-            UIMenu objectivesMenu = new UIMenu(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("PIM_TITLE_67"));
+            UIMenu objectivesMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_TITLE_67"));
             objectives.BindItemToMenu(objectivesMenu);
             interactionMenu.AddItem(objectives);
 
@@ -283,18 +292,137 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             #region Inventory
 
             UIMenuItem inventory = new UIMenuItem(Game.GetGXTEntry("PIM_TINVE"), Game.GetGXTEntry("PIM_HINVE"));
-            UIMenu inventoryMenu = new UIMenu(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("PIM_TITLE2"));
+            UIMenu inventoryMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_TITLE2"));
             inventory.BindItemToMenu(inventoryMenu);
             interactionMenu.AddItem(inventory);
+
+            UIMenuItem radioStationItem = new UIMenuItem(Game.GetGXTEntry("PIM_FAV_RS"), Game.GetGXTEntry("PIM_FAV_RS_TT"));
+            UIMenu radioStationMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_FAV_RS_U"));
+
+            UIMenuItem phoneContactsItem = new UIMenuItem(Game.GetGXTEntry("PIM_FAV_CONT"), Game.GetGXTEntry("PIM_FAV_CONT_TT"));
+            UIMenu phoneContactsMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_FAV_CONT_U"));
+
+            UIMenuItem cashItem = new UIMenuItem(Game.GetGXTEntry("PIM_TCASH"), Game.GetGXTEntry("PIM_HCASH"));
+            UIMenu cashMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_TITLE50"));
+
+            UIMenuItem bodyArmorItem = new UIMenuItem(Game.GetGXTEntry("PIM_TARMOR"), Game.GetGXTEntry("PIM_HARMOR"));
+            UIMenu bodyArmorMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_UARMOR"));
+
+            /* TODO: Handle snacks subtitles
+                "PIM_HSNAC": "Look through and use held snacks, drinks, and smokes.",
+                "PIM_HSNACB": "Snacks are unavailable while you are The Beast.",
+                "PIM_HSNAE": "Snacks are unavailable while wearing Ballistic Equipment.",
+                "PIM_HSNAJ": "Snacks are unavailable during this Job.",
+             */
+            UIMenuItem snacksItem = new UIMenuItem(Game.GetGXTEntry("PIM_TSNAC"), Game.GetGXTEntry("PIM_HSNAC"));
+            UIMenu snacksMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_USNAC"));
+
+            UIMenuItem ammoItem = new UIMenuItem(Game.GetGXTEntry("PIM_TAMMOW"), Game.GetGXTEntry("PIM_HAMMOW"));
+            UIMenu ammoMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_UAMMOW"));
+
+            /* label to be changed on selection
+             "PIM_DISWLAY": Disable Custom Weapon Loadout
+             "PIM_ENWLAY": Enable Custom Weapon Loadout
+             */
+
+            /* descriptions to be changed on the go. 
+                "PIM_WEAPLAY_D_1": "You can not change your weapon loadout while passive mode is active.",
+                "PIM_WEAPLAY_D_2": "You haven't got a customized weapon loadout. Go to the Gun Locker in your property to customize weapon loadout.",
+                "PIM_WEAPLAY_D_3": "Enable your customized weapon loadout.",
+                "PIM_WEAPLAY_D_4": "Disable your customized weapon loadout.",
+                "PIM_WEAPLAY_D_5": "Custom Weapon Loadout is not currently available.",
+             */
+            UIMenuItem customWeaponLayout = new UIMenuItem(Game.GetGXTEntry("PIM_DISWLAY"), Game.GetGXTEntry("PIM_WEAPLAY_D_4"));
+
+            /* available descriptions (default is d_1)
+              "PIM_BALLIS_D_1": "Ballistic Equipment Services options.",
+              "PIM_BALLIS_D_2": "Request Ballistic Equipment",
+              "PIM_BALLIS_D_3": "Remove Ballistic Equipment",
+              "PIM_BALLIS_D_4": "You do not currently own the Ballistic Equipment. Purchase it at www.warstock-cache-and-carry.com.",
+             */
+            UIMenuItem ballisticEqItem = new UIMenuItem(Game.GetGXTEntry("PIM_BALLIS"), Game.GetGXTEntry("PIM_BALLIS_D_1"));
+            UIMenu ballisticEqMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_TBALLI"));
+
+            /* available descriptions (default is PIM_DRONEPUR or PIM_DRONSTAR)
+              "PIM_DRONAMISO": "Nano Drone is not available while active on this mission.",
+              "PIM_DRONAMOS": "You are not in a safe place to launch the Nano Drone.",
+              "PIM_DRONAVT": "Nano Drone available again in ~a~.",
+              "PIM_DRONEPUR": "You do not currently own the Nano Drone. Purchase the Drone Station upgrade in the Arcade Property to gain access.",
+              "PIM_DRONEUNP": "Nano Drone unavailable while inside a property.",
+              "PIM_DRONEUNV": "Nano Drone unavailable while in a vehicle.",
+              "PIM_DRONSTAR": "Deploy your Nano Drone.",
+             */
+            UIMenuItem nanoDroneItem = new UIMenuItem(Game.GetGXTEntry("PIM_REQDRONE"), Game.GetGXTEntry("PIM_DRONEPUR"));
+            UIMenu nanoDroneMenu = new UIMenu(playerName, Game.GetGXTEntry("")); // disabled in my game..
+            //TODO: BUY A NANO DRONE ONLINE.
+
+            // Collectibles (to be collected all around)
+            // Daily collectibles (to be collected all around)
+            // Vehicle discount (to be understood before)
+
+            inventoryMenu.AddItem(radioStationItem);
+            radioStationItem.BindItemToMenu(radioStationMenu);
+
+            inventoryMenu.AddItem(phoneContactsItem);
+            phoneContactsItem.BindItemToMenu(phoneContactsMenu);
+
+            inventoryMenu.AddItem(cashItem);
+            cashItem.BindItemToMenu(cashMenu);
+
+            inventoryMenu.AddItem(bodyArmorItem);
+            bodyArmorItem.BindItemToMenu(bodyArmorMenu);
+
+            inventoryMenu.AddItem(snacksItem);
+            snacksItem.BindItemToMenu(snacksMenu);
+
+            inventoryMenu.AddItem(ammoItem);
+            ammoItem.BindItemToMenu(ammoMenu);
+
+            inventoryMenu.AddItem(customWeaponLayout);
+
+            inventoryMenu.AddItem(ballisticEqItem);
+            ballisticEqItem.BindItemToMenu(ballisticEqMenu);
+
+            inventoryMenu.AddItem(nanoDroneItem);
+            nanoDroneItem.BindItemToMenu(nanoDroneMenu);
 
             #endregion
 
             #region Style
 
             UIMenuItem style = new UIMenuItem(Game.GetGXTEntry("PIM_TSTYL"), Game.GetGXTEntry("PIM_HSTYL"));
-            UIMenu styleMenu = new UIMenu(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("PIM_TITLESTYL"));
+            UIMenu styleMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_TITLESTYL"));
             style.BindItemToMenu(styleMenu);
             interactionMenu.AddItem(style);
+
+            UIMenuItem changeAppear = new UIMenuItem(Game.GetGXTEntry("PIM_TCHAP"), Game.GetGXTEntry("PIM_HCHAP"));
+            changeAppear.SetRightLabel("$");
+            // TODO: in my GTA:O i have to pay 100000$ i think the amount changes based on the XP? CHECK IF THIS CHANGES SOMEHOW
+
+            /* available descriptions (default PIM_HACCE, in my online is PIM_HACCEO.. dunno why)
+              "PIM_HACCE": "Swap between accessories for a new look.",
+              "PIM_HACCEB": "Accessories are unavailable while you are The Beast.",
+              "PIM_HACCEG": "Accessories are unavailable with this outfit.",
+              "PIM_HACCEJ": "Accessories are unavailable during this Job.",
+              "PIM_HACCEO": "Accessories are unavailable at this time.",
+              "PIM_HACCEP": "Accessories are unavailable during this Job.",
+             */
+            UIMenuItem accessoriesItem = new UIMenuItem(Game.GetGXTEntry("PIM_TACCE"), Game.GetGXTEntry("PIM_HACCE"));
+            UIMenu accessoriesMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_UACCE"));
+
+            UIMenuItem parachuteItem = new UIMenuItem(Game.GetGXTEntry("PIM_TCHUTE"), Game.GetGXTEntry("PIM_HCHUTE"));
+            UIMenu parachuteMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_PARAT"));
+
+            // TODO: FINISH THIS
+
+            styleMenu.AddItem(changeAppear);
+
+            accessoriesItem.BindItemToMenu(accessoriesMenu);
+            styleMenu.AddItem(accessoriesItem);
+
+            parachuteItem.BindItemToMenu(parachuteMenu);
+            styleMenu.AddItem(parachuteItem);
+
 
             #endregion
 
@@ -374,7 +502,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             #region Services
             // PIM_HSERVICES for not having... PIM_HSERVICES2 for when unlocked
             UIMenuItem services = new UIMenuItem("Services", Game.GetGXTEntry("PIM_HSERVICES"));
-            UIMenu servicesMenu = new UIMenu(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("PIM_HSECTIT"));
+            UIMenu servicesMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_HSECTIT"));
             services.BindItemToMenu(servicesMenu);
             interactionMenu.AddItem(services);
 
@@ -382,7 +510,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             #region MapBlipOptions
             UIMenuItem mapBlipOpt = new UIMenuItem(Game.GetGXTEntry("PIM_THIDE"), Game.GetGXTEntry("PIM_HHIDS"));
-            UIMenu mapBlipOptMenu = new UIMenu(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("PIM_TITHS"));
+            UIMenu mapBlipOptMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_TITHS"));
             mapBlipOpt.BindItemToMenu(mapBlipOptMenu);
             interactionMenu.AddItem(mapBlipOpt);
 
@@ -391,7 +519,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             #region ImpromptuRace
 
             UIMenuItem impromptuRace = new UIMenuItem(Game.GetGXTEntry("PIM_TITLE11"), Game.GetGXTEntry("PIM_HR2P"));
-            UIMenu impromptuRaceMenu = new UIMenu(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("R2P_MENU"));
+            UIMenu impromptuRaceMenu = new UIMenu(playerName, Game.GetGXTEntry("R2P_MENU"));
             impromptuRace.BindItemToMenu(impromptuRaceMenu);
             interactionMenu.AddItem(impromptuRace);
 
@@ -401,7 +529,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             // TODO: FIND CORRECT DESCRIPTION IN GTA:O
             UIMenuItem highlightPlayer = new UIMenuItem(Game.GetGXTEntry("PIM_THIGH"), Game.GetGXTEntry("PIM_HHIGH"));
-            UIMenu highlightPlayerMenu = new UIMenu(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("PIM_TITLE12"));
+            UIMenu highlightPlayerMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_TITLE12"));
             highlightPlayer.BindItemToMenu(highlightPlayerMenu);
             interactionMenu.AddItem(highlightPlayer);
 
@@ -464,7 +592,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
 
             UIMenuListItem playerTargeting = new UIMenuListItem(Game.GetGXTEntry("PIM_TAAF"), targetingList, 0, Game.GetGXTEntry("PIM_HSPL").Replace("GTA Online", "The Last Galaxy"));
-            interactionMenu.AddItem(spawnLoc);
+            interactionMenu.AddItem(playerTargeting);
 
             #endregion
 
