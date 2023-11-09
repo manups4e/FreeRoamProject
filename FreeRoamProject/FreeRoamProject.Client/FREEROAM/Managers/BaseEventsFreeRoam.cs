@@ -167,7 +167,12 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
                     deathType = DeathType.Bystander;
             }
 
-            func_19419(deathType, NetworkGetPlayerIndexFromPed(ped), killer, false, (int)weaponHash);
+            int player = NetworkGetPlayerIndexFromPed(ped);
+            if (player == -1)
+            {
+                return; // Ped was not a player
+            }
+            func_19419(deathType, player, killer, false, (int)weaponHash);
 
             if (isVictim)
             {
