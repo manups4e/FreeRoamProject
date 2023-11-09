@@ -1,6 +1,4 @@
-﻿using FreeRoamProject.Shared.Core;
-
-namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
+﻿namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 {
     // TODO: WE NEED TO ADD KILLSTREAK TO THE STATS.. MAYBE TEMP STAT SO THAT WE CAN CHECK IT
     static class BaseEventsFreeRoam
@@ -12,6 +10,36 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
         {
             AccessingEvents.OnFreeRoamSpawn += FreeRoamLogin_OnPlayerJoined;
             AccessingEvents.OnFreeRoamLeave += FreeRoamLogin_OnPlayerLeft;
+        }
+
+        private static TimerBarPool _timerBarPool = new();
+        private static ProgressTimerBar _respawnTimerBar;
+
+        private static async Task DrawRespawnTimer()
+        {
+            _timerBarPool.Draw();
+            _respawnTimerBar.Percentage += 0.0015f;
+            if (Input.IsControlPressed(Control.Jump))
+            {
+                _respawnTimerBar.Percentage += 0.0030f;
+            }
+            if (_respawnTimerBar.Percentage >= 1)
+            {
+                ClientMain.Instance.RemoveTick(DrawRespawnTimer);
+                _timerBarPool.Remove(_respawnTimerBar);
+                ScaleformUI.Main.InstructionalButtons.ClearButtonList();
+                Revive();
+            }
+            await Task.FromResult(0);
+        }
+
+        private static void BeginRespawn()
+        {
+            _respawnTimerBar = new ProgressTimerBar(Game.GetGXTEntry("KS_RESPAWN_B"));
+            _timerBarPool.Add(_respawnTimerBar);
+            ClientMain.Instance.AddTick(DrawRespawnTimer);
+            ScaleformUI.Main.InstructionalButtons.AddInstructionalButton(
+                new InstructionalButton(Control.Jump, Game.GetGXTEntry("HUD_INPUT27")));
         }
 
         private static void FreeRoamLogin_OnPlayerJoined(PlayerClient client)
@@ -76,32 +104,32 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
             {
                 Game.PlaySound("TextHit", "WastedSounds");
                 ScaleformUI.Main.BigMessageInstance.ShowMpWastedMessage("~r~" + Game.GetGXTEntry("RESPAWN_W_MP"), "");
-                await BaseScript.Delay(5000);
-                Revive();
+                BeginRespawn();
             }
         }
 
         private static async void OnPedKilledByPed(int ped, int attackerPed, uint weaponHash, bool isMeleeDamage)
         {
-            if (!IsPedAPlayer(ped)) return;
-
-            if (ped == PlayerPedId())
+            if (IsPedAPlayer(ped))
             {
-                Screen.Effects.Start(ScreenEffect.DeathFailMpIn);
-                Game.PlaySound("Bed", "WastedSounds");
-                GameplayCamera.Shake(CameraShake.DeathFail, 1f);
-                EventDispatcher.Send("tlg:onPlayerDied", -1, attackerPed, GetEntityCoords(ped, false).ToPosition());
-                Game.PlaySound("TextHit", "WastedSounds");
-                ScaleformUI.Main.BigMessageInstance.ShowMpWastedMessage("~r~" + Game.GetGXTEntry("RESPAWN_W_MP"), "");
-                await BaseScript.Delay(5000);
                 if (ped == PlayerPedId())
                 {
-                    Revive();
+                    Screen.Effects.Start(ScreenEffect.DeathFailMpIn);
+                    Game.PlaySound("Bed", "WastedSounds");
+                    GameplayCamera.Shake(CameraShake.DeathFail, 1f);
+                    EventDispatcher.Send("tlg:onPlayerDied", -1, attackerPed, GetEntityCoords(ped, false).ToPosition());
+                    Game.PlaySound("TextHit", "WastedSounds");
+                    ScaleformUI.Main.BigMessageInstance.ShowMpWastedMessage("~r~" + Game.GetGXTEntry("RESPAWN_W_MP"), "");
+                    await BaseScript.Delay(5000);
+                    if (ped == PlayerPedId())
+                    {
+                        BeginRespawn();
+                    }
+                    func_19419(DeathType.Victim, NetworkGetPlayerIndexFromPed(ped), 0, false, (int)weaponHash);
                 }
-                func_19419(DeathType.Victim, NetworkGetPlayerIndexFromPed(ped), 0, false, (int)weaponHash);
+                else
+                    func_19419(DeathType.Bystander, NetworkGetPlayerIndexFromPed(ped), 0, false, (int)weaponHash);
             }
-            else
-                func_19419(DeathType.Bystander, NetworkGetPlayerIndexFromPed(ped), 0, false, (int)weaponHash);
         }
 
         private static async void OnPedDied(int ped, int attacker, uint weaponHash, bool isMeleeDamage)
@@ -114,30 +142,23 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
                 GameplayCamera.Shake(CameraShake.DeathFail, 1f);
                 Game.PlaySound("TextHit", "WastedSounds");
                 ScaleformUI.Main.BigMessageInstance.ShowMpWastedMessage("~r~" + Game.GetGXTEntry("RESPAWN_W_MP"), "");
+                BeginRespawn();
             }
             EventDispatcher.Send("tlg:onPlayerDied", suicide ? 0 : -1, attacker, GetEntityCoords(ped, false).ToPosition());
-            if (IsPedAPlayer(ped))
+            if (suicide)
             {
-                if (suicide)
+                if (ped == PlayerPedId())
                 {
-                    if (ped == PlayerPedId())
-                    {
-                        GetKillingLabel("DM_U_SUIC", 0, 0);
-                    }
-                    else
-                    {
-                        GetKillingLabel("DM_O_SUIC", NetworkGetPlayerIndexFromPed(ped), 0);
-                    }
+                    GetKillingLabel("DM_U_SUIC", 0, 0);
                 }
                 else
                 {
-                    GetKillingLabel("TICK_DIED", NetworkGetPlayerIndexFromPed(ped), 0);
+                    GetKillingLabel("DM_O_SUIC", NetworkGetPlayerIndexFromPed(ped), 0);
                 }
-                if (ped == PlayerPedId())
-                {
-                    await BaseScript.Delay(5000);
-                    Revive();
-                }
+            }
+            else
+            {
+                GetKillingLabel("TICK_DIED", NetworkGetPlayerIndexFromPed(ped), 0);
             }
         }
 
@@ -180,8 +201,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 
             if (isVictim)
             {
-                await BaseScript.Delay(5000);
-                Revive();
+                BeginRespawn();
             }
         }
 
