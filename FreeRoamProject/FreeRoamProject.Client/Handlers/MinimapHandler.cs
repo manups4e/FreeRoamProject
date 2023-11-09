@@ -66,16 +66,25 @@ namespace FreeRoamProject.Client.Handlers
                     {
                         Blip blip = client.Ped.AttachedBlip;
                         BlipSprite sprite = BlipSprite.Standard;
+                        ShowHeadingIndicatorOnBlip(blip.Handle, true);
                         if (client.Status.PlayerStates.InVehicle)
                         {
                             Model model = client.Ped.CurrentVehicle.Model;
 
                             if (model.IsHelicopter)
                                 sprite = (BlipSprite)422;
-                            else if (model.IsPlane)
+                            else if (model.IsPlane && !JetHashes.Contains(model))
+                            {
                                 sprite = (BlipSprite)423;
+                                ShowHeadingIndicatorOnBlip(blip.Handle, false);
+                                SetBlipSquaredRotation(blip.Handle, client.Ped.Heading);
+                            }
                             else if (JetHashes.Contains(model))
+                            {
                                 sprite = (BlipSprite)424;
+                                ShowHeadingIndicatorOnBlip(blip.Handle, false);
+                                SetBlipSquaredRotation(blip.Handle, client.Ped.Heading);
+                            }
                             /*
                             else if (model.IsBoat)
                                 sprite = (BlipSprite)427;
