@@ -1,4 +1,5 @@
-﻿using FreeRoamProject.Shared.Core;
+﻿using System.Threading.Tasks;
+using FreeRoamProject.Shared.Core;
 
 namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 {
@@ -12,6 +13,36 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
         {
             AccessingEvents.OnFreeRoamSpawn += FreeRoamLogin_OnPlayerJoined;
             AccessingEvents.OnFreeRoamLeave += FreeRoamLogin_OnPlayerLeft;
+        }
+
+        private static TimerBarPool _timerBarPool = new();
+        private static ProgressTimerBar _respawnTimerBar;
+
+        private static async Task DrawRespawnTimer()
+        {
+            _timerBarPool.Draw();
+            _respawnTimerBar.Percentage += 0.0015f;
+            if (Input.IsControlPressed(Control.Jump))
+            {
+                _respawnTimerBar.Percentage += 0.0030f;
+            }
+            if (_respawnTimerBar.Percentage >= 1)
+            {
+                ClientMain.Instance.RemoveTick(DrawRespawnTimer);
+                _timerBarPool.Remove(_respawnTimerBar);
+                ScaleformUI.Main.InstructionalButtons.ClearButtonList();
+                Revive();
+            }
+            await Task.FromResult(0);
+        }
+
+        private static void BeginRespawn()
+        {
+            _respawnTimerBar = new ProgressTimerBar(Game.GetGXTEntry("KS_RESPAWN_B"));
+            _timerBarPool.Add(_respawnTimerBar);
+            ClientMain.Instance.AddTick(DrawRespawnTimer);
+            ScaleformUI.Main.InstructionalButtons.AddInstructionalButton(
+                new InstructionalButton(Control.Jump, Game.GetGXTEntry("HUD_INPUT27")));
         }
 
         private static void FreeRoamLogin_OnPlayerJoined(PlayerClient client)
@@ -75,8 +106,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
             {
                 Game.PlaySound("TextHit", "WastedSounds");
                 ScaleformUI.Main.BigMessageInstance.ShowMpWastedMessage("~r~" + Game.GetGXTEntry("RESPAWN_W_MP"), "");
-                await BaseScript.Delay(5000);
-                Revive();
+                BeginRespawn();
             }
         }
 
@@ -95,7 +125,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
                     await BaseScript.Delay(5000);
                     if (ped == PlayerPedId())
                     {
-                        Revive();
+                        BeginRespawn();
                     }
                     func_19419(DeathType.Victim, NetworkGetPlayerIndexFromPed(ped), 0, false, (int)weaponHash);
                 }
@@ -114,6 +144,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
                 GameplayCamera.Shake(CameraShake.DeathFail, 1f);
                 Game.PlaySound("TextHit", "WastedSounds");
                 ScaleformUI.Main.BigMessageInstance.ShowMpWastedMessage("~r~" + Game.GetGXTEntry("RESPAWN_W_MP"), "");
+                BeginRespawn();
             }
             EventDispatcher.Send("tlg:onPlayerDied", suicide ? 0 : -1, attacker, GetEntityCoords(ped, false).ToPosition());
             if (suicide)
@@ -130,11 +161,6 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
             else
             {
                 GetKillingLabel("TICK_DIED", NetworkGetPlayerIndexFromPed(ped), 0);
-            }
-            if (ped == PlayerPedId())
-            {
-                await BaseScript.Delay(5000);
-                Revive();
             }
         }
 
@@ -176,8 +202,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 
             if (isVictim)
             {
-                await BaseScript.Delay(5000);
-                Revive();
+                BeginRespawn();
             }
         }
 
