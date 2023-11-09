@@ -1,4 +1,7 @@
-﻿namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
+﻿using FreeRoamProject.Shared.Core;
+using System.Threading.Tasks;
+
+namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 {
     // TODO: WE NEED TO ADD KILLSTREAK TO THE STATS.. MAYBE TEMP STAT SO THAT WE CAN CHECK IT
     static class BaseEventsFreeRoam
