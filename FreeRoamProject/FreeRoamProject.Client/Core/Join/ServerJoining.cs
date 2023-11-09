@@ -57,8 +57,8 @@ namespace FreeRoamProject.Client.Core.Ingresso
             // utility events.. to be fixed (remove non utility events and move them)
             Events.Init();
             PlayerCache.MyPlayer.Ped.IsPositionFrozen = true;
-            PlayerCache.MyPlayer.Player.IgnoredByPolice = true;
-            PlayerCache.MyPlayer.Player.DispatchsCops = false;
+            PlayerCache.MyPlayer.Player.IgnoredByPolice = false;
+            PlayerCache.MyPlayer.Player.DispatchsCops = true;
             //Screen.Hud.IsRadarVisible = false;
             Screen.Hud.IsRadarVisible = true;
             // TODO: maybe this part too 🤔
