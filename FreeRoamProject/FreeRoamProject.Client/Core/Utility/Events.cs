@@ -173,7 +173,7 @@ namespace FreeRoamProject.Client.Core.Utility
         {
             WeaponHash weaponHash = (WeaponHash)GetHashKey(weaponName);
             GiveWeaponToPed(PlayerPedId(), (uint)weaponHash, ammo, true, false);
-            SetPedAmmo(PlayerPedId(), (uint)weaponHash, 0);
+            SetPedAmmo(PlayerPedId(), (uint)weaponHash, ammo);
         }
 
         public static void RemoveWeapon(string weaponName)
