@@ -85,13 +85,15 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             Ped playerPed = PlayerCache.MyPlayer.Ped;
             Player me = PlayerCache.MyPlayer.Player;
             Point pos = new Point(5, 5);
-            UIMenu PersonalMenu = new UIMenu(Game.Player.Name, Game.GetGXTEntry("PIM_TITLE1"), pos, "commonmenu", "interaction_bgd", true, true);
-            PersonalMenu.BuildingAnimation = MenuBuildingAnimation.NONE;
+            UIMenu interactionMenu = new UIMenu(Game.Player.Name, Game.GetGXTEntry("PIM_TITLE1"), pos, "commonmenu", "interaction_bgd", true, true);
+            interactionMenu.BuildingAnimation = MenuBuildingAnimation.NONE;
 
             #region Quick GPS
+            // TODO: MAKE THE QUICK_GPS LIST ON RUNTIME.. YOU NEVER KNOW WHAT MUST BE ADDED AND WHAT NOT..
+            // SO WE CAN'T CHECK BY THE INDEX, BUT BY THE LIST CURRENT INDEX LABEL.
             UIMenuListItem gpsItem = new UIMenuListItem(Game.GetGXTEntry("PIM_TQGPS"), gps, 0);
-            PersonalMenu.AddItem(gpsItem);
-            PersonalMenu.OnListSelect += async (menu, _item, _itemIndex) =>
+            interactionMenu.AddItem(gpsItem);
+            interactionMenu.OnListSelect += async (menu, _item, _itemIndex) =>
             {
                 if (_item != gpsItem) return;
                 int var;
@@ -179,11 +181,129 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             #endregion
 
-            #region Vehicle controls
-            UIMenuItem vehContrItem = new UIMenuItem("Vehicle controls");
+            #region Gangs
+
+            UIMenuItem gangsItem = new(Game.GetGXTEntry("PIM_REGBOSS"), Game.GetGXTEntry("PIM_REGMAGHELPB"));
+            UIMenu gangsMenu = new(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("PIM_REGBOSSTIT"));
+            gangsItem.BindItemToMenu(gangsMenu);
+            interactionMenu.AddItem(gangsItem);
+
+            // TODO: UNCENSORED IS SO ESX... WE WANT A GANG NAME BUT ALSO A SIMPLE CHECK IsBoss true/false...
+            if (PlayerCache.MyPlayer.User.Character.Gang.Name == "Uncensored")
+            {
+                UIMenuItem becomeBoss = new UIMenuItem("Become a gang boss!");
+                List<dynamic> job = new List<dynamic>() { Game.GetGXTEntry("FE_HLP31"), Game.GetGXTEntry("FE_HLP29") };
+                UIMenuListItem lookingForJob = new UIMenuListItem("Looking for a \"Job\"", job, 0, GetLabelText("PIM_MAGH0D"));
+                gangsMenu.AddItem(becomeBoss);
+                gangsMenu.AddItem(lookingForJob);
+                // GB_BECOMEB = You are now the CEO of ~a~~s~
+                // GB_GOON_OPEN = Hold ~INPUT_VEH_EXIT~to open the door for your Boss
+                becomeBoss.Activated += async (menu, item) =>
+                {
+                    if (PlayerCache.MyPlayer.User.Bank > 5000)
+                    {
+                        // TODO: ADD CHECK FOR ACTIVE CONCURRENT GANGS (CEO, BIKERS, WHATEVER) PER BUCKET
+                        //if (Main.ActiveGangs.Count < 3)
+                        {
+                            string gname = await Functions.GetUserInput("Gang name", "", 15);
+                            MenuHandler.CloseAndClearHistory();
+                            ScaleformUI.Main.BigMessageInstance.ShowSimpleShard("Boss", $"You have become the Boss of the ~o~{gname}~w~ gang.");
+                            Game.PlaySound("Boss_Message_Orange", "GTAO_Boss_Goons_FM_Soundset");
+                            PlayerCache.MyPlayer.User.Character.Gang = new Gang(gname, 5);
+                            //Main.ActiveGangs.Add(new Gang(gname, Main.ActiveGangs.Count + 1));
+
+                        }
+                        /*
+                        else
+                        {
+                            Notifications.ShowNotification("There are already too many active Criminal Gangs in session.~n~Please try again at another time.", NotificationColor.Red, true);
+                        }
+                        */
+                    }
+                    else
+                    {
+                        Notifications.ShowNotification("You don't have enough bank funds to become a Boss!", NotificationColor.Red, true);
+                    }
+                };
+            }
+            else
+            {
+                if (PlayerCache.MyPlayer.User.Character.Gang.Grade > 4)
+                {
+                    UIMenuItem hireItem = new UIMenuItem("Recruit members");
+                    UIMenu hire = new("Recruit members", Game.GetGXTEntry("PIM_TITLE1"));
+                    UIMenuItem manageItem = new UIMenuItem("Gang management");
+                    UIMenu manage = new("Gang management", Game.GetGXTEntry("PIM_TITLE1"));
+                    UIMenuItem featuresBossItem = new UIMenuItem("Boss's features");
+                    UIMenu featuresBoss = new("Boss's features", Game.GetGXTEntry("PIM_TITLE1"));
+                    hireItem.BindItemToMenu(hire);
+                    manageItem.BindItemToMenu(manage);
+                    featuresBossItem.BindItemToMenu(featuresBoss);
+                    gangsMenu.AddItem(hireItem);
+                    gangsMenu.AddItem(manageItem);
+                    gangsMenu.AddItem(featuresBossItem);
+
+
+                    UIMenuItem retire = new UIMenuItem("Retire", "Warning.. you won't be able to set up a new gang before 6 hours!");
+                    gangsMenu.AddItem(retire);
+                    retire.Activated += (menu, item) =>
+                    {
+                        MenuHandler.CloseAndClearHistory();
+                        //Main.ActiveGangs.Remove(PlayerCache.MyPlayer.User.Character.Gang);
+                        ScaleformUI.Main.BigMessageInstance.ShowSimpleShard("Retired", $"You're no longer the boss of the ~o~{PlayerCache.MyPlayer.User.Character.Gang.Name}~w~ gang.");
+                        Game.PlaySound("Boss_Message_Orange", "GTAO_Boss_Goons_FM_Soundset");
+                        PlayerCache.MyPlayer.User.Character.Gang = new Gang("Uncensored", 0);
+                    };
+                }
+                else
+                {
+                    UIMenuItem retire = new UIMenuItem("Retire", "Stop working for your current boss");
+                    gangsMenu.AddItem(retire);
+                    retire.Activated += (menu, item) =>
+                    {
+                        MenuHandler.CloseAndClearHistory();
+                        ScaleformUI.Main.BigMessageInstance.ShowSimpleShard("Retired", $"You're not a member of the ~o~{PlayerCache.MyPlayer.User.Character.Gang.Name}~w~ gang anymore.");
+                        Game.PlaySound("Boss_Message_Orange", "GTAO_Boss_Goons_FM_Soundset");
+                        PlayerCache.MyPlayer.User.Character.Gang = new Gang("Uncensored", 0);
+                    };
+                }
+            }
+
+            #endregion
+
+            #region Objectives
+
+            UIMenuItem objectives = new UIMenuItem(Game.GetGXTEntry("PIM_TDOBJ"), Game.GetGXTEntry("PIM_HDOBJ"));
+            UIMenu objectivesMenu = new UIMenu(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("PIM_TITLE_67"));
+            objectives.BindItemToMenu(objectivesMenu);
+            interactionMenu.AddItem(objectives);
+
+            #endregion
+
+            #region Inventory
+
+            UIMenuItem inventory = new UIMenuItem(Game.GetGXTEntry("PIM_TINVE"), Game.GetGXTEntry("PIM_HINVE"));
+            UIMenu inventoryMenu = new UIMenu(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("PIM_TITLE2"));
+            inventory.BindItemToMenu(inventoryMenu);
+            interactionMenu.AddItem(inventory);
+
+            #endregion
+
+            #region Style
+
+            UIMenuItem style = new UIMenuItem(Game.GetGXTEntry("PIM_TSTYL"), Game.GetGXTEntry("PIM_HSTYL"));
+            UIMenu styleMenu = new UIMenu(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("PIM_TITLESTYL"));
+            style.BindItemToMenu(styleMenu);
+            interactionMenu.AddItem(style);
+
+            #endregion
+
+            #region Vehicles
+            // also PIM_HVEHIUNAVIL for when inside the Moblie Operations Center
+            UIMenuItem vehContrItem = new UIMenuItem(Game.GetGXTEntry("PIM_TVEHI"), Game.GetGXTEntry("PIM_HVEHI"));
             UIMenu vehContr = new("Vehicle controls", Game.GetGXTEntry("PIM_TITLE1"));
             vehContrItem.BindItemToMenu(vehContr);
-            PersonalMenu.AddItem(vehContrItem);
+            interactionMenu.AddItem(vehContrItem);
             UIMenuItem fuel = new UIMenuItem("Vehicle fuel saved");
             UIMenuCheckboxItem save = new UIMenuCheckboxItem("Save Vehicle", saved);
             UIMenuCheckboxItem close = new UIMenuCheckboxItem("Door lock", closed);
@@ -251,10 +371,107 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             #endregion
 
+            #region Services
+            // PIM_HSERVICES for not having... PIM_HSERVICES2 for when unlocked
+            UIMenuItem services = new UIMenuItem("Services", Game.GetGXTEntry("PIM_HSERVICES"));
+            UIMenu servicesMenu = new UIMenu(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("PIM_HSECTIT"));
+            services.BindItemToMenu(servicesMenu);
+            interactionMenu.AddItem(services);
+
+            #endregion
+
+            #region MapBlipOptions
+            UIMenuItem mapBlipOpt = new UIMenuItem(Game.GetGXTEntry("PIM_THIDE"), Game.GetGXTEntry("PIM_HHIDS"));
+            UIMenu mapBlipOptMenu = new UIMenu(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("PIM_TITHS"));
+            mapBlipOpt.BindItemToMenu(mapBlipOptMenu);
+            interactionMenu.AddItem(mapBlipOpt);
+
+            #endregion
+
+            #region ImpromptuRace
+
+            UIMenuItem impromptuRace = new UIMenuItem(Game.GetGXTEntry("PIM_TITLE11"), Game.GetGXTEntry("PIM_HR2P"));
+            UIMenu impromptuRaceMenu = new UIMenu(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("R2P_MENU"));
+            impromptuRace.BindItemToMenu(impromptuRaceMenu);
+            interactionMenu.AddItem(impromptuRace);
+
+            #endregion
+
+            #region Highlight player
+
+            // TODO: FIND CORRECT DESCRIPTION IN GTA:O
+            UIMenuItem highlightPlayer = new UIMenuItem(Game.GetGXTEntry("PIM_THIGH"), Game.GetGXTEntry("PIM_HHIGH"));
+            UIMenu highlightPlayerMenu = new UIMenu(PlayerCache.MyPlayer.Player.Name, Game.GetGXTEntry("PIM_TITLE12"));
+            highlightPlayer.BindItemToMenu(highlightPlayerMenu);
+            interactionMenu.AddItem(highlightPlayer);
+
+            #endregion
+
+            #region VoiceChat
+
+            // TODO: FIND CORRECT DESCRIPTION IN GTA:O
+            // TODO: SAVE, APPLY AND REAPPLY ON JOIN
+            //ADD CHECK FOR ORGANIZATION, GANG, MC TO ADD VOICE OPTION ONLY FOR TEAM
+            /*
+            "PM_CHT5": "Organization",
+            "PM_CHT5X0": "Gang",
+            "PM_CHT5X1": "Motorcycle Club",
+             */
+            List<dynamic> voices = new List<dynamic>()
+            {
+                Game.GetGXTEntry("PM_CHT0"),
+                Game.GetGXTEntry("PM_CHT1"),
+                Game.GetGXTEntry("PM_CHT2"),
+                Game.GetGXTEntry("PM_CHT3"),
+                Game.GetGXTEntry("PM_CHT4"),
+            };
+
+            UIMenuListItem voiceChat = new UIMenuListItem(Game.GetGXTEntry("PIM_TCHT"), voices, 0, Game.GetGXTEntry("PIM_HCHT"));
+            interactionMenu.AddItem(voiceChat);
+
+            #endregion
+
+            #region Spawn Location
+
+            // TODO: add spawn locations... maybe this item is avail only when properties are purchased? if not.. we can choose only last one or random..
+            // TODO: SAVE, APPLY AND REAPPLY ON JOIN
+            List<dynamic> spawnLocsList = new List<dynamic>()
+            {
+                Game.GetGXTEntry("PM_SPAWN_LL"),
+                Game.GetGXTEntry("PM_SPAWN_R")
+            };
+            UIMenuListItem spawnLoc = new UIMenuListItem(Game.GetGXTEntry("PIM_TSPL"), spawnLocsList, 0, Game.GetGXTEntry("PIM_HSPL").Replace("GTA Online", "The Last Galaxy"));
+            interactionMenu.AddItem(spawnLoc);
+
+            #endregion
+
+            #region Player Targeting mode
+
+            // TODO: SAVE, APPLY AND REAPPLY ON JOIN
+            List<dynamic> targetingList = new List<dynamic>()
+            {
+                Game.GetGXTEntry("PIM_AAF0"),// "Everyone",
+                Game.GetGXTEntry("PIM_AAF1"),// "Strangers",
+                Game.GetGXTEntry("PIM_AAF2"),// "Attackers",
+            };
+
+            // TODO IN THE INDEXCHANGED EVENT.. UPDATE DESCRIPTION BASED ON THE SELECTION
+            /*
+                "PIM_HAAF0": "Treat all players (friends and non-friends) as threats.",
+                "PIM_HAAF1": "Treat all non-friend players as threats.",
+                "PIM_HAAF2": "Treat all non-friend players who damage you as threats.",
+            */
+
+
+            UIMenuListItem playerTargeting = new UIMenuListItem(Game.GetGXTEntry("PIM_TAAF"), targetingList, 0, Game.GetGXTEntry("PIM_HSPL").Replace("GTA Online", "The Last Galaxy"));
+            interactionMenu.AddItem(spawnLoc);
+
+            #endregion
+
             #region Animations and style
 
             List<dynamic> moods = new List<dynamic>()
-            {
+                {
                 "Determined",
                 "Sad",
                 "Depressed",
@@ -264,7 +481,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 "Moody",
                 "Stressed",
                 "Lazy"
-            };
+                };
             List<dynamic> attitude = new List<dynamic>()
             {
                 "Fierce",
@@ -300,7 +517,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             UIMenu mood = new("Walking style", Game.GetGXTEntry("PIM_TITLE1"));
             AnimAndStyleItem.BindItemToMenu(AnimAndStyle);
             moodItem.BindItemToMenu(mood);
-            PersonalMenu.AddItem(AnimAndStyleItem);
+            interactionMenu.AddItem(AnimAndStyleItem);
             AnimAndStyle.AddItem(moodItem);
 
             UIMenuListItem Item1 = new UIMenuListItem("Moods", moods, 0, "How your character feels today?");
@@ -851,129 +1068,38 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             #endregion
 
-            #region Gangs
-
-            UIMenuItem gangsItem = new("Criminal gangs", "Establish and manage your own criminal gang!");
-            UIMenu gangsMenu = new("Criminal gangs", Game.GetGXTEntry("PIM_TITLE1"));
-            gangsItem.BindItemToMenu(gangsMenu);
-            PersonalMenu.AddItem(gangsItem);
-
-            if (me.GetPlayerData().Character.Gang.Name == "Uncensored")
-            {
-                UIMenuItem becomeBoss = new UIMenuItem("Become a gang boss!");
-                List<dynamic> job = new List<dynamic>() { Game.GetGXTEntry("FE_HLP31"), Game.GetGXTEntry("FE_HLP29") };
-                UIMenuListItem lookingForJob = new UIMenuListItem("Looking for a \"Job\"", job, 0, GetLabelText("PIM_MAGH0D"));
-                gangsMenu.AddItem(becomeBoss);
-                gangsMenu.AddItem(lookingForJob);
-                // GB_BECOMEB = You are now the CEO of ~a~~s~
-                // GB_GOON_OPEN = Hold ~INPUT_VEH_EXIT~to open the door for your Boss
-                becomeBoss.Activated += async (menu, item) =>
-                {
-                    if (me.GetPlayerData().Bank > 5000)
-                    {
-                        // TODO: ADD CHECK FOR ACTIVE CONCURRENT GANGS (CEO, BIKERS, WHATEVER) PER BUCKET
-                        //if (Main.ActiveGangs.Count < 3)
-                        {
-                            string gname = await Functions.GetUserInput("Gang name", "", 15);
-                            MenuHandler.CloseAndClearHistory();
-                            ScaleformUI.Main.BigMessageInstance.ShowSimpleShard("Boss", $"You have become the Boss of the ~o~{gname}~w~ gang.");
-                            Game.PlaySound("Boss_Message_Orange", "GTAO_Boss_Goons_FM_Soundset");
-                            PlayerCache.MyPlayer.User.Character.Gang = new Gang(gname, 5);
-                            //Main.ActiveGangs.Add(new Gang(gname, Main.ActiveGangs.Count + 1));
-
-                        }
-                        /*
-                        else
-                        {
-                            Notifications.ShowNotification("There are already too many active Criminal Gangs in session.~n~Please try again at another time.", NotificationColor.Red, true);
-                        }
-                        */
-                    }
-                    else
-                    {
-                        Notifications.ShowNotification("You don't have enough bank funds to become a Boss!", NotificationColor.Red, true);
-                    }
-                };
-            }
-            else
-            {
-                if (me.GetPlayerData().Character.Gang.Grade > 4)
-                {
-                    UIMenuItem hireItem = new UIMenuItem("Recruit members");
-                    UIMenu hire = new("Recruit members", Game.GetGXTEntry("PIM_TITLE1"));
-                    UIMenuItem manageItem = new UIMenuItem("Gang management");
-                    UIMenu manage = new("Gang management", Game.GetGXTEntry("PIM_TITLE1"));
-                    UIMenuItem featuresBossItem = new UIMenuItem("Boss's features");
-                    UIMenu featuresBoss = new("Boss's features", Game.GetGXTEntry("PIM_TITLE1"));
-                    hireItem.BindItemToMenu(hire);
-                    manageItem.BindItemToMenu(manage);
-                    featuresBossItem.BindItemToMenu(featuresBoss);
-                    gangsMenu.AddItem(hireItem);
-                    gangsMenu.AddItem(manageItem);
-                    gangsMenu.AddItem(featuresBossItem);
-
-
-                    UIMenuItem retire = new UIMenuItem("Retire", "Warning.. you won't be able to set up a new gang before 6 hours!");
-                    gangsMenu.AddItem(retire);
-                    retire.Activated += (menu, item) =>
-                    {
-                        MenuHandler.CloseAndClearHistory();
-                        //Main.ActiveGangs.Remove(me.GetPlayerData().Character.Gang);
-                        ScaleformUI.Main.BigMessageInstance.ShowSimpleShard("Retired", $"You're no longer the boss of the ~o~{me.GetPlayerData().Character.Gang.Name}~w~ gang.");
-                        Game.PlaySound("Boss_Message_Orange", "GTAO_Boss_Goons_FM_Soundset");
-                        PlayerCache.MyPlayer.User.Character.Gang = new Gang("Uncensored", 0);
-                    };
-                }
-                else
-                {
-                    UIMenuItem retire = new UIMenuItem("Retire", "Stop working for your current boss");
-                    gangsMenu.AddItem(retire);
-                    retire.Activated += (menu, item) =>
-                    {
-                        MenuHandler.CloseAndClearHistory();
-                        ScaleformUI.Main.BigMessageInstance.ShowSimpleShard("Retired", $"You're not a member of the ~o~{me.GetPlayerData().Character.Gang.Name}~w~ gang anymore.");
-                        Game.PlaySound("Boss_Message_Orange", "GTAO_Boss_Goons_FM_Soundset");
-                        PlayerCache.MyPlayer.User.Character.Gang = new Gang("Uncensored", 0);
-                    };
-                }
-            }
-
-            #endregion
-
             #region Suicide
 
-            UIMenuListItem suicide = new UIMenuListItem(Game.GetGXTEntry("PIM_TKILS"), new List<dynamic>() { "Drugs", "Pistol" }, 0, "⚠️ ~r~WARNING~w~, assisted suicide is a very dangerous RP gamble.\nThe respawn time will be much less than usual and you will lose everything!");
-            PersonalMenu.AddItem(suicide);
-            suicide.OnListSelected += async (item, index) =>
+            UIMenuItem suicide = new(Game.GetGXTEntry("PIM_TKILS"), Game.GetGXTEntry("PIM_HKILS"));
+            suicide.SetRightLabel(Game.GetGXTEntry("PM_KYCOST"));
+            // TODO: handle when impossible to kill myself by disabling item and adding description:
+            // "PIM_HKILN": "No easy way out this time.",
+
+            interactionMenu.AddItem(suicide);
+            suicide.Activated += async (item, index) =>
             {
                 RequestAnimDict("mp_suicide");
                 while (!HasAnimDictLoaded("mp_suicide")) await BaseScript.Delay(0);
-                string var = item.Items[index] as string;
                 string Anim = "";
 
                 //TODO: TO BE CHECKED IF PLAYER HAS A GUN OR DRUGS WITH HIM
-                switch (item.Index)
-                {
-                    case 0:
-                        Anim = me.GetPlayerData().Character.Skin.Sex == "Male" ? "pill" : "pill_fp";
-                        break;
-                    case 1:
-                        Anim = me.GetPlayerData().Character.Skin.Sex == "Male" ? "PISTOL" : "PISTOL_FP";
-                        break;
-                }
 
-                if (Anim == "PISTOL" || Anim == "PISTOL_FP")
+                if (PlayerCache.MyPlayer.User.HasWeapon(WeaponHash.Pistol) || PlayerCache.MyPlayer.User.HasWeapon(WeaponHash.PistolMk2))
                 {
-                    if (playerPed.Weapons.HasWeapon(WeaponHash.Pistol))
+                    if (PlayerCache.MyPlayer.User.GetWeapon(WeaponHash.Pistol).Item2.Ammo > 0)
                     {
                         playerPed.Weapons.Select(WeaponHash.Pistol);
                     }
-                    else
+                    else if (PlayerCache.MyPlayer.User.GetWeapon(WeaponHash.PistolMk2).Item2.Ammo > 0)
                     {
-                        Notifications.ShowNotification("You can't commit gun suicide without having a gun!");
-
-                        return;
+                        playerPed.Weapons.Select(WeaponHash.Pistol);
                     }
+                    Anim = "PISTOL";
+                }
+                else
+                {
+                    playerPed.Weapons.Select(WeaponHash.Unarmed);
+                    Anim = "PILL";
                 }
 
                 MenuHandler.CloseAndClearHistory();
@@ -986,18 +1112,61 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             #endregion
 
-            PersonalMenu.OnMenuClose += (a) =>
+            #region PassiveMode
+
+            /*
+              "PIM_HPASI0": "Passive Mode prevents physical contact with other players and some Freemode activities. Passive Mode is disabled in Weaponized Vehicles.",
+              "PIM_HPASI1": "Passive Mode is not currently available.",
+              "PIM_HPASI2": "Passive Mode is not available when you have a Bounty on your head.",
+              "PIM_HPASI3": "Passive Mode will next be available in ~a~",
+              "PIM_HPASI4": "Passive Mode is not available when you are on a One on One Deathmatch.",
+              "PIM_HPASI5": "Passive Mode is not available.",
+              "PIM_HPASI6": "Passive Mode is not available while you are a key player in an Event.",
+              "PIM_HPASI7": "Enabling Passive Mode while active in this Event will remove you from the event.",
+              "PIM_HPASI8": "Passive mode cannot be changed while taking part in this event.",
+              "PIM_HPASI9": "You can't afford to use Passive Mode.",
+              "PIM_HPASI10": "Passive Mode is disabled when playing as a Boss.",
+              "PIM_HPASI11": "Passive Mode is disabled when playing as a Bodyguard, an Associate or a MC Member.",
+              "PIM_HPASI12": "Passive Mode is disabled when taking part in Freemode Work.",
+              "PIM_HPASI13": "Passive Mode is disabled while you are a key player in Freemode Work.",
+              "PIM_HPASI14": "Passive Mode is disabled when taking part in a Club activity.",
+              "PIM_HPASI15": "Passive Mode is disabled while you are a key player in a Club activity.",
+              "PIM_HPASI16": "Passive mode is disabled while using the Mobile Operations Center with the Command Center installed.",
+              "PIM_HPASI17": "Passive mode is disabled while using the Avenger.",
+              "PIM_HPASI18": "Passive Mode is disabled when using any form of Weaponized Vehicle.",
+              "PIM_HPASI19": "Passive Mode is disabled as you have recently killed a player. It will be available in ~a~",
+              "PIM_HPASI21": "Passive mode is disabled while using the Nerve Center.",
+            */
+            UIMenuItem passive = new UIMenuItem(Game.GetGXTEntry("PM_SETTING_0"), Game.GetGXTEntry("PIM_HPASI0"));
+            interactionMenu.AddItem(passive);
+
+
+            #endregion
+
+            interactionMenu.OnMenuClose += (a) =>
             {
                 open = false;
             };
-            PersonalMenu.Visible = true;
+            interactionMenu.Visible = true;
         }
 
         public static async Task Enable()
         {
-            if (Input.IsControlPressed(Control.InteractionMenu) && !MenuHandler.IsAnyMenuOpen)
+            if (MenuHandler.IsAnyMenuOpen) return;
+            if (!IsUsingKeyboard(2))
             {
-                if (await Input.IsControlStillPressedAsync(Control.InteractionMenu) && !open)
+                if (Input.IsControlPressed(Control.InteractionMenu))
+                {
+                    if (await Input.IsControlStillPressedAsync(Control.InteractionMenu) && !open)
+                    {
+                        menuPersonal();
+                        open = true;
+                    }
+                }
+            }
+            else
+            {
+                if (Input.IsControlJustPressed(Control.InteractionMenu))
                 {
                     menuPersonal();
                     open = true;

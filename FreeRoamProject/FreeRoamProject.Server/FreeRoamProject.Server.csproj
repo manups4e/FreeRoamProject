@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CitizenFX.Core.Server" Version="1.0.7074" />
+    <PackageReference Include="CitizenFX.Core.Server" Version="1.0.7080" />
 	  <PackageReference Include="Confuser.MSBuild" Version="2.0.0-alpha-0191">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

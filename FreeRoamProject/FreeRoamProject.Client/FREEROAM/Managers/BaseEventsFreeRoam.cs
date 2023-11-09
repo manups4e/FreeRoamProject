@@ -1,4 +1,5 @@
 ﻿using FreeRoamProject.Shared.Core;
+using System.Threading.Tasks;
 
 namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 {
@@ -12,6 +13,43 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
         {
             AccessingEvents.OnFreeRoamSpawn += FreeRoamLogin_OnPlayerJoined;
             AccessingEvents.OnFreeRoamLeave += FreeRoamLogin_OnPlayerLeft;
+        }
+
+        private static TimerBarPool _timerBarPool = new();
+        private static ProgressTimerBar _respawnTimerBar;
+
+        private static async Task DrawRespawnTimer()
+        {
+            _timerBarPool.Draw();
+            _respawnTimerBar.Percentage += 0.0015f;
+            if (Input.IsControlJustPressed(Control.Jump))
+            {
+                _respawnTimerBar.Percentage += 0.0180f;
+            }
+            if (_respawnTimerBar.Percentage >= 1)
+            {
+                ClientMain.Instance.RemoveTick(DrawRespawnTimer);
+                _timerBarPool.Remove(_respawnTimerBar);
+                ScaleformUI.Main.InstructionalButtons.ClearButtonList();
+                int res = 0;
+                int cases = NetworkQueryRespawnResults(ref res);
+                Vector3 coords = Vector3.Zero;
+                float heading = 0;
+                NetworkGetRespawnResult(SharedMath.GetRandomInt(cases), ref coords, ref heading);
+                Revive(coords, heading);
+            }
+            await Task.FromResult(0);
+        }
+
+        private static async void BeginRespawn()
+        {
+            Vector3 coords = PlayerCache.MyPlayer.Position.ToVector3;
+            int flags = 2 + 16 + 32 + 2048 + 512 + 1024;
+            NetworkStartRespawnSearchForPlayer(PlayerCache.MyPlayer.Player.Handle, coords.X, coords.Y, coords.Z, 100f, 0, 0, 0, flags);
+            _respawnTimerBar = new ProgressTimerBar(Game.GetGXTEntry("KS_RESPAWN_B"));
+            _timerBarPool.Add(_respawnTimerBar);
+            ClientMain.Instance.AddTick(DrawRespawnTimer);
+            ScaleformUI.Main.InstructionalButtons.AddInstructionalButton(new InstructionalButton(Control.Jump, Game.GetGXTEntry("HUD_INPUT27")));
         }
 
         private static void FreeRoamLogin_OnPlayerJoined(PlayerClient client)
@@ -36,47 +74,64 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
         {
             // if (ped != PlayerCache.MyPlayer.Ped.Handle) return;
             // TODO: ADVANCED CHECKS MUST BE MADE SO THAT WE CHECK IF PLAYERS ARE IN TEAMS.. GANGS.. CONCEALED.. DOING VS
-            if (ped == PlayerPedId())
+            if (IsPedAPlayer(ped))
             {
-                Screen.Effects.Start(ScreenEffect.DeathFailMpIn);
-                Game.PlaySound("Bed", "WastedSounds");
-                GameplayCamera.Shake(CameraShake.DeathFail, 1f);
-            }
-            Vehicle veh = new(vehicle);
-            int laspe = GetLastPedInVehicleSeat(vehicle, (int)VehicleSeat.Driver);
-            if (laspe != 0)
-            {
-                Ped lastPed = new(laspe);
-                if (lastPed.IsPlayer) // vehicle driver is a player
+                if (ped == PlayerPedId())
                 {
-                    Player playerKiller = new(NetworkGetPlayerIndexFromPed(lastPed.Handle));
-                    // player it's not me
-                    if (lastPed.Handle != PlayerCache.MyPlayer.Ped.Handle)
+                    Screen.Effects.Start(ScreenEffect.DeathFailMpIn);
+                    Game.PlaySound("Bed", "WastedSounds");
+                    GameplayCamera.Shake(CameraShake.DeathFail, 1f);
+                }
+                Vehicle veh = new(vehicle);
+                int laspe = GetLastPedInVehicleSeat(vehicle, (int)VehicleSeat.Driver);
+                if (laspe != 0)
+                {
+                    Ped lastPed = new(laspe);
+                    if (lastPed.IsPlayer) // vehicle driver is a player
                     {
-                        func_19419(DeathType.Victim, NetworkGetPlayerIndexFromPed(ped), playerKiller.Handle, false, weaponHash);
-                        //EventDispatcher.Send("tlg:onPlayerDied", 1, playerKiller.Handle, GetEntityCoords(ped, false).ToPosition());
-                    }
-                    else if (lastPed.Handle == PlayerCache.MyPlayer.Ped.Handle)
-                    {
-                        func_19419(DeathType.Killer, NetworkGetPlayerIndexFromPed(ped), playerKiller.Handle, false, weaponHash);
+                        Player playerKiller = new(NetworkGetPlayerIndexFromPed(lastPed.Handle));
+                        // player it's not me
+                        if (lastPed.Handle != PlayerCache.MyPlayer.Ped.Handle)
+                        {
+                            func_19419(DeathType.Victim, NetworkGetPlayerIndexFromPed(ped), playerKiller.Handle, false, weaponHash);
+                            //EventDispatcher.Send("tlg:onPlayerDied", 1, playerKiller.Handle, GetEntityCoords(ped, false).ToPosition());
+                        }
+                        else if (lastPed.Handle == PlayerCache.MyPlayer.Ped.Handle)
+                        {
+                            func_19419(DeathType.Killer, NetworkGetPlayerIndexFromPed(ped), playerKiller.Handle, false, weaponHash);
+                        }
+                        else
+                        {
+                            func_19419(DeathType.Bystander, NetworkGetPlayerIndexFromPed(ped), playerKiller.Handle, false, weaponHash);
+                        }
                     }
                     else
-                    {
-                        func_19419(DeathType.Bystander, NetworkGetPlayerIndexFromPed(ped), playerKiller.Handle, false, weaponHash);
-                    }
+                        GetKillingLabel("TICK_DIED", NetworkGetPlayerIndexFromPed(ped), 0);
                 }
                 else
                     GetKillingLabel("TICK_DIED", NetworkGetPlayerIndexFromPed(ped), 0);
-            }
-            else
-                GetKillingLabel("TICK_DIED", NetworkGetPlayerIndexFromPed(ped), 0);
 
-            if (ped == PlayerPedId())
-            {
-                Game.PlaySound("TextHit", "WastedSounds");
-                ScaleformUI.Main.BigMessageInstance.ShowMpWastedMessage("~r~" + Game.GetGXTEntry("RESPAWN_W_MP"), "");
-                await BaseScript.Delay(5000);
-                Revive();
+                if (ped == PlayerPedId())
+                {
+                    Game.PlaySound("TextHit", "WastedSounds");
+                    ScaleformUI.Main.BigMessageInstance.ShowMpWastedMessage("~r~" + Game.GetGXTEntry("RESPAWN_W_MP"), "");
+                    BeginRespawn();
+                    await BaseScript.Delay(1000);
+                    if (laspe != 0)
+                    {
+                        Ped lastPed = new(laspe);
+                        if (lastPed.IsPlayer) // vehicle driver is a player
+                        {
+                            NetworkSetOverrideSpectatorMode(true);
+                            NetworkSetInSpectatorModeExtended(true, lastPed.Handle, true);
+                            if (lastPed.IsInVehicle())
+                                SetCinematicModeActive(true);
+                            await BaseScript.Delay(3000);
+                            NetworkSetInSpectatorModeExtended(false, PlayerPedId(), true);
+                            NetworkSetOverrideSpectatorMode(false);
+                        }
+                    }
+                }
             }
         }
 
@@ -95,7 +150,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
                     await BaseScript.Delay(5000);
                     if (ped == PlayerPedId())
                     {
-                        Revive();
+                        BeginRespawn();
                     }
                     func_19419(DeathType.Victim, NetworkGetPlayerIndexFromPed(ped), 0, false, (int)weaponHash);
                 }
@@ -106,35 +161,34 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 
         private static async void OnPedDied(int ped, int attacker, uint weaponHash, bool isMeleeDamage)
         {
-            bool suicide = weaponHash == 3452007600;
-            if (ped == PlayerPedId())
+            if (IsPedAPlayer(ped))
             {
-                Screen.Effects.Start(ScreenEffect.DeathFailMpIn);
-                Game.PlaySound("Bed", "WastedSounds");
-                GameplayCamera.Shake(CameraShake.DeathFail, 1f);
-                Game.PlaySound("TextHit", "WastedSounds");
-                ScaleformUI.Main.BigMessageInstance.ShowMpWastedMessage("~r~" + Game.GetGXTEntry("RESPAWN_W_MP"), "");
-            }
-            EventDispatcher.Send("tlg:onPlayerDied", suicide ? 0 : -1, attacker, GetEntityCoords(ped, false).ToPosition());
-            if (suicide)
-            {
+                bool suicide = weaponHash == 3452007600;
                 if (ped == PlayerPedId())
                 {
-                    GetKillingLabel("DM_U_SUIC", 0, 0);
+                    Screen.Effects.Start(ScreenEffect.DeathFailMpIn);
+                    Game.PlaySound("Bed", "WastedSounds");
+                    GameplayCamera.Shake(CameraShake.DeathFail, 1f);
+                    Game.PlaySound("TextHit", "WastedSounds");
+                    ScaleformUI.Main.BigMessageInstance.ShowMpWastedMessage("~r~" + Game.GetGXTEntry("RESPAWN_W_MP"), "");
+                    BeginRespawn();
+                }
+                EventDispatcher.Send("tlg:onPlayerDied", suicide ? 0 : -1, attacker, GetEntityCoords(ped, false).ToPosition());
+                if (suicide)
+                {
+                    if (ped == PlayerPedId())
+                    {
+                        GetKillingLabel("DM_U_SUIC", 0, 0);
+                    }
+                    else
+                    {
+                        GetKillingLabel("DM_O_SUIC", NetworkGetPlayerIndexFromPed(ped), 0);
+                    }
                 }
                 else
                 {
-                    GetKillingLabel("DM_O_SUIC", NetworkGetPlayerIndexFromPed(ped), 0);
+                    GetKillingLabel("TICK_DIED", NetworkGetPlayerIndexFromPed(ped), 0);
                 }
-            }
-            else
-            {
-                GetKillingLabel("TICK_DIED", NetworkGetPlayerIndexFromPed(ped), 0);
-            }
-            if (ped == PlayerPedId())
-            {
-                await BaseScript.Delay(5000);
-                Revive();
             }
         }
 
@@ -145,39 +199,55 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
             // CASE 2: WE ARE THE KILLER
             // CASE 3: WE ARE NEITHER AND WE GET NEUTRAL "X KILLED Y" MESSAGE..
             // TODO: ADVANCED CHECKS MUST BE MADE SO THAT WE CHECK IF PLAYERS ARE IN TEAMS.. GANGS.. CONCEALED.. DOING VS
-            Player killerPed = new(killer);
-            bool isVictim = ped == PlayerPedId();
-            if (isVictim)
+            if (IsPedAPlayer(ped))
             {
-                Screen.Effects.Start(ScreenEffect.DeathFailOut);
-                Game.PlaySound("Bed", "WastedSounds");
-                GameplayCamera.Shake(CameraShake.DeathFail, 1f);
-                Game.PlaySound("TextHit", "WastedSounds");
-                ScaleformUI.Main.BigMessageInstance.ShowMpWastedMessage(Game.GetGXTEntry("RESPAWN_W_MP"), "");
-            }
-            EventDispatcher.Send("tlg:onPlayerDied", 1, killerPed.ServerId, API.GetEntityCoords(ped, false).ToPosition());
-            DeathType deathType;
-            if (isVictim)
-                deathType = DeathType.Victim;
-            else
-            {
-                if (killer == PlayerId())
-                    deathType = DeathType.Killer;
+                Player killerPed = new(killer);
+                bool isVictim = ped == PlayerPedId();
+                if (isVictim)
+                {
+                    Screen.Effects.Start(ScreenEffect.DeathFailOut);
+                    Game.PlaySound("Bed", "WastedSounds");
+                    GameplayCamera.Shake(CameraShake.DeathFail, 1f);
+                    Game.PlaySound("TextHit", "WastedSounds");
+                    ScaleformUI.Main.BigMessageInstance.ShowMpWastedMessage(Game.GetGXTEntry("RESPAWN_W_MP"), "");
+                }
+                EventDispatcher.Send("tlg:onPlayerDied", 1, killerPed.ServerId, API.GetEntityCoords(ped, false).ToPosition());
+                DeathType deathType;
+                if (isVictim)
+                    deathType = DeathType.Victim;
                 else
-                    deathType = DeathType.Bystander;
-            }
+                {
+                    if (killer == PlayerId())
+                        deathType = DeathType.Killer;
+                    else
+                        deathType = DeathType.Bystander;
+                }
 
-            func_19419(deathType, NetworkGetPlayerIndexFromPed(ped), killer, false, (int)weaponHash);
+                int player = NetworkGetPlayerIndexFromPed(ped);
+                if (player == -1)
+                {
+                    return; // Ped was not a player
+                }
+                func_19419(deathType, player, killer, false, (int)weaponHash);
 
-            if (isVictim)
-            {
-                await BaseScript.Delay(5000);
-                Revive();
+                if (isVictim)
+                {
+                    Ped KilPed = killerPed.Character;
+                    BeginRespawn();
+                    await BaseScript.Delay(1000);
+                    NetworkSetOverrideSpectatorMode(true);
+                    NetworkSetInSpectatorModeExtended(true, KilPed.Handle, true);
+                    if (KilPed.IsInVehicle())
+                        SetCinematicModeActive(true);
+                    await BaseScript.Delay(3000);
+                    NetworkSetInSpectatorModeExtended(false, PlayerPedId(), true);
+                    NetworkSetOverrideSpectatorMode(false);
+                }
             }
         }
 
 
-        private static async void Revive()
+        private static async void Revive(Vector3 coords, float heading)
         {
             Screen.Fading.FadeOut(800);
             while (Screen.Fading.IsFadingOut) await BaseScript.Delay(50);
@@ -186,14 +256,8 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 
             // TODO: correct IsInvincible with Anticheat
             Position pos = PlayerCache.MyPlayer.Position;
-            Vector3 outpos = Vector3.Zero;
-            if (!GetSafeCoordForPed(pos.X, pos.Y, pos.Z, true, ref outpos, 16))
-                outpos = pos.ToVector3;
+            NetworkResurrectLocalPlayer(coords.X, coords.Y, coords.Z, heading, true, false);
 
-            StartPlayerTeleport(PlayerCache.MyPlayer.Player.Handle, outpos.X, outpos.Y, outpos.Z, pos.Heading, true, true, true);
-            while (!HasPlayerTeleportFinished(PlayerId())) await BaseScript.Delay(0);
-
-            NetworkResurrectLocalPlayer(outpos.X, outpos.Y, outpos.Z, pos.Heading, true, false);
             PlayerCache.MyPlayer.Ped.Health = 100;
             PlayerCache.MyPlayer.Ped.IsInvincible = false;
             PlayerCache.MyPlayer.Ped.ClearBloodDamage();

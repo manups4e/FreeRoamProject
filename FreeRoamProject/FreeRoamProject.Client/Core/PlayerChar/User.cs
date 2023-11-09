@@ -43,6 +43,15 @@ namespace FreeRoamProject.Client.Core.PlayerChar
             return Character.Weapons.Any(x => Functions.HashInt(x.Name) == (int)weaponName);
         }
 
+        public Tuple<int, Weapons> GetWeapon(WeaponHash weaponName)
+        {
+            Weapons weap = Character.Weapons.FirstOrDefault(x => Functions.HashInt(x.Name) == (int)weaponName);
+            if (weap != null)
+                return new Tuple<int, Weapons>(Character.Weapons.IndexOf(weap), weap);
+            return default;
+
+        }
+
         public Tuple<int, Weapons> GetWeapon(string weaponName)
         {
             for (int i = 0; i < Character.Weapons.Count; i++)
