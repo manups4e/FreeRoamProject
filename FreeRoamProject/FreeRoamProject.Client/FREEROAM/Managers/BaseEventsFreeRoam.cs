@@ -36,6 +36,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
         {
             // if (ped != PlayerCache.MyPlayer.Ped.Handle) return;
             // TODO: ADVANCED CHECKS MUST BE MADE SO THAT WE CHECK IF PLAYERS ARE IN TEAMS.. GANGS.. CONCEALED.. DOING VS
+            if (!IsPedAPlayer(ped)) return;
             if (ped == PlayerPedId())
             {
                 Screen.Effects.Start(ScreenEffect.DeathFailMpIn);
@@ -82,26 +83,25 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 
         private static async void OnPedKilledByPed(int ped, int attackerPed, uint weaponHash, bool isMeleeDamage)
         {
-            if (IsPedAPlayer(ped))
+            if (!IsPedAPlayer(ped)) return;
+
+            if (ped == PlayerPedId())
             {
+                Screen.Effects.Start(ScreenEffect.DeathFailMpIn);
+                Game.PlaySound("Bed", "WastedSounds");
+                GameplayCamera.Shake(CameraShake.DeathFail, 1f);
+                EventDispatcher.Send("tlg:onPlayerDied", -1, attackerPed, GetEntityCoords(ped, false).ToPosition());
+                Game.PlaySound("TextHit", "WastedSounds");
+                ScaleformUI.Main.BigMessageInstance.ShowMpWastedMessage("~r~" + Game.GetGXTEntry("RESPAWN_W_MP"), "");
+                await BaseScript.Delay(5000);
                 if (ped == PlayerPedId())
                 {
-                    Screen.Effects.Start(ScreenEffect.DeathFailMpIn);
-                    Game.PlaySound("Bed", "WastedSounds");
-                    GameplayCamera.Shake(CameraShake.DeathFail, 1f);
-                    EventDispatcher.Send("tlg:onPlayerDied", -1, attackerPed, GetEntityCoords(ped, false).ToPosition());
-                    Game.PlaySound("TextHit", "WastedSounds");
-                    ScaleformUI.Main.BigMessageInstance.ShowMpWastedMessage("~r~" + Game.GetGXTEntry("RESPAWN_W_MP"), "");
-                    await BaseScript.Delay(5000);
-                    if (ped == PlayerPedId())
-                    {
-                        Revive();
-                    }
-                    func_19419(DeathType.Victim, NetworkGetPlayerIndexFromPed(ped), 0, false, (int)weaponHash);
+                    Revive();
                 }
-                else
-                    func_19419(DeathType.Bystander, NetworkGetPlayerIndexFromPed(ped), 0, false, (int)weaponHash);
+                func_19419(DeathType.Victim, NetworkGetPlayerIndexFromPed(ped), 0, false, (int)weaponHash);
             }
+            else
+                func_19419(DeathType.Bystander, NetworkGetPlayerIndexFromPed(ped), 0, false, (int)weaponHash);
         }
 
         private static async void OnPedDied(int ped, int attacker, uint weaponHash, bool isMeleeDamage)
@@ -116,25 +116,28 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
                 ScaleformUI.Main.BigMessageInstance.ShowMpWastedMessage("~r~" + Game.GetGXTEntry("RESPAWN_W_MP"), "");
             }
             EventDispatcher.Send("tlg:onPlayerDied", suicide ? 0 : -1, attacker, GetEntityCoords(ped, false).ToPosition());
-            if (suicide)
+            if (IsPedAPlayer(ped))
             {
-                if (ped == PlayerPedId())
+                if (suicide)
                 {
-                    GetKillingLabel("DM_U_SUIC", 0, 0);
+                    if (ped == PlayerPedId())
+                    {
+                        GetKillingLabel("DM_U_SUIC", 0, 0);
+                    }
+                    else
+                    {
+                        GetKillingLabel("DM_O_SUIC", NetworkGetPlayerIndexFromPed(ped), 0);
+                    }
                 }
                 else
                 {
-                    GetKillingLabel("DM_O_SUIC", NetworkGetPlayerIndexFromPed(ped), 0);
+                    GetKillingLabel("TICK_DIED", NetworkGetPlayerIndexFromPed(ped), 0);
                 }
-            }
-            else
-            {
-                GetKillingLabel("TICK_DIED", NetworkGetPlayerIndexFromPed(ped), 0);
-            }
-            if (ped == PlayerPedId())
-            {
-                await BaseScript.Delay(5000);
-                Revive();
+                if (ped == PlayerPedId())
+                {
+                    await BaseScript.Delay(5000);
+                    Revive();
+                }
             }
         }
 
@@ -145,6 +148,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
             // CASE 2: WE ARE THE KILLER
             // CASE 3: WE ARE NEITHER AND WE GET NEUTRAL "X KILLED Y" MESSAGE..
             // TODO: ADVANCED CHECKS MUST BE MADE SO THAT WE CHECK IF PLAYERS ARE IN TEAMS.. GANGS.. CONCEALED.. DOING VS
+            if (!IsPedAPlayer(ped)) return;
             Player killerPed = new(killer);
             bool isVictim = ped == PlayerPedId();
             if (isVictim)
