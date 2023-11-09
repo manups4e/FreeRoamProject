@@ -1,4 +1,5 @@
-﻿using FreeRoamProject.Shared.Core;
+﻿using System.Threading.Tasks;
+using FreeRoamProject.Shared.Core;
 
 namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 {
@@ -12,6 +13,27 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
         {
             AccessingEvents.OnFreeRoamSpawn += FreeRoamLogin_OnPlayerJoined;
             AccessingEvents.OnFreeRoamLeave += FreeRoamLogin_OnPlayerLeft;
+        }
+
+        private static TimerBarPool _timerBarPool = new();
+        private static ProgressTimerBar _respawnTimerBar;
+        
+        private static async Task DrawRespawnTimer()
+        {
+            _timerBarPool.Draw();
+            _respawnTimerBar.Percentage += 0.0015f;
+            Game.EnableControlThisFrame(0, Control.Jump);
+            if (Input.IsDisabledControlPressed(Control.Jump)) // ?? Why doesn't this work?
+            {
+                _respawnTimerBar.Percentage += 0.1f;
+            }
+            if (_respawnTimerBar.Percentage >= 1)
+            {
+                ClientMain.Instance.RemoveTick(DrawRespawnTimer);
+                _timerBarPool.Remove(_respawnTimerBar);
+                ScaleformUI.Main.InstructionalButtons.ClearButtonList();
+                Revive();
+            }
         }
 
         private static void FreeRoamLogin_OnPlayerJoined(PlayerClient client)
@@ -133,8 +155,11 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
             }
             if (ped == PlayerPedId())
             {
-                await BaseScript.Delay(5000);
-                Revive();
+                _respawnTimerBar = new ProgressTimerBar("RESPAWN"); // TODO: Replace with a label
+                _timerBarPool.Add(_respawnTimerBar);
+                ClientMain.Instance.AddTick(DrawRespawnTimer);
+                ScaleformUI.Main.InstructionalButtons.AddInstructionalButton(
+                    new InstructionalButton(Control.Jump, "Respawn"));
             }
         }
 
