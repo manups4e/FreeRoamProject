@@ -428,53 +428,29 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             {
                 bikeHelmets = new List<dynamic>() {
                     Game.GetGXTEntry("HE_FMM_16_0"), //"Western MC Yellow Helmet",
-                    Game.GetGXTEntry("HE_FMM_16_0S"), //"Western MC Yellow Helmet",
                     Game.GetGXTEntry("HE_FMM_16_1"), //"Steel Horse Blue Helmet",
-                    Game.GetGXTEntry("HE_FMM_16_1S"), //"Steel Horse Blue Helmet",
                     Game.GetGXTEntry("HE_FMM_16_2"), //"Steel Horse Orange Helmet",
-                    Game.GetGXTEntry("HE_FMM_16_2S"), //"Steel Horse Orange Helmet",
                     Game.GetGXTEntry("HE_FMM_16_3"), //"Western MC Green Helmet",
-                    Game.GetGXTEntry("HE_FMM_16_3S"), //"Western MC Green Helmet",
                     Game.GetGXTEntry("HE_FMM_16_4"), //"Western MC Red Helmet",
-                    Game.GetGXTEntry("HE_FMM_16_4S"), //"Western MC Red Helmet",
                     Game.GetGXTEntry("HE_FMM_16_5"), //"Steel Horse Black Helmet",
-                    Game.GetGXTEntry("HE_FMM_16_5S"), //"Steel Horse Black Helmet",
                     Game.GetGXTEntry("HE_FMM_16_6"), //"Black Helmet",
-                    Game.GetGXTEntry("HE_FMM_16_6S"), //"Black Helmet",
                     Game.GetGXTEntry("HE_FMM_16_7"), //"Western MC Lilac Helmet",
-                    Game.GetGXTEntry("HE_FMM_16_7S"), //"Western MC Lilac Helmet",
                     Game.GetGXTEntry("HE_FMM_17_0"), //"Blue Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMM_17_0S"), //"Blue Open-Face Helmet",
                     Game.GetGXTEntry("HE_FMM_17_1"), //"Orange Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMM_17_1S"), //"Orange Open-Face Helmet",
                     Game.GetGXTEntry("HE_FMM_17_2"), //"Pale Blue Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMM_17_2S"), //"Pale Blue Open-Face Helmet",
                     Game.GetGXTEntry("HE_FMM_17_3"), //"Red Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMM_17_3S"), //"Red Open-Face Helmet",
                     Game.GetGXTEntry("HE_FMM_17_4"), //"Gray Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMM_17_4S"), //"Gray Open-Face Helmet",
                     Game.GetGXTEntry("HE_FMM_17_5"), //"Black Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMM_17_5S"), //"Black Open-Face Helmet",
                     Game.GetGXTEntry("HE_FMM_17_6"), //"Pink Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMM_17_6S"), //"Pink Open-Face Helmet",
                     Game.GetGXTEntry("HE_FMM_17_7"), //"White Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMM_17_7S"), //"White Open-Face Helmet",
                     Game.GetGXTEntry("HE_FMM_18_0"), //"Shatter Pattern Helmet",
-                    Game.GetGXTEntry("HE_FMM_18_0S"), //"Shatter Pattern Helmet",
                     Game.GetGXTEntry("HE_FMM_18_1"), //"Stars Helmet",
-                    Game.GetGXTEntry("HE_FMM_18_1S"), //"Stars Helmet",
                     Game.GetGXTEntry("HE_FMM_18_2"), //"Squared Helmet",
-                    Game.GetGXTEntry("HE_FMM_18_2S"), //"Squared Helmet",
                     Game.GetGXTEntry("HE_FMM_18_3"), //"Crimson Helmet",
-                    Game.GetGXTEntry("HE_FMM_18_3S"), //"Crimson Helmet",
                     Game.GetGXTEntry("HE_FMM_18_4"), //"Skull Helmet",
-                    Game.GetGXTEntry("HE_FMM_18_4S"), //"Skull Helmet",
                     Game.GetGXTEntry("HE_FMM_18_5"), //"Ace of Spades Helmet",
-                    Game.GetGXTEntry("HE_FMM_18_5S"), //"Ace of Spades Helmet",
                     Game.GetGXTEntry("HE_FMM_18_6"), //"Flamejob Helmet",
-                    Game.GetGXTEntry("HE_FMM_18_6S"), //"Flamejob Helmet",
                     Game.GetGXTEntry("HE_FMM_18_7"), //"White Helmet",
-                    Game.GetGXTEntry("HE_FMM_18_7S"), //"White Helmet",
                 };
             }
             else
@@ -482,53 +458,29 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 bikeHelmets = new List<dynamic>()
                 {
                     Game.GetGXTEntry("HE_FMF_16_0"), //"Western MC Yellow Helmet",
-                    Game.GetGXTEntry("HE_FMF_16_0S"), //"Western MC Yellow Helmet",
                     Game.GetGXTEntry("HE_FMF_16_1"), //"Steel Horse Blue Helmet",
-                    Game.GetGXTEntry("HE_FMF_16_1S"), //"Steel Horse Blue Helmet",
                     Game.GetGXTEntry("HE_FMF_16_2"), //"Steel Horse Orange Helmet",
-                    Game.GetGXTEntry("HE_FMF_16_2S"), //"Steel Horse Orange Helmet",
                     Game.GetGXTEntry("HE_FMF_16_3"), //"Western MC Green Helmet",
-                    Game.GetGXTEntry("HE_FMF_16_3S"), //"Western MC Green Helmet",
                     Game.GetGXTEntry("HE_FMF_16_4"), //"Western MC Red Helmet",
-                    Game.GetGXTEntry("HE_FMF_16_4S"), //"Western MC Red Helmet",
                     Game.GetGXTEntry("HE_FMF_16_5"), //"Steel Horse Black Helmet",
-                    Game.GetGXTEntry("HE_FMF_16_5S"), //"Steel Horse Black Helmet",
                     Game.GetGXTEntry("HE_FMF_16_6"), //"Black Helmet",
-                    Game.GetGXTEntry("HE_FMF_16_6S"), //"Black Helmet",
                     Game.GetGXTEntry("HE_FMF_16_7"), //"Western MC Lilac Helmet",
-                    Game.GetGXTEntry("HE_FMF_16_7S"), //"Western MC Lilac Helmet",
                     Game.GetGXTEntry("HE_FMF_17_0"), //"Blue Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMF_17_0S"), //"Blue Open-Face Helmet",
                     Game.GetGXTEntry("HE_FMF_17_1"), //"Orange Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMF_17_1S"), //"Orange Open-Face Helmet",
                     Game.GetGXTEntry("HE_FMF_17_2"), //"Pale Blue Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMF_17_2S"), //"Pale Blue Open-Face Helmet",
                     Game.GetGXTEntry("HE_FMF_17_3"), //"Red Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMF_17_3S"), //"Red Open-Face Helmet",
                     Game.GetGXTEntry("HE_FMF_17_4"), //"Gray Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMF_17_4S"), //"Gray Open-Face Helmet",
                     Game.GetGXTEntry("HE_FMF_17_5"), //"Black Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMF_17_5S"), //"Black Open-Face Helmet",
                     Game.GetGXTEntry("HE_FMF_17_6"), //"Pink Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMF_17_6S"), //"Pink Open-Face Helmet",
                     Game.GetGXTEntry("HE_FMF_17_7"), //"White Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMF_17_7S"), //"White Open-Face Helmet",
                     Game.GetGXTEntry("HE_FMF_18_0"), //"Shatter Pattern Helmet",
-                    Game.GetGXTEntry("HE_FMF_18_0S"), //"Shatter Pattern Helmet",
                     Game.GetGXTEntry("HE_FMF_18_1"), //"Stars Helmet",
-                    Game.GetGXTEntry("HE_FMF_18_1S"), //"Stars Helmet",
                     Game.GetGXTEntry("HE_FMF_18_2"), //"Squared Helmet",
-                    Game.GetGXTEntry("HE_FMF_18_2S"), //"Squared Helmet",
                     Game.GetGXTEntry("HE_FMF_18_3"), //"Crimson Helmet",
-                    Game.GetGXTEntry("HE_FMF_18_3S"), //"Crimson Helmet",
                     Game.GetGXTEntry("HE_FMF_18_4"), //"Skull Helmet",
-                    Game.GetGXTEntry("HE_FMF_18_4S"), //"Skull Helmet",
                     Game.GetGXTEntry("HE_FMF_18_5"), //"Ace of Spades Helmet",
-                    Game.GetGXTEntry("HE_FMF_18_5S"), //"Ace of Spades Helmet",
                     Game.GetGXTEntry("HE_FMF_18_6"), //"Flamejob Helmet",
-                    Game.GetGXTEntry("HE_FMF_18_6S"), //"Flamejob Helmet",
                     Game.GetGXTEntry("HE_FMF_18_7"), //"White Helmet",
-                    Game.GetGXTEntry("HE_FMF_18_7S"), //"White Helmet",
                 };
             }
             UIMenuListItem bikeHelmet = new UIMenuListItem(Game.GetGXTEntry("PIM_TBIH"), bikeHelmets, 0, Game.GetGXTEntry("PIM_HBIH"));
@@ -659,16 +611,6 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             };
             UIMenuListItem jacket = new UIMenuListItem(Game.GetGXTEntry("PIM_TCJACK"), jacketList, 0, Game.GetGXTEntry("PIM_HCJACK"));
 
-
-
-            PM_CJACK_
-
-
-            /* for armor
-              "PIM_AARM0": "Off",
-              "PIM_AARM1": "On",
-            */
-
             styleMenu.AddItem(changeAppear);
 
             accessoriesItem.BindItemToMenu(accessoriesMenu);
@@ -682,7 +624,12 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             styleMenu.AddItem(bikeHelmet);
             styleMenu.AddItem(bikeVisor);
             styleMenu.AddItem(autoShowBikeHelmet);
-
+            styleMenu.AddItem(action);
+            styleMenu.AddItem(playerMood);
+            styleMenu.AddItem(playerWalkStyle);
+            styleMenu.AddItem(illuminatedClothing);
+            styleMenu.AddItem(hood);
+            styleMenu.AddItem(jacket);
 
             #endregion
 
