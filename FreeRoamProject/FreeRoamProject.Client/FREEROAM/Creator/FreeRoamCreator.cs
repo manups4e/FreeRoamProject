@@ -796,9 +796,12 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
         {
             FreeRoamChar plpl = JsonData.FromJson<FreeRoamChar>();
             uint hash = plpl.Skin.Model;
-            RequestModel(hash);
-            while (!HasModelLoaded(hash)) await BaseScript.Delay(1);
-            SetPlayerModel(PlayerId(), hash);
+            if (!HasModelLoaded(hash))
+            {
+                RequestModel(hash);
+                while (!HasModelLoaded(hash)) await BaseScript.Delay(1);
+            }
+            SetPlayerModel(PlayerCache.MyPlayer.Player.Handle, hash);
             int id = PlayerCache.MyPlayer.Ped.Handle;
             int[][] aa = GetCreatorSuit(_selected == "Male", 0);
             ComponentDrawables comp = new ComponentDrawables(aa[0][0], aa[0][1], aa[0][2], aa[0][3], aa[0][4], aa[0][5], aa[0][6], aa[0][7], aa[0][8], aa[0][9], aa[0][10], aa[0][11]);
@@ -810,9 +813,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             UpdateDress(Cache.PlayerCache.MyPlayer.Ped.Handle, plpl.Dressing);
         }
 
-        #region Creazione
+        #region Creator Menu
 
-        #region PRE CREAZIONE
+        #region PRE Creator
 
         public static async Task CharCreationMenu(string sesso)
         {
@@ -830,6 +833,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 if (IsValidInterior(94722)) LoadInterior(94722);
                 while (!IsInteriorReady(94722)) await BaseScript.Delay(1000);
                 sub_8d2b2();
+                PlayerCache.MyPlayer.Player.CanControlCharacter = false;
                 Cache.PlayerCache.MyPlayer.Status.Instance.InstancePlayer(Cache.PlayerCache.MyPlayer.Handle, "CharCreation");
                 // TODO: CHANGE THE FINANCE ACCORDINGLY I THINK? 1000, 3000 SOUNDS SO EARLY ESX...
                 _dataMale = new FreeRoamChar(SnowflakeGenerator.Instance.Next().ToInt64(), new Finance(1000, 3000), new Gang("Uncensored", 0), new Skin("Male", (uint)PedHash.FreemodeMale01, 0, GetRandomFloatInRange(.5f, 1f), new Face(0, 0, new float[20] { Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(1f, -1, 1) }), new A2(GetRandomIntInRange(0, Ageing.Count), GetRandomFloatInRange(0f, 1f)), new A2(255, 0f), new A2(GetRandomIntInRange(0, Blemishes.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Complexions.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_Damage.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_moles_and_leeks.Count), GetRandomFloatInRange(0f, 1f)), new A3(255, 0f, new int[2] { 0, 0 }), new A3(255, 0f, new int[2] { 0, 0 }), new Facial(new A3(GetRandomIntInRange(0, Beards.Count), GetRandomFloatInRange(0f, 1f), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) }), new A3(GetRandomIntInRange(0, eyebrow.Count), GetRandomFloatInRange(0f, 1f), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) })), new Hair(GetRandomIntInRange(0, HairMale.Count), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) }), new Eye(GetRandomIntInRange(0, EyesColor.Count)), new Ears(255, 0)), new Dressing("Iniziale", "Per cominciare", new ComponentDrawables(-1, 0, GetPedDrawableVariation(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), 0, 0, -1, 15, 0, 15, 0, 0, 56), new ComponentDrawables(-1, 0, GetPedTextureVariation(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), 0, 4, -1, 14, 0, 0, 0, 0, 0), new PropIndices(-1, GetPedPropIndex(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1), new PropIndices(-1, GetPedPropTextureIndex(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1)), new FreeRoamStats());
@@ -918,36 +922,20 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 {
                     EnableAnimation = false,
                     BuildingAnimation = MenuBuildingAnimation.NONE,
-                    MaxItemsOnScreen = 8,
-                    ControlDisablingEnabled = true
+                    MaxItemsOnScreen = 8
                 };
                 UIMenuListItem sex = new UIMenuListItem(Game.GetGXTEntry("FACE_SEX"), new List<dynamic>() { Game.GetGXTEntry("FACE_MALE"), Game.GetGXTEntry("FACE_FEMALE") }, _selected == "Male" ? 0 : 1, Game.GetGXTEntry("FACE_MM_H2"));
                 Creation.AddItem(sex);
                 UIMenuItem GenitoriItem = new UIMenuItem(Game.GetGXTEntry("FACE_HERI"), Game.GetGXTEntry("FACE_MM_H3"));
-                Parents = new(Game.GetGXTEntry("FACE_TITLE"), Game.GetGXTEntry("FACE_HERI"))
-                {
-                    ControlDisablingEnabled = true
-                };
+                Parents = new(Game.GetGXTEntry("FACE_TITLE"), Game.GetGXTEntry("FACE_HERI"));
                 UIMenuItem DettagliItem = new UIMenuItem(Game.GetGXTEntry("FACE_FEAT"), Game.GetGXTEntry("FACE_MM_H4"));
-                Details = new(Game.GetGXTEntry("FACE_TITLE"), Game.GetGXTEntry("FACE_FEAT"))
-                {
-                    ControlDisablingEnabled = true
-                };
+                Details = new(Game.GetGXTEntry("FACE_TITLE"), Game.GetGXTEntry("FACE_FEAT"));
                 UIMenuItem ApparenzeItem = new UIMenuItem(Game.GetGXTEntry("FACE_APP"), Game.GetGXTEntry("FACE_MM_H6"));
-                Appearances = new(Game.GetGXTEntry("FACE_TITLE"), Game.GetGXTEntry("FACE_APP"))
-                {
-                    ControlDisablingEnabled = true
-                };
+                Appearances = new(Game.GetGXTEntry("FACE_TITLE"), Game.GetGXTEntry("FACE_APP"));
                 UIMenuItem ApparelItem = new UIMenuItem(Game.GetGXTEntry("FACE_APPA"), Game.GetGXTEntry("FACE_APPA_H"));
-                Apparel = new(Game.GetGXTEntry("FACE_TITLE"), Game.GetGXTEntry("FACE_APPA"))
-                {
-                    ControlDisablingEnabled = true
-                };
+                Apparel = new(Game.GetGXTEntry("FACE_TITLE"), Game.GetGXTEntry("FACE_APPA"));
                 UIMenuItem StatisticheItem = new UIMenuItem(Game.GetGXTEntry("FACE_STATS"), Game.GetGXTEntry("FACE_MM_H5"));
-                Statistics = new(Game.GetGXTEntry("FACE_TITLE"), Game.GetGXTEntry("FACE_STATS"))
-                {
-                    ControlDisablingEnabled = true
-                };
+                Statistics = new(Game.GetGXTEntry("FACE_TITLE"), Game.GetGXTEntry("FACE_STATS"));
 
                 GenitoriItem.Activated += async (a, b) => await Creation.SwitchTo(Parents, 0, true);
                 DettagliItem.Activated += async (a, b) => await Creation.SwitchTo(Details, 0, true);
@@ -1182,27 +1170,25 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
 
                 #region Sex
 
-                sex.OnListChanged += async (item, _newIndex) =>
+                sex.OnListChanged += (item, _newIndex) =>
                 {
                     switch (_newIndex)
                     {
                         case 0:
                             {
                                 _dataFemale = _data;
-                                FreeRoamChar data = _dataMale;
-                                _boardScalep1.CallFunction("SET_BOARD", Game.GetGXTEntry("FACE_N_CHAR"), _data.CharID.ToString(), "THE LAST GALAXY BY MANUPS4E", "", 0, 1, 0);
+                                _data = _dataMale;
+                                _boardScalep1.CallFunction("SET_BOARD", Game.GetGXTEntry("FACE_N_CHAR"), _data.CharID.ToString(), "THE LAST GALAXY", "", 0, 1, 0);
                                 _selected = "Male";
                             }
-
                             break;
                         case 1:
                             {
                                 _dataMale = _data;
-                                FreeRoamChar data = _dataFemale;
-                                _boardScalep1.CallFunction("SET_BOARD", Game.GetGXTEntry("FACE_N_CHAR"), _data.CharID.ToString(), "THE LAST GALAXY BY MANUPS4E", "", 0, 1, 0);
+                                _data = _dataFemale;
+                                _boardScalep1.CallFunction("SET_BOARD", Game.GetGXTEntry("FACE_N_CHAR"), _data.CharID.ToString(), "THE LAST GALAXY", "", 0, 1, 0);
                                 _selected = "Female";
                             }
-
                             break;
                     }
                     UpdateModel(_data.ToJson());
@@ -2132,6 +2118,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 }
             }
             if (!IsInputDisabled(2))
+            {
                 if (Details.Visible)
                 {
                     if (_eyebArch.Selected)
@@ -2592,6 +2579,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                         _dataMale = _data;
                     UpdateFace(playerPed.Handle, _data.Skin);
                 }
+            }
 
             await Task.FromResult(0);
         }
@@ -2693,7 +2681,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
         {
             _boardScalep1 = new Scaleform("mugshot_board_01");
             while (!_boardScalep1.IsLoaded) await BaseScript.Delay(0);
-            _boardScalep1.CallFunction("SET_BOARD", Game.GetGXTEntry("FACE_N_CHAR"), data.CharID.ToString(), "THE LAST GALAXY BY MANUPS4E", "", 0, 1, 0);
+            _boardScalep1.CallFunction("SET_BOARD", Game.GetGXTEntry("FACE_N_CHAR"), data.CharID.ToString(), "THE LAST GALAXY", "", 0, 1, 0);
             _handle1 = CreateNamedRenderTargetForModel("ID_Text", (uint)overlay.Hash);
         }
 
@@ -2716,7 +2704,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
 
         public static async Task Controls()
         {
-            for (int i = 0; i < 32; i++) Game.DisableAllControlsThisFrame(i);
+            //for (int i = 0; i < 32; i++) Game.DisableAllControlsThisFrame(i);
 
             if (Creation.Visible && Creation.HasControlJustBeenPressed(UIMenu.MenuControls.Back))
             {
