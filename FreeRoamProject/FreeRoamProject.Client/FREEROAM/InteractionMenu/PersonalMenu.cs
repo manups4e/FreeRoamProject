@@ -413,7 +413,261 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             UIMenuItem parachuteItem = new UIMenuItem(Game.GetGXTEntry("PIM_TCHUTE"), Game.GetGXTEntry("PIM_HCHUTE"));
             UIMenu parachuteMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_PARAT"));
 
-            // TODO: FINISH THIS
+            /* description and confirmation
+              "PIM_HOUTF": "Select a saved outfit to wear.",
+              "PIM_HOUTFD": "Confirm to delete the selected outfit.",
+             */
+            List<dynamic> savedOutfits = new List<dynamic>() { Game.GetGXTEntry("PIM_NOUTF") };
+            UIMenuListItem outfit = new UIMenuListItem(Game.GetGXTEntry("PIM_TOUTF"), savedOutfits, 0, Game.GetGXTEntry("PIM_HOUTF"));
+
+            List<dynamic> racingOutfits = new List<dynamic>() { Game.GetGXTEntry("PIM_NRAO") };
+            UIMenuListItem racingOutfit = new UIMenuListItem(Game.GetGXTEntry("PIM_TRAO"), racingOutfits, 0, Game.GetGXTEntry("PIM_HRAO"));
+
+            List<dynamic> bikeHelmets = new List<dynamic>();
+            if (PlayerCache.MyPlayer.User.Character.Skin.Sex == "Male")
+            {
+                bikeHelmets = new List<dynamic>() {
+                    Game.GetGXTEntry("HE_FMM_16_0"), //"Western MC Yellow Helmet",
+                    Game.GetGXTEntry("HE_FMM_16_0S"), //"Western MC Yellow Helmet",
+                    Game.GetGXTEntry("HE_FMM_16_1"), //"Steel Horse Blue Helmet",
+                    Game.GetGXTEntry("HE_FMM_16_1S"), //"Steel Horse Blue Helmet",
+                    Game.GetGXTEntry("HE_FMM_16_2"), //"Steel Horse Orange Helmet",
+                    Game.GetGXTEntry("HE_FMM_16_2S"), //"Steel Horse Orange Helmet",
+                    Game.GetGXTEntry("HE_FMM_16_3"), //"Western MC Green Helmet",
+                    Game.GetGXTEntry("HE_FMM_16_3S"), //"Western MC Green Helmet",
+                    Game.GetGXTEntry("HE_FMM_16_4"), //"Western MC Red Helmet",
+                    Game.GetGXTEntry("HE_FMM_16_4S"), //"Western MC Red Helmet",
+                    Game.GetGXTEntry("HE_FMM_16_5"), //"Steel Horse Black Helmet",
+                    Game.GetGXTEntry("HE_FMM_16_5S"), //"Steel Horse Black Helmet",
+                    Game.GetGXTEntry("HE_FMM_16_6"), //"Black Helmet",
+                    Game.GetGXTEntry("HE_FMM_16_6S"), //"Black Helmet",
+                    Game.GetGXTEntry("HE_FMM_16_7"), //"Western MC Lilac Helmet",
+                    Game.GetGXTEntry("HE_FMM_16_7S"), //"Western MC Lilac Helmet",
+                    Game.GetGXTEntry("HE_FMM_17_0"), //"Blue Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMM_17_0S"), //"Blue Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMM_17_1"), //"Orange Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMM_17_1S"), //"Orange Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMM_17_2"), //"Pale Blue Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMM_17_2S"), //"Pale Blue Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMM_17_3"), //"Red Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMM_17_3S"), //"Red Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMM_17_4"), //"Gray Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMM_17_4S"), //"Gray Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMM_17_5"), //"Black Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMM_17_5S"), //"Black Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMM_17_6"), //"Pink Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMM_17_6S"), //"Pink Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMM_17_7"), //"White Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMM_17_7S"), //"White Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMM_18_0"), //"Shatter Pattern Helmet",
+                    Game.GetGXTEntry("HE_FMM_18_0S"), //"Shatter Pattern Helmet",
+                    Game.GetGXTEntry("HE_FMM_18_1"), //"Stars Helmet",
+                    Game.GetGXTEntry("HE_FMM_18_1S"), //"Stars Helmet",
+                    Game.GetGXTEntry("HE_FMM_18_2"), //"Squared Helmet",
+                    Game.GetGXTEntry("HE_FMM_18_2S"), //"Squared Helmet",
+                    Game.GetGXTEntry("HE_FMM_18_3"), //"Crimson Helmet",
+                    Game.GetGXTEntry("HE_FMM_18_3S"), //"Crimson Helmet",
+                    Game.GetGXTEntry("HE_FMM_18_4"), //"Skull Helmet",
+                    Game.GetGXTEntry("HE_FMM_18_4S"), //"Skull Helmet",
+                    Game.GetGXTEntry("HE_FMM_18_5"), //"Ace of Spades Helmet",
+                    Game.GetGXTEntry("HE_FMM_18_5S"), //"Ace of Spades Helmet",
+                    Game.GetGXTEntry("HE_FMM_18_6"), //"Flamejob Helmet",
+                    Game.GetGXTEntry("HE_FMM_18_6S"), //"Flamejob Helmet",
+                    Game.GetGXTEntry("HE_FMM_18_7"), //"White Helmet",
+                    Game.GetGXTEntry("HE_FMM_18_7S"), //"White Helmet",
+                };
+            }
+            else
+            {
+                bikeHelmets = new List<dynamic>()
+                {
+                    Game.GetGXTEntry("HE_FMF_16_0"), //"Western MC Yellow Helmet",
+                    Game.GetGXTEntry("HE_FMF_16_0S"), //"Western MC Yellow Helmet",
+                    Game.GetGXTEntry("HE_FMF_16_1"), //"Steel Horse Blue Helmet",
+                    Game.GetGXTEntry("HE_FMF_16_1S"), //"Steel Horse Blue Helmet",
+                    Game.GetGXTEntry("HE_FMF_16_2"), //"Steel Horse Orange Helmet",
+                    Game.GetGXTEntry("HE_FMF_16_2S"), //"Steel Horse Orange Helmet",
+                    Game.GetGXTEntry("HE_FMF_16_3"), //"Western MC Green Helmet",
+                    Game.GetGXTEntry("HE_FMF_16_3S"), //"Western MC Green Helmet",
+                    Game.GetGXTEntry("HE_FMF_16_4"), //"Western MC Red Helmet",
+                    Game.GetGXTEntry("HE_FMF_16_4S"), //"Western MC Red Helmet",
+                    Game.GetGXTEntry("HE_FMF_16_5"), //"Steel Horse Black Helmet",
+                    Game.GetGXTEntry("HE_FMF_16_5S"), //"Steel Horse Black Helmet",
+                    Game.GetGXTEntry("HE_FMF_16_6"), //"Black Helmet",
+                    Game.GetGXTEntry("HE_FMF_16_6S"), //"Black Helmet",
+                    Game.GetGXTEntry("HE_FMF_16_7"), //"Western MC Lilac Helmet",
+                    Game.GetGXTEntry("HE_FMF_16_7S"), //"Western MC Lilac Helmet",
+                    Game.GetGXTEntry("HE_FMF_17_0"), //"Blue Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMF_17_0S"), //"Blue Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMF_17_1"), //"Orange Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMF_17_1S"), //"Orange Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMF_17_2"), //"Pale Blue Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMF_17_2S"), //"Pale Blue Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMF_17_3"), //"Red Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMF_17_3S"), //"Red Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMF_17_4"), //"Gray Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMF_17_4S"), //"Gray Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMF_17_5"), //"Black Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMF_17_5S"), //"Black Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMF_17_6"), //"Pink Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMF_17_6S"), //"Pink Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMF_17_7"), //"White Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMF_17_7S"), //"White Open-Face Helmet",
+                    Game.GetGXTEntry("HE_FMF_18_0"), //"Shatter Pattern Helmet",
+                    Game.GetGXTEntry("HE_FMF_18_0S"), //"Shatter Pattern Helmet",
+                    Game.GetGXTEntry("HE_FMF_18_1"), //"Stars Helmet",
+                    Game.GetGXTEntry("HE_FMF_18_1S"), //"Stars Helmet",
+                    Game.GetGXTEntry("HE_FMF_18_2"), //"Squared Helmet",
+                    Game.GetGXTEntry("HE_FMF_18_2S"), //"Squared Helmet",
+                    Game.GetGXTEntry("HE_FMF_18_3"), //"Crimson Helmet",
+                    Game.GetGXTEntry("HE_FMF_18_3S"), //"Crimson Helmet",
+                    Game.GetGXTEntry("HE_FMF_18_4"), //"Skull Helmet",
+                    Game.GetGXTEntry("HE_FMF_18_4S"), //"Skull Helmet",
+                    Game.GetGXTEntry("HE_FMF_18_5"), //"Ace of Spades Helmet",
+                    Game.GetGXTEntry("HE_FMF_18_5S"), //"Ace of Spades Helmet",
+                    Game.GetGXTEntry("HE_FMF_18_6"), //"Flamejob Helmet",
+                    Game.GetGXTEntry("HE_FMF_18_6S"), //"Flamejob Helmet",
+                    Game.GetGXTEntry("HE_FMF_18_7"), //"White Helmet",
+                    Game.GetGXTEntry("HE_FMF_18_7S"), //"White Helmet",
+                };
+            }
+            UIMenuListItem bikeHelmet = new UIMenuListItem(Game.GetGXTEntry("PIM_TBIH"), bikeHelmets, 0, Game.GetGXTEntry("PIM_HBIH"));
+
+            /* descriptions to change based on player availability and player choice (default PIM_HHELVN)
+      "PIM_HHELV0": "Have the visor down for certain helmets.",
+      "PIM_HHELV1": "Have the visor up for certain helmets.",
+      "PIM_HHELVN": "Equip a helmet with a visor to change your preference.",
+             */
+            List<dynamic> bikeVisorList = new List<dynamic>() { Game.GetGXTEntry("PIM_HELV0"), Game.GetGXTEntry("PIM_HELV1") };
+            UIMenuListItem bikeVisor = new UIMenuListItem(Game.GetGXTEntry("PIM_THELV"), bikeVisorList, 0, Game.GetGXTEntry("PIM_HHELVN"));
+
+            List<dynamic> autoShowBikeHelmetList = new List<dynamic>() { Game.GetGXTEntry("PIM_AHLM0"), Game.GetGXTEntry("PIM_AHLM1") };
+            UIMenuListItem autoShowBikeHelmet = new UIMenuListItem(Game.GetGXTEntry("PIM_TAHLM"), autoShowBikeHelmetList, 0, Game.GetGXTEntry("PIM_HAHLM"));
+
+            List<dynamic> autoShowAircraftHelmetList = new List<dynamic>() { Game.GetGXTEntry("PIM_AAHLM0"), Game.GetGXTEntry("PIM_AAHLM1") };
+            UIMenuListItem autoShowAircraftHelmet = new UIMenuListItem(Game.GetGXTEntry("PIM_TAAHLM"), autoShowAircraftHelmetList, 0, Game.GetGXTEntry("PIM_HAAHLM"));
+
+            /*
+              "PIM_HANIM": "The selected action will be stored as your Quickplay Action. Press or hold the Quickplay Action buttons to alter how you will perform this action.",
+              "PIM_HANIM2": "The selected action will be stored as your Quickplay Action. Press, double tap or hold the Quickplay Action buttons to alter how you perform this action.",
+              "PIM_HANIM3": "The selected action will be stored as your Quickplay Action and take $~1~ from your wallet with each use. Press, double tap or hold the Quickplay Action buttons to alter how you perform this action.",
+              "PIM_HANIM4": "The selected Quickplay Action requires Blêuter'd Champagne purchased from the Arena War Spectator Box. Press, double tap or hold the Quickplay Action buttons to perform the action and remove a bottle of Blêuter'd Champagne from your inventory.",
+              "PIM_HANIM5": "The selected Quickplay Action requires a Horror Pumpkin Mask to be equipped. Press or hold the Quickplay Action buttons to perform the action.",
+             */
+            string currentAction = Game.GetGXTEntry("IAP_NONE");
+            int currentActionPosition = 0;
+            UIMenuDynamicListItem action = new UIMenuDynamicListItem(Game.GetGXTEntry(PlayerCache.MyPlayer.Ped.IsInVehicle() ? "PIM_TANIMP" : "PIM_TANIMF"), Game.GetGXTEntry("PIM_HANIM"), currentAction, async (sender, direction) =>
+            {
+                // items in game are hanlded like a dynamiclistitem via a function with a check if the ped is in vehicle and the current index i think..
+                currentActionPosition = direction == UIMenuDynamicListItem.ChangeDirection.Left ? currentActionPosition-- : currentActionPosition++;
+                int currentSituation = 2;
+                int max = 66;
+                if (PlayerCache.MyPlayer.Ped.IsInVehicle())
+                {
+                    currentSituation = 0;
+                    max = 42;
+                }
+
+                /*
+                 if we are in a crew, currentSituation = 1 e max = 3
+                 */
+
+                if (currentActionPosition < 0)
+                    currentActionPosition = max;
+                if (currentActionPosition > max)
+                    currentActionPosition = 0;
+                string result = GetAnimName(currentSituation, currentActionPosition);
+                //TODO: FIND CORRECT ANIMATION AND SAVE IT FOR WHEN THE PLAYER DECIDES TO USE IT
+                return Game.GetGXTEntry(result);
+            });
+
+            /* titles(default PIM_TMOODN)
+              "PIM_TMOODD": "Player Mood (Deathmatch)",
+              "PIM_TMOODN": "Player Mood",
+              "PIM_TMOODR": "Player Mood (Race)",
+             */
+            /* descriptions (default PIM_HMOODN)
+              "PIM_HMOODD": "Sets your character's facial expression during Deathmatches.",
+              "PIM_HMOODN": "Sets your character's facial expression.",
+              "PIM_HMOODR": "Sets your character's facial expression during Races.",
+             */
+            List<dynamic> listMoods = new List<dynamic>()
+            {
+              Game.GetGXTEntry("PM_MOOD_4"), // "Normal",
+              Game.GetGXTEntry("PM_MOOD_5"), // "Stressed",
+              Game.GetGXTEntry("PM_MOOD_6"), // "Smug",
+              Game.GetGXTEntry("PM_MOOD_7"), // "Sulking",
+              Game.GetGXTEntry("PM_MOOD_0"), // "Aiming",
+              Game.GetGXTEntry("PM_MOOD_1"), // "Angry",
+              Game.GetGXTEntry("PM_MOOD_2"), // "Happy",
+              Game.GetGXTEntry("PM_MOOD_3")  // "Injured",
+            };
+            UIMenuListItem playerMood = new UIMenuListItem(Game.GetGXTEntry("PIM_TMOODN"), listMoods, 0, Game.GetGXTEntry("PIM_HMOODN"));
+
+            List<dynamic> walkStyles = new List<dynamic>()
+            {
+                Game.GetGXTEntry("PM_WALK_0"), // "Normal",
+                Game.GetGXTEntry("PM_WALK_1"), // "Femme",
+                Game.GetGXTEntry("PM_WALK_2"), // "Gangster",
+                Game.GetGXTEntry("PM_WALK_3"), // "Posh",
+                Game.GetGXTEntry("PM_WALK_4"), // "Tough Guy",
+                Game.GetGXTEntry("PM_WALK_5"), // "Grooving",
+            };
+            UIMenuListItem playerWalkStyle = new UIMenuListItem(Game.GetGXTEntry("PIM_TWALKN"), walkStyles, 0, Game.GetGXTEntry("PIM_HWALKN"));
+
+
+            /* descriptions (default PIM_HILLUN)
+              "PIM_HILLUN": "Set the type of glow applied to illuminated clothing items.",
+              "PIM_HILLUNM": "This feature is not available on this mode.",
+             */
+            List<dynamic> illuminatedClothingList = new List<dynamic>()
+            {
+                Game.GetGXTEntry("PM_ILLU_0"), // "On",
+                Game.GetGXTEntry("PM_ILLU_1"), // "Flash",
+                Game.GetGXTEntry("PM_ILLU_2"), // "Pulse",
+                Game.GetGXTEntry("PM_ILLU_3"), // "Off",
+            };
+            UIMenuListItem illuminatedClothing = new UIMenuListItem(Game.GetGXTEntry("PIM_TILLUN"), illuminatedClothingList, 0, Game.GetGXTEntry("PIM_HILLUN"));
+
+
+            /* descriptions (default PIM_HCHOOD)
+              "PIM_HCHOOD": "Set your Character's hood style.",
+              "PIM_HCHOOD0": "You cannot set the style of this hood.",
+              "PIM_HCHOOD1": "You cannot set your Character's hood style while in a vehicle.",
+              "PIM_HCHOOD2": "You cannot set your Character's hood style while wearing this outfit.",
+              "PIM_HCHOOD3": "You are able to set your Character's hood style while wearing certain hoods.",
+             */
+            List<dynamic> hoodList = new List<dynamic>()
+            {
+               Game.GetGXTEntry("PM_CHOOD_0"), // "Down",
+               Game.GetGXTEntry("PM_CHOOD_1"), // "Up",
+               Game.GetGXTEntry("PM_CHOOD_2"), // "Tucked",
+            };
+            UIMenuListItem hood = new UIMenuListItem(Game.GetGXTEntry("PIM_TCHOOD"), hoodList, 0, Game.GetGXTEntry("PIM_HCHOOD"));
+
+            /* descriptions (default PIM_HCJACK)
+                "PIM_HCJACK": "Set your Character's jacket style.",
+                "PIM_HCJACK0": "You cannot set your Character's jacket style while in a vehicle.",
+                "PIM_HCJACK1": "You cannot set your Character's jacket style while wearing this outfit.",
+                "PIM_HCJACK2": "You cannot set the style of this jacket.",
+                "PIM_HCJACK3": "You are able to set your Character's jacket style while wearing a jacket.",
+             */
+            List<dynamic> jacketList = new List<dynamic>()
+            {
+               Game.GetGXTEntry("PM_CJACK_0"), // Open
+               Game.GetGXTEntry("PM_CJACK_1"), // Closed
+            };
+            UIMenuListItem jacket = new UIMenuListItem(Game.GetGXTEntry("PIM_TCJACK"), jacketList, 0, Game.GetGXTEntry("PIM_HCJACK"));
+
+
+
+            PM_CJACK_
+
+
+            /* for armor
+              "PIM_AARM0": "Off",
+              "PIM_AARM1": "On",
+            */
 
             styleMenu.AddItem(changeAppear);
 
@@ -422,6 +676,12 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             parachuteItem.BindItemToMenu(parachuteMenu);
             styleMenu.AddItem(parachuteItem);
+
+            styleMenu.AddItem(outfit);
+            styleMenu.AddItem(racingOutfit);
+            styleMenu.AddItem(bikeHelmet);
+            styleMenu.AddItem(bikeVisor);
+            styleMenu.AddItem(autoShowBikeHelmet);
 
 
             #endregion
@@ -451,46 +711,46 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             }
 
             vehContr.OnCheckboxChange += async (_menu, _item, _checked) =>
-            {
-                if (_item == close)
-                    EventsPersonalMenu.Lock(_checked);
-                else if (_item == save)
-                    switch (_checked)
-                    {
-                        case true when PlayerCache.MyPlayer.Status.PlayerStates.InVehicle:
                             {
-                                EventsPersonalMenu.Save(_checked);
+                                if (_item == close)
+                                    EventsPersonalMenu.Lock(_checked);
+                                else if (_item == save)
+                                    switch (_checked)
+                                    {
+                                        case true when PlayerCache.MyPlayer.Status.PlayerStates.InVehicle:
+                                            {
+                                                EventsPersonalMenu.Save(_checked);
 
-                                if (_checked)
-                                {
-                                    close.Enabled = true;
-                                    doors.Enabled = true;
-                                    engine.Enabled = true;
-                                    fuel.SetRightLabel(fuelint + "%");
-                                }
-                                else
-                                {
-                                    close.Enabled = false;
-                                    doors.Enabled = false;
-                                    engine.Enabled = false;
-                                    fuel.SetRightLabel("No vehicle saved");
-                                }
+                                                if (_checked)
+                                                {
+                                                    close.Enabled = true;
+                                                    doors.Enabled = true;
+                                                    engine.Enabled = true;
+                                                    fuel.SetRightLabel(fuelint + "%");
+                                                }
+                                                else
+                                                {
+                                                    close.Enabled = false;
+                                                    doors.Enabled = false;
+                                                    engine.Enabled = false;
+                                                    fuel.SetRightLabel("No vehicle saved");
+                                                }
 
-                                break;
-                            }
-                        case false:
-                            EventsPersonalMenu.Save(_checked);
-                            close.Enabled = false;
-                            doors.Enabled = false;
-                            engine.Enabled = false;
-                            fuel.SetRightLabel("No vehicle saved");
-                            break;
-                        default:
-                            Notifications.ShowNotification("You must be in a vehicle to activate the save function", true);
-                            break;
-                    }
-                else if (_item == engine) EventsPersonalMenu.engine(_checked);
-            };
+                                                break;
+                                            }
+                                        case false:
+                                            EventsPersonalMenu.Save(_checked);
+                                            close.Enabled = false;
+                                            doors.Enabled = false;
+                                            engine.Enabled = false;
+                                            fuel.SetRightLabel("No vehicle saved");
+                                            break;
+                                        default:
+                                            Notifications.ShowNotification("You must be in a vehicle to activate the save function", true);
+                                            break;
+                                    }
+                                else if (_item == engine) EventsPersonalMenu.engine(_checked);
+                            };
             vehContr.OnListSelect += (_menu, _listItem, _itemIndex) =>
             {
                 if (_listItem == doors)
@@ -1341,6 +1601,259 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             StatGetInt((uint)Game.GenerateHash(name), ref val, -1);
 
             return val.ToString();
+        }
+
+        static string GetAnimName(int iParam0, int iParam1)//Position - 0x23849A
+        {
+            switch (iParam0)
+            {
+                case 0:
+                    switch (iParam1)
+                    {
+                        case 0:
+                            return "IAP_NONE";
+                        case 1:
+                            return "IAPS_SMOK";
+                        case 2:
+                            return "IAPS_FING";
+                        case 3:
+                            return "IAPS_DANCE";
+                        case 4:
+                            return "IAPS_ROCK";
+                        case 5:
+                            return "IAPS_WANK";
+                        case 7:
+                            return "IAP_DLC37";
+                        case 8:
+                            return "IAP_DLC12";
+                        case 9:
+                            return "IAP_DLC18";
+                        case 10:
+                            return "IAP_DLC23";
+                        case 6:
+                            return "IAP_DLC1";
+                        case 11:
+                            return "IAP_DLC42";
+                        case 12:
+                            return "IAP_DLC5";
+                        case 13:
+                            return "IAP_DLC4";
+                        case 14:
+                            return "IAP_DLC35";
+                        case 15:
+                            return "IAP_DLC2";
+                        case 17:
+                            return "D_IAP_DLC44";
+                        case 16:
+                            return "D_IAP_DLC29";
+                        case 18:
+                            return "D_IAP_DLC45";
+                        case 19:
+                            return "D_IAP_DLC46";
+                        case 20:
+                            return "D_IAP_DLC47";
+                        case 21:
+                            return "D_IAP_DLC48";
+                        case 22:
+                            return "D_IAP_DLC49";
+                        case 23:
+                            return "D_IAP_DLC20";
+                        case 25:
+                            return "D_IAP_DLC9";
+                        case 24:
+                            return "D_IAP_DLC30";
+                        case 28:
+                            return "D_IAP_DLC28";
+                        case 27:
+                            return "D_IAP_DLC21";
+                        case 26:
+                            return "D_IAP_DLC32";
+                        case 29:
+                            return "D_IAP_DLC34";
+                        case 30:
+                            return "D_IAP_DLC3";
+                        case 31:
+                            return "D_IAP_CAS_2";
+                        case 32:
+                            return "D_IAP_CAS_3";
+                        case 33:
+                            return "D_IAP_CAS_4";
+                        case 34:
+                            return "D_IAP_CAS_6";
+                        case 35:
+                            return "D_IAP_CAS_7";
+                        case 36:
+                            return "D_IAP_CAS_5";
+                        case 37:
+                            return "IAP_CAS_H_1";
+                        case 38:
+                            return "IAP_CAS_H_2";
+                        case 39:
+                            return "IAP_CAS_H_3";
+                        case 40:
+                            return "IAP_CAS_H_4";
+                        case 41:
+                            return "IAP_CAS_H_5";
+                        case 42:
+                            return "IAP_CAS_H_6";
+                    }
+                    break;
+
+                case 1:
+                    switch (iParam1)
+                    {
+                        case 0:
+                            return "IAC_BROL";
+                        case 1:
+                            return "IAC_FING";
+                        case 2:
+                            return "IAC_WANK";
+                        case 3:
+                            return "IAC_UPYO";
+                    }
+                    break;
+
+                case 2:
+                    switch (iParam1)
+                    {
+                        case 0:
+                            return "IAP_NONE";
+                        case 1:
+                            return "IAP_FING";
+                        case 2:
+                            return "IAP_ROCK";
+                        case 3:
+                            return "IAP_SALU";
+                        case 4:
+                            return "IAP_WANK";
+                        case 59:
+                            return "IAP_SMOKE";
+                        case 60:
+                            return "IAP_DRINK1";
+                        case 61:
+                            return "IAP_DRINK2";
+                        case 62:
+                            return "IAP_DRINK3";
+                        case 63:
+                            return "IAP_DRINK4";
+                        case 64:
+                            return "IAP_EAT1";
+                        case 65:
+                            return "IAP_EAT2";
+                        case 66:
+                            return "IAP_EAT3";
+                        case 6:
+                            return "IAP_DLC37";
+                        case 7:
+                            return "IAP_DLC12";
+                        case 8:
+                            return "IAP_DLC18";
+                        case 5:
+                            return "IAP_DLC1";
+                        case 9:
+                            return "IAP_DLC42";
+                        case 10:
+                            return "IAP_DLC5";
+                        case 11:
+                            return "IAP_DLC4";
+                        case 12:
+                            return "IAP_DLC35";
+                        case 13:
+                            return "IAP_DLC2";
+                        case 15:
+                            return "D_IAP_DLC44";
+                        case 14:
+                            return "D_IAP_DLC29";
+                        case 16:
+                            return "D_IAP_DLC45";
+                        case 17:
+                            return "D_IAP_DLC46";
+                        case 18:
+                            return "D_IAP_DLC47";
+                        case 19:
+                            return "D_IAP_DLC48";
+                        case 20:
+                            return "D_IAP_DLC49";
+                        case 21:
+                            return "D_IAP_DLC20";
+                        case 23:
+                            return "D_IAP_DLC9";
+                        case 22:
+                            return "D_IAP_DLC30";
+                        case 24:
+                            return "D_IAP_DLC32";
+                        case 25:
+                            return "D_IAP_DLC21";
+                        case 26:
+                            return "D_IAP_DLC28";
+                        case 27:
+                            return "D_IAP_DLC34";
+                        case 28:
+                            return "D_IAP_DLC3";
+                        case 30:
+                            return "D_IAP_BB_1";
+                        case 29:
+                            return "D_IAP_BB_1L";
+                        case 31:
+                            return "D_IAP_BB_1R";
+                        case 32:
+                            return "D_IAP_BB_2";
+                        case 33:
+                            return "D_IAP_BB_3";
+                        case 34:
+                            return "D_IAP_BB_4";
+                        case 35:
+                            return "D_IAP_BB_5";
+                        case 36:
+                            return "D_IAP_BB_6";
+                        case 37:
+                            return "D_IAP_BB_7";
+                        case 38:
+                            return "D_IAP_BB_8";
+                        case 40:
+                            return "D_IAP_CAS_2";
+                        case 41:
+                            return "D_IAP_CAS_3";
+                        case 42:
+                            return "D_IAP_CAS_4";
+                        case 43:
+                            return "D_IAP_CAS_6";
+                        case 44:
+                            return "D_IAP_CAS_7";
+                        case 45:
+                            return "D_IAP_CAS_5";
+                        case 46:
+                            return "IAP_CAS_H_1";
+                        case 47:
+                            return "IAP_CAS_H_2";
+                        case 48:
+                            return "IAP_CAS_H_3";
+                        case 49:
+                            return "IAP_CAS_H_4";
+                        case 50:
+                            return "IAP_CAS_H_5";
+                        case 51:
+                            return "IAP_CAS_H_6";
+                        case 39:
+                            return "D_IAP_AW_1";
+                        case 58:
+                            return "PIM_MASK_SFX_T";
+                        case 52:
+                            return "D_IAP_HI_1";
+                        case 53:
+                            return "D_IAP_HI_2";
+                        case 54:
+                            return "D_IAP_HI_3";
+                        case 55:
+                            return "D_IAP_HI_4";
+                        case 56:
+                            return "D_IAP_HI_5";
+                        case 57:
+                            return "D_IAP_HI_6";
+                    }
+                    break;
+            }
+            return "";
         }
     }
 }
