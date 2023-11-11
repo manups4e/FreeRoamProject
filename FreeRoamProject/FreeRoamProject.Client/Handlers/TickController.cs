@@ -91,7 +91,7 @@ namespace FreeRoamProject.Client.Handlers
 
         private static void Spawned(PlayerClient client)
         {
-            TickGenerics.Add(PersonalMenu.Enable);
+            TickGenerics.Add(InteractionMenu.Enable);
             ClientMain.Logger.Warning("GenericAdded");
             TickGenerics.ForEach(ClientMain.Instance.AddTick);
             TickOnFoot.ForEach(ClientMain.Instance.AddTick);
