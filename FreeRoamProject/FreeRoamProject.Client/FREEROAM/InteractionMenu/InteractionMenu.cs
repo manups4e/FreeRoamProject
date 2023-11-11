@@ -567,7 +567,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             action.Activated += (menu, item) =>
             {
-                // TODO: FIND CORRECT ANIMATION AND PLAY IT
+                // TODO: CHECK func_13801 IN freemode.c
             };
 
             /* titles(default PIM_TMOODN)
