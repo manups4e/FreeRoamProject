@@ -331,6 +331,7 @@ namespace FreeRoamProject.Server.Core.Buckets
 
         private async Task<FreeRoamChar> LoadFreeRoamChar([FromSource] PlayerClient source, int id)
         {
+            //DEBUG USE ONLY, TO RE-CREATE YOUR CHARACTER
             //API.DeleteResourceKvpNoSync($"freeroam:player_{source.User.Identifiers.License}:char_model");
             if (source.User.ID != id) return null;
             string sbytes = API.GetResourceKvpString($"freeroam:player_{source.User.Identifiers.License}:char_model");

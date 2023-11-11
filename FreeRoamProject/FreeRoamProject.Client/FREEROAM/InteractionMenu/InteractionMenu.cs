@@ -8,13 +8,15 @@ using System.Threading.Tasks;
 
 namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 {
-    internal static class PersonalMenu
+    internal static class InteractionMenu
     {
 
         // TODO: MAKE THE GAME COUNT IDLING OF PLAYER, IF MORE THAN 15 MINUTES THEN KICK IT..
         // WE CAN SEND SHOWNOTIFICATION WITH LABEL "HUD_ILDETIME" WITH TIME REMAINING
         // IF TIME FINISH.. PLAYER IS KICKED OUT OF THE SERVER.
         // game checks using IsInPowerSavingMode() and GetPowerSavingModeDuration()
+
+        // TODO: IN THE PERSONAL MENU EVENTS, ADD THE SPAWNED EVENT AND RE-APPLY EVERY SETTING BEFORE THE PLAYER CAN SEE IT
 
         public static List<dynamic> chars = new List<dynamic>();
         public static float interactionDistance = 3.5f;
@@ -284,6 +286,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             UIMenuItem objectives = new UIMenuItem(Game.GetGXTEntry("PIM_TDOBJ"), Game.GetGXTEntry("PIM_HDOBJ"));
             UIMenu objectivesMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_TITLE_67"));
+            objectives.Enabled = false;
+            objectives.Description = "Feature not yet available, stay tuned for when this feature will be enabled!!";
             objectives.BindItemToMenu(objectivesMenu);
             interactionMenu.AddItem(objectives);
 
@@ -511,7 +515,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             UIMenuDynamicListItem action = new UIMenuDynamicListItem(Game.GetGXTEntry(PlayerCache.MyPlayer.Ped.IsInVehicle() ? "PIM_TANIMP" : "PIM_TANIMF"), Game.GetGXTEntry("PIM_HANIM"), currentAction, async (sender, direction) =>
             {
                 // items in game are hanlded like a dynamiclistitem via a function with a check if the ped is in vehicle and the current index i think..
-                currentActionPosition = direction == UIMenuDynamicListItem.ChangeDirection.Left ? currentActionPosition-- : currentActionPosition++;
+                currentActionPosition = direction == UIMenuDynamicListItem.ChangeDirection.Left ? currentActionPosition - 1 : currentActionPosition + 1;
                 int currentSituation = 2;
                 int max = 66;
                 if (PlayerCache.MyPlayer.Ped.IsInVehicle())
@@ -530,8 +534,41 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     currentActionPosition = 0;
                 string result = GetAnimName(currentSituation, currentActionPosition);
                 //TODO: FIND CORRECT ANIMATION AND SAVE IT FOR WHEN THE PLAYER DECIDES TO USE IT
+
+
+                bool value = currentSituation switch
+                {
+                    1 => currentActionPosition switch
+                    {
+                        0 or 3 => false,
+                        _ => true,
+                    },
+                    2 => currentActionPosition switch
+                    {
+                        0 or 60 or 61 or 63 or 64 or 65 or 66 => false,
+                        _ => true,
+                    },
+                    3 => currentActionPosition switch
+                    {
+                        0 or 1 or 2 or 3 => false,
+                        _ => true,
+                    },
+                    _ => false,
+                };
+                sender.Description = currentActionPosition switch
+                {
+                    39 when PlayerCache.MyPlayer.Ped.IsOnFoot => Game.GetGXTEntry("PIM_HANIM3"),
+                    62 when PlayerCache.MyPlayer.Ped.IsOnFoot => Game.GetGXTEntry("PIM_HANIM4"),
+                    58 => Game.GetGXTEntry("PIM_HANIM5"),
+                    _ => PlayerCache.MyPlayer.Ped.IsInVehicle() || !value ? Game.GetGXTEntry("PIM_HANIM") : Game.GetGXTEntry("PIM_HANIM2"),
+                };
                 return Game.GetGXTEntry(result);
             });
+
+            action.Activated += (menu, item) =>
+            {
+                // TODO: FIND CORRECT ANIMATION AND PLAY IT
+            };
 
             /* titles(default PIM_TMOODN)
               "PIM_TMOODD": "Player Mood (Deathmatch)",
@@ -545,16 +582,40 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
              */
             List<dynamic> listMoods = new List<dynamic>()
             {
-              Game.GetGXTEntry("PM_MOOD_4"), // "Normal",
-              Game.GetGXTEntry("PM_MOOD_5"), // "Stressed",
-              Game.GetGXTEntry("PM_MOOD_6"), // "Smug",
-              Game.GetGXTEntry("PM_MOOD_7"), // "Sulking",
-              Game.GetGXTEntry("PM_MOOD_0"), // "Aiming",
-              Game.GetGXTEntry("PM_MOOD_1"), // "Angry",
-              Game.GetGXTEntry("PM_MOOD_2"), // "Happy",
-              Game.GetGXTEntry("PM_MOOD_3")  // "Injured",
+                Game.GetGXTEntry("PM_MOOD_0"), // "Aiming",
+                Game.GetGXTEntry("PM_MOOD_1"), // "Angry",
+                Game.GetGXTEntry("PM_MOOD_2"), // "Happy",
+                Game.GetGXTEntry("PM_MOOD_3"),  // "Injured",
+                Game.GetGXTEntry("PM_MOOD_4"), // "Normal",
+                Game.GetGXTEntry("PM_MOOD_5"), // "Stressed",
+                Game.GetGXTEntry("PM_MOOD_6"), // "Smug",
+                Game.GetGXTEntry("PM_MOOD_7") // "Sulking",
             };
-            UIMenuListItem playerMood = new UIMenuListItem(Game.GetGXTEntry("PIM_TMOODN"), listMoods, 0, Game.GetGXTEntry("PIM_HMOODN"));
+            UIMenuListItem playerMood = new UIMenuListItem(Game.GetGXTEntry("PIM_TMOODN"), listMoods, 4, Game.GetGXTEntry("PIM_HMOODN"));
+            playerMood.OnListChanged += (item, index) =>
+            {
+                Ped ped = PlayerCache.MyPlayer.Ped;
+                if (!ped.IsInjured)
+                {
+                    if (!ped.GetConfigFlag(418) && !ped.GetConfigFlag(419))
+                    {
+                        if (InteractionMethods.MoodCam == null || !InteractionMethods.MoodCam.Exists())
+                        {
+                            ped.Task.ClearAll();
+                            Function.Call(Hash.SET_PED_STEALTH_MOVEMENT, false, 0);
+                            SetPlayerControl(PlayerId(), false, 2560);
+                            Position coords = PlayerCache.MyPlayer.Position;
+                            InteractionMethods.MoodCam = new Camera(CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.X, coords.Y, coords.Z, 0f, 0f, 0f, 50f, false, 2));
+                            InteractionMethods.MoodCam.AttachTo(ped.Bones[31086], new Vector3(0f, 0.9f, 0f));
+                            PointCamAtPedBone(InteractionMethods.MoodCam.Handle, ped.Handle, 31086, 0, 0, 0, true);
+                            InteractionMethods.MoodCam.FieldOfView = 50f;
+                            InteractionMethods.MoodCam.IsActive = true;
+                            RenderScriptCams(true, false, 3000, true, false);
+                        }
+                    }
+                }
+                InteractionMethods.SetFacialAnim(index);
+            };
 
             List<dynamic> walkStyles = new List<dynamic>()
             {
@@ -566,7 +627,10 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 Game.GetGXTEntry("PM_WALK_5"), // "Grooving",
             };
             UIMenuListItem playerWalkStyle = new UIMenuListItem(Game.GetGXTEntry("PIM_TWALKN"), walkStyles, 0, Game.GetGXTEntry("PIM_HWALKN"));
-
+            playerWalkStyle.OnListChanged += (item, index) =>
+            {
+                InteractionMethods.SetWalkingStyle(index);
+            };
 
             /* descriptions (default PIM_HILLUN)
               "PIM_HILLUN": "Set the type of glow applied to illuminated clothing items.",
@@ -631,6 +695,29 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             styleMenu.AddItem(hood);
             styleMenu.AddItem(jacket);
 
+            styleMenu.OnIndexChange += (menu, index) =>
+            {
+                PlayerCache.MyPlayer.Player.CanControlCharacter = true;
+                if (InteractionMethods.MoodCam != null && InteractionMethods.MoodCam.Exists())
+                {
+                    InteractionMethods.MoodCam.IsActive = false;
+                    RenderScriptCams(false, false, 3000, true, false);
+                    InteractionMethods.MoodCam.Delete();
+                }
+            };
+
+            styleMenu.OnMenuClose += (menu) =>
+            {
+                PlayerCache.MyPlayer.Player.CanControlCharacter = true;
+                if (InteractionMethods.MoodCam != null && InteractionMethods.MoodCam.Exists())
+                {
+                    InteractionMethods.MoodCam.IsActive = false;
+                    RenderScriptCams(false, false, 3000, true, false);
+                    InteractionMethods.MoodCam.Delete();
+                }
+            };
+
+
             #endregion
 
             #region Vehicles
@@ -643,7 +730,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             UIMenuCheckboxItem save = new UIMenuCheckboxItem("Save Vehicle", saved);
             UIMenuCheckboxItem close = new UIMenuCheckboxItem("Door lock", closed);
             UIMenuListItem doors = new UIMenuListItem("Open/Close Door", portiere, 0);
-            UIMenuCheckboxItem engine = new UIMenuCheckboxItem("Remote On/Off", EventsPersonalMenu.saveVehicle != null ? EventsPersonalMenu.saveVehicle.IsEngineRunning : false);
+            UIMenuCheckboxItem engine = new UIMenuCheckboxItem("Remote On/Off", InteractionMethods.saveVehicle != null ? InteractionMethods.saveVehicle.IsEngineRunning : false);
             vehContr.AddItem(fuel);
             vehContr.AddItem(save);
             vehContr.AddItem(close);
@@ -660,13 +747,13 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             vehContr.OnCheckboxChange += async (_menu, _item, _checked) =>
                             {
                                 if (_item == close)
-                                    EventsPersonalMenu.Lock(_checked);
+                                    InteractionMethods.Lock(_checked);
                                 else if (_item == save)
                                     switch (_checked)
                                     {
                                         case true when PlayerCache.MyPlayer.Status.PlayerStates.InVehicle:
                                             {
-                                                EventsPersonalMenu.Save(_checked);
+                                                InteractionMethods.Save(_checked);
 
                                                 if (_checked)
                                                 {
@@ -686,7 +773,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                                                 break;
                                             }
                                         case false:
-                                            EventsPersonalMenu.Save(_checked);
+                                            InteractionMethods.Save(_checked);
                                             close.Enabled = false;
                                             doors.Enabled = false;
                                             engine.Enabled = false;
@@ -696,12 +783,12 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                                             Notifications.ShowNotification("You must be in a vehicle to activate the save function", true);
                                             break;
                                     }
-                                else if (_item == engine) EventsPersonalMenu.engine(_checked);
+                                else if (_item == engine) InteractionMethods.engine(_checked);
                             };
             vehContr.OnListSelect += (_menu, _listItem, _itemIndex) =>
             {
                 if (_listItem == doors)
-                    EventsPersonalMenu.VehDorrs(_listItem.Items[_listItem.Index].ToString());
+                    InteractionMethods.VehDorrs(_listItem.Items[_listItem.Index].ToString());
             };
 
             #endregion
