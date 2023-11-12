@@ -123,7 +123,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
 
         private static async void Spawned(PlayerClient client)
         {
-            if (Cache.PlayerCache.MyPlayer.User.Character.Skin.Sex == "Male")
+            if (Cache.PlayerCache.Character.Skin.Sex == "Male")
             {
                 sLocal_436 = "mp_safehouseshower@male@";
                 sLocal_437 = "male_shower_undress_&_turn_on_water";
@@ -256,7 +256,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
                     ReleaseAmbientAudioBank();
                     if (Global_2499242_f_25 != -1) ReleaseSoundId(Global_2499242_f_25);
 
-                    if (Cache.PlayerCache.MyPlayer.User.Character.Skin.Sex == "Female")
+                    if (Cache.PlayerCache.Character.Skin.Sex == "Female")
                     {
                         while (GetSynchronizedScenePhase(Scene1) < 0.76f) await BaseScript.Delay(0);
                         Function.Call(Hash.PLAY_SOUND_FROM_ENTITY, -1, "MP_APARTMENT_SHOWER_DOOR_OPEN_MASTER", ped, 0, 0, 0);

@@ -29,6 +29,15 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
         public static bool CinematicGrain = false;
         private static bool open = false;
         private static float fuelint = 0;
+        public static UIMenu MainMenu = null;
+
+        #region to be saved in char data
+        public static int[] SavedHelmet = new int[2] { 16, 0 };
+        public static bool VisorUp = true;
+        #endregion
+
+
+
         // TODO: THE QUICK GPS MUST BE HANDLED ON MENU BUILDING.. SO THAT WE CAN CHECK WHAT TO ADD AND WHAT NOT
         // FOR EXAMPLE GARAGES, PERSONAL VEHICLES, SIMEON, LESTER, HOME, ETC
         public static List<dynamic> gps = new List<dynamic>()
@@ -95,15 +104,24 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             string playerName = player.Name;
 
             Point pos = new Point(5, 5);
-            UIMenu interactionMenu = new UIMenu(Game.Player.Name, Game.GetGXTEntry("PIM_TITLE1"), pos, "commonmenu", "interaction_bgd", true, true);
-            interactionMenu.BuildingAnimation = MenuBuildingAnimation.NONE;
+            MainMenu = new UIMenu(Game.Player.Name, Game.GetGXTEntry("PIM_TITLE1"), pos, "commonmenu", "interaction_bgd", true, true);
+            MainMenu.BuildingAnimation = MenuBuildingAnimation.NONE;
+            UIMenu GangsMenu = new(playerName, Game.GetGXTEntry("PIM_REGBOSSTIT"));
+            UIMenu ObjectivesMenu = new(playerName, Game.GetGXTEntry("PIM_TITLE_67"));
+            UIMenu StyleMenu = new(playerName, Game.GetGXTEntry("PIM_TITLESTYL"));
+            UIMenu VehContr = new(playerName, Game.GetGXTEntry("PIM_TITLE1"));
+            UIMenu ServicesMenu = new(playerName, Game.GetGXTEntry("PIM_HSECTIT"));
+            UIMenu MapBlipOptMenu = new(playerName, Game.GetGXTEntry("PIM_TITHS"));
+            UIMenu ImpromptuRaceMenu = new(playerName, Game.GetGXTEntry("R2P_MENU"));
+            UIMenu HighlightPlayerMenu = new(playerName, Game.GetGXTEntry("PIM_TITLE12"));
+
 
             #region Quick GPS
             // TODO: MAKE THE QUICK_GPS LIST ON RUNTIME.. YOU NEVER KNOW WHAT MUST BE ADDED AND WHAT NOT..
             // SO WE CAN'T CHECK BY THE INDEX, BUT BY THE LIST CURRENT INDEX LABEL.
             UIMenuListItem gpsItem = new UIMenuListItem(Game.GetGXTEntry("PIM_TQGPS"), gps, 0);
-            interactionMenu.AddItem(gpsItem);
-            interactionMenu.OnListSelect += async (menu, _item, _itemIndex) =>
+            MainMenu.AddItem(gpsItem);
+            MainMenu.OnListSelect += async (menu, _item, _itemIndex) =>
             {
                 if (_item != gpsItem) return;
                 int var;
@@ -195,9 +213,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             #region Gangs
 
             UIMenuItem gangsItem = new(Game.GetGXTEntry("PIM_REGBOSS"), Game.GetGXTEntry("PIM_REGMAGHELPB"));
-            UIMenu gangsMenu = new(playerName, Game.GetGXTEntry("PIM_REGBOSSTIT"));
-            gangsItem.BindItemToMenu(gangsMenu);
-            interactionMenu.AddItem(gangsItem);
+            gangsItem.BindItemToMenu(GangsMenu);
+            MainMenu.AddItem(gangsItem);
 
             // TODO: UNCENSORED IS SO ESX... WE WANT A GANG NAME BUT ALSO A SIMPLE CHECK IsBoss true/false...
             if (PlayerCache.MyPlayer.User.Character.Gang.Name == "Uncensored")
@@ -205,8 +222,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 UIMenuItem becomeBoss = new UIMenuItem("Become a gang boss!");
                 List<dynamic> job = new List<dynamic>() { Game.GetGXTEntry("FE_HLP31"), Game.GetGXTEntry("FE_HLP29") };
                 UIMenuListItem lookingForJob = new UIMenuListItem("Looking for a \"Job\"", job, 0, GetLabelText("PIM_MAGH0D"));
-                gangsMenu.AddItem(becomeBoss);
-                gangsMenu.AddItem(lookingForJob);
+                GangsMenu.AddItem(becomeBoss);
+                GangsMenu.AddItem(lookingForJob);
                 // GB_BECOMEB = You are now the CEO of ~a~~s~
                 // GB_GOON_OPEN = Hold ~INPUT_VEH_EXIT~to open the door for your Boss
                 becomeBoss.Activated += async (menu, item) =>
@@ -250,13 +267,13 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     hireItem.BindItemToMenu(hire);
                     manageItem.BindItemToMenu(manage);
                     featuresBossItem.BindItemToMenu(featuresBoss);
-                    gangsMenu.AddItem(hireItem);
-                    gangsMenu.AddItem(manageItem);
-                    gangsMenu.AddItem(featuresBossItem);
+                    GangsMenu.AddItem(hireItem);
+                    GangsMenu.AddItem(manageItem);
+                    GangsMenu.AddItem(featuresBossItem);
 
 
                     UIMenuItem retire = new UIMenuItem("Retire", "Warning.. you won't be able to set up a new gang before 6 hours!");
-                    gangsMenu.AddItem(retire);
+                    GangsMenu.AddItem(retire);
                     retire.Activated += (menu, item) =>
                     {
                         MenuHandler.CloseAndClearHistory();
@@ -269,7 +286,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 else
                 {
                     UIMenuItem retire = new UIMenuItem("Retire", "Stop working for your current boss");
-                    gangsMenu.AddItem(retire);
+                    GangsMenu.AddItem(retire);
                     retire.Activated += (menu, item) =>
                     {
                         MenuHandler.CloseAndClearHistory();
@@ -285,11 +302,10 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             #region Objectives
 
             UIMenuItem objectives = new UIMenuItem(Game.GetGXTEntry("PIM_TDOBJ"), Game.GetGXTEntry("PIM_HDOBJ"));
-            UIMenu objectivesMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_TITLE_67"));
             objectives.Enabled = false;
             objectives.Description = "Feature not yet available, stay tuned for when this feature will be enabled!!";
-            objectives.BindItemToMenu(objectivesMenu);
-            interactionMenu.AddItem(objectives);
+            objectives.BindItemToMenu(ObjectivesMenu);
+            MainMenu.AddItem(objectives);
 
             #endregion
 
@@ -298,7 +314,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             UIMenuItem inventory = new UIMenuItem(Game.GetGXTEntry("PIM_TINVE"), Game.GetGXTEntry("PIM_HINVE"));
             UIMenu inventoryMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_TITLE2"));
             inventory.BindItemToMenu(inventoryMenu);
-            interactionMenu.AddItem(inventory);
+            MainMenu.AddItem(inventory);
 
             UIMenuItem radioStationItem = new UIMenuItem(Game.GetGXTEntry("PIM_FAV_RS"), Game.GetGXTEntry("PIM_FAV_RS_TT"));
             UIMenu radioStationMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_FAV_RS_U"));
@@ -395,9 +411,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             #region Style
 
             UIMenuItem style = new UIMenuItem(Game.GetGXTEntry("PIM_TSTYL"), Game.GetGXTEntry("PIM_HSTYL"));
-            UIMenu styleMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_TITLESTYL"));
-            style.BindItemToMenu(styleMenu);
-            interactionMenu.AddItem(style);
+            style.BindItemToMenu(StyleMenu);
+            MainMenu.AddItem(style);
 
             UIMenuItem changeAppear = new UIMenuItem(Game.GetGXTEntry("PIM_TCHAP"), Game.GetGXTEntry("PIM_HCHAP"));
             changeAppear.SetRightLabel("$");
@@ -427,75 +442,97 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             List<dynamic> racingOutfits = new List<dynamic>() { Game.GetGXTEntry("PIM_NRAO") };
             UIMenuListItem racingOutfit = new UIMenuListItem(Game.GetGXTEntry("PIM_TRAO"), racingOutfits, 0, Game.GetGXTEntry("PIM_HRAO"));
 
-            List<dynamic> bikeHelmets = new List<dynamic>();
-            if (PlayerCache.MyPlayer.User.Character.Skin.Sex == "Male")
+            //TODO: SAVE IT AND RELOAD ON LOGIN :D
+            string prop = $"HE_FM{(PlayerCache.Character.Skin.Sex == "Male" ? "M" : "F")}_{SavedHelmet[0]}_{SavedHelmet[1]}";
+            UIMenuDynamicListItem bikeHelmet = new(Game.GetGXTEntry("PIM_TBIH"), Game.GetGXTEntry("PIM_HBIH"), Game.GetGXTEntry(prop), async (item, direction) =>
             {
-                bikeHelmets = new List<dynamic>() {
-                    Game.GetGXTEntry("HE_FMM_16_0"), //"Western MC Yellow Helmet",
-                    Game.GetGXTEntry("HE_FMM_16_1"), //"Steel Horse Blue Helmet",
-                    Game.GetGXTEntry("HE_FMM_16_2"), //"Steel Horse Orange Helmet",
-                    Game.GetGXTEntry("HE_FMM_16_3"), //"Western MC Green Helmet",
-                    Game.GetGXTEntry("HE_FMM_16_4"), //"Western MC Red Helmet",
-                    Game.GetGXTEntry("HE_FMM_16_5"), //"Steel Horse Black Helmet",
-                    Game.GetGXTEntry("HE_FMM_16_6"), //"Black Helmet",
-                    Game.GetGXTEntry("HE_FMM_16_7"), //"Western MC Lilac Helmet",
-                    Game.GetGXTEntry("HE_FMM_17_0"), //"Blue Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMM_17_1"), //"Orange Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMM_17_2"), //"Pale Blue Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMM_17_3"), //"Red Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMM_17_4"), //"Gray Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMM_17_5"), //"Black Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMM_17_6"), //"Pink Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMM_17_7"), //"White Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMM_18_0"), //"Shatter Pattern Helmet",
-                    Game.GetGXTEntry("HE_FMM_18_1"), //"Stars Helmet",
-                    Game.GetGXTEntry("HE_FMM_18_2"), //"Squared Helmet",
-                    Game.GetGXTEntry("HE_FMM_18_3"), //"Crimson Helmet",
-                    Game.GetGXTEntry("HE_FMM_18_4"), //"Skull Helmet",
-                    Game.GetGXTEntry("HE_FMM_18_5"), //"Ace of Spades Helmet",
-                    Game.GetGXTEntry("HE_FMM_18_6"), //"Flamejob Helmet",
-                    Game.GetGXTEntry("HE_FMM_18_7"), //"White Helmet",
-                };
-            }
-            else
-            {
-                bikeHelmets = new List<dynamic>()
+                if (direction == UIMenuDynamicListItem.ChangeDirection.Left)
                 {
-                    Game.GetGXTEntry("HE_FMF_16_0"), //"Western MC Yellow Helmet",
-                    Game.GetGXTEntry("HE_FMF_16_1"), //"Steel Horse Blue Helmet",
-                    Game.GetGXTEntry("HE_FMF_16_2"), //"Steel Horse Orange Helmet",
-                    Game.GetGXTEntry("HE_FMF_16_3"), //"Western MC Green Helmet",
-                    Game.GetGXTEntry("HE_FMF_16_4"), //"Western MC Red Helmet",
-                    Game.GetGXTEntry("HE_FMF_16_5"), //"Steel Horse Black Helmet",
-                    Game.GetGXTEntry("HE_FMF_16_6"), //"Black Helmet",
-                    Game.GetGXTEntry("HE_FMF_16_7"), //"Western MC Lilac Helmet",
-                    Game.GetGXTEntry("HE_FMF_17_0"), //"Blue Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMF_17_1"), //"Orange Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMF_17_2"), //"Pale Blue Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMF_17_3"), //"Red Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMF_17_4"), //"Gray Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMF_17_5"), //"Black Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMF_17_6"), //"Pink Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMF_17_7"), //"White Open-Face Helmet",
-                    Game.GetGXTEntry("HE_FMF_18_0"), //"Shatter Pattern Helmet",
-                    Game.GetGXTEntry("HE_FMF_18_1"), //"Stars Helmet",
-                    Game.GetGXTEntry("HE_FMF_18_2"), //"Squared Helmet",
-                    Game.GetGXTEntry("HE_FMF_18_3"), //"Crimson Helmet",
-                    Game.GetGXTEntry("HE_FMF_18_4"), //"Skull Helmet",
-                    Game.GetGXTEntry("HE_FMF_18_5"), //"Ace of Spades Helmet",
-                    Game.GetGXTEntry("HE_FMF_18_6"), //"Flamejob Helmet",
-                    Game.GetGXTEntry("HE_FMF_18_7"), //"White Helmet",
-                };
-            }
-            UIMenuListItem bikeHelmet = new UIMenuListItem(Game.GetGXTEntry("PIM_TBIH"), bikeHelmets, 0, Game.GetGXTEntry("PIM_HBIH"));
+                    SavedHelmet[1]--;
+                    if (SavedHelmet[1] < 0)
+                    {
+                        SavedHelmet[1] = 7;
+                        SavedHelmet[0]--;
+                        if (SavedHelmet[0] < 16)
+                            SavedHelmet[0] = 18;
+                    }
+                }
+                else
+                {
+                    SavedHelmet[1]++;
+                    if (SavedHelmet[1] > 7)
+                    {
+                        SavedHelmet[1] = 0;
+                        SavedHelmet[0]++;
+                        if (SavedHelmet[0] > 18)
+                            SavedHelmet[0] = 16;
+                    }
+                }
+
+                bool isMale = PlayerCache.Character.Skin.Sex == "Male";
+                string prop = $"HE_FM{(isMale ? "M" : "F")}_{SavedHelmet[0]}_{SavedHelmet[1]}";
+                //values are 16 to 18 with textures 0 to 7 (total 24) (131 - 154 in the scripts when saving player stat int (subtract 131)), 
+                int currentHelmet = SavedHelmet[0];
+                if (currentHelmet == 18)
+                {
+                    currentHelmet = VisorUp ? 66 : 81;
+                    if (isMale)
+                        currentHelmet++;
+                }
+                playerPed.RemoveHelmet(true);
+
+                SetPedPropIndex(playerPed.Handle, 0, currentHelmet, SavedHelmet[1], false);
+                SetPedHelmetPropIndex(playerPed.Handle, currentHelmet);
+                SetPedHelmetTextureIndex(playerPed.Handle, SavedHelmet[1]);
+
+                if (currentHelmet == 66 || currentHelmet == 81)
+                {
+                    int nextDraw = currentHelmet == 66 ? 81 : 66;
+                    if (isMale)
+                    {
+                        currentHelmet++;
+                        nextDraw++;
+                    }
+                    bool isAlt = false;
+                    AltPropVariationData[] newHelmetData = Game.GetAltPropVariationData(playerPed.Handle, 0);
+                    if (DoesShopPedApparelHaveRestrictionTag((uint)GetHashNameForProp(playerPed.Handle, 0, newHelmetData[0].altPropVariationIndex, newHelmetData[0].altPropVariationTexture), Functions.HashUint("ALT_HELMET"), 1))
+                        isAlt = true;
+                    else
+                        isAlt = false;
+                    SetPedHelmetUnk(playerPed.Handle, isAlt, currentHelmet, nextDraw);
+                }
+                return Game.GetGXTEntry(prop);
+            });
 
             /* descriptions to change based on player availability and player choice (default PIM_HHELVN)
-      "PIM_HHELV0": "Have the visor down for certain helmets.",
-      "PIM_HHELV1": "Have the visor up for certain helmets.",
-      "PIM_HHELVN": "Equip a helmet with a visor to change your preference.",
+            "PIM_HHELV0": "Have the visor down for certain helmets.",
+            "PIM_HHELV1": "Have the visor up for certain helmets.",
+            "PIM_HHELVN": "Equip a helmet with a visor to change your preference.",
              */
             List<dynamic> bikeVisorList = new List<dynamic>() { Game.GetGXTEntry("PIM_HELV0"), Game.GetGXTEntry("PIM_HELV1") };
-            UIMenuListItem bikeVisor = new UIMenuListItem(Game.GetGXTEntry("PIM_THELV"), bikeVisorList, 0, Game.GetGXTEntry("PIM_HHELVN"));
+            UIMenuListItem bikeVisor = new UIMenuListItem(Game.GetGXTEntry("PIM_THELV"), bikeVisorList, 1, Game.GetGXTEntry("PIM_HHELVN"));
+            bikeVisor.OnListChanged += async (item, index) =>
+            {
+                VisorUp = index == 1;
+                Ped playerPed = PlayerCache.MyPlayer.Ped;
+                int pedHandle = playerPed.Handle;
+                int component = GetPedPropIndex(pedHandle, 0);
+                int texture = GetPedPropTextureIndex(pedHandle, 0);
+                if (component == 66 || component == 81 || component == 67 || component == 82)
+                {
+                    int nextDraw = component == 66 ? 81 : 66;
+                    if (PlayerCache.Character.Skin.Sex == "Male")
+                    {
+                        component++;
+                        nextDraw++;
+                    }
+                    AltPropVariationData[] newHelmetData = Game.GetAltPropVariationData(playerPed.Handle, 0);
+                    bool isAlt = DoesShopPedApparelHaveRestrictionTag((uint)GetHashNameForProp(playerPed.Handle, 0, newHelmetData[0].altPropVariationIndex, newHelmetData[0].altPropVariationTexture), Functions.HashUint("ALT_HELMET"), 1);
+                    SetPedHelmetUnk(playerPed.Handle, isAlt, component, newHelmetData[0].altPropVariationIndex);
+                    await InteractionMethods.SwitchComponent(false, index);
+                }
+            };
+
 
             List<dynamic> autoShowBikeHelmetList = new List<dynamic>() { Game.GetGXTEntry("PIM_AHLM0"), Game.GetGXTEntry("PIM_AHLM1") };
             UIMenuListItem autoShowBikeHelmet = new UIMenuListItem(Game.GetGXTEntry("PIM_TAHLM"), autoShowBikeHelmetList, 0, Game.GetGXTEntry("PIM_HAHLM"));
@@ -525,7 +562,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 }
 
                 /*
-                 if we are in a crew, currentSituation = 1 e max = 3
+                 if we are in a crew, currentSituation = 1 and max = 3
                  */
 
                 if (currentActionPosition < 0)
@@ -535,6 +572,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 string result = GetAnimName(currentSituation, currentActionPosition);
                 //TODO: FIND CORRECT ANIMATION AND SAVE IT FOR WHEN THE PLAYER DECIDES TO USE IT
 
+                InteractionMethods.CurrentAnimMode = currentSituation;
+                InteractionMethods.CurrentAnimSelection = currentActionPosition;
 
                 bool value = currentSituation switch
                 {
@@ -568,6 +607,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             action.Activated += (menu, item) =>
             {
                 // TODO: CHECK func_13801 IN freemode.c
+
             };
 
             /* titles(default PIM_TMOODN)
@@ -593,29 +633,29 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             };
             UIMenuListItem playerMood = new UIMenuListItem(Game.GetGXTEntry("PIM_TMOODN"), listMoods, 4, Game.GetGXTEntry("PIM_HMOODN"));
             playerMood.OnListChanged += (item, index) =>
-            {
-                Ped ped = PlayerCache.MyPlayer.Ped;
-                if (!ped.IsInjured)
                 {
-                    if (!ped.GetConfigFlag(418) && !ped.GetConfigFlag(419))
+                    Ped ped = PlayerCache.MyPlayer.Ped;
+                    if (!ped.IsInjured)
                     {
-                        if (InteractionMethods.MoodCam == null || !InteractionMethods.MoodCam.Exists())
+                        if (!ped.GetConfigFlag(418) && !ped.GetConfigFlag(419))
                         {
-                            ped.Task.ClearAll();
-                            Function.Call(Hash.SET_PED_STEALTH_MOVEMENT, false, 0);
-                            SetPlayerControl(PlayerId(), false, 2560);
-                            Position coords = PlayerCache.MyPlayer.Position;
-                            InteractionMethods.MoodCam = new Camera(CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.X, coords.Y, coords.Z, 0f, 0f, 0f, 50f, false, 2));
-                            InteractionMethods.MoodCam.AttachTo(ped.Bones[31086], new Vector3(0f, 0.9f, 0f));
-                            PointCamAtPedBone(InteractionMethods.MoodCam.Handle, ped.Handle, 31086, 0, 0, 0, true);
-                            InteractionMethods.MoodCam.FieldOfView = 50f;
-                            InteractionMethods.MoodCam.IsActive = true;
-                            RenderScriptCams(true, false, 3000, true, false);
+                            if (InteractionMethods.MoodCam == null || !InteractionMethods.MoodCam.Exists())
+                            {
+                                ped.Task.ClearAll();
+                                Function.Call(Hash.SET_PED_STEALTH_MOVEMENT, false, 0);
+                                SetPlayerControl(PlayerId(), false, 2560);
+                                Position coords = PlayerCache.MyPlayer.Position;
+                                InteractionMethods.MoodCam = new Camera(CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.X, coords.Y, coords.Z, 0f, 0f, 0f, 50f, false, 2));
+                                InteractionMethods.MoodCam.AttachTo(ped.Bones[31086], new Vector3(0f, 0.9f, 0f));
+                                PointCamAtPedBone(InteractionMethods.MoodCam.Handle, ped.Handle, 31086, 0, 0, 0, true);
+                                InteractionMethods.MoodCam.FieldOfView = 50f;
+                                InteractionMethods.MoodCam.IsActive = true;
+                                RenderScriptCams(true, false, 3000, true, false);
+                            }
                         }
                     }
-                }
-                InteractionMethods.SetFacialAnim(index);
-            };
+                    InteractionMethods.SetFacialAnim(index);
+                };
 
             List<dynamic> walkStyles = new List<dynamic>()
             {
@@ -674,28 +714,32 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                Game.GetGXTEntry("PM_CJACK_1"), // Closed
             };
             UIMenuListItem jacket = new UIMenuListItem(Game.GetGXTEntry("PIM_TCJACK"), jacketList, 0, Game.GetGXTEntry("PIM_HCJACK"));
+            jacket.OnListChanged += (item, index) =>
+            {
+                int ped = playerPed.Handle;
+            };
 
-            styleMenu.AddItem(changeAppear);
+            StyleMenu.AddItem(changeAppear);
 
             accessoriesItem.BindItemToMenu(accessoriesMenu);
-            styleMenu.AddItem(accessoriesItem);
+            StyleMenu.AddItem(accessoriesItem);
 
             parachuteItem.BindItemToMenu(parachuteMenu);
-            styleMenu.AddItem(parachuteItem);
+            StyleMenu.AddItem(parachuteItem);
 
-            styleMenu.AddItem(outfit);
-            styleMenu.AddItem(racingOutfit);
-            styleMenu.AddItem(bikeHelmet);
-            styleMenu.AddItem(bikeVisor);
-            styleMenu.AddItem(autoShowBikeHelmet);
-            styleMenu.AddItem(action);
-            styleMenu.AddItem(playerMood);
-            styleMenu.AddItem(playerWalkStyle);
-            styleMenu.AddItem(illuminatedClothing);
-            styleMenu.AddItem(hood);
-            styleMenu.AddItem(jacket);
+            StyleMenu.AddItem(outfit);
+            StyleMenu.AddItem(racingOutfit);
+            StyleMenu.AddItem(bikeHelmet);
+            StyleMenu.AddItem(bikeVisor);
+            StyleMenu.AddItem(autoShowBikeHelmet);
+            StyleMenu.AddItem(action);
+            StyleMenu.AddItem(playerMood);
+            StyleMenu.AddItem(playerWalkStyle);
+            StyleMenu.AddItem(illuminatedClothing);
+            StyleMenu.AddItem(hood);
+            StyleMenu.AddItem(jacket);
 
-            styleMenu.OnIndexChange += (menu, index) =>
+            StyleMenu.OnIndexChange += (menu, index) =>
             {
                 PlayerCache.MyPlayer.Player.CanControlCharacter = true;
                 if (InteractionMethods.MoodCam != null && InteractionMethods.MoodCam.Exists())
@@ -704,9 +748,20 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     RenderScriptCams(false, false, 3000, true, false);
                     InteractionMethods.MoodCam.Delete();
                 }
+                if (PlayerCache.MyPlayer.Ped.IsWearingHelmet && !PlayerCache.MyPlayer.Ped.IsOnBike)
+                {
+                    SetPedHelmet(playerPed.Handle, false);
+                    RemovePedHelmet(playerPed.Handle, true);
+                }
             };
 
-            styleMenu.OnMenuClose += (menu) =>
+            StyleMenu.OnMenuOpen += (menu, data) =>
+            {
+                bikeHelmet.Enabled = playerPed.IsOnBike;
+                bikeVisor.Enabled = playerPed.IsOnBike;
+            };
+
+            StyleMenu.OnMenuClose += (menu) =>
             {
                 PlayerCache.MyPlayer.Player.CanControlCharacter = true;
                 if (InteractionMethods.MoodCam != null && InteractionMethods.MoodCam.Exists())
@@ -723,19 +778,18 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             #region Vehicles
             // also PIM_HVEHIUNAVIL for when inside the Moblie Operations Center
             UIMenuItem vehContrItem = new UIMenuItem(Game.GetGXTEntry("PIM_TVEHI"), Game.GetGXTEntry("PIM_HVEHI"));
-            UIMenu vehContr = new("Vehicle controls", Game.GetGXTEntry("PIM_TITLE1"));
-            vehContrItem.BindItemToMenu(vehContr);
-            interactionMenu.AddItem(vehContrItem);
+            vehContrItem.BindItemToMenu(VehContr);
+            MainMenu.AddItem(vehContrItem);
             UIMenuItem fuel = new UIMenuItem("Vehicle fuel saved");
             UIMenuCheckboxItem save = new UIMenuCheckboxItem("Save Vehicle", saved);
             UIMenuCheckboxItem close = new UIMenuCheckboxItem("Door lock", closed);
             UIMenuListItem doors = new UIMenuListItem("Open/Close Door", portiere, 0);
             UIMenuCheckboxItem engine = new UIMenuCheckboxItem("Remote On/Off", InteractionMethods.saveVehicle != null ? InteractionMethods.saveVehicle.IsEngineRunning : false);
-            vehContr.AddItem(fuel);
-            vehContr.AddItem(save);
-            vehContr.AddItem(close);
-            vehContr.AddItem(doors);
-            vehContr.AddItem(engine);
+            VehContr.AddItem(fuel);
+            VehContr.AddItem(save);
+            VehContr.AddItem(close);
+            VehContr.AddItem(doors);
+            VehContr.AddItem(engine);
 
             if (!PlayerCache.MyPlayer.Status.PlayerStates.InVehicle)
             {
@@ -744,48 +798,50 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 engine.Enabled = false;
             }
 
-            vehContr.OnCheckboxChange += async (_menu, _item, _checked) =>
+            VehContr.OnCheckboxChange += async (_menu, _item, _checked) =>
+            {
+                if (_item == close)
+                    InteractionMethods.Lock(_checked);
+                else if (_item == save)
+                {
+                    switch (_checked)
+                    {
+                        case true when PlayerCache.MyPlayer.Status.PlayerStates.InVehicle:
                             {
-                                if (_item == close)
-                                    InteractionMethods.Lock(_checked);
-                                else if (_item == save)
-                                    switch (_checked)
-                                    {
-                                        case true when PlayerCache.MyPlayer.Status.PlayerStates.InVehicle:
-                                            {
-                                                InteractionMethods.Save(_checked);
+                                InteractionMethods.Save(_checked);
 
-                                                if (_checked)
-                                                {
-                                                    close.Enabled = true;
-                                                    doors.Enabled = true;
-                                                    engine.Enabled = true;
-                                                    fuel.SetRightLabel(fuelint + "%");
-                                                }
-                                                else
-                                                {
-                                                    close.Enabled = false;
-                                                    doors.Enabled = false;
-                                                    engine.Enabled = false;
-                                                    fuel.SetRightLabel("No vehicle saved");
-                                                }
+                                if (_checked)
+                                {
+                                    close.Enabled = true;
+                                    doors.Enabled = true;
+                                    engine.Enabled = true;
+                                    fuel.SetRightLabel(fuelint + "%");
+                                }
+                                else
+                                {
+                                    close.Enabled = false;
+                                    doors.Enabled = false;
+                                    engine.Enabled = false;
+                                    fuel.SetRightLabel("No vehicle saved");
+                                }
 
-                                                break;
-                                            }
-                                        case false:
-                                            InteractionMethods.Save(_checked);
-                                            close.Enabled = false;
-                                            doors.Enabled = false;
-                                            engine.Enabled = false;
-                                            fuel.SetRightLabel("No vehicle saved");
-                                            break;
-                                        default:
-                                            Notifications.ShowNotification("You must be in a vehicle to activate the save function", true);
-                                            break;
-                                    }
-                                else if (_item == engine) InteractionMethods.engine(_checked);
-                            };
-            vehContr.OnListSelect += (_menu, _listItem, _itemIndex) =>
+                                break;
+                            }
+                        case false:
+                            InteractionMethods.Save(_checked);
+                            close.Enabled = false;
+                            doors.Enabled = false;
+                            engine.Enabled = false;
+                            fuel.SetRightLabel("No vehicle saved");
+                            break;
+                        default:
+                            Notifications.ShowNotification("You must be in a vehicle to activate the save function", true);
+                            break;
+                    }
+                }
+                else if (_item == engine) InteractionMethods.engine(_checked);
+            };
+            VehContr.OnListSelect += (_menu, _listItem, _itemIndex) =>
             {
                 if (_listItem == doors)
                     InteractionMethods.VehDorrs(_listItem.Items[_listItem.Index].ToString());
@@ -796,26 +852,23 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             #region Services
             // PIM_HSERVICES for not having... PIM_HSERVICES2 for when unlocked
             UIMenuItem services = new UIMenuItem("Services", Game.GetGXTEntry("PIM_HSERVICES"));
-            UIMenu servicesMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_HSECTIT"));
-            services.BindItemToMenu(servicesMenu);
-            interactionMenu.AddItem(services);
+            services.BindItemToMenu(ServicesMenu);
+            MainMenu.AddItem(services);
 
             #endregion
 
             #region MapBlipOptions
             UIMenuItem mapBlipOpt = new UIMenuItem(Game.GetGXTEntry("PIM_THIDE"), Game.GetGXTEntry("PIM_HHIDS"));
-            UIMenu mapBlipOptMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_TITHS"));
-            mapBlipOpt.BindItemToMenu(mapBlipOptMenu);
-            interactionMenu.AddItem(mapBlipOpt);
+            mapBlipOpt.BindItemToMenu(MapBlipOptMenu);
+            MainMenu.AddItem(mapBlipOpt);
 
             #endregion
 
             #region ImpromptuRace
 
             UIMenuItem impromptuRace = new UIMenuItem(Game.GetGXTEntry("PIM_TITLE11"), Game.GetGXTEntry("PIM_HR2P"));
-            UIMenu impromptuRaceMenu = new UIMenu(playerName, Game.GetGXTEntry("R2P_MENU"));
-            impromptuRace.BindItemToMenu(impromptuRaceMenu);
-            interactionMenu.AddItem(impromptuRace);
+            impromptuRace.BindItemToMenu(ImpromptuRaceMenu);
+            MainMenu.AddItem(impromptuRace);
 
             #endregion
 
@@ -823,9 +876,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             // TODO: FIND CORRECT DESCRIPTION IN GTA:O
             UIMenuItem highlightPlayer = new UIMenuItem(Game.GetGXTEntry("PIM_THIGH"), Game.GetGXTEntry("PIM_HHIGH"));
-            UIMenu highlightPlayerMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_TITLE12"));
-            highlightPlayer.BindItemToMenu(highlightPlayerMenu);
-            interactionMenu.AddItem(highlightPlayer);
+            highlightPlayer.BindItemToMenu(HighlightPlayerMenu);
+            MainMenu.AddItem(highlightPlayer);
 
             #endregion
 
@@ -849,7 +901,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             };
 
             UIMenuListItem voiceChat = new UIMenuListItem(Game.GetGXTEntry("PIM_TCHT"), voices, 0, Game.GetGXTEntry("PIM_HCHT"));
-            interactionMenu.AddItem(voiceChat);
+            MainMenu.AddItem(voiceChat);
 
             #endregion
 
@@ -863,7 +915,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 Game.GetGXTEntry("PM_SPAWN_R")
             };
             UIMenuListItem spawnLoc = new UIMenuListItem(Game.GetGXTEntry("PIM_TSPL"), spawnLocsList, 0, Game.GetGXTEntry("PIM_HSPL").Replace("GTA Online", "The Last Galaxy"));
-            interactionMenu.AddItem(spawnLoc);
+            MainMenu.AddItem(spawnLoc);
 
             #endregion
 
@@ -886,7 +938,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
 
             UIMenuListItem playerTargeting = new UIMenuListItem(Game.GetGXTEntry("PIM_TAAF"), targetingList, 0, Game.GetGXTEntry("PIM_HSPL").Replace("GTA Online", "The Last Galaxy"));
-            interactionMenu.AddItem(playerTargeting);
+            MainMenu.AddItem(playerTargeting);
 
             #endregion
 
@@ -939,7 +991,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             UIMenu mood = new("Walking style", Game.GetGXTEntry("PIM_TITLE1"));
             AnimAndStyleItem.BindItemToMenu(AnimAndStyle);
             moodItem.BindItemToMenu(mood);
-            interactionMenu.AddItem(AnimAndStyleItem);
+            MainMenu.AddItem(AnimAndStyleItem);
             AnimAndStyle.AddItem(moodItem);
 
             UIMenuListItem Item1 = new UIMenuListItem("Moods", moods, 0, "How your character feels today?");
@@ -1497,7 +1549,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             // TODO: handle when impossible to kill myself by disabling item and adding description:
             // "PIM_HKILN": "No easy way out this time.",
 
-            interactionMenu.AddItem(suicide);
+            MainMenu.AddItem(suicide);
             suicide.Activated += async (item, index) =>
             {
                 RequestAnimDict("mp_suicide");
@@ -1525,8 +1577,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 }
 
                 MenuHandler.CloseAndClearHistory();
-                TaskPlayAnim(PlayerPedId(), "MP_SUICIDE", Anim, 8f, -8f, -1, 270540800, 0, false, false, false);
-                while (GetEntityAnimCurrentTime(PlayerPedId(), "MP_SUICIDE", Anim) < 0.99f) await BaseScript.Delay(0);
+                TaskPlayAnim(playerPed.Handle, "MP_SUICIDE", Anim, 8f, -8f, -1, 270540800, 0, false, false, false);
+                while (GetEntityAnimCurrentTime(playerPed.Handle, "MP_SUICIDE", Anim) < 0.99f) await BaseScript.Delay(0);
                 playerPed.Weapons.Select(WeaponHash.Unarmed);
                 // change events
                 BaseScript.TriggerEvent("DamageEvents:PedDied", playerPed.Handle, playerPed.Handle, 3452007600, false);
@@ -1560,16 +1612,16 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
               "PIM_HPASI21": "Passive mode is disabled while using the Nerve Center.",
             */
             UIMenuItem passive = new UIMenuItem(Game.GetGXTEntry("PM_SETTING_0"), Game.GetGXTEntry("PIM_HPASI0"));
-            interactionMenu.AddItem(passive);
+            MainMenu.AddItem(passive);
 
 
             #endregion
 
-            interactionMenu.OnMenuClose += (a) =>
+            MainMenu.OnMenuClose += (a) =>
             {
                 open = false;
             };
-            interactionMenu.Visible = true;
+            MainMenu.Visible = true;
         }
 
         public static async Task Enable()

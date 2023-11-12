@@ -230,8 +230,8 @@ namespace FreeRoamProject.Client.Core.Utility
         public static PedComponentData GetShopPedProp(uint propHash)
         {
             //return _GetShopPedProp(propHash);
-            string json = ClientMain.Instance.GetExports["frp"].GetShopPedProp(propHash);
-            PedComponentData data = json.FromJson<PedComponentData>();
+            dynamic obj = ClientMain.Instance.GetExports["frp"].GetShopPedProp(propHash);
+            PedComponentData data = new(obj);
             return data;
         }
 
@@ -337,7 +337,7 @@ namespace FreeRoamProject.Client.Core.Utility
         #endregion
 
         #region Query Props
-        private static PedComponentData _GetShopPedQueryProp(int propId, ShopCharacterType characterType)
+        private static PedComponentData _GetShopPedQueryProp(int propId, ShopCharacterType characterType, int p1 = 0)
         {
             UnsafePedComponentData data;
             long ptr;
@@ -346,7 +346,7 @@ namespace FreeRoamProject.Client.Core.Utility
                 ptr = new IntPtr(&data).ToInt64();
                 CitizenFX.Core.Native.Function.Call(CitizenFX.Core.Native.Hash.INIT_SHOP_PED_PROP, ptr);
             }
-            int max = CitizenFX.Core.Native.Function.Call<int>(CitizenFX.Core.Native.Hash.SETUP_SHOP_PED_APPAREL_QUERY_TU, (int)characterType, 0, -1, 1/*0=component/1=props*/, -1, -1);
+            int max = CitizenFX.Core.Native.Function.Call<int>(CitizenFX.Core.Native.Hash.SETUP_SHOP_PED_APPAREL_QUERY_TU, (int)characterType, p1, -1, 1/*0=component/1=props*/, -1, -1);
             if (propId > max)
                 return new PedComponentData();
 
@@ -409,19 +409,19 @@ namespace FreeRoamProject.Client.Core.Utility
 
             return -1;
         }
-        public static PedComponentData GetShopPedQueryProp(int propId, ShopCharacterType characterType)
+        public static PedComponentData GetShopPedQueryProp(int propId, ShopCharacterType characterType, int p1 = 0)
         {
             //return _GetShopPedQueryProp(propId, (int)characterType);
-            dynamic obj = ClientMain.Instance.GetExports["frp"].GetShopPedQueryProp(propId, (int)characterType);
+            dynamic obj = ClientMain.Instance.GetExports["frp"].GetShopPedQueryProp(propId, (int)characterType, p1);
             PedComponentData data = new(obj);
             return data;
         }
 
-        public static PedComponentData[] GetShopPedQueryProps(ShopCharacterType characterType)
+        public static PedComponentData[] GetShopPedQueryProps(ShopCharacterType characterType, int prop)
         {
             //return _GetShopPedQueryProps((int)characterType);
             List<PedComponentData> comps = new();
-            dynamic obj = ClientMain.Instance.GetExports["frp"].GetShopPedQueryProps((int)characterType);
+            dynamic obj = ClientMain.Instance.GetExports["frp"].GetShopPedQueryProps((int)characterType, prop);
             foreach (dynamic o in obj) comps.Add(new(o));
             return comps.ToArray();
         }
