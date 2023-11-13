@@ -9,7 +9,7 @@ namespace FreeRoamProject.Client.Core.Utility
 
         public static void Init()
         {
-            timer = GetNetworkTimeAccurate();
+            timer = GetNetworkTime();
             EventDispatcher.Mount("tlg:teleportCoords", new Action<Position>(teleportCoords));
             //EventDispatcher.Mount("tlg:onPlayerDeath", new Action<dynamic>(onPlayerDeath));
             EventDispatcher.Mount("tlg:sendUserInfo", new Action<string, string>(sendUserInfo));

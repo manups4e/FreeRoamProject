@@ -6,7 +6,7 @@
         public void New(int startTime = 0)
         {
 #if CLIENT
-            StartTime = API.GetNetworkTimeAccurate();
+            StartTime = API.GetNetworkTime();
 #elif SERVER
             StartTime = API.GetGameTimer();
 #endif
@@ -17,7 +17,7 @@
         public long Elapsed()
         {
 #if CLIENT
-            return API.GetNetworkTimeAccurate() - StartTime;
+            return API.GetNetworkTime() - StartTime;
 #elif SERVER
             return API.GetGameTimer() - StartTime;
 #endif
@@ -27,7 +27,7 @@
         {
             long elapsed = Elapsed();
 #if CLIENT
-            StartTime = API.GetNetworkTimeAccurate();
+            StartTime = API.GetNetworkTime();
 #elif SERVER
             StartTime = API.GetGameTimer();
 #endif

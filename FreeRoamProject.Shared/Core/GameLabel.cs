@@ -12,11 +12,11 @@ namespace FreeRoamProject.Shared
         {
             this.name = name;
         }
-
         public GameLabel(uint hash)
         {
             Hash = hash;
         }
+        public GameLabel() { }
     }
 
     public enum CustomArguments

@@ -102,12 +102,12 @@ namespace FreeRoamProject.Client.Core.Ingresso
                 SetFocusPosAndVel(coords.X, coords.Y, coords.Z, 0, 0, 0);
                 RequestCollisionAtCoord(coords.X, coords.Y, coords.Z);
                 Vector3 loadVect = (await PlayerCache.MyPlayer.User.Character.Position.GetPositionWithGroundZ()).ToVector3;
-                int tempTimer = GetNetworkTimeAccurate();
+                int tempTimer = GetNetworkTime();
                 bool safe = GetSafeCoordForPed(loadVect.X, loadVect.Y, loadVect.Z, true, ref newVec, 0);
                 while (!safe)
                 {
                     safe = GetSafeCoordForPed(loadVect.X, loadVect.Y, loadVect.Z, true, ref newVec, 0);
-                    if (GetNetworkTimeAccurate() - tempTimer > 5000)
+                    if (GetNetworkTime() - tempTimer > 5000)
                     {
                         ClientMain.Logger.Warning("Waiting for the safest coord to load is taking too long (more than 5s). Breaking from wait loop.");
                         break;

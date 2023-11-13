@@ -45,10 +45,10 @@ namespace FreeRoamProject.Shared
             try
             {
                 float h = position.Z;
-                int time = GetNetworkTimeAccurate();
+                int time = GetNetworkTime();
                 while (z == 0)
                 {
-                    if (GetNetworkTimeAccurate() - time > 5000)
+                    if (GetNetworkTime() - time > 5000)
                     {
                         Logger.Debug($"Vector3 FindGroundZ: Troppo tempo a caricare la coordinata Z, esco dall'attesa..");
                         return -199.99f;
@@ -97,10 +97,10 @@ namespace FreeRoamProject.Shared
             try
             {
                 float h = position.Z;
-                int time = GetNetworkTimeAccurate();
+                int time = GetNetworkTime();
                 while (z == 0)
                 {
-                    if (GetNetworkTimeAccurate() - time > 5000)
+                    if (GetNetworkTime() - time > 5000)
                     {
                         Logger.Debug($"Position FindGroundZ: Taking too much to load Z, exiting from await..");
                         return -199.99f;

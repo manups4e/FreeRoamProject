@@ -536,9 +536,18 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             List<dynamic> autoShowBikeHelmetList = new List<dynamic>() { Game.GetGXTEntry("PIM_AHLM0"), Game.GetGXTEntry("PIM_AHLM1") };
             UIMenuListItem autoShowBikeHelmet = new UIMenuListItem(Game.GetGXTEntry("PIM_TAHLM"), autoShowBikeHelmetList, 0, Game.GetGXTEntry("PIM_HAHLM"));
+            autoShowBikeHelmet.OnListChanged += (item, index) =>
+            {
+                SetPedConfigFlag(playerPed.Handle, 380, index == 0);
+            };
+
 
             List<dynamic> autoShowAircraftHelmetList = new List<dynamic>() { Game.GetGXTEntry("PIM_AAHLM0"), Game.GetGXTEntry("PIM_AAHLM1") };
             UIMenuListItem autoShowAircraftHelmet = new UIMenuListItem(Game.GetGXTEntry("PIM_TAAHLM"), autoShowAircraftHelmetList, 0, Game.GetGXTEntry("PIM_HAAHLM"));
+            autoShowAircraftHelmet.OnListChanged += (item, index) =>
+            {
+                SetPedConfigFlag(playerPed.Handle, 381, index == 0);
+            };
 
             /*
               "PIM_HANIM": "The selected action will be stored as your Quickplay Action. Press or hold the Quickplay Action buttons to alter how you will perform this action.",
@@ -606,6 +615,11 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             action.Activated += (menu, item) =>
             {
+                switch (currentActionPosition)
+                {
+                    default:
+                        break;
+                }
                 // TODO: CHECK func_13801 IN freemode.c
 
             };
@@ -732,6 +746,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             StyleMenu.AddItem(bikeHelmet);
             StyleMenu.AddItem(bikeVisor);
             StyleMenu.AddItem(autoShowBikeHelmet);
+            StyleMenu.AddItem(autoShowAircraftHelmet);
             StyleMenu.AddItem(action);
             StyleMenu.AddItem(playerMood);
             StyleMenu.AddItem(playerWalkStyle);

@@ -30,7 +30,7 @@
                         break;
                 }
 #if CLIENT
-                bool passed = GetNetworkTimeAccurate() - Timer > await;
+                bool passed = GetNetworkTime() - Timer > await;
 #elif SERVER
                 bool passed = GetGameTimer() - Timer > await;
 #endif
@@ -50,7 +50,7 @@
         public void ResetTimer()
         {
 #if CLIENT
-            Timer = GetNetworkTimeAccurate();
+            Timer = GetNetworkTime();
 #elif SERVER
             Timer = GetGameTimer();
 #endif

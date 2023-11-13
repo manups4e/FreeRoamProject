@@ -304,13 +304,13 @@ namespace FreeRoamProject.Client.Core.Utility
             while (!IsScreenFadedOut()) await BaseScript.Delay(0);
             RequestCollisionAtCoord(coords.X, coords.Y, coords.Z);
             NewLoadSceneStart(coords.X, coords.Y, coords.Z, coords.X, coords.Y, coords.Z, 50f, 0);
-            int tempTimer = GetNetworkTimeAccurate();
+            int tempTimer = GetNetworkTime();
 
             // Wait for the new scene to be loaded.
             while (IsNetworkLoadingScene())
             {
                 // If this takes longer than 1 second, just abort. It's not worth waiting that long.
-                if (GetNetworkTimeAccurate() - tempTimer > 1000)
+                if (GetNetworkTime() - tempTimer > 1000)
                 {
                     ClientMain.Logger.Warning("Waiting for the scene to load is taking too long (more than 1s). Breaking from wait loop.");
                     break;
@@ -318,12 +318,12 @@ namespace FreeRoamProject.Client.Core.Utility
                 await BaseScript.Delay(0);
             }
             SetEntityCoords(playerPed.Handle, coords.X, coords.Y, coords.Z, false, false, false, false);
-            tempTimer = GetNetworkTimeAccurate();
+            tempTimer = GetNetworkTime();
             // Wait for the collision to be loaded around the entity in this new location.
             while (!HasCollisionLoadedAroundEntity(playerPed.Handle))
             {
                 // If this takes too long, then just abort, it's not worth waiting that long since we haven't found the real ground coord yet anyway.
-                if (GetNetworkTimeAccurate() - tempTimer > 1000)
+                if (GetNetworkTime() - tempTimer > 1000)
                 {
                     ClientMain.Logger.Warning("Waiting for the collision is taking too long (more than 1s). Breaking from wait loop.");
                     break;
@@ -346,13 +346,13 @@ namespace FreeRoamProject.Client.Core.Utility
             while (!IsScreenFadedOut()) await BaseScript.Delay(0);
             RequestCollisionAtCoord(coords.X, coords.Y, coords.Z);
             NewLoadSceneStart(coords.X, coords.Y, coords.Z, coords.X, coords.Y, coords.Z, 50f, 0);
-            int tempTimer = GetNetworkTimeAccurate();
+            int tempTimer = GetNetworkTime();
 
             // Wait for the new scene to be loaded.
             while (IsNetworkLoadingScene())
             {
                 // If this takes longer than 1 second, just abort. It's not worth waiting that long.
-                if (GetNetworkTimeAccurate() - tempTimer > 1000)
+                if (GetNetworkTime() - tempTimer > 1000)
                 {
                     ClientMain.Logger.Warning("Waiting for the scene to load is taking too long (more than 1s). Breaking from wait loop.");
 
@@ -363,13 +363,13 @@ namespace FreeRoamProject.Client.Core.Utility
             }
 
             SetPedCoordsKeepVehicle(playerPed.Handle, coords.X, coords.Y, coords.Z);
-            tempTimer = GetNetworkTimeAccurate();
+            tempTimer = GetNetworkTime();
 
             // Wait for the collision to be loaded around the entity in this new location.
             while (!HasCollisionLoadedAroundEntity(playerPed.Handle))
             {
                 // If this takes too long, then just abort, it's not worth waiting that long since we haven't found the real ground coord yet anyway.
-                if (GetNetworkTimeAccurate() - tempTimer > 1000)
+                if (GetNetworkTime() - tempTimer > 1000)
                 {
                     ClientMain.Logger.Warning("Waiting for the collision is taking too long (more than 1s). Breaking from wait loop.");
 
