@@ -20,7 +20,7 @@ namespace FreeRoamProject.Client.FREEROAM.PlayerList
             N_0x170f541e1cadd1de(false);
         }
 
-        public static void NascondiMoney()
+        public static void HideMoney()
         {
             RemoveMultiplayerWalletCash();
             RemoveMultiplayerBankCash();
@@ -61,12 +61,33 @@ namespace FreeRoamProject.Client.FREEROAM.PlayerList
                     UnregisterPedheadshot(mug.Item1);
                 }
                 // TODO: HANDLE SOLO, INVITE, CREW, FRIENDS, PUBLIC SESSIONS FOR TITLE
+                /* possible titles (default HUD_LBD_FMP)
+                  "HUD_LBD_BRCE": "Parachute Race Leaderboard",
+                  "HUD_LBD_DM": "Deathmatch Leaderboard",
+                  "HUD_LBD_FM": "GTA Online Leaderboard",
+                  "HUD_LBD_FMC": "GTA Online (Crew, ~1~)",
+                  "HUD_LBD_FMD": "GTA Online",
+                  "HUD_LBD_FMF": "GTA Online (Friend, ~1~)",
+                  "HUD_LBD_FMI": "GTA Online (Invite, ~1~)",
+                  "HUD_LBD_FMP": "GTA Online (Public, ~1~)",
+                  "HUD_LBD_FMS": "GTA Online (Solo, ~1~)",
+                  "HUD_LBD_GRCE": "GTA Race Leaderboard",
+                  "HUD_LBD_GRCE_SP": "GTA Race Leaderboard (Spectating)",
+                  "HUD_LBD_HRD": "Survival Leaderboard",
+                  "HUD_LBD_IMP": "One on One Deathmatch",
+                  "HUD_LBD_LBD": "Leaderboard",
+                  "HUD_LBD_OVR": "Overall Results",
+                  "HUD_LBD_RCE": "Race Leaderboard",
+                  "HUD_LBD_RCE_SP": "Race Leaderboard (Spectating)",
+                  "HUD_LBD_TDM": "Team Deathmatch Leaderboard",
+                */
                 Main.PlayerListInstance.SetTitle($"The Last Galaxy (Public, {num})", $"{Main.PlayerListInstance.CurrentPage + 1} / {Main.PlayerListInstance.MaxPages}", 2);
                 Main.PlayerListInstance.CurrentPage++;
             }
             if (Main.PlayerListInstance.Enabled)
             {
-                if (!Screen.Hud.IsComponentActive(HudComponent.MpCash)) ShowMoney();
+                if (!Screen.Hud.IsComponentActive(HudComponent.MpCash))
+                    ShowMoney();
                 if (Main.PlayerListInstance.PlayerRows.Count > 0)
                 {
                     foreach (PlayerRow p in Main.PlayerListInstance.PlayerRows)
@@ -82,7 +103,8 @@ namespace FreeRoamProject.Client.FREEROAM.PlayerList
             }
             else
             {
-                if (Screen.Hud.IsComponentActive(HudComponent.MpCash)) NascondiMoney();
+                if (Screen.Hud.IsComponentActive(HudComponent.MpCash))
+                    HideMoney();
             }
         }
     }
