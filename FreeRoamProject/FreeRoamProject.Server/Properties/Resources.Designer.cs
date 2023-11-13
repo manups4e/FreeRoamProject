@@ -62,28 +62,44 @@ namespace FreeRoamProject.Server.Properties {
         
         /// <summary>
         ///   Cerca una stringa localizzata simile a {
-        ///   &quot;Main&quot;:{
-        ///      &quot;AfkTimeout&quot;:300,
-        ///      &quot;AutoSavingInterval&quot;:180000,
-        ///      &quot;PingThreshold&quot;:300,
-        ///      &quot;MaxPlayerNameLength&quot;:24,
-        ///      &quot;EnableVoiceChat&quot;:false,
-        ///      &quot;DiscordNotificationInterval&quot;:900000,
-        ///      &quot;MaxMenuOptionCount&quot;:7,
-        ///      &quot;SpawnProtectionTime&quot;:3000,
-        ///      &quot;KillstreakTimeout&quot;:5000,
-        ///      &quot;MinPrestigeRank&quot;:100,
-        ///      &quot;MaxPrestige&quot;:10,
-        ///      &quot;PrestigeBonus&quot;:0.035,
-        ///      &quot;CrewInvitationTimeout&quot;:10000,
-        ///      &quot;SpecialVehicleMinRank&quot;:5,
-        ///      &quot;Gta2Cam&quot;:{
-        ///         &quot;Min&quot;:24.0,
-        /// [stringa troncata]&quot;;.
+        ///  &quot;Main&quot;: {
+        ///    &quot;AfkTimeout&quot;: 300,
+        ///    &quot;AutoSavingInterval&quot;: 180000,
+        ///    &quot;PingThreshold&quot;: 300,
+        ///    &quot;MaxPlayerNameLength&quot;: 24,
+        ///    &quot;EnableVoiceChat&quot;: false,
+        ///    &quot;DiscordNotificationInterval&quot;: 900000,
+        ///    &quot;MaxMenuOptionCount&quot;: 7,
+        ///    &quot;SpawnProtectionTime&quot;: 3000,
+        ///    &quot;KillstreakTimeout&quot;: 5000,
+        ///    &quot;MinPrestigeRank&quot;: 100,
+        ///    &quot;MaxPrestige&quot;: 10,
+        ///    &quot;PrestigeBonus&quot;: 0.035,
+        ///    &quot;CrewInvitationTimeout&quot;: 10000,
+        ///    &quot;SpecialVehicleMinRank&quot;: 5,
+        ///    &quot;Gta2Cam&quot;: {
+        ///      &quot;Min&quot;: 24.0,
+        ///      &quot;Max&quot;: 48.0 [stringa troncata]&quot;;.
         /// </summary>
         internal static string Client_FreeRoam {
             get {
                 return ResourceManager.GetString("Client_FreeRoam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a {
+        ///  &quot;Client&quot;: {
+        ///
+        ///  },
+        ///  &quot;Server&quot;: {
+        ///
+        ///  }
+        ///}.
+        /// </summary>
+        internal static string EnglishLabels {
+            get {
+                return ResourceManager.GetString("EnglishLabels", resourceCulture);
             }
         }
         

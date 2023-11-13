@@ -62,6 +62,12 @@
 		<SourceFiles Remove="$(OutDir)*.json" />
 		<JsonConfigFiles Include="$(OutDir)\Resources\*.json" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Resources\EnglishLabels.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<Copy SkipUnchangedFiles="true" SourceFiles="@(SourceFiles)" DestinationFolder="L:\FiveM\FreeRoamProject\resources\[local]\frp\Server\" />
 		<Copy SkipUnchangedFiles="true" SourceFiles="@(JsonConfigFiles)" DestinationFolder="L:\FiveM\FreeRoamProject\resources\[local]\frp\Server\Resources" />
