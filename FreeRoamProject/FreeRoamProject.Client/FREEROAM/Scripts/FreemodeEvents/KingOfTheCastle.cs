@@ -79,9 +79,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
                         if (PlayerCache.MyPlayer.Player.WantedLevel > 0)
                             Environment.EnableWanted(false);
                         Screen.ShowSubtitle(Game.GetGXTEntry("KOTC_KINGOB1"), 1);
-                        if (Game.GameTime - _timer > 1000)
+                        if (GetNetworkTime() - _timer > 1000)
                         {
-                            _timer = Game.GameTime;
+                            _timer = GetNetworkTime();
                             CurrentAttempt++;
                             ClientMain.Logger.Debug(CurrentAttempt.ToString());
                         }

@@ -73,7 +73,7 @@ namespace FreeRoamProject.Client.IPLs.dlc_casino
                 if (value)
                 {
                     SetCurrentScreen(SCREEN_WIN);
-                    currentTime = Game.GameTime;
+                    currentTime = GetNetworkTime();
                 }
             }
         }
@@ -228,7 +228,7 @@ namespace FreeRoamProject.Client.IPLs.dlc_casino
         {
             if (ShowBigWin)
             {
-                if (Game.GameTime - currentTime > 9000)
+                if (GetNetworkTime() - currentTime > 9000)
                 {
                     ShowBigWin = false;
                     SetCurrentScreen(WeatherClient.Weather.CurrentWeather switch
@@ -242,9 +242,9 @@ namespace FreeRoamProject.Client.IPLs.dlc_casino
             }
             else
             {
-                if (Game.GameTime - currentTime > 42666)
+                if (GetNetworkTime() - currentTime > 42666)
                 {
-                    currentTime = Game.GameTime;
+                    currentTime = GetNetworkTime();
                     SetCurrentScreen(WeatherClient.Weather.CurrentWeather switch
                     {
                         (int)Weather.Christmas or (int)Weather.Snowing or (int)Weather.Snowlight or (int)Weather.Blizzard => SCREEN_SNOW,

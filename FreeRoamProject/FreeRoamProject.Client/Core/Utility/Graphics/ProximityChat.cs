@@ -44,9 +44,9 @@ namespace FreeRoamProject.Client.Core.Utility.HUD
                     {
                         if (canDraw) m.Draw(p.Value.Count - p.Value.IndexOf(m), ped);
 
-                        if (Game.GameTime - m.Timer < 1000) continue;
+                        if (GetNetworkTime() - m.Timer < 1000) continue;
                         m.Time = m.Time.Subtract(TimeSpan.FromSeconds(1));
-                        m.Timer = Game.GameTime;
+                        m.Timer = GetNetworkTime();
 
                         if (m.Time != TimeSpan.Zero) continue;
                         p.Value.Remove(m);
@@ -99,7 +99,7 @@ namespace FreeRoamProject.Client.Core.Utility.HUD
         /// </summary>
         public void Draw(int index, Ped p)
         {
-            if (Timer == 0) Timer = Game.GameTime;
+            if (Timer == 0) Timer = GetNetworkTime();
             SColor textColor = SColor.WhiteSmoke;
 
             switch (index)
