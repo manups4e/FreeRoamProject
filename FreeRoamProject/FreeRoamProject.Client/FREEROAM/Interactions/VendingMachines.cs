@@ -86,7 +86,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
                 SetModelAsNoLongerNeeded((uint)ObjectHash.prop_ld_can_01b);
                 while (GetEntityAnimCurrentTime(PlayerPedId(), anim, "PLYR_BUY_DRINK_PT1") < 0.95f) await BaseScript.Delay(0);
                 await playerPed.Task.PlayAnimation(anim, "PLYR_BUY_DRINK_PT2", 4f, -1000f, -1, (AnimationFlags)1048576, 0);
-                N_0x2208438012482a1a(PlayerPedId(), false, false);
+                ForcePedAiAndAnimationUpdate(PlayerPedId(), false, false);
                 while (GetEntityAnimCurrentTime(PlayerPedId(), anim, "PLYR_BUY_DRINK_PT2") < 0.95f) await BaseScript.Delay(0);
                 await playerPed.Task.PlayAnimation(anim, "PLYR_BUY_DRINK_PT3", 1000f, -4f, -1, (AnimationFlags)1048624, 0);
                 while (GetEntityAnimCurrentTime(PlayerPedId(), anim, "PLYR_BUY_DRINK_PT3") < 0.35f) await BaseScript.Delay(0);

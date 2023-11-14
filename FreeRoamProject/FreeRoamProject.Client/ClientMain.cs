@@ -79,9 +79,9 @@ namespace FreeRoamProject.Client
             EventHandlers[eventName] -= action;
         }
 
-        public void AddTick(Func<Task> onTick) { Tick += onTick; }
+        public void AddTick(Func<Task> onTick) => Tick += onTick;
 
-        public void RemoveTick(Func<Task> onTick) { Tick -= onTick; }
+        public void RemoveTick(Func<Task> onTick) => Tick -= onTick;
 
         public void RegisterExport(string name, Delegate action)
         {

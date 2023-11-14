@@ -86,10 +86,31 @@ namespace FreeRoamProject.Client
         /// <returns>Ritorna se il player ha tenuto premuto più del tempo specificato</returns>
         public static async Task<bool> IsControlStillPressedAsync(Control control, PadCheck keyboardOnly = PadCheck.Any, ControlModifier modifier = ControlModifier.None, int timeout = 1000)
         {
-            int currentTicks = Game.GameTime + 1;
-            while (IsControlPressed(control, keyboardOnly, modifier) && Game.GameTime - currentTicks < timeout) await BaseScript.Delay(0);
+            int currentTicks = GetNetworkTime() + 1;
+            while (IsControlPressed(control, keyboardOnly, modifier) && GetNetworkTime() - currentTicks < timeout) await BaseScript.Delay(0);
 
-            return Game.GameTime - currentTicks >= timeout;
+            return GetNetworkTime() - currentTicks >= timeout;
+        }
+        public static async Task<Tuple<bool, int>> HasControlBeenPressedMultipleTimes(Control control, PadCheck keyboardOnly = PadCheck.Any, ControlModifier modifier = ControlModifier.None, int times = 2, int frameTime = 250)
+        {
+            if (Input.IsControlJustPressed(control, keyboardOnly, modifier))
+            {
+                int i = 1;
+                int time = GetNetworkTime();
+                while (i < times)
+                {
+                    await BaseScript.Delay(0);
+                    if (GetNetworkTime() - time > frameTime) break;
+                    if (Input.IsControlJustPressed(control, keyboardOnly, modifier))
+                    {
+                        time = GetNetworkTime();
+                        i++;
+                    }
+
+                }
+                return new(i == times, i);
+            }
+            return new(false, 0);
         }
     }
 }

@@ -30,7 +30,14 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
         private static bool open = false;
         private static float fuelint = 0;
         public static UIMenu MainMenu = null;
-
+        public static UIMenu GangsMenu = null;
+        public static UIMenu ObjectivesMenu = null;
+        public static UIMenu StyleMenu = null;
+        public static UIMenu VehContr = null;
+        public static UIMenu ServicesMenu = null;
+        public static UIMenu MapBlipOptMenu = null;
+        public static UIMenu ImpromptuRaceMenu = null;
+        public static UIMenu HighlightPlayerMenu = null;
         #region to be saved in char data
         public static int[] SavedHelmet = new int[2] { 16, 0 };
         public static bool VisorUp = true;
@@ -106,14 +113,14 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             Point pos = new Point(5, 5);
             MainMenu = new UIMenu(Game.Player.Name, Game.GetGXTEntry("PIM_TITLE1"), pos, "commonmenu", "interaction_bgd", true, true);
             MainMenu.BuildingAnimation = MenuBuildingAnimation.NONE;
-            UIMenu GangsMenu = new(playerName, Game.GetGXTEntry("PIM_REGBOSSTIT"));
-            UIMenu ObjectivesMenu = new(playerName, Game.GetGXTEntry("PIM_TITLE_67"));
-            UIMenu StyleMenu = new(playerName, Game.GetGXTEntry("PIM_TITLESTYL"));
-            UIMenu VehContr = new(playerName, Game.GetGXTEntry("PIM_TITLE1"));
-            UIMenu ServicesMenu = new(playerName, Game.GetGXTEntry("PIM_HSECTIT"));
-            UIMenu MapBlipOptMenu = new(playerName, Game.GetGXTEntry("PIM_TITHS"));
-            UIMenu ImpromptuRaceMenu = new(playerName, Game.GetGXTEntry("R2P_MENU"));
-            UIMenu HighlightPlayerMenu = new(playerName, Game.GetGXTEntry("PIM_TITLE12"));
+            GangsMenu = new(playerName, Game.GetGXTEntry("PIM_REGBOSSTIT"));
+            ObjectivesMenu = new(playerName, Game.GetGXTEntry("PIM_TITLE_67"));
+            StyleMenu = new(playerName, Game.GetGXTEntry("PIM_TITLESTYL"));
+            VehContr = new(playerName, Game.GetGXTEntry("PIM_TITLE1"));
+            ServicesMenu = new(playerName, Game.GetGXTEntry("PIM_HSECTIT"));
+            MapBlipOptMenu = new(playerName, Game.GetGXTEntry("PIM_TITHS"));
+            ImpromptuRaceMenu = new(playerName, Game.GetGXTEntry("R2P_MENU"));
+            HighlightPlayerMenu = new(playerName, Game.GetGXTEntry("PIM_TITLE12"));
 
 
             #region Quick GPS
@@ -579,10 +586,11 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 if (currentActionPosition > max)
                     currentActionPosition = 0;
                 string result = GetAnimName(currentSituation, currentActionPosition);
-                //TODO: FIND CORRECT ANIMATION AND SAVE IT FOR WHEN THE PLAYER DECIDES TO USE IT
 
                 InteractionMethods.CurrentAnimMode = currentSituation;
                 InteractionMethods.CurrentAnimSelection = currentActionPosition;
+
+                //TODO: FIND CORRECT ANIMATION AND SAVE IT FOR WHEN THE PLAYER DECIDES TO USE IT
 
                 bool value = currentSituation switch
                 {
@@ -613,16 +621,45 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 return Game.GetGXTEntry(result);
             });
 
-            action.Activated += (menu, item) =>
+            if (playerPed.IsOnBike)
             {
-                switch (currentActionPosition)
-                {
-                    default:
-                        break;
-                }
-                // TODO: CHECK func_13801 IN freemode.c
+                action.Enabled = false;
+            }
 
-            };
+            /*   TODO: ADD THIS CHECK FOR CONTROLS TO HANDLE THE QUICKACTION CONTROL AND START WHATEVER ANIMATION
+                
+                int func_13829()//Position - 0x487CC4
+                {
+	                if (BitTest(Global_8138, 3))
+	                {
+		                if (func_13831(1))
+		                {
+			                if (func_13830())
+			                {
+				                return 1;
+			                }
+		                }
+	                }
+	                else if (PAD::_IS_USING_KEYBOARD(0))
+	                {
+		                if (PAD::IS_CONTROL_PRESSED(0, 171))
+		                {
+			                return 1;
+		                }
+	                }
+	                else if (PAD::IS_CONTROL_PRESSED(0, 28) && PAD::IS_CONTROL_PRESSED(0, 29))
+	                {
+		                return 1;
+	                }
+	                if (Global_4521801.f_977)
+	                {
+		                Global_4521801.f_977 = 0;
+		                return 1;
+	                }
+	                return 0;
+                }
+             
+             */
 
             /* titles(default PIM_TMOODN)
               "PIM_TMOODD": "Player Mood (Deathmatch)",
@@ -1956,5 +1993,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             }
             return "";
         }
+
+
     }
 }

@@ -6,6 +6,7 @@ using FreeRoamProject.Client.Handlers;
 using FreeRoamProject.Client.IPLs;
 using FreeRoamProject.Client.TimeWeather;
 using System.Threading.Tasks;
+using TheLastPlanet.Client.GameMode.ROLEPLAY.Personale;
 
 namespace FreeRoamProject.Client.GameMode.FREEROAM
 {
@@ -14,9 +15,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM
         public static async Task Init()
         {
             IPLInstance.Init();
-            TickController.Init();
             //TODO: THE XP THINGS IN THERE SHOLUD BE SHIFTED IN THEIR OWN CLASSES
             HudManager.Init();
+            InteractionMethods.Init();
             MinimapHandler.Init();
             ExperienceManager.Init();
             WorldEventsManager.Init();
@@ -27,6 +28,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM
             TimeClient.Init();
             PauseMenuFreeroam.Init();
             WeaponShops.Init();
+            TickController.Init();
             // TODO: ADD STATISTICS HANDLING
             // TODO: ADD VEHICLES HANDLING
             // TODO: ADD APARTMENTS AND IPLS HANDLING

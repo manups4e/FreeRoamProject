@@ -573,37 +573,41 @@ namespace FreeRoamProject.Client.Core.Utility
 
         #region SpawnProps
 
-        public static async Task<Prop> CreateProp(int modelName, Vector3 coords, Vector3 rot, bool placeOnGround = true)
+        public static async Task<Prop> CreateProp(int modelName, Vector3 coords, Vector3 rot, bool placeOnGround = true, bool clearArea = false)
         {
             Model a = new Model(modelName);
             return await CreateProp(a, coords, rot, placeOnGround);
         }
 
-        public static async Task<Prop> CreateProp(string modelName, Vector3 coords, Vector3 rot, bool placeOnGround = true)
+        public static async Task<Prop> CreateProp(string modelName, Vector3 coords, Vector3 rot, bool placeOnGround = true, bool clearArea = false)
         {
             Model a = new Model(modelName);
             return await CreateProp(a, coords, rot, placeOnGround);
         }
 
-        public static async Task<Prop> CreateProp(ObjectHash modelName, Vector3 coords, Vector3 rot, bool placeOnGround = true)
+        public static async Task<Prop> CreateProp(ObjectHash modelName, Vector3 coords, Vector3 rot, bool placeOnGround = true, bool clearArea = false)
         {
             Model a = new Model((int)modelName);
             return await CreateProp(a, coords, rot, placeOnGround);
         }
 
-        private static async Task<Prop> CreateProp(Model propModel, Vector3 coords, Vector3 rot, bool placeOnGround = true)
+        private static async Task<Prop> CreateProp(Model propModel, Vector3 coords, Vector3 rot, bool placeOnGround = true, bool clearArea = false)
         {
             if (propModel.IsValid)
             {
-                if (!propModel.IsLoaded) await propModel.Request(3000); //for when you stream resources.
+                if (!propModel.IsLoaded)
+                    await propModel.Request(3000); //for when you stream resources.
 
-                if (!IsSpawnPointClear(coords, 2f))
-                    ClearArea(coords.X, coords.Y, coords.Z, 2f, true, false, false, true);
+                if (clearArea)
+                {
+                    if (!IsSpawnPointClear(coords, 2f))
+                        ClearArea(coords.X, coords.Y, coords.Z, 2f, true, false, false, true);
+                }
 
                 int callback = await EventDispatcher.Get<int>("tlg:entity:spawnProp", propModel.Hash,
                     new Position(coords, rot));
                 Prop result = (Prop)Entity.FromNetworkId(callback);
-                while (result == null || !result.Exists()) await BaseScript.Delay(50);
+                while (result == null || !result.Exists()) await BaseScript.Delay(0);
                 if (placeOnGround) PlaceObjectOnGroundProperly(result.Handle);
                 result.IsPersistent = true;
                 propModel.MarkAsNoLongerNeeded();

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TheLastPlanet.Client.GameMode.ROLEPLAY.Personale;
 
 namespace FreeRoamProject.Client.Handlers
 {
@@ -91,8 +90,6 @@ namespace FreeRoamProject.Client.Handlers
 
         private static void Spawned(PlayerClient client)
         {
-            TickGenerics.Add(InteractionMenu.Enable);
-            ClientMain.Logger.Warning("GenericAdded");
             TickGenerics.ForEach(ClientMain.Instance.AddTick);
             TickOnFoot.ForEach(ClientMain.Instance.AddTick);
             TickHUD.ForEach(ClientMain.Instance.AddTick);
@@ -107,28 +104,28 @@ namespace FreeRoamProject.Client.Handlers
         {
             if (value.Instanced)
             {
-                TickOnFoot.ForEach(x => ClientMain.Instance.RemoveTick(x));
+                TickOnFoot.ForEach(ClientMain.Instance.RemoveTick);
                 // TODO: HANDLE GARAGES 
-                TickApartments.ForEach(x => ClientMain.Instance.AddTick(x));
+                TickApartments.ForEach(ClientMain.Instance.AddTick);
             }
             else
             {
-                TickApartments.ForEach(x => ClientMain.Instance.RemoveTick(x));
+                TickApartments.ForEach(ClientMain.Instance.RemoveTick);
                 // TODO: HANDLE GARAGES 
-                TickOnFoot.ForEach(x => ClientMain.Instance.AddTick(x));
+                TickOnFoot.ForEach(ClientMain.Instance.AddTick);
             }
         }
 
         private static void VehicleChecker_OnPedLeftVehicle(Ped ped, Vehicle vehicle, VehicleSeat seatIndex)
         {
-            TickOnVehicle.ForEach(x => ClientMain.Instance.RemoveTick(x));
-            TickOnFoot.ForEach(x => ClientMain.Instance.AddTick(x));
+            TickOnVehicle.ForEach(ClientMain.Instance.RemoveTick);
+            TickOnFoot.ForEach(ClientMain.Instance.AddTick);
         }
 
         private static void VehicleChecker_OnPedEnteredVehicle(Ped ped, Vehicle vehicle, VehicleSeat seatIndex)
         {
-            TickOnFoot.ForEach(x => ClientMain.Instance.RemoveTick(x));
-            TickOnVehicle.ForEach(x => ClientMain.Instance.AddTick(x));
+            TickOnFoot.ForEach(ClientMain.Instance.RemoveTick);
+            TickOnVehicle.ForEach(ClientMain.Instance.AddTick);
         }
 
         private static async Task TickHandler()
