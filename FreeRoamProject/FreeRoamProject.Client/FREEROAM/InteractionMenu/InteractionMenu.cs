@@ -43,6 +43,13 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
         public static bool VisorUp = true;
         #endregion
 
+        // TODO: Since i want to keep performances at their best!
+        // All the UIMenuListItem must be converted to UIMenuDynamicListItem.. why?
+        // Now.. for each description.. list option.. whatever label.. i'm calling Game.GetGXTEntry (GetLabelText),
+        // it's a lot of pressure on the game.. so.. with UIMenuDynamicListItem.. we handle the list values before
+        // and we return the GXT only when changed.. so 1 gxt per item.. instead of hundreds of them! so yeah...
+        // TODO TODO TODO WITH EXTREME URGENCY FOR AAAAAAAAAAAAAAAAAAAAAAAAAALLLLLLLLLL MENUUUUSSSSS
+
 
 
         // TODO: THE QUICK GPS MUST BE HANDLED ON MENU BUILDING.. SO THAT WE CAN CHECK WHAT TO ADD AND WHAT NOT
@@ -110,7 +117,14 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             Player player = PlayerCache.MyPlayer.Player;
             string playerName = player.Name;
 
-            Point pos = new Point(5, 5);
+            float safeSize = GetSafeZoneSize(); // 0.9f to 1.0f
+            int x = 0; int y = 0;
+            GetActiveScreenResolution(ref x, ref y);
+            safeSize = (safeSize * 100) - 90;
+            safeSize = 10 - safeSize;
+            float height = safeSize * 5.4f;
+            float width = safeSize * ((x / y) * 5.4f);
+            PointF pos = new PointF(width, height);
             MainMenu = new UIMenu(Game.Player.Name, Game.GetGXTEntry("PIM_TITLE1"), pos, "commonmenu", "interaction_bgd", true, true);
             MainMenu.BuildingAnimation = MenuBuildingAnimation.NONE;
             GangsMenu = new(playerName, Game.GetGXTEntry("PIM_REGBOSSTIT"));
@@ -421,8 +435,33 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             style.BindItemToMenu(StyleMenu);
             MainMenu.AddItem(style);
 
+            /*
+              "PIM_FCHAP": "You cannot change the character appearance at this time.",
+              "PIM_FCHAP0": "It is not safe to change the character appearance at this time.",
+              "PIM_FCHAP1": "You cannot change your character's appearance while a purchase is in progress.",
+              "PIM_FCHAP2": "You cannot change your character's appearance while a save is in progress.",
+              "PIM_FCHAP3": "You cannot change your character's appearance while on a Job.",
+              "PIM_FCHAP4": "You cannot change your character's appearance while in an Organization or Motorcycle Club.",
+              "PIM_FCHAP5": "You cannot afford to change your character's appearance.",
+              "PIM_FCHAP8": "You have changed your appearance too recently, please try again later.",
+              "PIM_FCHAP8_00": "You have changed your appearance too recently, the option will be available again in 0~1~:0~1~.",
+              "PIM_FCHAP8_01": "You have changed your appearance too recently, the option will be available again in 0~1~:~1~.",
+              "PIM_FCHAP8_10": "You have changed your appearance too recently, the option will be available again in ~1~:0~1~.",
+              "PIM_FCHAP8_11": "You have changed your appearance too recently, the option will be available again in ~1~:~1~.",
+              "PIM_FCHAP9": "You have changed your appearance too often, please try again later.",
+              "PIM_FCHAP9_00": "You have changed your appearance too often, the option will be available again in 0~1~:0~1~.",
+              "PIM_FCHAP9_01": "You have changed your appearance too often, the option will be available again in 0~1~:~1~.",
+              "PIM_FCHAP9_10": "You have changed your appearance too often, the option will be available again in ~1~:0~1~.",
+              "PIM_FCHAP9_11": "You have changed your appearance too often, the option will be available again in ~1~:~1~.",
+              "PIM_FCHAP10": "The option to change your appearance will unlock when you reach Rank ~1~.",
+             */
             UIMenuItem changeAppear = new UIMenuItem(Game.GetGXTEntry("PIM_TCHAP"), Game.GetGXTEntry("PIM_HCHAP"));
-            changeAppear.SetRightLabel("$");
+            changeAppear.SetRightLabel(Game.GetGXTEntry("ITEM_COST").Replace("~1~", "100000"));
+            changeAppear.Activated += (item, index) =>
+            {
+                // this is the warning to show if the item is selected
+                //"PIM_WCHAP": "Are you sure you want to pay $~1~ to change your character's appearance? You will be charged even if you make no changes.~n~All unsaved progress will be lost.",
+            };
             // TODO: in my GTA:O i have to pay 100000$ i think the amount changes based on the XP? CHECK IF THIS CHANGES SOMEHOW
 
             /* available descriptions (default PIM_HACCE, in my online is PIM_HACCEO.. dunno why)
@@ -626,41 +665,6 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 action.Enabled = false;
             }
 
-            /*   TODO: ADD THIS CHECK FOR CONTROLS TO HANDLE THE QUICKACTION CONTROL AND START WHATEVER ANIMATION
-                
-                int func_13829()//Position - 0x487CC4
-                {
-	                if (BitTest(Global_8138, 3))
-	                {
-		                if (func_13831(1))
-		                {
-			                if (func_13830())
-			                {
-				                return 1;
-			                }
-		                }
-	                }
-	                else if (PAD::_IS_USING_KEYBOARD(0))
-	                {
-		                if (PAD::IS_CONTROL_PRESSED(0, 171))
-		                {
-			                return 1;
-		                }
-	                }
-	                else if (PAD::IS_CONTROL_PRESSED(0, 28) && PAD::IS_CONTROL_PRESSED(0, 29))
-	                {
-		                return 1;
-	                }
-	                if (Global_4521801.f_977)
-	                {
-		                Global_4521801.f_977 = 0;
-		                return 1;
-	                }
-	                return 0;
-                }
-             
-             */
-
             /* titles(default PIM_TMOODN)
               "PIM_TMOODD": "Player Mood (Deathmatch)",
               "PIM_TMOODN": "Player Mood",
@@ -727,15 +731,38 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
               "PIM_HILLUN": "Set the type of glow applied to illuminated clothing items.",
               "PIM_HILLUNM": "This feature is not available on this mode.",
              */
-            List<dynamic> illuminatedClothingList = new List<dynamic>()
+            int currentIllIndex = PlayerCache.MyPlayer.Status.FreeRoamStates.IlluminatedClothing;
+            UIMenuDynamicListItem illuminatedClothing = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TILLUN"), Game.GetGXTEntry("PIM_HILLUN"), Game.GetGXTEntry($"PM_ILLU_{currentIllIndex}"), async (item, direction) =>
             {
-                Game.GetGXTEntry("PM_ILLU_0"), // "On",
-                Game.GetGXTEntry("PM_ILLU_1"), // "Flash",
-                Game.GetGXTEntry("PM_ILLU_2"), // "Pulse",
-                Game.GetGXTEntry("PM_ILLU_3"), // "Off",
-            };
-            UIMenuListItem illuminatedClothing = new UIMenuListItem(Game.GetGXTEntry("PIM_TILLUN"), illuminatedClothingList, 0, Game.GetGXTEntry("PIM_HILLUN"));
-
+                // SHOP_CONTROLLER.C
+                // here we take the loaded param..
+                int ped = playerPed.Handle;
+                int hashName = GetHashNameForComponent(ped, 11, GetPedDrawableVariation(ped, 11), GetPedTextureVariation(ped, 11));
+                switch (direction)
+                {
+                    case UIMenuDynamicListItem.ChangeDirection.Left:
+                        currentIllIndex--;
+                        break;
+                    default:
+                        currentIllIndex++;
+                        break;
+                }
+                if (!(DoesShopPedApparelHaveRestrictionTag((uint)hashName, Functions.HashUint("DEADLINE_OUTFIT"), 0) || DoesShopPedApparelHaveRestrictionTag((uint)hashName, Functions.HashUint("MORPH_SUIT"), 0) || DoesShopPedApparelHaveRestrictionTag((uint)hashName, Functions.HashUint("LIGHT_UP"), 0) || Function.Call<bool>((Hash)0x7796B21B76221BC5, ped, 8, Functions.HashUint("LIGHT_UP")) || Function.Call<bool>((Hash)0xD726BAB4554DA580, ped, 0, Functions.HashUint("LIGHT_UP")) || Function.Call<bool>((Hash)0xD726BAB4554DA580, ped, 6, Functions.HashUint("LIGHT_UP")) || Function.Call<bool>((Hash)0xD726BAB4554DA580, ped, 7, Functions.HashUint("LIGHT_UP")) || Function.Call<bool>((Hash)0x7796B21B76221BC5, ped, 6, Functions.HashUint("LIGHT_UP")) || Function.Call<bool>((Hash)0x7796B21B76221BC5, ped, 1, Functions.HashUint("LIGHT_UP"))))
+                {
+                    PlayerCache.MyPlayer.Status.FreeRoamStates.IlluminatedClothing = 0;
+                    // if loaded param != 0 then loaded param = 0 and we save, and we set a statebag with the value
+                }
+                else
+                {
+                    if (PlayerCache.MyPlayer.Status.FreeRoamStates.IlluminatedClothing != currentIllIndex)
+                        PlayerCache.MyPlayer.Status.FreeRoamStates.IlluminatedClothing = currentIllIndex;
+                    // if loaded param != index then loaded param = index and we save, and we set a statebag with the value
+                    // R* handles luminescent clothing per ped on each client.. it's not networked..
+                    // so we have to loop all clients in the server to handle their blooming
+                    // Code is preatty easy.. just a for cycle and based on player choice we handle the blooming
+                }
+                return Game.GetGXTEntry($"PM_ILLU_{currentIllIndex}");
+            });
 
             /* descriptions (default PIM_HCHOOD)
               "PIM_HCHOOD": "Set your Character's hood style.",
@@ -750,7 +777,25 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                Game.GetGXTEntry("PM_CHOOD_1"), // "Up",
                Game.GetGXTEntry("PM_CHOOD_2"), // "Tucked",
             };
-            UIMenuListItem hood = new UIMenuListItem(Game.GetGXTEntry("PIM_TCHOOD"), hoodList, 0, Game.GetGXTEntry("PIM_HCHOOD"));
+
+            //TODO: SOLVE FUNCTION func_867 IN AM_PI_MENU.. WITHOUT IT WE CAN'T GO ON....
+            //also func_1072 is the one that sets the player hood
+            int choodSelection = PlayerCache.MyPlayer.Status.FreeRoamStates.CurrentHoodSetting;
+            UIMenuDynamicListItem hood = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TCHOOD"), Game.GetGXTEntry("PIM_HCHOOD"), Game.GetGXTEntry($"PM_CHOOD_{choodSelection}"), async (item, direction) =>
+            {
+                switch (direction)
+                {
+                    case UIMenuDynamicListItem.ChangeDirection.Left:
+                        choodSelection--;
+                        break;
+                    default:
+                        choodSelection++;
+                        break;
+                }
+                return Game.GetGXTEntry($"PM_CHOOD_{choodSelection}");
+            });
+            hood.Enabled = false;
+
 
             /* descriptions (default PIM_HCJACK)
                 "PIM_HCJACK": "Set your Character's jacket style.",
@@ -764,6 +809,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                Game.GetGXTEntry("PM_CJACK_0"), // Open
                Game.GetGXTEntry("PM_CJACK_1"), // Closed
             };
+            //TODO: SOLVE FUNCTION func_867 IN AM_PI_MENU.. WITHOUT IT WE CAN'T GO ON....
+            //also func_1031 is the one that sets the player jacket
             UIMenuListItem jacket = new UIMenuListItem(Game.GetGXTEntry("PIM_TCJACK"), jacketList, 0, Game.GetGXTEntry("PIM_HCJACK"));
             jacket.OnListChanged += (item, index) =>
             {
@@ -811,7 +858,90 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             {
                 bikeHelmet.Enabled = playerPed.IsOnBike;
                 bikeVisor.Enabled = playerPed.IsOnBike;
+
+                #region hood
+                int hoodComponent = GetPedDrawableVariation(playerPed.Handle, 11);
+                int hoodTexture = GetPedTextureVariation(playerPed.Handle, 11);
+                int hoodHash = GetHashNameForComponent(playerPed.Handle, 11, hoodComponent, hoodTexture);
+                bool isHooded = DoesShopPedApparelHaveRestrictionTag((uint)hoodHash, Functions.HashUint("HOODED_JACKET"), 0);
+
+                if (playerPed.IsInVehicle())
+                {
+                    hood.Enabled = false;
+                    hood.Description = Game.GetGXTEntry("PIM_HCHOOD1");
+                }
+                if (!isHooded)
+                    hood.Description = Game.GetGXTEntry("PIM_HCHOOD3");
+                else
+                {
+                    int variantHoodHash = -1;
+                    CanHood(!isHooded, false, ref variantHoodHash);
+                    bool someBool = false;
+                    int iParam3 = GetHashNameForComponent(playerPed.Handle, 1, GetPedDrawableVariation(playerPed.Handle, 1), GetPedTextureVariation(playerPed.Handle, 1));
+                    int iParam4 = GetHashNameForProp(playerPed.Handle, 0, GetPedPropIndex(playerPed.Handle, 0), GetPedPropTextureIndex(playerPed.Handle, 0));
+                    if (DoesShopPedApparelHaveRestrictionTag((uint)variantHoodHash, Functions.HashUint("HOODED_JACKET"), 0))
+                    {
+                        if (DoesShopPedApparelHaveRestrictionTag((uint)variantHoodHash, Functions.HashUint("FITTED_HOOD"), 0))
+                        {
+                            if (!DoesShopPedApparelHaveRestrictionTag((uint)iParam4, Functions.HashUint("HOOD_HAT"), 1) && GetPedPropIndex(playerPed.Handle, 0) != -1)
+                            {
+                                someBool = false;
+                            }
+                            if ((!DoesShopPedApparelHaveRestrictionTag((uint)iParam3, Functions.HashUint("HOOD_COMPAT"), 0) && !DoesShopPedApparelHaveRestrictionTag((uint)iParam3, Functions.HashUint("HAZ_MASK"), 0)) && GetPedDrawableVariation(playerPed.Handle, 1) != 0)
+                            {
+                                if (DoesShopPedApparelHaveRestrictionTag((uint)iParam4, Functions.HashUint("HOOD_HAT"), 1))
+                                {
+                                    if (DoesShopPedApparelHaveRestrictionTag((uint)iParam3, Functions.HashUint("SKI_MASK"), 0) || DoesShopPedApparelHaveRestrictionTag((uint)iParam3, Functions.HashUint("BIKER_MASK"), 0))
+                                    {
+                                    }
+                                    else
+                                    {
+                                        someBool = false;
+                                    }
+                                }
+                                else if (DoesShopPedApparelHaveRestrictionTag((uint)iParam3, Functions.HashUint("BIKER_MASK"), 0))
+                                {
+                                }
+                                else
+                                {
+                                    someBool = false;
+                                }
+                            }
+                            if (DoesShopPedApparelHaveRestrictionTag((uint)iParam3, Functions.HashUint("NIGHT_VISION"), 0))
+                            {
+                                someBool = false;
+                            }
+                        }
+                        else
+                        {
+                            if (GetPedPropIndex(playerPed.Handle, 0) != -1)
+                            {
+                                someBool = false;
+                            }
+                            if ((!DoesShopPedApparelHaveRestrictionTag((uint)iParam3, Functions.HashUint("HOOD_COMPAT"), 0) && !DoesShopPedApparelHaveRestrictionTag((uint)iParam3, Functions.HashUint("HAZ_MASK"), 0)) && GetPedDrawableVariation(playerPed.Handle, 1) != 0)
+                            {
+                                someBool = false;
+                            }
+                        }
+                        someBool = true;
+                    }
+
+                    if (!someBool && !CanHood(false, true, ref variantHoodHash) && !CanHood(false, false, ref variantHoodHash))
+                    {
+                        hood.Enabled = false;
+                        hood.Description = Game.GetGXTEntry("PIM_HCHOOD0");
+                    }
+                    else
+                    {
+                        hood.Description = Game.GetGXTEntry("PIM_HCHOOD");
+                    }
+                }
+
+
+
+                #endregion
             };
+
 
             StyleMenu.OnMenuClose += (menu) =>
             {
@@ -1741,12 +1871,12 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             return val.ToString();
         }
 
-        static string GetAnimName(int iParam0, int iParam1)//Position - 0x23849A
+        static string GetAnimName(int iParam0, int chood)//Position - 0x23849A
         {
             switch (iParam0)
             {
                 case 0:
-                    switch (iParam1)
+                    switch (chood)
                     {
                         case 0:
                             return "IAP_NONE";
@@ -1838,7 +1968,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     break;
 
                 case 1:
-                    switch (iParam1)
+                    switch (chood)
                     {
                         case 0:
                             return "IAC_BROL";
@@ -1852,7 +1982,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     break;
 
                 case 2:
-                    switch (iParam1)
+                    switch (chood)
                     {
                         case 0:
                             return "IAP_NONE";
@@ -1994,6 +2124,150 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             return "";
         }
 
+        private static bool CanHood(bool bParam1, bool bParam2, ref int hoodVariantHash)
+        {
+            int ped = PlayerPedId();
+            int component = GetPedDrawableVariation(ped, 11);
+            int texture = GetPedTextureVariation(ped, 11);
+            int hoodHash = GetHashNameForComponent(ped, 11, component, texture);
+
+            int hoodCount = GetShopPedApparelVariantComponentCount((uint)hoodHash);
+            if (hoodCount > 0)
+            {
+                hoodVariantHash = -1;
+                int iVar3 = 0;
+                int var2 = 0;
+                for (int i = 0; i < hoodCount; i++)
+                {
+                    GetVariantComponent((uint)hoodHash, i, ref hoodVariantHash, ref var2, ref iVar3);
+                    if (iVar3 == 11 && hoodVariantHash != 0 && (uint)hoodVariantHash != Functions.HashUint("0") && bParam1 == DoesShopPedApparelHaveRestrictionTag((uint)hoodVariantHash, Functions.HashUint("HOOD_UP"), 0) && bParam2 == DoesShopPedApparelHaveRestrictionTag((uint)hoodVariantHash, Functions.HashUint("HOOD_TUCKED"), 0))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        static bool func_889(uint iParam0, int iParam1, ref int iParam2, int iParam3)//Position - 0x975D5
+        {
+            int iVar0;
+            int iVar1;
+            int uVar2 = 0;
+            int iVar3 = 0;
+
+            iVar0 = GetShopPedApparelVariantComponentCount(iParam0);
+            iVar1 = 0;
+            while (iVar1 < iVar0)
+            {
+                GetVariantComponent(iParam0, iVar1, ref iParam2, ref uVar2, ref iVar3);
+                if (iVar3 == iParam1)
+                {
+                    if (iParam2 != 0 && iParam2 != Functions.HashInt("0"))
+                    {
+                        if (iParam3 == -1 || DoesShopPedApparelHaveRestrictionTag((uint)iParam2, (uint)iParam3, iVar3))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                iVar1++;
+            }
+            return false;
+        }
+
+        static bool func_890(int iParam0, int iParam1, int iParam2)//Position - 0x97640
+        {
+            int iVar0;
+            int iVar1;
+            int iVar2 = 0;
+            int uVar3 = 0;
+            int iVar4 = 0;
+
+            if (iParam0 != -1)
+            {
+                iVar0 = GetShopPedApparelForcedComponentCount((uint)iParam0);
+                iVar1 = 0;
+                while (iVar1 < iVar0)
+                {
+                    GetForcedComponent((uint)iParam0, iVar1, ref iVar2, ref uVar3, ref iVar4);
+                    if (iVar4 == iParam1 && (iParam2 == -1 || iParam2 == iVar2))
+                    {
+                        return true;
+                    }
+                    iVar1++;
+                }
+            }
+            return false;
+        }
+
+        static bool func_891(int iParam0, bool bParam1, bool bParam2, ref int iParam3)//Position - 0x97698
+        {
+            int iVar0;
+            int iVar1;
+            int uVar2 = 0;
+            int iVar3 = 0;
+
+            iParam3 = -1;
+            iVar0 = GetShopPedApparelVariantComponentCount((uint)iParam0);
+            iVar1 = 0;
+            while (iVar1 < iVar0)
+            {
+                GetVariantComponent((uint)iParam0, iVar1, ref iParam3, ref uVar2, ref iVar3);
+                if ((((iVar3 == 11 && iParam3 != 0) && iParam3 != Functions.HashInt("0")) && bParam1 == DoesShopPedApparelHaveRestrictionTag((uint)iParam3, Functions.HashUint("HOOD_UP"), 0)) && bParam2 == DoesShopPedApparelHaveRestrictionTag((uint)iParam3, Functions.HashUint("HOOD_TUCKED"), 0))
+                {
+                    return true;
+                }
+                iVar1++;
+            }
+            return false;
+        }
+
+        static async Task<int> func_81(int iParam0, int iParam1, int iParam2, int iParam3)//Position - 0x3C36
+        {
+            int iVar0;
+            int iVar1;
+            int iVar2 = 0;
+            int iVar3;
+
+            iVar0 = func_77(iParam3);
+            iVar1 = GetNumberOfPedDrawableVariations(iParam0, iVar0);
+            iVar3 = 0;
+            while (iVar3 <= (iVar1 - 1))
+            {
+                await BaseScript.Delay(0);
+                if (iVar3 != iParam1)
+                {
+                    iVar2 += GetNumberOfPedTextureVariations(iParam0, iVar0, iVar3);
+                }
+                else
+                {
+                    iVar2 += iParam2;
+                    return iVar2;
+                }
+                iVar3++;
+            }
+            return -99;
+        }
+
+        static int func_77(int iParam0)//Position - 0x3A24
+        {
+            return iParam0 switch
+            {
+                0 => 0,
+                2 => 2,
+                3 => 3,
+                4 => 4,
+                6 => 6,
+                5 => 5,
+                8 => 8,
+                9 => 9,
+                10 => 10,
+                1 => 1,
+                7 => 7,
+                11 => 11,
+                _ => 0,
+            };
+        }
 
     }
 }

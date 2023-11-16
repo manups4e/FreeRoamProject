@@ -20,6 +20,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
         internal static int CurrentAnimSelection;
         internal static bool switchingVisor = false;
         internal static bool canPerform;
+        internal static int[] playersArray = new int[64];
 
         #region TO BE LOADED BY PLAYER LOGIN AND SAVED
         public static InteractionAnimation Anim = new InteractionAnimation();
@@ -35,19 +36,137 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
         {
             TickController.TickHUD.Remove(InteractionMenu.Enable);
             TickController.TickHUD.Remove(InteractionMenuTick);
+            TickController.TickGenerics.Remove(LightingClothingsTick);
         }
 
         private static void AccessingEvents_OnFreeRoamSpawn(PlayerClient client)
         {
             TickController.TickHUD.Add(InteractionMenu.Enable);
             TickController.TickHUD.Add(InteractionMenuTick);
+            TickController.TickGenerics.Add(LightingClothingsTick);
+        }
+
+        internal static async Task LightingClothingsTick()
+        {
+            int iVar3 = GetGameTimer();
+            foreach (PlayerClient client in ClientMain.Instance.Clients)
+            {
+                int iVar8 = ClientMain.Instance.Clients.IndexOf(client);
+                Ped ped = client.Ped;
+                if (!ped.IsInjured && DoesEntityHaveDrawable(ped.Handle) && DoesEntityHavePhysics(ped.Handle) && HaveAllStreamingRequestsCompleted(ped.Handle) && IsPedShaderEffectValid(ped.Handle))
+                {
+                    float fVar4 = GetPedEmissiveIntensity(ped.Handle);
+                    float fVar5 = -1f;
+                    float fVar6 = 0f;
+                    float fVar7 = 0f;
+                    switch (client.Status.FreeRoamStates.IlluminatedClothing)
+                    {
+                        case 0:
+                            if (fVar4 != 1f)
+                            {
+                                fVar5 = 1f;
+                                playersArray[iVar8] = iVar3;
+                            }
+                            break;
+                        case 1:
+                            if (playersArray[iVar8] == -1)
+                            {
+                                playersArray[iVar8] = iVar3;
+                            }
+                            fVar6 = fVar4;
+                            if (fVar6 < 0.5f)
+                            {
+                                fVar6 = 0f;
+                            }
+                            else
+                            {
+                                fVar6 = 1f;
+                            }
+                            if (iVar3 >= playersArray[iVar8] + 1000)
+                            {
+                                if (fVar6 < 0.5f)
+                                {
+                                    fVar6 = 1f;
+                                }
+                                else
+                                {
+                                    fVar6 = 0f;
+                                }
+                            }
+                            if (fVar4 != fVar6)
+                            {
+                                fVar5 = fVar6;
+                                playersArray[iVar8] = iVar3;
+                            }
+                            break;
+                        case 2:
+                            if (playersArray[iVar8] == -1)
+                            {
+                                playersArray[iVar8] = iVar3;
+                            }
+                            fVar7 = Sin((iVar3 - playersArray[iVar8]) * 0.2f);
+                            fVar7 = (fVar7 + 1f) * 0.5f;
+                            if (fVar4 != fVar7)
+                            {
+                                fVar5 = fVar7;
+                            }
+                            break;
+                        case 3:
+                            if (fVar4 != 0f)
+                            {
+                                fVar5 = 0f;
+                                playersArray[iVar8] = iVar3;
+                            }
+                            break;
+                        default:
+                            fVar5 = 1f;
+                            playersArray[iVar8] = iVar3;
+                            break;
+                    }
+                    if (fVar5 != -1f)
+                    {
+                        if (fVar5 < 0f)
+                        {
+                            fVar5 = 0f;
+                        }
+                        if (fVar5 > 1f)
+                        {
+                            fVar5 = 1f;
+                        }
+                        if (fVar4 != fVar5)
+                        {
+                            SetPedEmissiveIntensity(ped.Handle, fVar5);
+                        }
+                    }
+                }
+            }
         }
 
         internal static async Task InteractionMenuTick()
         {
-            // DO WE NEED IT?...
-            if (MenuHandler.IsAnyMenuOpen)
+            if (!MenuHandler.IsAnyMenuOpen)
             {
+                Tuple<bool, int> kbDouble = await Input.HasControlBeenPressedMultipleTimes(Control.SpecialAbilityPC, FreeRoamProject.Client.PadCheck.Keyboard, frameTime: 500);
+                Tuple<bool, int> GamePadDouble = await Input.HasControlBeenPressedMultipleTimes(Control.SpecialAbility, Control.SpecialAbilitySecondary, FreeRoamProject.Client.PadCheck.Controller, frameTime: 500);
+
+                // do we need it in another tick?
+                if (await Input.IsControlStillPressedAsync(Control.SpecialAbilityPC, FreeRoamProject.Client.PadCheck.Keyboard, timeout: 500) ||
+                    (await Input.IsControlStillPressedAsync(Control.SpecialAbility, FreeRoamProject.Client.PadCheck.Controller, timeout: 500) &&
+                    await Input.IsControlStillPressedAsync(Control.SpecialAbilitySecondary, FreeRoamProject.Client.PadCheck.Controller, timeout: 500)) ||
+                    kbDouble.Item1 || GamePadDouble.Item1)
+                {
+                    if (CurrentAnimSelection == 0) return;
+                    await PerformCurrentAction(true);
+                }
+                else if (kbDouble.Item2 == 1 || (GamePadDouble.Item2 == 1))
+                {
+                    if (CurrentAnimSelection == 0) return;
+                    await PerformCurrentAction(false);
+                }
+            }
+            else
+            {
+                // DO WE NEED IT?...
                 Ped playerPed = PlayerCache.MyPlayer.Ped;
                 UIMenu curMenu = (UIMenu)MenuHandler.CurrentMenu;
                 if (curMenu == InteractionMenu.MainMenu ||
@@ -89,8 +208,17 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             int ped = PlayerCache.MyPlayer.Ped.Handle;
             #region loadAnim
             Anim = func_13801(CurrentAnimMode, CurrentAnimSelection, true, true); // param2 is the anim index.. 0 == none
-            if (@double)
+
+            /* TODO: perform this control for these animations
+                    CurrentAnimSelection == 39 when PlayerCache.MyPlayer.Ped.IsOnFoot => Game.GetGXTEntry("PIM_HANIM3"), : take $~1~ from your wallet with each use
+                    CurrentAnimSelection == 62 when PlayerCache.MyPlayer.Ped.IsOnFoot => Game.GetGXTEntry("PIM_HANIM4"), : requires Blêuter'd Champagne purchased from the Arena War Spectator Box
+                    CurrentAnimSelection == 58 => Game.GetGXTEntry("PIM_HANIM5"), : requires a Horror Pumpkin Mask to be equipped
+             */
+
+
+            if (@double && !PlayerCache.MyPlayer.Ped.IsInVehicle())
             {
+
                 string animDict = PlayerCache.Character.Skin.Sex == "Male" ? Anim.uParam2[10] : Anim.uParam2[11];
                 Anim.AnimIndex = CurrentAnimSelection;
                 Anim.SelectedDict = animDict;
@@ -105,7 +233,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 ClearSequenceTask(ref seqTask);
                 RemoveAnimDict(animDict);
                 canPerform = true;
-                ((UIMenu)MenuHandler.CurrentMenu).MenuItems[9].Enabled = false;
+                if (MenuHandler.IsAnyMenuOpen)
+                    ((UIMenu)MenuHandler.CurrentMenu).MenuItems[9].Enabled = false;
                 SetPlayerControl(ped, false, 1 << 8);
             }
             else
@@ -142,7 +271,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 ClearSequenceTask(ref seqTask);
                 RemoveAnimDict(animDict);
                 SetPlayerControl(ped, false, 1 << 8);
-                ((UIMenu)MenuHandler.CurrentMenu).MenuItems[9].Enabled = false;
+                if (MenuHandler.IsAnyMenuOpen)
+                    ((UIMenu)MenuHandler.CurrentMenu).MenuItems[9].Enabled = false;
                 canPerform = true;
             }
             #endregion
@@ -151,6 +281,9 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             while (canPerform)
             {
                 await BaseScript.Delay(0);
+                DisableAllControlActions(0);
+                DisableAllControlActions(1);
+                DisableAllControlActions(2);
                 if (HasAnimEventFired(ped, Functions.HashUint("CREATE")) || HasAnimEventFired(ped, Functions.HashUint("GripCash_L")) || HasAnimEventFired(ped, Functions.HashUint("GripBottle")) || HasAnimEventFired(ped, Functions.HashUint("Create_whiskey_bottle")))
                 {
                     if (Anim.animProp == 0)
@@ -287,7 +420,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     RemoveAnimDict(Anim.SelectedDict);
                     canPerform = false;
                     SetPlayerControl(ped, true, 0);
-                    ((UIMenu)MenuHandler.CurrentMenu).MenuItems[9].Enabled = true;
+                    if (MenuHandler.IsAnyMenuOpen)
+                        ((UIMenu)MenuHandler.CurrentMenu).MenuItems[9].Enabled = true;
                     return;
                 }
             }

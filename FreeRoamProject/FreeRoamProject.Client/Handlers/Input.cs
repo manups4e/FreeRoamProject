@@ -15,9 +15,9 @@ namespace FreeRoamProject.Client
     }
 
     /// <summary>
-    /// Pagina di riferimento: https://wiki.fivem.net/wiki/Controls
-    /// Oppure /dev keycodetester in gioco e premere un tasto
-    /// Occhio.. i tasti premono piu comandi per volta
+    /// Reference page: https://wiki.fivem.net/wiki/Controls
+    /// Or /dev keycodetester in game and press a key
+    /// Be careful... the keys press multiple commands at a time
     /// </summary>
     public static class Input
     {
@@ -27,15 +27,15 @@ namespace FreeRoamProject.Client
         public static Dictionary<ControlModifier, int> ModifierFlagToKeyCode = new Dictionary<ControlModifier, int>() { [ControlModifier.Ctrl] = 36, [ControlModifier.Alt] = 19, [ControlModifier.Shift] = 21 };
 
         /// <summary>
-        /// Vero se a premere è stato il controller
+        /// True if the controller pressed
         /// </summary>
         /// <returns></returns>
         public static bool WasLastInputFromController() => !IsInputDisabled(controllerControlGroup);
 
         /// <summary>
-        /// Tiene conto se un modifier (alt, ctrl, shift) è stato premuto
+        /// Takes into account whether a modifier (alt, ctrl, shift) has been pressed
         /// </summary>
-        /// <param name="modifier">Si può specificare 1 solo modifier o più di uno (con |)</param>
+        /// <param name="modifier">You can specify just 1 modifier or more than one (with |)</param>
         /// <returns></returns>
         public static bool IsControlModifierPressed(ControlModifier modifier)
         {
@@ -77,13 +77,13 @@ namespace FreeRoamProject.Client
         public static bool IsEnabledControlPressed(Control control, PadCheck keyboardOnly = PadCheck.Any, ControlModifier modifier = ControlModifier.None) { return Game.IsEnabledControlPressed(0, control) && (keyboardOnly == PadCheck.Keyboard ? !WasLastInputFromController() : keyboardOnly == PadCheck.Controller ? WasLastInputFromController() : !WasLastInputFromController() || WasLastInputFromController()) && IsControlModifierPressed(modifier); }
 
         /// <summary>
-        /// Aspetta finchè un tasto non è stato rilasciato e ritorna vero se il tasto è ancora premuto
+        /// Waits until a key has been released and returns true if the key is still pressed
         /// </summary>
-        /// <param name="control">Il <see cref="Control"/> che si vuole aspettare</param>
-        /// <param name="keyboardOnly">Solo tastiera, solo GamePad o entrambi?</param>
-        /// <param name="modifier">Il <see cref="ControlModifier"/> aggiuntivo</param>
-        /// <param name="timeout">Quanto aspettare prima che il controllo cominci a verificare in millisecondi</param>
-        /// <returns>Ritorna se il player ha tenuto premuto più del tempo specificato</returns>
+        /// <param name="control">The <see cref="Control"/> you want to wait for</param>
+        /// <param name="keyboardOnly">Keyboard only, GamePad only, or both?</param>
+        /// <param name="modifier">The additional <see cref="ControlModifier"/></param>
+        /// <param name="timeout">How long to wait before the check starts checking in milliseconds</param>
+        /// <returns>Returns if the player held down longer than the specified time</returns>
         public static async Task<bool> IsControlStillPressedAsync(Control control, PadCheck keyboardOnly = PadCheck.Any, ControlModifier modifier = ControlModifier.None, int timeout = 1000)
         {
             int currentTicks = GetNetworkTime() + 1;
@@ -91,9 +91,10 @@ namespace FreeRoamProject.Client
 
             return GetNetworkTime() - currentTicks >= timeout;
         }
+
         public static async Task<Tuple<bool, int>> HasControlBeenPressedMultipleTimes(Control control, PadCheck keyboardOnly = PadCheck.Any, ControlModifier modifier = ControlModifier.None, int times = 2, int frameTime = 250)
         {
-            if (Input.IsControlJustPressed(control, keyboardOnly, modifier))
+            if (IsControlJustPressed(control, keyboardOnly, modifier))
             {
                 int i = 1;
                 int time = GetNetworkTime();
@@ -101,12 +102,33 @@ namespace FreeRoamProject.Client
                 {
                     await BaseScript.Delay(0);
                     if (GetNetworkTime() - time > frameTime) break;
-                    if (Input.IsControlJustPressed(control, keyboardOnly, modifier))
+                    if (IsControlJustPressed(control, keyboardOnly, modifier))
                     {
-                        time = GetNetworkTime();
                         i++;
                     }
 
+                }
+                return new(i == times, i);
+            }
+            return new(false, 0);
+        }
+
+        public static async Task<Tuple<bool, int>> HasControlBeenPressedMultipleTimes(Control control_1, Control control_2, PadCheck keyboardOnly = PadCheck.Any, ControlModifier modifier = ControlModifier.None, int times = 2, int frameTime = 250)
+        {
+            if ((IsControlJustPressed(control_1, keyboardOnly, modifier) && IsControlPressed(control_2, keyboardOnly, modifier)) ||
+                (IsControlPressed(control_1, keyboardOnly, modifier) && IsControlJustPressed(control_2, keyboardOnly, modifier)))
+            {
+                int i = 1;
+                int time = GetNetworkTime();
+                while (i < times)
+                {
+                    await BaseScript.Delay(0);
+                    if (GetNetworkTime() - time > frameTime) break;
+                    if ((IsControlJustPressed(control_1, keyboardOnly, modifier) && IsControlPressed(control_2, keyboardOnly, modifier)) ||
+                        (IsControlPressed(control_1, keyboardOnly, modifier) && IsControlJustPressed(control_2, keyboardOnly, modifier)))
+                    {
+                        i++;
+                    }
                 }
                 return new(i == times, i);
             }
