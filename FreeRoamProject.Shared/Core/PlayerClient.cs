@@ -186,6 +186,8 @@ namespace FreeRoamProject.Shared
             PlayerStates.Paused = false;
             PlayerStates.AdminSpectating = false;
             PlayerStates.Wanted = false;
+            FreeRoamStates.CurrentHoodSetting = 0;
+            FreeRoamStates.IlluminatedClothing = 0;
             Instance.RemoveInstance();
         }
 

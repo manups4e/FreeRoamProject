@@ -3,7 +3,7 @@ using System;
 
 namespace FreeRoamProject.Shared
 {
-    public delegate void FreeRoamStateBagChanged(int userId, string type, bool value);
+    public delegate void FreeRoamStateBagChanged(int userId, string type, object value);
     public delegate void PlayerStateBagChaged(int userId, string type, bool value);
     public delegate void InstanceBagChanged(int userId, InstanceBag value);
     public delegate void EntityStateBagChaged(Entity entity, string type, bool value);
@@ -91,8 +91,16 @@ namespace FreeRoamProject.Shared
                                     break;
                                 case "FreeRoamStates":
                                     {
-                                        bool res = (value as byte[]).FromBytes<bool>();
-                                        OnFreeRoamStateBagChanged?.Invoke(userId, state, res);
+                                        switch (state)
+                                        {
+                                            case "IlluminatedClothing":
+                                            case "CHood":
+                                                {
+                                                    int res = (value as byte[]).FromBytes<int>();
+                                                    OnFreeRoamStateBagChanged?.Invoke(userId, state, res);
+                                                }
+                                                break;
+                                        }
                                     }
                                     break;
                                 case "PlayerInstance":
