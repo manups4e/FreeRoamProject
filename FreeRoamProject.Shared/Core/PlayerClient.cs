@@ -3,6 +3,8 @@ using FxEvents.Shared.EventSubsystem;
 using System;
 using System.Linq;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
+
 #if CLIENT
 using FreeRoamProject.Client.Core.PlayerChar;
 #elif SERVER
@@ -107,6 +109,17 @@ namespace FreeRoamProject.Shared
             Status = new(Player);
             LoadUser();
         }
+
+        // TODO: THIS IS USED TO LOAD USER DATA ON THE GO..
+        // TO BE USED ONLY WHEN NECESSARY.. FOR EVERYTHING ELSE THERE'S THE STATEBAGS
+        // AND NATIVES SINCE WE ARE ALL AWARE..
+        public async Task LoadUserAsync()
+        {
+            BasePlayerShared bps = await EventDispatcher.Get<BasePlayerShared>("tlg:GetUserFromServerId", Handle);
+            User = new User(bps);
+            Id = User != null ? User.PlayerID : Snowflake.Empty;
+        }
+
 
         public async void LoadUser()
         {

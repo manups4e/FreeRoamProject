@@ -60,8 +60,9 @@ namespace FreeRoamProject.Client.Handlers
             foreach (PlayerClient client in ClientMain.Instance.Clients)
             {
                 if (client.Handle == PlayerCache.MyPlayer.Handle) continue;
-                if (client.Status.PlayerStates.Spawned)
+                if (client.Status != null && client.Status.PlayerStates.Spawned)
                 {
+                    //TODO: ADD CHECKS FOR AT HOME.. AND OTHER STATES TO CHANGE ACCORDINGLY.. LIKE.. IF IT'S IN A TANK.. OR ARMORED VEH
                     if (client.Ped.AttachedBlip != null)
                     {
                         Blip blip = client.Ped.AttachedBlip;

@@ -1,6 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 #if SERVER
 using FreeRoamProject.Server.Core.Buckets;
 using FreeRoamProject.Server;
@@ -9,77 +10,33 @@ using FreeRoamProject.Server;
 namespace FreeRoamProject.Shared
 {
     // TODO: WORK IN PROGRESS.. NOT WORKING YET BUT I WANT THIS TO BE BUCKETS COMPATIBLE
-    public interface IClientList : IEnumerable<PlayerClient>
+    public class ClientList : IEnumerable<PlayerClient>
     {
-        void RequestPlayerList();
-
-        void ReceivedPlayerList(IList<object> players);
-
-        Task WaitRequested();
-    }
-
-    public class ClientList : IClientList
-    {
-        private List<PlayerClient> clientList;
-        private bool updating = false;
-        public ClientList()
-        {
-            RequestPlayerList();
-        }
-
         public IEnumerator<PlayerClient> GetEnumerator()
         {
-            /*
-            if (clientList == null)
-            {
 #if CLIENT
-                RequestPlayerList(PlayerCache.ModalitàAttuale);
-#elif SERVER
-                RequestPlayerList(ModalitaServerMain.UNKNOWN);
-#endif
-            }
-            */
-
-            foreach (PlayerClient player in clientList)
+            IList<object> list = (IList<object>)(object)API.GetActivePlayers();
+            foreach (object p in list)
             {
-                yield return player;
+                yield return new PlayerClient(API.GetPlayerServerId(Convert.ToInt32(p)));
             }
-        }
-
-        public async void RequestPlayerList()
-        {
-            updating = true;
-#if CLIENT
-            clientList = await EventDispatcher.Get<List<PlayerClient>>("tlg:getClients");
 #elif SERVER
-            // TODO: REPLACE WITH THE PLAYERS IN THE CURRENT BUCKET AND THAT'S ALL..
-            // USELESS TO KNOW PLAYERS IN OTHER BUCKETS.. UNLESS THEY'RE FRIENDS (BUT THAT CAN BE EASILY CHECKED IN OTHER WAYS)
-            clientList = ServerMain.Instance.Clients;
+            int numIndices = GetNumPlayerIndices();
+
+            for (int i = 0; i < numIndices; i++)
+            {
+                yield return new PlayerClient(int.Parse(GetPlayerFromIndex(i)));
+            }
 #endif
-            updating = false;
-        }
-
-        public void ReceivedPlayerList(IList<object> players)
-        {
-
-        }
-        public async Task WaitRequested()
-        {
-            if (updating) while (updating) await BaseScript.Delay(0);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            foreach (PlayerClient player in clientList)
-            {
-                yield return player;
-            }
+            return GetEnumerator();
         }
 
-        public void Add(PlayerClient pl)
-        {
-            clientList.Add(pl);
-        }
+        public PlayerClient this[int netId] => this.FirstOrDefault(player => player.Handle == netId);
 
+        public PlayerClient this[string name] => this.FirstOrDefault(player => player.Player.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
     }
 }
