@@ -273,7 +273,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
         private static void SexAnimation(Ped ped, int tipo, bool hooker)
         {
             string dict = getDictMain(ped, false, 0, tipo);
-            Vehicle veh = PlayerCache.MyPlayer.Ped.CurrentVehicle;
+            Vehicle veh = VehicleChecker.CurrentVehicle;
             bool bVar1 = CheckVehLayout(veh.Handle);
 
             int prosHandle = 0;

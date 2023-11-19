@@ -15,7 +15,7 @@
             {
                 PlayerClient user = Functions.GetClientFromPlayerId(p.Handle);
                 if (user != null && user.Status.PlayerStates.Spawned)
-                    BucketsHandler.RolePlay.SalvaPersonaggioRoleplay(p);
+                    BucketsHandler.RolePlay.saveCharacterRoleplay(p);
             }
         }
         */

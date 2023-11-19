@@ -56,7 +56,6 @@ namespace FreeRoamProject.Server.Core.Buckets
             ServerMain.Logger.Info($"Player {client.Player.Name} joined bucket {GetPlayerBucket(client.Handle).ID}, total players: {GetPlayerBucket(client.Handle).Players.Count}");
             client.Status.Clear();
 
-
             // TODO: PORT THIS INTO THE PLUGINS
             List<PlayerScore> highscores = new();
             foreach (WorldEvent worldEvent in WorldEventsManager.WorldEvents)
@@ -343,15 +342,17 @@ namespace FreeRoamProject.Server.Core.Buckets
             {
                 byte[] bytes = sbytes.StringToBytes();
                 source.User.Character = bytes.FromBytes<FreeRoamChar>();
+                source.Status.LoadFromChar(source);
             }
             return source.User.Character;
         }
 
-        private void SavePlayerData([FromSource] PlayerClient client)
+        internal void SavePlayerData([FromSource] PlayerClient client)
         {
             if (client == null || client.User == null || client.User.Character == null) return;
             Position pos = new Position(client.Ped.Position, client.Ped.Rotation);
             client.User.Character.Position = pos;
+            client.Status.SaveToChar(client);
             API.SetResourceKvp($"freeroam:player_{client.User.Identifiers.License}:char_model", client.User.Character.ToBytes().BytesToString(true));
             ServerMain.Logger.Debug($"Saved Player {client.Player.Name}, license: {client.Identifiers.License}");
         }

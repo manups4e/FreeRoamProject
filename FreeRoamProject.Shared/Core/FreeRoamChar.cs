@@ -46,7 +46,8 @@ namespace FreeRoamProject.Shared
         public List<string?> Properties { get; set; }
         public List<OwnedVehicle> Vehicles { get; set; }
         public Dressing Dressing { get; set; }
-        public FreeRoamStats Stats { get; set; }
+        public FreeRoamStats Statistics { get; set; }
+        public GameStats Stats { get; set; }
         public int Level { get; set; } = 1;
         public int TotalXp { get; set; }
 
@@ -63,10 +64,11 @@ namespace FreeRoamProject.Shared
             Properties = new(); // to be added
             Vehicles = new(); // to be added
             Weapons = new();
+            Statistics = new();
             Stats = new();
         }
 
-        public FreeRoamChar(ulong id, Finance finance, Gang gang, Skin skin, Dressing dressing, FreeRoamStats statistiche)
+        public FreeRoamChar(ulong id, Finance finance, Gang gang, Skin skin, Dressing dressing, FreeRoamStats statistiche, GameStats savedStates)
         {
             CharID = id;
             Finance = finance;
@@ -76,7 +78,8 @@ namespace FreeRoamProject.Shared
             Weapons = new List<Weapons>();
             Properties = new List<string?>();
             Vehicles = new List<OwnedVehicle>();
-            Stats = statistiche;
+            Statistics = statistiche;
+            Stats = savedStates;
         }
     }
 
@@ -100,6 +103,27 @@ namespace FreeRoamProject.Shared
         public int EventsWon { get; set; } = 0;
         // to add madness like in gta:o?
         //TODO: IDEA, TO ADD KILLER CONTRACTS LIKE GTA:O
+    }
+
+    public class GameStats()
+    {
+        public int CurrentHoodSetting { get; set; }
+        public int IlluminatedClothing { get; set; }
+        public int VisorUpDown { get; set; }
+        public int[] SavedHelmet { get; set; } = [16, 0];
+        public int AutoShowHelmet { get; set; }
+        public int AutoShowAircraft { get; set; }
+        public int SavedAction { get; set; }
+        public int SavedMood { get; set; } = 4;
+        public int SavedWalkStyle { get; set; }
+        public int SavedGlowIndex { get; set; }
+        public int SavedHood { get; set; }
+    }
+
+    public class Helmet
+    {
+        public int Drawable { get; set; }
+        public int Texture { get; set; }
     }
 
 

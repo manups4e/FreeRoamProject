@@ -23,6 +23,8 @@ namespace FreeRoamProject.Server.Core
             EventDispatcher.Mount("tlg:getPlayers", new Func<Task<List<Player>>>(GetAllPlayers));
             EventDispatcher.Mount("tlg:getClients", new Func<PlayerClient, Task<List<PlayerClient>>>(GetAllClients));
             EventDispatcher.Mount("tlg:removeCharMoney", new Action<PlayerClient, int, int>(RemoveCharMoney));
+            EventDispatcher.Mount("tlg:SetPlayerStat", new Action<PlayerClient, string, int, int>(SetSavedState));
+
             EventDispatcher.Mount("tlg:sendPlayerJoinedMessage", new Action<PlayerClient>(([FromSource] client) =>
             {
                 Shared.Core.Buckets.Bucket bucket = BucketsHandler.FreeRoam.GetPlayerBucket(client.Handle);
@@ -38,6 +40,41 @@ namespace FreeRoamProject.Server.Core
                 Shared.Core.Buckets.Bucket buck = BucketsHandler.FreeRoam.GetPlayerBucket(a.Handle);
                 return buck.Players;
             }));
+        }
+
+        public static void SetSavedState([FromSource] PlayerClient player, string state, int statValue1, int statValue2)
+        {
+            switch (state)
+            {
+                case "SavedHelmet":
+                    player.User.Character.Stats.SavedHelmet = [statValue1, statValue2];
+                    break;
+                case "IlluminatedClothing":
+                    player.User.Character.Stats.IlluminatedClothing = statValue1;
+                    player.Status.FreeRoamStates.IlluminatedClothing = statValue1;
+                    break;
+                case "CHood":
+                    player.User.Character.Stats.SavedHood = statValue1;
+                    break;
+                case "VisorUpDown":
+                    player.User.Character.Stats.VisorUpDown = statValue1;
+                    break;
+                case "AutoShowHelmet":
+                    player.User.Character.Stats.AutoShowHelmet = statValue1;
+                    break;
+                case "AutoShowAircraft":
+                    player.User.Character.Stats.AutoShowAircraft = statValue1;
+                    break;
+                case "SavedAction":
+                    player.User.Character.Stats.SavedAction = statValue1;
+                    break;
+                case "SavedMood":
+                    player.User.Character.Stats.SavedMood = statValue1;
+                    break;
+                case "SavedWalkStyle":
+                    player.User.Character.Stats.SavedWalkStyle = statValue1;
+                    break;
+            }
         }
 
         public static void RemoveCharMoney([FromSource] PlayerClient player, int type, int amount)

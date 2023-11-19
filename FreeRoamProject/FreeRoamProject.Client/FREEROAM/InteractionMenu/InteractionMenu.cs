@@ -1,9 +1,8 @@
 ﻿using FreeRoamProject.Client;
+using FreeRoamProject.Client.Handlers;
 using FreeRoamProject.Shared.Core.Character;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
@@ -38,9 +37,17 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
         public static UIMenu MapBlipOptMenu = null;
         public static UIMenu ImpromptuRaceMenu = null;
         public static UIMenu HighlightPlayerMenu = null;
+
         #region to be saved in char data
         public static int[] SavedHelmet = new int[2] { 16, 0 };
         public static bool VisorUp = true;
+        public static int VisorUpDown = 0;
+        public static int AutoShowHelmet = 1;
+        public static int AutoShowAircraft = 1;
+        public static int SavedAction = 0;
+        public static int SavedMood = 4;
+        public static int SavedWalkStyle = 0;
+        public static int SavedGlowIndex = PlayerCache.MyPlayer.Status.FreeRoamStates.IlluminatedClothing;
         #endregion
 
         // TODO: Since i want to keep performances at their best!
@@ -56,6 +63,18 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
         // FOR EXAMPLE GARAGES, PERSONAL VEHICLES, SIMEON, LESTER, HOME, ETC
         public static List<dynamic> gps = new List<dynamic>()
         {
+            Game.GetGXTEntry("PIM_QGPS_PROP5"), // "Home 5",
+            Game.GetGXTEntry("PIM_QGPS_PROP5B"), // "Garage 5",
+            Game.GetGXTEntry("PIM_QGPS_PROP6"), // "Home 6",
+            Game.GetGXTEntry("PIM_QGPS_PROP6B"), // "Garage 6",
+            Game.GetGXTEntry("PIM_QGPS_PROP7"), // "Home 7",
+            Game.GetGXTEntry("PIM_QGPS_PROP7B"), // "Garage 7",
+            Game.GetGXTEntry("PIM_QGPS_PROP8"), // "Home 8",
+            Game.GetGXTEntry("PIM_QGPS_PROP8B"), // "Garage 8",
+            Game.GetGXTEntry("PIM_QGPS_PROP9"), // "Home 9",
+            Game.GetGXTEntry("PIM_QGPS_PROP9B"), // "Garage 9",
+            Game.GetGXTEntry("PIM_QGPS_PROP10"), // "Home 10",
+            Game.GetGXTEntry("PIM_QGPS_PROP10B"), // "Garage 10",
             Game.GetGXTEntry("PIM_QGPS0"), // None
             Game.GetGXTEntry("PIM_QGPS1"), // Mission Objective
             Game.GetGXTEntry("PIM_QGPS1B"), // Garage
@@ -140,56 +159,27 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             #region Quick GPS
             // TODO: MAKE THE QUICK_GPS LIST ON RUNTIME.. YOU NEVER KNOW WHAT MUST BE ADDED AND WHAT NOT..
             // SO WE CAN'T CHECK BY THE INDEX, BUT BY THE LIST CURRENT INDEX LABEL.
-            UIMenuListItem gpsItem = new UIMenuListItem(Game.GetGXTEntry("PIM_TQGPS"), gps, 0);
-            MainMenu.AddItem(gpsItem);
-            MainMenu.OnListSelect += async (menu, _item, _itemIndex) =>
+            // BEFORE USING THIS.. BLIPS MUST BE MADE 😅🥲
+            int currentGPS = 0;
+            UIMenuDynamicListItem gpsItem = new(Game.GetGXTEntry("PIM_TQGPS"), Game.GetGXTEntry("PIM_HQGPS"), Game.GetGXTEntry($"PIM_QGPS{currentGPS}"), async (item, direction) =>
             {
-                if (_item != gpsItem) return;
-                int var;
-
-                switch (_item.Index)
+                int var = currentGPS switch
                 {
-                    case 2:
-                        var = 407;
-                        break;
-                    case 3:
-                        var = 60;
-                        break;
-                    case 4:
-                        var = 80;
-                        break;
-                    case 5:
-                        var = 108;
-                        break;
-                    case 6:
-                        var = 52;
-                        break;
-                    case 7:
-                        var = 154;
-                        break;
-                    case 8:
-                        var = 463;
-                        break;
-                    case 9:
-                        var = 225;
-                        break;
-                    case 10:
-                        var = 50;
-                        break;
-                    case 11:
-                        var = 73;
-                        break;
-                    case 12:
-                        var = 71;
-                        break;
-                    case 13:
-                        var = 408;
-                        break;
-                    default:
-                        var = 0;
-                        break;
-                }
-
+                    2 => 407,
+                    3 => 60,
+                    4 => 80,
+                    5 => 108,
+                    6 => 52,
+                    7 => 154,
+                    8 => 463,
+                    9 => 225,
+                    10 => 50,
+                    11 => 73,
+                    12 => 71,
+                    13 => 408,
+                    _ => 0,
+                };
+                /*
                 if ((string)_item.Items[_item.Index] == "None")
                 {
                     try
@@ -226,7 +216,11 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                         Notifications.ShowNotification("Destination not found!");
                     }
                 }
-            };
+                */
+                return Game.GetGXTEntry(Game.GetGXTEntry($"PIM_QGPS{currentGPS}"));
+            });
+            gpsItem.Enabled = false;
+            MainMenu.AddItem(gpsItem);
 
             #endregion
 
@@ -435,6 +429,19 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             style.BindItemToMenu(StyleMenu);
             MainMenu.AddItem(style);
 
+
+            // TODO: LINK TO THE FREEROAMSTATES
+            // I DON'T REALLY LIKE THIS TO BE SAVED IN STATES... BUT APPARENTLY R* DOES SOMETHING SIMILAR..
+            int[] SavedHelmet = PlayerCache.Character.Stats.SavedHelmet;
+            int VisorUpDown = PlayerCache.Character.Stats.VisorUpDown;
+            int AutoShowHelmet = PlayerCache.Character.Stats.AutoShowHelmet;
+            int AutoShowAircraft = PlayerCache.Character.Stats.AutoShowAircraft;
+            int SavedAction = PlayerCache.Character.Stats.SavedAction;
+            int SavedMood = PlayerCache.Character.Stats.SavedMood;
+            int SavedWalkStyle = PlayerCache.Character.Stats.SavedWalkStyle;
+            int SavedGlowIndex = PlayerCache.Character.Stats.IlluminatedClothing;
+
+
             /*
               "PIM_FCHAP": "You cannot change the character appearance at this time.",
               "PIM_FCHAP0": "It is not safe to change the character appearance at this time.",
@@ -489,36 +496,36 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             UIMenuListItem racingOutfit = new UIMenuListItem(Game.GetGXTEntry("PIM_TRAO"), racingOutfits, 0, Game.GetGXTEntry("PIM_HRAO"));
 
             //TODO: SAVE IT AND RELOAD ON LOGIN :D
-            string prop = $"HE_FM{(PlayerCache.Character.Skin.Sex == "Male" ? "M" : "F")}_{SavedHelmet[0]}_{SavedHelmet[1]}";
+            string prop = $"HE_FM{(PlayerCache.Character.Skin.Sex == "Male" ? "M" : "F")}_{SavedHelmet[1]}_{SavedHelmet[0]}";
             UIMenuDynamicListItem bikeHelmet = new(Game.GetGXTEntry("PIM_TBIH"), Game.GetGXTEntry("PIM_HBIH"), Game.GetGXTEntry(prop), async (item, direction) =>
             {
                 if (direction == UIMenuDynamicListItem.ChangeDirection.Left)
                 {
-                    SavedHelmet[1]--;
-                    if (SavedHelmet[1] < 0)
+                    SavedHelmet[0]--;
+                    if (SavedHelmet[0] < 0)
                     {
-                        SavedHelmet[1] = 7;
-                        SavedHelmet[0]--;
-                        if (SavedHelmet[0] < 16)
-                            SavedHelmet[0] = 18;
+                        SavedHelmet[0] = 7;
+                        SavedHelmet[1]--;
+                        if (SavedHelmet[1] < 16)
+                            SavedHelmet[1] = 18;
                     }
                 }
                 else
                 {
-                    SavedHelmet[1]++;
-                    if (SavedHelmet[1] > 7)
+                    SavedHelmet[0]++;
+                    if (SavedHelmet[0] > 7)
                     {
-                        SavedHelmet[1] = 0;
-                        SavedHelmet[0]++;
-                        if (SavedHelmet[0] > 18)
-                            SavedHelmet[0] = 16;
+                        SavedHelmet[0] = 0;
+                        SavedHelmet[1]++;
+                        if (SavedHelmet[1] > 18)
+                            SavedHelmet[1] = 16;
                     }
                 }
 
                 bool isMale = PlayerCache.Character.Skin.Sex == "Male";
-                string prop = $"HE_FM{(isMale ? "M" : "F")}_{SavedHelmet[0]}_{SavedHelmet[1]}";
+                string prop = $"HE_FM{(isMale ? "M" : "F")}_{SavedHelmet[1]}_{SavedHelmet[0]}";
                 //values are 16 to 18 with textures 0 to 7 (total 24) (131 - 154 in the scripts when saving player stat int (subtract 131)), 
-                int currentHelmet = SavedHelmet[0];
+                int currentHelmet = SavedHelmet[1];
                 if (currentHelmet == 18)
                 {
                     currentHelmet = VisorUp ? 66 : 81;
@@ -526,27 +533,32 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                         currentHelmet++;
                 }
                 playerPed.RemoveHelmet(true);
-
-                SetPedPropIndex(playerPed.Handle, 0, currentHelmet, SavedHelmet[1], false);
-                SetPedHelmetPropIndex(playerPed.Handle, currentHelmet);
-                SetPedHelmetTextureIndex(playerPed.Handle, SavedHelmet[1]);
-
-                if (currentHelmet == 66 || currentHelmet == 81)
+                if (AutoShowHelmet == 1)
                 {
-                    int nextDraw = currentHelmet == 66 ? 81 : 66;
-                    if (isMale)
+
+                    SetPedPropIndex(playerPed.Handle, 0, currentHelmet, SavedHelmet[0], false);
+                    SetPedHelmetPropIndex(playerPed.Handle, currentHelmet);
+                    SetPedHelmetTextureIndex(playerPed.Handle, SavedHelmet[0]);
+
+                    if (currentHelmet == 66 || currentHelmet == 81)
                     {
-                        currentHelmet++;
-                        nextDraw++;
+                        int nextDraw = currentHelmet == 66 ? 81 : 66;
+                        if (isMale)
+                        {
+                            currentHelmet++;
+                            nextDraw++;
+                        }
+                        bool isAlt = false;
+                        AltPropVariationData[] newHelmetData = Game.GetAltPropVariationData(playerPed.Handle, 0);
+                        if (DoesShopPedApparelHaveRestrictionTag((uint)GetHashNameForProp(playerPed.Handle, 0, newHelmetData[0].altPropVariationIndex, newHelmetData[0].altPropVariationTexture), Functions.HashUint("ALT_HELMET"), 1))
+                            isAlt = true;
+                        else
+                            isAlt = false;
+                        SetPedHelmetUnk(playerPed.Handle, isAlt, currentHelmet, nextDraw);
                     }
-                    bool isAlt = false;
-                    AltPropVariationData[] newHelmetData = Game.GetAltPropVariationData(playerPed.Handle, 0);
-                    if (DoesShopPedApparelHaveRestrictionTag((uint)GetHashNameForProp(playerPed.Handle, 0, newHelmetData[0].altPropVariationIndex, newHelmetData[0].altPropVariationTexture), Functions.HashUint("ALT_HELMET"), 1))
-                        isAlt = true;
-                    else
-                        isAlt = false;
-                    SetPedHelmetUnk(playerPed.Handle, isAlt, currentHelmet, nextDraw);
                 }
+                PlayerCache.MyPlayer.User.SetPlayerStat("SavedHelmet", SavedHelmet[1], SavedHelmet[0]);
+
                 return Game.GetGXTEntry(prop);
             });
 
@@ -555,11 +567,12 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             "PIM_HHELV1": "Have the visor up for certain helmets.",
             "PIM_HHELVN": "Equip a helmet with a visor to change your preference.",
              */
-            List<dynamic> bikeVisorList = new List<dynamic>() { Game.GetGXTEntry("PIM_HELV0"), Game.GetGXTEntry("PIM_HELV1") };
-            UIMenuListItem bikeVisor = new UIMenuListItem(Game.GetGXTEntry("PIM_THELV"), bikeVisorList, 1, Game.GetGXTEntry("PIM_HHELVN"));
-            bikeVisor.OnListChanged += async (item, index) =>
+            UIMenuDynamicListItem bikeVisor = new(Game.GetGXTEntry("PIM_THELV"), Game.GetGXTEntry("PIM_HHELVN"), Game.GetGXTEntry($"PIM_HELV{VisorUpDown}"), async (item, direction) =>
             {
-                VisorUp = index == 1;
+                VisorUpDown += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                if (VisorUpDown < 0) VisorUpDown = 1;
+                if (VisorUpDown > 1) VisorUpDown = 0;
+
                 Ped playerPed = PlayerCache.MyPlayer.Ped;
                 int pedHandle = playerPed.Handle;
                 int component = GetPedPropIndex(pedHandle, 0);
@@ -575,25 +588,34 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     AltPropVariationData[] newHelmetData = Game.GetAltPropVariationData(playerPed.Handle, 0);
                     bool isAlt = DoesShopPedApparelHaveRestrictionTag((uint)GetHashNameForProp(playerPed.Handle, 0, newHelmetData[0].altPropVariationIndex, newHelmetData[0].altPropVariationTexture), Functions.HashUint("ALT_HELMET"), 1);
                     SetPedHelmetUnk(playerPed.Handle, isAlt, component, newHelmetData[0].altPropVariationIndex);
-                    await InteractionMethods.SwitchComponent(false, index);
+                    await InteractionMethods.SwitchComponent(false, VisorUpDown);
                 }
-            };
+                PlayerCache.MyPlayer.User.SetPlayerStat("VisorUpDown", VisorUpDown);
+                return Game.GetGXTEntry($"PIM_HELV{VisorUpDown}");
+            });
 
 
             List<dynamic> autoShowBikeHelmetList = new List<dynamic>() { Game.GetGXTEntry("PIM_AHLM0"), Game.GetGXTEntry("PIM_AHLM1") };
-            UIMenuListItem autoShowBikeHelmet = new UIMenuListItem(Game.GetGXTEntry("PIM_TAHLM"), autoShowBikeHelmetList, 0, Game.GetGXTEntry("PIM_HAHLM"));
-            autoShowBikeHelmet.OnListChanged += (item, index) =>
+            UIMenuDynamicListItem autoShowBikeHelmet = new(Game.GetGXTEntry("PIM_TAHLM"), Game.GetGXTEntry("PIM_HAHLM"), Game.GetGXTEntry($"PIM_AHLM{AutoShowHelmet}"), async (item, direction) =>
             {
-                SetPedConfigFlag(playerPed.Handle, 380, index == 0);
-            };
+                AutoShowHelmet += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                if (AutoShowHelmet < 0) AutoShowHelmet = 1;
+                if (AutoShowHelmet > 1) AutoShowHelmet = 0;
+                SetPedConfigFlag(playerPed.Handle, 380, AutoShowHelmet == 0);
+                PlayerCache.MyPlayer.User.SetPlayerStat("AutoShowHelmet", AutoShowHelmet);
+                return Game.GetGXTEntry($"PIM_AHLM{AutoShowHelmet}");
+            });
 
 
-            List<dynamic> autoShowAircraftHelmetList = new List<dynamic>() { Game.GetGXTEntry("PIM_AAHLM0"), Game.GetGXTEntry("PIM_AAHLM1") };
-            UIMenuListItem autoShowAircraftHelmet = new UIMenuListItem(Game.GetGXTEntry("PIM_TAAHLM"), autoShowAircraftHelmetList, 0, Game.GetGXTEntry("PIM_HAAHLM"));
-            autoShowAircraftHelmet.OnListChanged += (item, index) =>
+            UIMenuDynamicListItem autoShowAircraftHelmet = new(Game.GetGXTEntry("PIM_TAAHLM"), Game.GetGXTEntry("PIM_HAAHLM"), Game.GetGXTEntry($"PIM_AAHLM{AutoShowAircraft}"), async (item, direction) =>
             {
-                SetPedConfigFlag(playerPed.Handle, 381, index == 0);
-            };
+                AutoShowAircraft += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                if (AutoShowAircraft < 0) AutoShowAircraft = 1;
+                if (AutoShowAircraft > 1) AutoShowAircraft = 0;
+                SetPedConfigFlag(playerPed.Handle, 381, AutoShowAircraft == 0);
+                PlayerCache.MyPlayer.User.SetPlayerStat("AutoShowAircraft", AutoShowAircraft);
+                return Game.GetGXTEntry($"PIM_AAHLM{AutoShowAircraft}");
+            });
 
             /*
               "PIM_HANIM": "The selected action will be stored as your Quickplay Action. Press or hold the Quickplay Action buttons to alter how you will perform this action.",
@@ -603,14 +625,13 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
               "PIM_HANIM5": "The selected Quickplay Action requires a Horror Pumpkin Mask to be equipped. Press or hold the Quickplay Action buttons to perform the action.",
              */
             string currentAction = Game.GetGXTEntry("IAP_NONE");
-            int currentActionPosition = 0;
-            UIMenuDynamicListItem action = new UIMenuDynamicListItem(Game.GetGXTEntry(PlayerCache.MyPlayer.Ped.IsInVehicle() ? "PIM_TANIMP" : "PIM_TANIMF"), Game.GetGXTEntry("PIM_HANIM"), currentAction, async (sender, direction) =>
+            UIMenuDynamicListItem action = new UIMenuDynamicListItem(Game.GetGXTEntry(VehicleChecker.IsInVehicle ? "PIM_TANIMP" : "PIM_TANIMF"), Game.GetGXTEntry("PIM_HANIM"), currentAction, async (sender, direction) =>
             {
                 // items in game are hanlded like a dynamiclistitem via a function with a check if the ped is in vehicle and the current index i think..
-                currentActionPosition = direction == UIMenuDynamicListItem.ChangeDirection.Left ? currentActionPosition - 1 : currentActionPosition + 1;
+                SavedAction = direction == UIMenuDynamicListItem.ChangeDirection.Left ? SavedAction - 1 : SavedAction + 1;
                 int currentSituation = 2;
                 int max = 66;
-                if (PlayerCache.MyPlayer.Ped.IsInVehicle())
+                if (VehicleChecker.IsInVehicle)
                 {
                     currentSituation = 0;
                     max = 42;
@@ -620,43 +641,45 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                  if we are in a crew, currentSituation = 1 and max = 3
                  */
 
-                if (currentActionPosition < 0)
-                    currentActionPosition = max;
-                if (currentActionPosition > max)
-                    currentActionPosition = 0;
-                string result = GetAnimName(currentSituation, currentActionPosition);
+                if (SavedAction < 0)
+                    SavedAction = max;
+                if (SavedAction > max)
+                    SavedAction = 0;
+                string result = GetAnimName(currentSituation, SavedAction);
 
                 InteractionMethods.CurrentAnimMode = currentSituation;
-                InteractionMethods.CurrentAnimSelection = currentActionPosition;
+                InteractionMethods.CurrentAnimSelection = SavedAction;
 
                 //TODO: FIND CORRECT ANIMATION AND SAVE IT FOR WHEN THE PLAYER DECIDES TO USE IT
 
                 bool value = currentSituation switch
                 {
-                    1 => currentActionPosition switch
+                    1 => SavedAction switch
                     {
                         0 or 3 => false,
                         _ => true,
                     },
-                    2 => currentActionPosition switch
+                    2 => SavedAction switch
                     {
                         0 or 60 or 61 or 63 or 64 or 65 or 66 => false,
                         _ => true,
                     },
-                    3 => currentActionPosition switch
+                    3 => SavedAction switch
                     {
                         0 or 1 or 2 or 3 => false,
                         _ => true,
                     },
                     _ => false,
                 };
-                sender.Description = currentActionPosition switch
+                sender.Description = SavedAction switch
                 {
                     39 when PlayerCache.MyPlayer.Ped.IsOnFoot => Game.GetGXTEntry("PIM_HANIM3"),
                     62 when PlayerCache.MyPlayer.Ped.IsOnFoot => Game.GetGXTEntry("PIM_HANIM4"),
                     58 => Game.GetGXTEntry("PIM_HANIM5"),
-                    _ => PlayerCache.MyPlayer.Ped.IsInVehicle() || !value ? Game.GetGXTEntry("PIM_HANIM") : Game.GetGXTEntry("PIM_HANIM2"),
+                    _ => VehicleChecker.IsInVehicle || !value ? Game.GetGXTEntry("PIM_HANIM") : Game.GetGXTEntry("PIM_HANIM2"),
                 };
+
+                PlayerCache.MyPlayer.User.SetPlayerStat("SavedAction", SavedAction);
                 return Game.GetGXTEntry(result);
             });
 
@@ -675,93 +698,83 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
               "PIM_HMOODN": "Sets your character's facial expression.",
               "PIM_HMOODR": "Sets your character's facial expression during Races.",
              */
-            List<dynamic> listMoods = new List<dynamic>()
+            UIMenuDynamicListItem playerMood = new(Game.GetGXTEntry("PIM_TMOODN"), Game.GetGXTEntry("PIM_HMOODN"), Game.GetGXTEntry($"PM_MOOD_{SavedMood}"), async (item, direction) =>
             {
-                Game.GetGXTEntry("PM_MOOD_0"), // "Aiming",
-                Game.GetGXTEntry("PM_MOOD_1"), // "Angry",
-                Game.GetGXTEntry("PM_MOOD_2"), // "Happy",
-                Game.GetGXTEntry("PM_MOOD_3"),  // "Injured",
-                Game.GetGXTEntry("PM_MOOD_4"), // "Normal",
-                Game.GetGXTEntry("PM_MOOD_5"), // "Stressed",
-                Game.GetGXTEntry("PM_MOOD_6"), // "Smug",
-                Game.GetGXTEntry("PM_MOOD_7") // "Sulking",
-            };
-            UIMenuListItem playerMood = new UIMenuListItem(Game.GetGXTEntry("PIM_TMOODN"), listMoods, 4, Game.GetGXTEntry("PIM_HMOODN"));
-            playerMood.OnListChanged += (item, index) =>
+                Ped ped = PlayerCache.MyPlayer.Ped;
+
+                SavedMood += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                if (SavedMood < 0)
+                    SavedMood = 7;
+                if (SavedMood > 7)
+                    SavedMood = 0;
+
+                if (!ped.IsInjured)
                 {
-                    Ped ped = PlayerCache.MyPlayer.Ped;
-                    if (!ped.IsInjured)
+                    if (!ped.GetConfigFlag(418) && !ped.GetConfigFlag(419))
                     {
-                        if (!ped.GetConfigFlag(418) && !ped.GetConfigFlag(419))
+                        if (InteractionMethods.MoodCam == null || !InteractionMethods.MoodCam.Exists())
                         {
-                            if (InteractionMethods.MoodCam == null || !InteractionMethods.MoodCam.Exists())
-                            {
-                                ped.Task.ClearAll();
-                                Function.Call(Hash.SET_PED_STEALTH_MOVEMENT, false, 0);
-                                SetPlayerControl(PlayerId(), false, 2560);
-                                Position coords = PlayerCache.MyPlayer.Position;
-                                InteractionMethods.MoodCam = new Camera(CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.X, coords.Y, coords.Z, 0f, 0f, 0f, 50f, false, 2));
-                                InteractionMethods.MoodCam.AttachTo(ped.Bones[31086], new Vector3(0f, 0.9f, 0f));
-                                PointCamAtPedBone(InteractionMethods.MoodCam.Handle, ped.Handle, 31086, 0, 0, 0, true);
-                                InteractionMethods.MoodCam.FieldOfView = 50f;
-                                InteractionMethods.MoodCam.IsActive = true;
-                                RenderScriptCams(true, false, 3000, true, false);
-                            }
+                            ped.Task.ClearAll();
+                            Function.Call(Hash.SET_PED_STEALTH_MOVEMENT, false, 0);
+                            SetPlayerControl(PlayerId(), false, 2560);
+                            Position coords = PlayerCache.MyPlayer.Position;
+                            InteractionMethods.MoodCam = new Camera(CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.X, coords.Y, coords.Z, 0f, 0f, 0f, 50f, false, 2));
+                            InteractionMethods.MoodCam.AttachTo(ped.Bones[31086], new Vector3(0f, 0.9f, 0f));
+                            PointCamAtPedBone(InteractionMethods.MoodCam.Handle, ped.Handle, 31086, 0, 0, 0, true);
+                            InteractionMethods.MoodCam.FieldOfView = 50f;
+                            InteractionMethods.MoodCam.IsActive = true;
+                            RenderScriptCams(true, false, 3000, true, false);
                         }
                     }
-                    InteractionMethods.SetFacialAnim(index);
-                };
+                }
+                InteractionMethods.SetFacialAnim(SavedMood);
+                PlayerCache.MyPlayer.User.SetPlayerStat("SavedMood", SavedMood);
+                return Game.GetGXTEntry($"PM_MOOD_{SavedMood}");
+            });
 
-            List<dynamic> walkStyles = new List<dynamic>()
+            UIMenuDynamicListItem playerWalkStyle = new(Game.GetGXTEntry("PIM_TWALKN"), Game.GetGXTEntry("PIM_HWALKN"), Game.GetGXTEntry($"PM_WALK_{SavedWalkStyle}"), async (item, direction) =>
             {
-                Game.GetGXTEntry("PM_WALK_0"), // "Normal",
-                Game.GetGXTEntry("PM_WALK_1"), // "Femme",
-                Game.GetGXTEntry("PM_WALK_2"), // "Gangster",
-                Game.GetGXTEntry("PM_WALK_3"), // "Posh",
-                Game.GetGXTEntry("PM_WALK_4"), // "Tough Guy",
-                Game.GetGXTEntry("PM_WALK_5"), // "Grooving",
-            };
-            UIMenuListItem playerWalkStyle = new UIMenuListItem(Game.GetGXTEntry("PIM_TWALKN"), walkStyles, 0, Game.GetGXTEntry("PIM_HWALKN"));
-            playerWalkStyle.OnListChanged += (item, index) =>
-            {
-                InteractionMethods.SetWalkingStyle(index);
-            };
+                SavedWalkStyle += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                if (SavedWalkStyle < 0)
+                    SavedWalkStyle = 5;
+                if (SavedWalkStyle > 5)
+                    SavedWalkStyle = 0;
+                InteractionMethods.SetWalkingStyle(SavedWalkStyle);
+                PlayerCache.MyPlayer.User.SetPlayerStat("SavedWalkStyle", SavedWalkStyle);
+                return Game.GetGXTEntry($"PM_WALK_{SavedWalkStyle}");
+            });
 
             /* descriptions (default PIM_HILLUN)
               "PIM_HILLUN": "Set the type of glow applied to illuminated clothing items.",
               "PIM_HILLUNM": "This feature is not available on this mode.",
              */
-            int currentIllIndex = PlayerCache.MyPlayer.Status.FreeRoamStates.IlluminatedClothing;
-            UIMenuDynamicListItem illuminatedClothing = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TILLUN"), Game.GetGXTEntry("PIM_HILLUN"), Game.GetGXTEntry($"PM_ILLU_{currentIllIndex}"), async (item, direction) =>
+            UIMenuDynamicListItem illuminatedClothing = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TILLUN"), Game.GetGXTEntry("PIM_HILLUN"), Game.GetGXTEntry($"PM_ILLU_{SavedGlowIndex}"), async (item, direction) =>
             {
                 // SHOP_CONTROLLER.C
                 // here we take the loaded param..
                 int ped = playerPed.Handle;
                 int hashName = GetHashNameForComponent(ped, 11, GetPedDrawableVariation(ped, 11), GetPedTextureVariation(ped, 11));
-                switch (direction)
-                {
-                    case UIMenuDynamicListItem.ChangeDirection.Left:
-                        currentIllIndex--;
-                        break;
-                    default:
-                        currentIllIndex++;
-                        break;
-                }
+                SavedGlowIndex += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                if (SavedGlowIndex < 0)
+                    SavedGlowIndex = 3;
+                if (SavedGlowIndex > 3)
+                    SavedGlowIndex = 0;
                 if (!(DoesShopPedApparelHaveRestrictionTag((uint)hashName, Functions.HashUint("DEADLINE_OUTFIT"), 0) || DoesShopPedApparelHaveRestrictionTag((uint)hashName, Functions.HashUint("MORPH_SUIT"), 0) || DoesShopPedApparelHaveRestrictionTag((uint)hashName, Functions.HashUint("LIGHT_UP"), 0) || Function.Call<bool>((Hash)0x7796B21B76221BC5, ped, 8, Functions.HashUint("LIGHT_UP")) || Function.Call<bool>((Hash)0xD726BAB4554DA580, ped, 0, Functions.HashUint("LIGHT_UP")) || Function.Call<bool>((Hash)0xD726BAB4554DA580, ped, 6, Functions.HashUint("LIGHT_UP")) || Function.Call<bool>((Hash)0xD726BAB4554DA580, ped, 7, Functions.HashUint("LIGHT_UP")) || Function.Call<bool>((Hash)0x7796B21B76221BC5, ped, 6, Functions.HashUint("LIGHT_UP")) || Function.Call<bool>((Hash)0x7796B21B76221BC5, ped, 1, Functions.HashUint("LIGHT_UP"))))
                 {
-                    PlayerCache.MyPlayer.Status.FreeRoamStates.IlluminatedClothing = 0;
+                    SavedGlowIndex = 0;
+                    PlayerCache.MyPlayer.User.SetPlayerStat("IlluminatedClothing", SavedGlowIndex);
                     // if loaded param != 0 then loaded param = 0 and we save, and we set a statebag with the value
                 }
                 else
                 {
-                    if (PlayerCache.MyPlayer.Status.FreeRoamStates.IlluminatedClothing != currentIllIndex)
-                        PlayerCache.MyPlayer.Status.FreeRoamStates.IlluminatedClothing = currentIllIndex;
+                    if (PlayerCache.Character.Stats.IlluminatedClothing != SavedGlowIndex)
+                        PlayerCache.MyPlayer.User.SetPlayerStat("IlluminatedClothing", SavedGlowIndex);
                     // if loaded param != index then loaded param = index and we save, and we set a statebag with the value
                     // R* handles luminescent clothing per ped on each client.. it's not networked..
                     // so we have to loop all clients in the server to handle their blooming
                     // Code is preatty easy.. just a for cycle and based on player choice we handle the blooming
                 }
-                return Game.GetGXTEntry($"PM_ILLU_{currentIllIndex}");
+                return Game.GetGXTEntry($"PM_ILLU_{SavedGlowIndex}");
             });
 
             /* descriptions (default PIM_HCHOOD)
@@ -780,7 +793,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             //TODO: SOLVE FUNCTION func_867 IN AM_PI_MENU.. WITHOUT IT WE CAN'T GO ON....
             //also func_1072 is the one that sets the player hood
-            int choodSelection = PlayerCache.MyPlayer.Status.FreeRoamStates.CurrentHoodSetting;
+
+            int choodSelection = PlayerCache.Character.Stats.CurrentHoodSetting;
             UIMenuDynamicListItem hood = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TCHOOD"), Game.GetGXTEntry("PIM_HCHOOD"), Game.GetGXTEntry($"PM_CHOOD_{choodSelection}"), async (item, direction) =>
             {
                 switch (direction)
@@ -792,6 +806,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                         choodSelection++;
                         break;
                 }
+                PlayerCache.MyPlayer.User.SetPlayerStat("CHood", choodSelection);
                 return Game.GetGXTEntry($"PM_CHOOD_{choodSelection}");
             });
             hood.Enabled = false;

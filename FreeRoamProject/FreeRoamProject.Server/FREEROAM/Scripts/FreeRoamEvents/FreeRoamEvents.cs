@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FreeRoamProject.Server.Core.Buckets;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,15 +11,13 @@ namespace FreeRoamProject.Server.FreeRoam.Scripts.FreeroamEvents
         public static void Init()
         {
             EventDispatcher.Mount("tlg:freeroam:finishCharServer", new Action<PlayerClient, FreeRoamChar>(FinishChar));
-            EventDispatcher.Mount("tlg:freeroam:salvapersonaggio", new Action<PlayerClient>(SaveCharacter));
+            EventDispatcher.Mount("tlg:freeroam:saveCharacter", new Action<PlayerClient>(SaveCharacter));
             EventDispatcher.Mount("tlg:casino:getVehModel", new Func<PlayerClient, Task<string>>(ReturnCasinoPriceModelForPlayer));
         }
 
         public static void SaveCharacter([FromSource] PlayerClient client)
         {
-            Position pos = new(client.Ped.Position, client.Ped.Rotation);
-            client.User.Character.Position = pos;
-            API.SetResourceKvpNoSync($"freeroam:player_{client.User.Identifiers.License}:char_model", client.User.Character.ToBytes().BytesToString(true));
+            BucketsHandler.FreeRoam.SavePlayerData(client);
         }
 
         public static void FinishChar([FromSource] PlayerClient client, FreeRoamChar data)

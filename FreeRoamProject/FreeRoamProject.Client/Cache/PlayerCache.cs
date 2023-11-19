@@ -1,5 +1,4 @@
-﻿using FreeRoamProject.Client.Handlers;
-using FreeRoamProject.Shared.PlayerChar;
+﻿using FreeRoamProject.Shared.PlayerChar;
 using System;
 using System.Threading.Tasks;
 
@@ -7,9 +6,8 @@ namespace FreeRoamProject.Client.Cache
 {
     public static class PlayerCache
     {
-        internal static bool _inVeh;
         private static bool _paused;
-        private static SharedTimer _checkTimer;
+        private static SharedTimeChecker _checkTimer;
 
         public static PlayerClient MyPlayer { get; private set; }
         public static FreeRoamChar Character => MyPlayer.User.Character;
@@ -19,35 +17,20 @@ namespace FreeRoamProject.Client.Cache
         {
             Tuple<Snowflake, BasePlayerShared> player = await EventDispatcher.Get<Tuple<Snowflake, BasePlayerShared>>("tlg:setupUser");
             MyPlayer = new PlayerClient(player);
-            _checkTimer = new(5000);
+            _checkTimer = new(3000);
             ClientMain.Instance.AddTick(TickStatus);
-            await Task.FromResult(0);
-            VehicleChecker.OnPedEnteredVehicle += OnPedEnteredVehicle;
-            VehicleChecker.OnPedLeftVehicle += OnPedLeftVehicle;
         }
-
-        private static void OnPedLeftVehicle(Ped ped, Vehicle vehicle, VehicleSeat seatIndex)
-        {
-            if (ped.Handle == MyPlayer.Ped.Handle)
-            {
-                MyPlayer.Status.PlayerStates.InVehicle = false;
-                _inVeh = false;
-            }
-        }
-
-        private static void OnPedEnteredVehicle(Ped ped, Vehicle vehicle, VehicleSeat seat)
-        {
-            if (ped.Handle == MyPlayer.Ped.Handle)
-            {
-                MyPlayer.Status.PlayerStates.InVehicle = true;
-                _inVeh = true;
-            }
-        }
-
         public static async Task Loaded()
         {
             while (MyPlayer == null || MyPlayer != null && !MyPlayer.Ready) await BaseScript.Delay(0);
         }
+
+
+        /*
+
+        //private static SharedTimeChecker _checkTimer;
+        //_checkTimer = new(3000);
+        */
 
         public static async Task TickStatus()
         {
@@ -78,14 +61,15 @@ namespace FreeRoamProject.Client.Cache
 
             #endregion
 
-            /*//auto save player singularly or handled serverside for all players at once in an async task?
-            if (_checkTimer.IsPassed)
+            /*
+            #region PlayersUpdate
+            if (_checkTimer != null && _checkTimer.IsPassed)
             {
-                if (MyPlayer.Status.Istanza.Instance != "IngressoRoleplay")
-                {
-                    Eventi.AggiornaPlayers();
-                }
+                //TODO: DO WE NEED IT? IS THERE A BETTER WAY TO UPDATE PLAYER DATA CLIENTSIDE? DO WE WANT TO USE CALLBACKS EVERYTIME EVEN IN TICKS ON FRAME?
+                Events.updatePlayers();
             }
+
+            #endregion
             */
             await Task.FromResult(0);
         }

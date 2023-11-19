@@ -316,7 +316,7 @@ namespace FreeRoamProject.Server.Core
 				var ped = ServerMain.PlayerList.TryGetValue(handle];
 				if (ped.Status.PlayerStates.Spawned)
 				{
-					Funzioni.SalvaPersonaggio(player);
+					Funzioni.saveCharacter(player);
 					ServerMain.Logger.Info( "Salvato personaggio: '" + ped.FullName + "' appartenente a '" + name + "' all'uscita dal gioco -- Discord:" + ped.Identifiers.License);
 					BaseScript.TriggerEvent(DateTime.Now.ToString("dd/MM/yyyy, HH:mm:ss") + " Salvato personaggio: '" + ped.FullName + "' appartenente a '" + name + "' all'uscita dal gioco -- Discord:" + ped.Identifiers.License);
 				}

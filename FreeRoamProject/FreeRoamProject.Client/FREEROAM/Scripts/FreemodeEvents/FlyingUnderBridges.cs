@@ -180,7 +180,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
                 {
                     Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_BRBL2"), 50);
 
-                    Vehicle currentVehicle = Cache.PlayerCache.MyPlayer.Ped.CurrentVehicle;
+                    Vehicle currentVehicle = VehicleChecker.CurrentVehicle;
                     if (currentVehicle == null) { return; }
 
                     if (!Cache.PlayerCache.MyPlayer.Ped.IsInFlyingVehicle) { return; }

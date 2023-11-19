@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FreeRoamProject.Client.Handlers;
+using System;
 using System.Threading.Tasks;
 
 namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
@@ -27,9 +28,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
                 else
                 {
                     Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_2"), 1);
-                    if (Cache.PlayerCache.MyPlayer.Ped.IsInVehicle() && Cache.PlayerCache.MyPlayer.Ped.CurrentVehicle.Speed > 0)
+                    if (VehicleChecker.IsInVehicle && VehicleChecker.CurrentVehicle.Speed > 0)
                     {
-                        float speed = Cache.PlayerCache.MyPlayer.Ped.CurrentVehicle.Speed;
+                        float speed = VehicleChecker.CurrentVehicle.Speed;
                         float speedKM = speed * 3.6f;
                         CurrentAttempt = speedKM;
                         StatGetFloat(unchecked((uint)PlayerStat), ref tentativoCorrente, -1);

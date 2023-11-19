@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FreeRoamProject.Client.Handlers;
+using System;
 using System.Threading.Tasks;
 
 namespace Client.Scripts.Minigiochi.Tron
@@ -21,16 +22,16 @@ namespace Client.Scripts.Minigiochi.Tron
                     {
                         Function.Call(Hash._START_SCREEN_EFFECT, "DeadlineNeon", 0, 1);
                     }
-                    Vehicle v = PlayerCache.MyPlayer.Ped.CurrentVehicle;
+                    Vehicle v = VehicleChecker.CurrentVehicle;
                     int index = Function.Call<int>(Hash.GET_ENTITY_BONE_INDEX_BY_NAME, v.Handle, "wheel_lr");
                     Vector3 poz = Function.Call<Vector3>(Hash.GET_WORLD_POSITION_OF_ENTITY_BONE, v.Handle, index);
                     //World.DrawMarker(MarkerType.DebugSphere, poz, Vector3.Zero, Vector3.Zero, Vector3.One * 0.4f, Color.FromArgb(255, 0, 0));
 
 
-                    Vector3 currentpos = PlayerCache.MyPlayer.Ped.CurrentVehicle.Position;
+                    Vector3 currentpos = VehicleChecker.CurrentVehicle.Position;
                     Vector4[] oldArray = posList;
                     Array.Copy(oldArray, 0, posList, 1, 99);
-                    posList[0] = new Vector4(currentpos, PlayerCache.MyPlayer.Ped.CurrentVehicle.Rotation.Y);
+                    posList[0] = new Vector4(currentpos, VehicleChecker.CurrentVehicle.Rotation.Y);
                     for (int i = 0; i < 99; i++)
                     {
                         //Debug.WriteLine(i.ToString());

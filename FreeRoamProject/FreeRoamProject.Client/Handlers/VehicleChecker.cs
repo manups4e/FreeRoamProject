@@ -16,11 +16,32 @@ namespace FreeRoamProject.Client.Handlers
         public static event PedLeftVehicle OnPedLeftVehicle;
         public static event PedEnteringVehicle OnPedEnteringVehicle;
         public static event PedEnteringVehicleAborted OnPedEnteringVehicleAborted;
+        public static bool IsInVehicle => isInVehicle;
+        public static bool IsEnteringVehicle => isEnteringVehicle;
+        public static Vehicle CurrentVehicle => currentVehicle;
+        public static VehicleSeat CurrentSeat => currentSeat;
 
         public static async void Init()
         {
             await PlayerCache.Loaded();
             ClientMain.Instance.AddTick(VehicleCheck);
+            OnPedEnteredVehicle += OnPedEnteredVehicleCheck;
+            OnPedLeftVehicle += OnPedLeftVehicleCheck;
+        }
+        private static void OnPedLeftVehicleCheck(Ped ped, Vehicle vehicle, VehicleSeat seatIndex)
+        {
+            if (ped.Handle == PlayerCache.MyPlayer.Ped.Handle)
+            {
+                PlayerCache.MyPlayer.Status.PlayerStates.InVehicle = false;
+            }
+        }
+
+        private static void OnPedEnteredVehicleCheck(Ped ped, Vehicle vehicle, VehicleSeat seat)
+        {
+            if (ped.Handle == PlayerCache.MyPlayer.Ped.Handle)
+            {
+                PlayerCache.MyPlayer.Status.PlayerStates.InVehicle = true;
+            }
         }
 
         private static async Task VehicleCheck()

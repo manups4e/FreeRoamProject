@@ -30,7 +30,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
                     await BaseScript.Delay(2000);
                     await ShowPlayerRankScoreAfterUpdate(updatedCurrentRankLimit, updatedNextRankLimit, 0, updatedXp - currentXp, updatedLevel);
                 }
-                EventDispatcher.Send("tlg:freeroam:salvapersonaggio");
+                EventDispatcher.Send("tlg:freeroam:saveCharacter");
             }
             catch (Exception e)
             {

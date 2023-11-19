@@ -1,5 +1,7 @@
-﻿using System;
+﻿using FreeRoamProject.Client.Handlers;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FreeRoamProject.Client.Core.Utility
 {
@@ -28,7 +30,13 @@ namespace FreeRoamProject.Client.Core.Utility
             EventDispatcher.Mount("tlg:addWeapon", new Action<string, int>(AddWeapon));
             EventDispatcher.Mount("tlg:addWeaponComponent", new Action<string, string>(AddWeaponComponent));
             EventDispatcher.Mount("tlg:addWeaponTint", new Action<string, int>(AddWeaponTint));
+            EventDispatcher.Mount("tlg:receivePlayersUpdate", new Action<List<PlayerClient>>(ReceivePlayers));
             AccessingEvents.OnFreeRoamSpawn += OnSpawn;
+        }
+
+        private static void ReceivePlayers(List<PlayerClient> clients)
+        {
+            ClientMain.Instance.Clients = clients.ToList();
         }
 
         private static void OnSpawn(PlayerClient client)
@@ -70,7 +78,8 @@ namespace FreeRoamProject.Client.Core.Utility
         public static async void updatePlayers()
         {
             ClientMain.Instance.Clients = await EventDispatcher.Get<List<PlayerClient>>("tlg:callPlayers", PlayerCache.MyPlayer.Position);
-            foreach (PlayerClient client in ClientMain.Instance.Clients) client.Status = new(client.Player);
+            foreach (PlayerClient client in ClientMain.Instance.Clients)
+                client.Status = new(client.Player);
         }
 
         public static async void teleportCoords(Position pos)
@@ -158,7 +167,7 @@ namespace FreeRoamProject.Client.Core.Utility
         public static void DeleteVehicle()
         {
             Entity vehicle = new Vehicle(Functions.GetVehicleInDirection());
-            if (PlayerCache.MyPlayer.Ped.IsInVehicle()) vehicle = PlayerCache.MyPlayer.Ped.CurrentVehicle;
+            if (VehicleChecker.IsInVehicle) vehicle = VehicleChecker.CurrentVehicle;
             vehicle.Delete();
         }
 

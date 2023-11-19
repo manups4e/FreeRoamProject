@@ -79,7 +79,7 @@ namespace FreeRoamProject.Server.Core.PlayerChar
                 if (var < 0)
                     if (Character.Finance.Money < 0)
                         Character.Finance.Money = 0;
-                Player.TriggerEvent("tlg:changeMoney", var);
+                Player.TriggerSubsystemEvent("tlg:changeMoney", var);
             }
         }
 
@@ -92,7 +92,7 @@ namespace FreeRoamProject.Server.Core.PlayerChar
             {
                 int var = value - Character.Finance.Bank;
                 Character.Finance.Bank += var;
-                if (var < 0) Player.TriggerEvent("tlg:rimuoviBank", var);
+                if (var < 0) Player.TriggerSubsystemEvent("tlg:rimuoviBank", var);
             }
         }
 
@@ -135,7 +135,7 @@ namespace FreeRoamProject.Server.Core.PlayerChar
                 if (checkedItem.Amount == ConfigShared.SharedConfig.Main.Generics.ItemList[item].max)
                 {
                     checkedItem.Amount = ConfigShared.SharedConfig.Main.Generics.ItemList[item].max;
-                    Player.TriggerEvent("tlg:ShowNotification", "YOU ALREADY HAVE THE MOST OF ~w~" + ConfigShared.SharedConfig.Main.Generics.ItemList[item].label + "~w~!");
+                    Player.TriggerSubsystemEvent("tlg:ShowNotification", "YOU ALREADY HAVE THE MOST OF ~w~" + ConfigShared.SharedConfig.Main.Generics.ItemList[item].label + "~w~!");
                 }
             }
             else
@@ -143,7 +143,7 @@ namespace FreeRoamProject.Server.Core.PlayerChar
                 CurrentChar.Inventory.Add(new Inventory(item, amount, weight));
             }
 
-            Player.TriggerEvent("tlg:ShowNotification", "Received " + amount + " " + ConfigShared.SharedConfig.Main.Generics.ItemList[item].label + "!");
+            Player.TriggerSubsystemEvent("tlg:ShowNotification", "Received " + amount + " " + ConfigShared.SharedConfig.Main.Generics.ItemList[item].label + "!");
         }
 
         public void removeInventoryItem(string item, int amount)
@@ -161,7 +161,7 @@ namespace FreeRoamProject.Server.Core.PlayerChar
                 CurrentChar.Inventory.ToList().Remove(checkedItem);
             }
 
-            Player.TriggerEvent("tlg:ShowNotification", amount + " " + ConfigShared.SharedConfig.Main.Generics.ItemList[item].label + " have been removed!");
+            Player.TriggerSubsystemEvent("tlg:ShowNotification", amount + " " + ConfigShared.SharedConfig.Main.Generics.ItemList[item].label + " have been removed!");
         }
 
         public List<Weapons> getCharWeapons(uint charId)

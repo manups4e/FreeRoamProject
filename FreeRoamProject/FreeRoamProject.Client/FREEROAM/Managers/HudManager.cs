@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FreeRoamProject.Client.Handlers;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -71,9 +72,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 
         private static void DrawVehicleHud()
         {
-            if (Cache.PlayerCache.MyPlayer.Ped.CurrentVehicle != null)
+            if (VehicleChecker.CurrentVehicle != null)
             {
-                double vehicleSpeed = Math.Round(Cache.PlayerCache.MyPlayer.Ped.CurrentVehicle.Speed * 3.6);
+                double vehicleSpeed = Math.Round(VehicleChecker.CurrentVehicle.Speed * 3.6);
                 SetTextFont(0);
                 SetTextProportional(true);
                 SetTextScale(0.0f, 0.35f);

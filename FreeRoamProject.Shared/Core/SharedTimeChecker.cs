@@ -6,11 +6,13 @@
         Seconds,
         Minutes,
     }
-    public class SharedTimer
+    public delegate void TimerTickEvent();
+    public class SharedTimeChecker
     {
         private long Timer = 0;
         private readonly long _awaitable = 0;
         private TimerType timerType;
+        public event TimerTickEvent TimerTickEvent;
 
         public bool IsPassed
         {
@@ -40,7 +42,7 @@
             }
         }
 
-        public SharedTimer(long time, TimerType type = TimerType.Milliseconds)
+        public SharedTimeChecker(long time, TimerType type = TimerType.Milliseconds)
         {
             _awaitable = time;
             timerType = type;

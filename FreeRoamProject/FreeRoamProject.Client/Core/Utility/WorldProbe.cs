@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FreeRoamProject.Client.Handlers;
+using System;
 using System.Threading.Tasks;
 
 namespace FreeRoamProject.Client.Core.Utility
@@ -31,7 +32,7 @@ namespace FreeRoamProject.Client.Core.Utility
         {
             try
             {
-                Entity source = Cache.PlayerCache.MyPlayer.Status.PlayerStates.InVehicle ? Cache.PlayerCache.MyPlayer.Ped.CurrentVehicle : Cache.PlayerCache.MyPlayer.Ped;
+                Entity source = Cache.PlayerCache.MyPlayer.Status.PlayerStates.InVehicle ? VehicleChecker.CurrentVehicle : Cache.PlayerCache.MyPlayer.Ped;
 
                 return GetVehicleInFrontOfPlayer(source, source, distance);
             }

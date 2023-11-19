@@ -51,6 +51,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             int iVar3 = GetGameTimer();
             foreach (PlayerClient client in ClientMain.Instance.Clients)
             {
+                ClientMain.Logger.Debug(client.User.Character.Stats.ToJson());
                 int iVar8 = ClientMain.Instance.Clients.IndexOf(client);
                 Ped ped = client.Ped;
                 if (!ped.IsInjured && DoesEntityHaveDrawable(ped.Handle) && DoesEntityHavePhysics(ped.Handle) && HaveAllStreamingRequestsCompleted(ped.Handle) && IsPedShaderEffectValid(ped.Handle))
@@ -216,7 +217,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
              */
 
 
-            if (@double && !PlayerCache.MyPlayer.Ped.IsInVehicle())
+            if (@double && !VehicleChecker.IsInVehicle)
             {
 
                 string animDict = PlayerCache.Character.Skin.Sex == "Male" ? Anim.uParam2[10] : Anim.uParam2[11];
@@ -292,7 +293,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                         Vector3 coords = GetPedBoneCoords(ped, 28422, 0, 0, 0);
                         Anim.animProp = (await Functions.CreateProp((int)Anim.f_429, coords + new Vector3(0, 0, -5f), new Vector3(), false, false)).Handle;
                         DetachEntity(Anim.animProp, false, true);
-                        if (PlayerCache._inVeh || Anim.f_424 == 1)
+                        if (VehicleChecker.IsInVehicle || Anim.f_424 == 1)
                             AttachEntityToEntity(Anim.animProp, ped, GetPedBoneIndex(ped, 28422), 0, 0, 0, 0, 0, 0, true, true, false, false, 2, true);
                         else
                             AttachEntityToEntity(Anim.animProp, ped, GetPedBoneIndex(ped, 60309), 0, 0, 0, 0, 0, 0, true, true, false, false, 2, true);
@@ -600,7 +601,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             if (PlayerCache.MyPlayer.Status.PlayerStates.InVehicle)
             {
-                Vehicle veh = PlayerCache.MyPlayer.Ped.CurrentVehicle;
+                Vehicle veh = VehicleChecker.CurrentVehicle;
 
                 if (veh.Doors.HasDoor((VehicleDoorIndex)port))
                 {
@@ -664,54 +665,54 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
         public static void Windows(string finestrini)
         {
             if (!PlayerCache.MyPlayer.Status.PlayerStates.InVehicle) return;
-            if (PlayerCache.MyPlayer.Ped.CurrentVehicle.Driver != PlayerCache.MyPlayer.Ped) return;
+            if (VehicleChecker.CurrentVehicle.Driver != PlayerCache.MyPlayer.Ped) return;
 
             switch (finestrini)
             {
                 case "Front Left" when window1up:
-                    PlayerCache.MyPlayer.Ped.CurrentVehicle.Windows[VehicleWindowIndex.FrontLeftWindow].RollDown();
+                    VehicleChecker.CurrentVehicle.Windows[VehicleWindowIndex.FrontLeftWindow].RollDown();
                     window1up = false;
                     WindowsDown = true;
 
                     break;
                 case "Front Left":
-                    PlayerCache.MyPlayer.Ped.CurrentVehicle.Windows[VehicleWindowIndex.FrontLeftWindow].RollUp();
+                    VehicleChecker.CurrentVehicle.Windows[VehicleWindowIndex.FrontLeftWindow].RollUp();
                     window1up = true;
                     WindowsDown = false;
 
                     break;
                 case "Front Right" when window0up:
-                    PlayerCache.MyPlayer.Ped.CurrentVehicle.Windows[VehicleWindowIndex.FrontRightWindow].RollDown();
+                    VehicleChecker.CurrentVehicle.Windows[VehicleWindowIndex.FrontRightWindow].RollDown();
                     window0up = false;
                     WindowsDown = true;
 
                     break;
                 case "Front Right":
-                    PlayerCache.MyPlayer.Ped.CurrentVehicle.Windows[VehicleWindowIndex.FrontRightWindow].RollUp();
+                    VehicleChecker.CurrentVehicle.Windows[VehicleWindowIndex.FrontRightWindow].RollUp();
                     window0up = true;
                     WindowsDown = false;
 
                     break;
                 case "Rear Left" when window3up:
-                    PlayerCache.MyPlayer.Ped.CurrentVehicle.Windows[VehicleWindowIndex.BackLeftWindow].RollDown();
+                    VehicleChecker.CurrentVehicle.Windows[VehicleWindowIndex.BackLeftWindow].RollDown();
                     window3up = false;
                     WindowsDown = true;
 
                     break;
                 case "Rear Left":
-                    PlayerCache.MyPlayer.Ped.CurrentVehicle.Windows[VehicleWindowIndex.BackLeftWindow].RollUp();
+                    VehicleChecker.CurrentVehicle.Windows[VehicleWindowIndex.BackLeftWindow].RollUp();
                     window3up = true;
                     WindowsDown = false;
 
                     break;
                 case "Right Rear" when window2up:
-                    PlayerCache.MyPlayer.Ped.CurrentVehicle.Windows[VehicleWindowIndex.BackRightWindow].RollDown();
+                    VehicleChecker.CurrentVehicle.Windows[VehicleWindowIndex.BackRightWindow].RollDown();
                     window2up = false;
                     WindowsDown = true;
 
                     break;
                 case "Right Rear":
-                    PlayerCache.MyPlayer.Ped.CurrentVehicle.Windows[VehicleWindowIndex.BackRightWindow].RollUp();
+                    VehicleChecker.CurrentVehicle.Windows[VehicleWindowIndex.BackRightWindow].RollUp();
                     window2up = true;
                     WindowsDown = false;
 
@@ -721,7 +722,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
         public static void Save(bool saved)
         {
-            if (!PlayerCache.MyPlayer.Ped.IsSittingInVehicle() || PlayerCache.MyPlayer.Ped.CurrentVehicle.Driver != PlayerCache.MyPlayer.Ped) return;
+            if (!PlayerCache.MyPlayer.Ped.IsSittingInVehicle() || VehicleChecker.CurrentVehicle.Driver != PlayerCache.MyPlayer.Ped) return;
 
             if (!saved)
             {
@@ -732,7 +733,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             }
             else
             {
-                saveVehicle = PlayerCache.MyPlayer.Ped.CurrentVehicle;
+                saveVehicle = VehicleChecker.CurrentVehicle;
                 saveVehicle.AttachBlip();
                 saveVehicle.AttachedBlip.Sprite = BlipSprite.PersonalVehicleCar;
                 saveVehicle.AttachedBlip.Color = BlipColor.Green;
@@ -3467,7 +3468,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 int iVar2 = 0;
                 if (PlayerCache.MyPlayer.Ped.IsSittingInVehicle())
                 {
-                    Vehicle iVar0 = PlayerCache.MyPlayer.Ped.CurrentVehicle;
+                    Vehicle iVar0 = VehicleChecker.CurrentVehicle;
                     int iVar1 = 0;
                     while (iVar1 < iVar0.PassengerCapacity + 1)
                     {

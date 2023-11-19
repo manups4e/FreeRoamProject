@@ -28,6 +28,40 @@ namespace FreeRoamProject.Client.Core.PlayerChar
 
         [JsonIgnore] internal int Bank => Character.Finance.Bank;
 
+        public void SetPlayerStat(string statName, int statValue1, int statValue2 = 0)
+        {
+            switch (statName)
+            {
+                case "SavedHelmet":
+                    Character.Stats.SavedHelmet = [statValue1, statValue2];
+                    break;
+                case "IlluminatedClothing":
+                    Character.Stats.IlluminatedClothing = statValue1;
+                    break;
+                case "CHood":
+                    Character.Stats.SavedHood = statValue1;
+                    break;
+                case "VisorUpDown":
+                    Character.Stats.VisorUpDown = statValue1;
+                    break;
+                case "AutoShowHelmet":
+                    Character.Stats.AutoShowHelmet = statValue1;
+                    break;
+                case "AutoShowAircraft":
+                    Character.Stats.AutoShowAircraft = statValue1;
+                    break;
+                case "SavedAction":
+                    Character.Stats.SavedAction = statValue1;
+                    break;
+                case "SavedMood":
+                    Character.Stats.SavedMood = statValue1;
+                    break;
+                case "SavedWalkStyle":
+                    Character.Stats.SavedWalkStyle = statValue1;
+                    break;
+            }
+            EventDispatcher.Send("tlg:SetPlayerStat", statName, statValue1, statValue2);
+        }
         public List<Weapons> GetCharWeapons()
         {
             return Character.Weapons;

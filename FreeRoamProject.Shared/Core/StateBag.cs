@@ -133,17 +133,11 @@ namespace FreeRoamProject.Shared
     public class FreeRoamStates : BaseBag
     {
         internal readonly PlayerStateBag<int> _illuminatedClothing;
-        internal readonly PlayerStateBag<int> _currentHoodSetting;
 
         public int IlluminatedClothing
         {
             get => _illuminatedClothing.State;
             set => _illuminatedClothing.State = value;
-        }
-        public int CurrentHoodSetting
-        {
-            get => _currentHoodSetting.State;
-            set => _currentHoodSetting.State = value;
         }
 
         public FreeRoamStates()
@@ -152,7 +146,6 @@ namespace FreeRoamProject.Shared
         public FreeRoamStates(Player player, string name) : base(player, name)
         {
             _illuminatedClothing = new(player, _name + ":IlluminatedClothing", true);
-            _currentHoodSetting = new(player, _name + ":CHood", true);
         }
     }
 

@@ -1,4 +1,5 @@
 ﻿using FreeRoamProject.Client.FREEROAM.Vehicles;
+using FreeRoamProject.Client.Handlers;
 using FreeRoamProject.Shared.Core.Character;
 using System;
 using System.Collections.Generic;
@@ -348,11 +349,11 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
             {
                 Notifications.ShowHelpNotification("To select this vehicle and exit~n~~y~Start the engine~w~ and ~y~accelerate~w~.");
 
-                if (Input.IsControlJustPressed(Control.VehicleAccelerate) && Cache.PlayerCache.MyPlayer.Ped.CurrentVehicle.IsEngineRunning)
+                if (Input.IsControlJustPressed(Control.VehicleAccelerate) && VehicleChecker.CurrentVehicle.IsEngineRunning)
                 {
                     Screen.Fading.FadeOut(800);
                     await BaseScript.Delay(1000);
-                    string plate = Cache.PlayerCache.MyPlayer.Ped.CurrentVehicle.Mods.LicensePlate;
+                    string plate = VehicleChecker.CurrentVehicle.Mods.LicensePlate;
                     foreach (Vehicle vehicle in VeicoliParcheggio) vehicle.Delete();
                     VeicoliParcheggio.Clear();
                     Vector4 exit = Vector4.Zero;
@@ -378,8 +379,8 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
                     if (!Functions.IsSpawnPointClear(exit.ToVector3(), 2f)) GetClosestVehicleNodeWithHeading(exit.X, exit.Y, exit.Z, ref newPos, ref Head, 1, 3, 0);
                     Vehicle vehi = await Functions.SpawnVehicle(Cache.PlayerCache.MyPlayer.User.Character.Vehicles.FirstOrDefault(x => x.Plate == plate).VehData.Props.Model, newPos, Head);
                     vehi.SetVehicleProperties(Cache.PlayerCache.MyPlayer.User.Character.Vehicles.FirstOrDefault(x => x.Plate == plate).VehData.Props);
-                    Cache.PlayerCache.MyPlayer.Ped.CurrentVehicle.IsEngineRunning = true;
-                    Cache.PlayerCache.MyPlayer.Ped.CurrentVehicle.IsDriveable = true;
+                    VehicleChecker.CurrentVehicle.IsEngineRunning = true;
+                    VehicleChecker.CurrentVehicle.IsDriveable = true;
                     EventDispatcher.Send("lprp:vehInGarage", plate, false);
                     Cache.PlayerCache.MyPlayer.Status.Instance.RemoveInstance();
                     await BaseScript.Delay(1000);
@@ -391,7 +392,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
 
         private static async void EnterGarageWithOwner(Vector3 pos)
         {
-            if (Cache.PlayerCache.MyPlayer.Ped.IsVisible) NetworkFadeOutEntity(Cache.PlayerCache.MyPlayer.Ped.CurrentVehicle.Handle, true, false);
+            if (Cache.PlayerCache.MyPlayer.Ped.IsVisible) NetworkFadeOutEntity(VehicleChecker.CurrentVehicle.Handle, true, false);
             Screen.Fading.FadeOut(500);
             await BaseScript.Delay(1000);
             RequestCollisionAtCoord(pos.X, pos.Y, pos.Z);

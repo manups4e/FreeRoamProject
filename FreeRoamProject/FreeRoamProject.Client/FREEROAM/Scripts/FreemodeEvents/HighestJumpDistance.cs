@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FreeRoamProject.Client.Handlers;
+using System;
 using System.Threading.Tasks;
 
 namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
@@ -37,7 +38,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
                 {
                     Screen.ShowSubtitle("Make the highest jump with a land vehicle.", 50);
 
-                    if (Cache.PlayerCache.MyPlayer.Ped.IsInVehicle())
+                    if (VehicleChecker.IsInVehicle)
                     {
                         StatGetFloat(unchecked((uint)PlayerStat), ref tentativoCorrente, -1);
 

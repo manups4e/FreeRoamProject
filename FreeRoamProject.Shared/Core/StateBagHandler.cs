@@ -1,5 +1,10 @@
 ﻿using FreeRoamProject.Shared.Core.Log;
 using System;
+using System.Linq;
+
+#if CLIENT
+using FreeRoamProject.Client;
+#endif
 
 namespace FreeRoamProject.Shared
 {
@@ -13,7 +18,7 @@ namespace FreeRoamProject.Shared
 
     public class StateBagsHandler
     {
-        public event FreeRoamStateBagChanged OnFreeRoamStateBagChanged;
+        public event FreeRoamStateBagChanged OnFreeRoamStateBagChange;
         public event PlayerStateBagChaged OnPlayerStateBagChange;
         public event EntityStateBagChaged OnEntityStateBagChange;
         public event InstanceBagChanged OnInstanceBagChange;
@@ -64,10 +69,12 @@ namespace FreeRoamProject.Shared
                     switch (entType)
                     {
                         case "player":
-                            PlayerClient player;
+                            PlayerClient player = null;
 #if CLIENT
                             if (userId == Game.Player.ServerId)
                                 player = PlayerCache.MyPlayer;
+                            else
+                                player = ClientMain.Instance.Clients.FirstOrDefault(x => x.Handle == userId);
 #elif SERVER
                             //player = ServerMain.Instance.Clients[userId];
 #endif
@@ -94,10 +101,9 @@ namespace FreeRoamProject.Shared
                                         switch (state)
                                         {
                                             case "IlluminatedClothing":
-                                            case "CHood":
                                                 {
                                                     int res = (value as byte[]).FromBytes<int>();
-                                                    OnFreeRoamStateBagChanged?.Invoke(userId, state, res);
+                                                    OnFreeRoamStateBagChange?.Invoke(userId, state, res);
                                                 }
                                                 break;
                                         }
@@ -119,6 +125,7 @@ namespace FreeRoamProject.Shared
 
             OnPlayerStateBagChange += (a, b, c) => logger.Debug($"OnPlayerStateBagChange => PlayerId:{a}, State:{b}, Value:{c}");
             OnInstanceBagChange += (a, b) => logger.Debug($"OnInstanceBagChange => PlayerId:{a}, Data:{b.ToJson()}");
+            OnFreeRoamStateBagChange += (a, b, c) => logger.Debug($"OnFreeRoamStateBagChange => PlayerId:{a}, State:{b}, Value:{c}");
             //OnTimeChange += (a) => logger.Debug($"OnTimeChange => {a.ToJson()}");
             //OnWeatherChange += (a) => logger.Debug($"OnWeatherChange => {a.ToJson()}");
         }

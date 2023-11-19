@@ -47,7 +47,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\PlayerListShared.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Position.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\SharedScript.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\SharedTimer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\SharedTimeChecker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\StateBag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\StateBagHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\TimeWeather.cs" />

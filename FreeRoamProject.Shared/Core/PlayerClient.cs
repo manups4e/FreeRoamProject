@@ -186,23 +186,18 @@ namespace FreeRoamProject.Shared
             PlayerStates.Paused = false;
             PlayerStates.AdminSpectating = false;
             PlayerStates.Wanted = false;
-            FreeRoamStates.CurrentHoodSetting = 0;
             FreeRoamStates.IlluminatedClothing = 0;
             Instance.RemoveInstance();
         }
 
-        public void Load()
+        public void LoadFromChar(PlayerClient client)
         {
-            PlayerStates.Spawned = PlayerStates._spawned.State;
-            PlayerStates.InVehicle = PlayerStates._inVeh.State;
-            PlayerStates.Paused = PlayerStates._paused.State;
-            PlayerStates.AdminSpectating = PlayerStates._adminSpectating.State;
-            PlayerStates.Wanted = PlayerStates._wanted.State;
-            InstanceBag p = Instance._instanceBag.State;
-            Instance.Instanced = p.Instanced;
-            Instance.ServerIdOwner = p.ServerIdOwner;
-            Instance.IsOwner = p.IsOwner;
-            Instance.Instance = p.Instance;
+            FreeRoamStates.IlluminatedClothing = client.User.Character.Stats.IlluminatedClothing;
+        }
+
+        public void SaveToChar(PlayerClient client)
+        {
+            client.User.Character.Stats.IlluminatedClothing = FreeRoamStates.IlluminatedClothing;
         }
     }
 }

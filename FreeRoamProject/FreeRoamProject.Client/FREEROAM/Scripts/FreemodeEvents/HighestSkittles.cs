@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FreeRoamProject.Client.Handlers;
+using System;
 using System.Threading.Tasks;
 
 namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
@@ -33,7 +34,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
                 {
                     Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_20"), 50);
                     // add a check for only players to be killed? in gta:o should be peds too right?
-                    if (Cache.PlayerCache.MyPlayer.Ped.IsInVehicle())
+                    if (VehicleChecker.IsInVehicle)
                     {
                         int x = 0;
                         StatGetInt(unchecked((uint)PlayerStat), ref x, -1);

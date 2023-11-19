@@ -51,7 +51,7 @@ namespace FreeRoamProject.Client.TimeWeather
 			await BaseScript.Delay(2000);
 			Screen.Fading.FadeOut(800);
 			if (Cache.PlayerCache.MyPlayer.Status.PlayerStates.InVeicolo)
-				Cache.PlayerCache.MyPlayer.Ped.CurrentVehicle.IsPositionFrozen = true;
+				VehicleChecker.CurrentVehicle.IsPositionFrozen = true;
 			else
 				Cache.PlayerCache.MyPlayer.Ped.IsPositionFrozen = true;
 			await BaseScript.Delay(2000);
@@ -62,7 +62,7 @@ namespace FreeRoamProject.Client.TimeWeather
 			AdvanceClockTimeTo(h, m, s);
 			await BaseScript.Delay(1950);
 			if (Cache.PlayerCache.MyPlayer.Status.PlayerStates.InVeicolo)
-				Cache.PlayerCache.MyPlayer.Ped.CurrentVehicle.IsPositionFrozen = false;
+				VehicleChecker.CurrentVehicle.IsPositionFrozen = false;
 			else
 				Cache.PlayerCache.MyPlayer.Ped.IsPositionFrozen = false;
 			Screen.Fading.FadeIn(800);

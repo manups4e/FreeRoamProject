@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FreeRoamProject.Client.Handlers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -101,13 +102,13 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 
         private static async void OnDestroySpawnedEventVehicles()
         {
-            if (!Cache.PlayerCache.MyPlayer.Ped.IsInVehicle())
+            if (!VehicleChecker.IsInVehicle)
             {
                 ClientMain.Logger.Debug("Player is not in a vehicle.");
                 return;
             }
 
-            Vehicle currentVehicle = Cache.PlayerCache.MyPlayer.Ped.CurrentVehicle;
+            Vehicle currentVehicle = VehicleChecker.CurrentVehicle;
 
             if (!DecorExistOn(currentVehicle.Handle, "weEventVehicle"))
             {

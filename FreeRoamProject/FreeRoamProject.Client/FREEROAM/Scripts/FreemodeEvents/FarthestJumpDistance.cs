@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FreeRoamProject.Client.Handlers;
+using System;
 using System.Threading.Tasks;
 
 namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
@@ -36,7 +37,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
                 else
                 {
                     Screen.ShowSubtitle(GetLabelText("AMCH_BIG_0"), 50);
-                    if (Cache.PlayerCache.MyPlayer.Ped.IsInVehicle())
+                    if (VehicleChecker.IsInVehicle)
                     {
                         StatGetFloat(unchecked((uint)PlayerStat), ref currentAttempt, -1);
 

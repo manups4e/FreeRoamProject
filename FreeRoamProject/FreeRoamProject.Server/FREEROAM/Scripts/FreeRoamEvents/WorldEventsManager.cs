@@ -27,8 +27,8 @@ namespace FreeRoamProject.Server.FreeRoam.Scripts.FreeroamEvents
 
         private static WorldEvent CurrentEvent;
         private static WorldEvent NextEvent;
-        private static SharedTimer PeriodicTimer;
-        private static SharedTimer EventTimer;
+        private static SharedTimeChecker PeriodicTimer;
+        private static SharedTimeChecker EventTimer;
         private static TimeSpan TimeUntilNextEvent = TimeSpan.FromMinutes(SharedMath.GetRandomInt(45, 90));
         private static long _savingTimer = 0;
 

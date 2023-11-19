@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FreeRoamProject.Client.Handlers;
+using System;
 using System.Threading.Tasks;
 
 namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
@@ -23,7 +24,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
             if (IsStarted)
             {
                 Vehicle veh = new(vehicle);
-                if (veh == Cache.PlayerCache.MyPlayer.Ped.CurrentVehicle)
+                if (veh == VehicleChecker.CurrentVehicle)
                 {
                     API.StatSetInt(unchecked((uint)PlayerStats.NumberNearMisses), 0, true);
                     CurrentAttempt = 0;
