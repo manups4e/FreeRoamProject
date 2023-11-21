@@ -144,8 +144,11 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             float height = safeSize * 5.4f;
             float width = safeSize * ((x / y) * 5.4f);
             PointF pos = new PointF(width, height);
-            MainMenu = new UIMenu(Game.Player.Name, Game.GetGXTEntry("PIM_TITLE1"), pos, "commonmenu", "interaction_bgd", true, true);
+            MainMenu = new UIMenu(Game.Player.Name, Game.GetGXTEntry("PIM_TITLE1"), pos, "commonmenu", "interaction_bgd", true, true, 0);
+            MainMenu.EnableAnimation = false;
+            MainMenu.Enabled3DAnimations = false;
             MainMenu.BuildingAnimation = MenuBuildingAnimation.NONE;
+            MainMenu.SetMouse(true, true, true, false, false);
             GangsMenu = new(playerName, Game.GetGXTEntry("PIM_REGBOSSTIT"));
             ObjectivesMenu = new(playerName, Game.GetGXTEntry("PIM_TITLE_67"));
             StyleMenu = new(playerName, Game.GetGXTEntry("PIM_TITLESTYL"));
