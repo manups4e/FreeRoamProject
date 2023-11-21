@@ -800,15 +800,11 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             int choodSelection = PlayerCache.Character.Stats.CurrentHoodSetting;
             UIMenuDynamicListItem hood = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TCHOOD"), Game.GetGXTEntry("PIM_HCHOOD"), Game.GetGXTEntry($"PM_CHOOD_{choodSelection}"), async (item, direction) =>
             {
-                switch (direction)
-                {
-                    case UIMenuDynamicListItem.ChangeDirection.Left:
-                        choodSelection--;
-                        break;
-                    default:
-                        choodSelection++;
-                        break;
-                }
+                choodSelection += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                if (choodSelection > 2)
+                    choodSelection = 0;
+                if (choodSelection < 0)
+                    choodSelection = 2;
                 PlayerCache.MyClient.User.SetPlayerStat("CHood", choodSelection);
                 return Game.GetGXTEntry($"PM_CHOOD_{choodSelection}");
             });
@@ -829,11 +825,16 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             };
             //TODO: SOLVE FUNCTION func_867 IN AM_PI_MENU.. WITHOUT IT WE CAN'T GO ON....
             //also func_1031 is the one that sets the player jacket
-            UIMenuListItem jacket = new UIMenuListItem(Game.GetGXTEntry("PIM_TCJACK"), jacketList, 0, Game.GetGXTEntry("PIM_HCJACK"));
-            jacket.OnListChanged += (item, index) =>
+            int savedJacket = 1;
+            UIMenuDynamicListItem jacket = new(Game.GetGXTEntry("PIM_TCJACK"), Game.GetGXTEntry("PIM_HCJACK"), Game.GetGXTEntry($"PM_CJACK_{savedJacket}"), async (item, direction) =>
             {
-                int ped = playerPed.Handle;
-            };
+                savedJacket += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                if (savedJacket > 3)
+                    savedJacket = 0;
+                if (savedJacket < 0)
+                    savedJacket = 3;
+                return Game.GetGXTEntry($"PM_CJACK_{savedJacket}");
+            });
 
             StyleMenu.AddItem(changeAppear);
 
@@ -980,72 +981,305 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             UIMenuItem vehContrItem = new UIMenuItem(Game.GetGXTEntry("PIM_TVEHI"), Game.GetGXTEntry("PIM_HVEHI"));
             vehContrItem.BindItemToMenu(VehContr);
             MainMenu.AddItem(vehContrItem);
-            UIMenuItem fuel = new UIMenuItem("Vehicle fuel saved");
-            UIMenuCheckboxItem save = new UIMenuCheckboxItem("Save Vehicle", saved);
-            UIMenuCheckboxItem close = new UIMenuCheckboxItem("Door lock", closed);
-            UIMenuListItem doors = new UIMenuListItem("Open/Close Door", portiere, 0);
-            UIMenuCheckboxItem engine = new UIMenuCheckboxItem("Remote On/Off", InteractionMethods.saveVehicle != null ? InteractionMethods.saveVehicle.IsEngineRunning : false);
-            VehContr.AddItem(fuel);
-            VehContr.AddItem(save);
-            VehContr.AddItem(close);
-            VehContr.AddItem(doors);
-            VehContr.AddItem(engine);
 
-            if (!PlayerCache.MyClient.Status.PlayerStates.InVehicle)
+            /* available descriptions (default: PIM_HRPV0)
+               "PIM_HRPV0": "Get the mechanic to deliver your current Personal Vehicle.",
+               "PIM_HRPV0B": "Get Chester McCoy to deliver your Personal Vehicle that is stored inside the Mobile Operations Center.",
+               "PIM_HRPV1": "You don't have an active Personal Vehicle.",
+               "PIM_HRPV2": "Your Special/Personal Vehicle is already nearby.",
+               "PIM_HRPV3": "Your Vehicle is not empty.",
+               "PIM_HRPV4": "You are too far from a suitable road.",
+               "PIM_HRPV5": "Unlocks when you have a Garage.",
+               "PIM_HRPV6": "Delivery not currently available",
+               "PIM_HRPV7": "Delivery in progress.",
+               "PIM_HRPV8": "Your Special/Personal Vehicle is impounded.",
+               "PIM_HRPV9": "You are already using your Special/Personal Vehicle.",
+               "PIM_HRPV10": "You missed the last payment to your mechanic.",
+               "PIM_HRPV11": "You are too close to your Garage.",
+               "PIM_HRPV12": "You don't have an active Personal Vehicle.",
+               "PIM_HRPV13": "You have not bought a Special Vehicle.",
+               "PIM_HRPV14": "You already have an active Special/Personal Vehicle.",
+               "PIM_HRPV15": "You do not have a Personal Vehicle stored.",
+               "PIM_HRPV16": "This vehicle needs to be delivered to your Mobile Operations Center first.",
+               "PIM_HRPV25": "Delivery of vehicle is currently unavailable",
+               "PIM_HRPV98": "Your Personal Vehicle is already in the LS Car Meet. Return it to Storage via the Vehicles section of the Interaction Menu if you wish to request another vehicle.",
+               "PIM_HRPV99": "This vehicle is not allowed inside the LS Car Meet.",
+             */
+            UIMenuDynamicListItem reqPersonalVeh = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TRPV"), Game.GetGXTEntry("PIM_HRPV1"), "", async (item, direction) =>
             {
-                close.Enabled = false;
-                doors.Enabled = false;
-                engine.Enabled = false;
-            }
+                return "";
+            });
+            reqPersonalVeh.Enabled = false;
 
-            VehContr.OnCheckboxChange += async (_menu, _item, _checked) =>
+            /* available descriptions (default: PIM_HRPA0)
+              "PIM_HRPA0": "Get the mechanic to deliver your stored Personal Aircraft.",
+              "PIM_HRPA0B": "Get the mechanic to deliver your Personal Aircraft that is stored inside the Hangar.",
+              "PIM_HRPA1": "You don't have an active Personal Aircraft.",
+              "PIM_HRPA2": "Your Special/Personal Vehicle is already nearby.",
+              "PIM_HRPA2A": "Your Personal Aircraft is already nearby.",
+              "PIM_HRPA3": "Your Vehicle is not empty.",
+              "PIM_HRPA4": "You are too far from a suitable road.",
+              "PIM_HRPA5": "Unlocks when you have a Hangar with Personal Aircrafts stored.",
+              "PIM_HRPA6": "Delivery not currently available.",
+              "PIM_HRPA7": "Delivery in progress.",
+              "PIM_HRPA8": "Your Special/Personal Vehicle is impounded.",
+              "PIM_HRPA9": "You are already using a Special/Personal Vehicle.",
+              "PIM_HRPA12": "Personal Aircraft was destroyed.",
+              "PIM_HRPA13": "You have not bought a Personal Aircraft.",
+              "PIM_HRPA14": "You already have an active Special/Personal Vehicle.",
+              "PIM_HRPA15": "You do not have a Personal Aircraft stored.",
+              "PIM_HRPA16": "This vehicle needs to be stored in your Hangar first.",
+              "PIM_HRPA18": "This vehicle is being delivered to your Hangar.",
+              "PIM_HRPA98": "Your Personal Vehicle is already in the LS Car Meet. Return it to Storage via the Vehicles section of the Interaction Menu if you wish to request another vehicle.",
+            */
+            UIMenuDynamicListItem reqPersonalAir = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TRPA"), Game.GetGXTEntry("PIM_HRPA1"), "", async (item, direction) =>
             {
-                if (_item == close)
-                    InteractionMethods.Lock(_checked);
-                else if (_item == save)
-                {
-                    switch (_checked)
-                    {
-                        case true when PlayerCache.MyClient.Status.PlayerStates.InVehicle:
-                            {
-                                InteractionMethods.Save(_checked);
+                return "";
+            });
+            reqPersonalAir.Enabled = false;
 
-                                if (_checked)
-                                {
-                                    close.Enabled = true;
-                                    doors.Enabled = true;
-                                    engine.Enabled = true;
-                                    fuel.SetRightLabel(fuelint + "%");
-                                }
-                                else
-                                {
-                                    close.Enabled = false;
-                                    doors.Enabled = false;
-                                    engine.Enabled = false;
-                                    fuel.SetRightLabel("No vehicle saved");
-                                }
-
-                                break;
-                            }
-                        case false:
-                            InteractionMethods.Save(_checked);
-                            close.Enabled = false;
-                            doors.Enabled = false;
-                            engine.Enabled = false;
-                            fuel.SetRightLabel("No vehicle saved");
-                            break;
-                        default:
-                            Notifications.ShowNotification("You must be in a vehicle to activate the save function", true);
-                            break;
-                    }
-                }
-                else if (_item == engine) InteractionMethods.engine(_checked);
-            };
-            VehContr.OnListSelect += (_menu, _listItem, _itemIndex) =>
+            /* available descriptions (default: PIM_HRSV0)
+                "PIM_HRSV0": "Get the mechanic to deliver the selected Special Vehicle.",
+                "PIM_HRSV1": "You need to purchase this Special Vehicle from the Warstock Cache & Carry website.",
+                "PIM_HRSV2": "Your Personal Vehicle is already nearby.",
+                "PIM_HRSV3": "Your Special/Personal Vehicle is not empty.",
+                "PIM_HRSV4": "You are too far from a suitable road.",
+                "PIM_HRSV5": "Unlocks when you have a Garage.",
+                "PIM_HRSV6": "Delivery not currently available",
+                "PIM_HRSV7": "Delivery in progress.",
+                "PIM_HRSV8": "Your Special/Personal Vehicle is impounded.",
+                "PIM_HRSV9": "You are already using a Special/Personal Vehicle or Anti-Aircraft Trailer.",
+                "PIM_HRSV10": "The mechanic has not been paid.",
+                "PIM_HRSV12": "Get the mechanic to deliver the selected Special Vehicle.",
+                "PIM_HRSV13": "You need to purchase this Special Vehicle from the Warstock Cache & Carry website.",
+                "PIM_HRSV14": "You already have an active Special/Personal Vehicle or Anti-Aircraft Trailer.",
+                "PIM_HRSV15": "This Special Vehicle needs to be delivered to your Vehicle Warehouse first.",
+                "PIM_HRSV98": "Your Personal Vehicle is already in the LS Car Meet. Return it to Storage via the Vehicles section of the Interaction Menu if you wish to request another vehicle.",
+                "PIM_HRSV99": "This vehicle is not allowed inside the LS Car Meet.",
+             */
+            int currentSpecialVehicle = 0;
+            UIMenuDynamicListItem reqSpecialVeh = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TRSV"), Game.GetGXTEntry("PIM_HRSV1"), Game.GetGXTEntry($"PIM_SV{currentSpecialVehicle}"), async (item, direction) =>
             {
-                if (_listItem == doors)
-                    InteractionMethods.VehDorrs(_listItem.Items[_listItem.Index].ToString());
-            };
+                currentSpecialVehicle += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                if (currentSpecialVehicle < 0)
+                    currentSpecialVehicle = 10;
+                if (currentSpecialVehicle > 10)
+                    currentSpecialVehicle = 0;
+                return Game.GetGXTEntry($"PIM_SV{currentSpecialVehicle}");
+            });
+            reqSpecialVeh.Enabled = false;
+
+            /* available descriptions (default: PIM_TRAIL0)
+              "PIM_TRAIL0": "Get the mechanic to deliver the Anti-Aircraft Trailer.",
+              "PIM_TRAIL1": "You need to purchase the Anti-Aircraft Trailer from the Warstock Cache & Carry website.",
+              "PIM_TRAIL2": "Your vehicle is already nearby.",
+              "PIM_TRAIL3": "Your vehicle is not empty.",
+              "PIM_TRAIL4": "You are too far from a suitable road.",
+              "PIM_TRAIL5": "Unlocks when you have a Garage.",
+              "PIM_TRAIL6": "Delivery not currently available",
+              "PIM_TRAIL7": "Delivery in progress.",
+              "PIM_TRAIL8": "Your Anti-Aircraft Trailer is impounded.",
+              "PIM_TRAIL9": "You are already using a Special/Personal Vehicle or Anti-Aircraft Trailer.",
+              "PIM_TRAIL10": "The mechanic has not been paid.",
+              "PIM_TRAIL12": "Get the mechanic to deliver the Anti-Aircraft Trailer.",
+              "PIM_TRAIL13": "You need to purchase the Anti-Aircraft Trailer from the Warstock Cache & Carry website.",
+              "PIM_TRAIL14": "You already have an active Special/Personal Vehicle or Anti-Aircraft Trailer.",
+              "PIM_TRAIL15": "The Anti-Aircraft Trailer needs to be delivered to your Vehicle Warehouse first.",
+              "PIM_TRAIL16": "The Mobile Operations Center needs to be returned to your Bunker first.",
+              "PIM_TRAIL17": "The Avenger needs to be returned to storage first.",
+              "PIM_TRAIL18": "The Terrorbyte needs to be returned to your Warehouse first.",
+              "PIM_TRAIL99": "This vehicle is not allowed inside the LS Car Meet.",
+             */
+            // hummmm.. should this maybe be only a simple UIMenuItem?... can't say... i think yeah.. i live it like this for now.. 
+            UIMenuDynamicListItem reqAntiAirTrailer = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TRAIL"), Game.GetGXTEntry("PIM_TRAIL1"), "", async (item, direction) =>
+            {
+                return "";
+            });
+            reqAntiAirTrailer.Enabled = false;
+
+            /* available descriptions (default: PIM_RET0)
+              "PIM_RET0": "Return your Personal Vehicle to storage.",
+              "PIM_RET1": "You are not using your Personal Vehicle.",
+              "PIM_RET2": "Next request available in ~a~.",
+              "PIM_RET3": "Unavailable while inside your Personal Vehicle.",
+              "PIM_RET4": "You do not own any Personal Vehicle storage.",
+              "PIM_RET5": "Unavailable while your Personal Vehicle is in mid-air.",
+              "PIM_RET6": "Unavailable while your Personal Vehicle is impounded.",
+             */
+            UIMenuItem returnPersVehStorage = new UIMenuItem(Game.GetGXTEntry("PIM_RET"), Game.GetGXTEntry("PIM_RET4"));
+            returnPersVehStorage.Enabled = false;
+
+            /* available descriptions (default: PIM_HEMV0)
+              "PIM_HEMV0": "Make all players leave your Personal Vehicle.",
+              "PIM_HEMV1": "You are not using your Personal Vehicle.",
+              "PIM_HEMV2": "You need to stop to kick players from your Personal Vehicle.",
+            */
+            UIMenuItem emptyPersVeh = new UIMenuItem(Game.GetGXTEntry("PIM_TEMV"), Game.GetGXTEntry("PIM_HEMV1"));
+            emptyPersVeh.Enabled = false;
+
+            int vehicleAccessSetting = 0;
+            UIMenuDynamicListItem vehAccess = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TAPV"), Game.GetGXTEntry("PIM_HAPV"), Game.GetGXTEntry($"PM_APV{vehicleAccessSetting}"), async (item, direction) =>
+            {
+                vehicleAccessSetting += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                if (vehicleAccessSetting > 5)
+                    vehicleAccessSetting = 0;
+                if (vehicleAccessSetting < 0)
+                    vehicleAccessSetting = 5;
+                return Game.GetGXTEntry($"PM_APV{vehicleAccessSetting}");
+            });
+
+            /* that's a lot of them.. (default PIM_HDPV1)
+              "PIM_HDPV1": "Select which door of your Personal Vehicle to open and close.",
+              "PIM_HDPV2A": "Select to open all the doors of your Personal Vehicle.",
+              "PIM_HDPV2B": "Select to restore the doors of your Personal Vehicle.",
+              "PIM_HDPV3A": "Select to close all the doors of your Personal Vehicle.",
+              "PIM_HDPV3B": "Select to restore the doors of your Personal Vehicle.",
+              "PIM_HDPV4": "You are currently unable to select a door of your Personal Vehicle to open.",
+              "PIM_HDPV5": "Your Personal Vehicle is moving too fast to control the doors.",
+              "PIM_HDPV6": "You are too far from your Personal Vehicle.",
+              "PIM_HDPV7": "You cannot currently control the doors of your Personal Vehicle.",
+              "PIM_HDPV8": "You don't have an active Personal Vehicle.",
+              "PIM_HDPV9": "You cannot control the doors of your Personal Vehicle while with a prostitute.",
+              "PIM_HDPV10": "You cannot control the doors of your Personal Vehicle when stored in a garage.",
+              "PIM_HDPV10B": "You cannot control the doors of your Personal Vehicle when stored in a Bunker.",
+              "PIM_HDPV11": "You cannot control the engine of your Personal Vehicle when stored in a garage.",
+              "PIM_HDPV12": "You cannot control the radio of your Personal Vehicle when stored in a garage.",
+              "PIM_HDPV13": "You cannot control the lights of your Personal Vehicle when stored in a garage.",
+              "PIM_HDPV14": "You cannot turn off your Personal Vehicle's engine while someone is using it.",
+              "PIM_HDPV15": "You cannot control the neon of your Personal Vehicle when stored in a garage.",
+              "PIM_HDPV16": "Your Personal Vehicle doesn't have a neon kit.",
+              "PIM_HDPVEO5": "Your Personal Vehicle is moving too fast to use this feature.",
+              "PIM_HDPVEO6": "Vehicle Remote Functions can only be used when outside your vehicle.",
+              "PIM_HDPVEO7": "Vehicle Remote Functions are unavailable for this vehicle.",
+              "PIM_HDPVEO10": "You cannot use this feature when your Personal Vehicle is stored in a garage.",
+              "PIM_HDPVEO10B": "You cannot use this feature when your Personal Vehicle is stored in a Bunker.",
+              "PIM_HDPVNPC": "You cannot control the doors of your Personal Vehicle while with an NPC.",
+              "PIM_HDPVW": "You cannot use this feature when your Personal Vehicle is underwater.",
+             */
+            UIMenuDynamicListItem vehDoors = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TDPV"), Game.GetGXTEntry("PIM_HDPV8"), "", async (item, direction) =>
+            {
+                /* these are all the available doors.. if the item is disabled.. don't show anything..
+                  "PM_DPV_LP": "Left Panel",
+                  "PM_DPV_RP": "Right Panel",
+                  "PM_DPV0": "None",
+                  "PM_DPV1": "Front Left",
+                  "PM_DPV1_A": "Cockpit",
+                  "PM_DPV1_A1": "Front Cockpit",
+                  "PM_DPV1_A2": "Airstair Door",
+                  "PM_DPV1_A3": "Left",
+                  "PM_DPV2": "Front Right",
+                  "PM_DPV2_A1": "Back Cockpit",
+                  "PM_DPV2_A2": "Right",
+                  "PM_DPV3": "Rear Left",
+                  "PM_DPV3_A": "Cargo Ramp",
+                  "PM_DPV4": "Rear Right",
+                  "PM_DPV5": "Hood",
+                  "PM_DPV6": "Trunk",
+                  "PM_DPV6_A": "Cargo Ramp",
+                  "PM_DPV7": "All",
+                  "PM_DPV8": "Restore",
+                 */
+                return "";
+            });
+            vehDoors.Enabled = false;
+
+            int pvRoof = 0;
+            UIMenuDynamicListItem vehRoof = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_PV_ROOF"), Game.GetGXTEntry("PIM_PV_ROOF_D"), Game.GetGXTEntry($"PIM_PV_ROOF{pvRoof}"), async (item, direction) =>
+            {
+                pvRoof += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                if (pvRoof < 0)
+                    pvRoof = 1;
+                if (pvRoof > 1)
+                    pvRoof = 0;
+                return Game.GetGXTEntry($"PIM_PV_ROOF{pvRoof}");
+            });
+            vehRoof.Enabled = false;
+
+            /* descriptions (default PIM_PV_STNC_A)
+                "PIM_PV_STNC_A": "Select the stance for your Personal Vehicle.",
+                "PIM_PV_STNC_NA": "Unavailable for your current Personal Vehicle.",
+             */
+            int pvStance = 0;
+            UIMenuDynamicListItem vehStance = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_PV_STANCE"), Game.GetGXTEntry("PIM_PV_STNC_NA"), Game.GetGXTEntry($"PIM_PV_STANCE{pvStance}"), async (item, direction) =>
+            {
+                pvStance += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                if (pvStance < 0)
+                    pvStance = 1;
+                if (pvStance > 1)
+                    pvStance = 0;
+                return Game.GetGXTEntry($"PIM_PV_STANCE{pvStance}");
+            });
+            vehStance.Enabled = false;
+
+            /* descriptions (default PIM_PV_HYDR_D)
+              "PIM_PV_HYDR_D": "Enable your Personal Vehicle's hydraulics.",
+              "PIM_PV_HYDR_NA": "You do not have hydraulics installed for this vehicle.",
+             */
+            int pvHydr = 0;
+            UIMenuDynamicListItem vehHydr = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_PV_HYDR"), Game.GetGXTEntry("PIM_PV_HYDR_NA"), Game.GetGXTEntry($"PIM_PV_HYDR{pvHydr}"), async (item, direction) =>
+            {
+                pvStance += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                if (pvStance < 0)
+                    pvStance = 3;
+                if (pvStance > 3)
+                    pvStance = 0;
+                return Game.GetGXTEntry($"PIM_PV_HYDR{pvHydr}");
+            });
+            vehHydr.Enabled = false;
+
+            /* descriptions (default none i think.. need digging)
+                "PIM_HDPVEO5": "Your Personal Vehicle is moving too fast to use this feature.",
+                "PIM_HDPVEO6": "Vehicle Remote Functions can only be used when outside your vehicle.",
+                "PIM_HDPVEO7": "Vehicle Remote Functions are unavailable for this vehicle.",
+                "PIM_HDPVEO10": "You cannot use this feature when your Personal Vehicle is stored in a garage.",
+                "PIM_HDPVEO10B": "You cannot use this feature when your Personal Vehicle is stored in a Bunker.",
+             */
+            UIMenuItem vehRemoteFuncItem = new UIMenuItem(Game.GetGXTEntry("PIM_PVEO"), Game.GetGXTEntry("PIM_HDPVEO6"));
+            UIMenu vehRemoteFuncMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_PCEO_T"));
+            vehRemoteFuncItem.BindItemToMenu(vehRemoteFuncMenu);
+            vehRemoteFuncItem.Enabled = false;
+
+            /* descriptions (default PIM_BOMB_HELP)
+                "PIM_BOMB_HELP": "Set who is able to control dropping bombs on applicable Personal Aircraft.",
+                "PIM_BOMB_HELP2": "This Personal Aircraft does not have Bomb Bay Controls.",
+                "PIM_BOMB_HELP3": "This option is currently unavailable.",
+             */
+            int bombControlSetting = 0;
+            UIMenuDynamicListItem vehBombControl = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_BOMB_TITLE"), Game.GetGXTEntry("PIM_BOMB_HELP"), Game.GetGXTEntry($"PIM_B_CONTROL_{bombControlSetting}"), async (item, direction) =>
+            {
+                bombControlSetting += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                if (bombControlSetting < 0)
+                    bombControlSetting = 1;
+                if (bombControlSetting > 1)
+                    bombControlSetting = 0;
+                return Game.GetGXTEntry($"PIM_B_CONTROL_{bombControlSetting}");
+            });
+
+            int countermeasureControlSetting = 0;
+            UIMenuDynamicListItem countermeasureControl = new UIMenuDynamicListItem(Game.GetGXTEntry("PIMCOUNTERTIT"), Game.GetGXTEntry("PIMCOUNTHELP"), Game.GetGXTEntry($"PIM_B_CONTROL_{countermeasureControlSetting}"), async (item, direction) =>
+            {
+                countermeasureControlSetting += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                if (countermeasureControlSetting < 0)
+                    countermeasureControlSetting = 1;
+                if (countermeasureControlSetting > 1)
+                    countermeasureControlSetting = 0;
+                return Game.GetGXTEntry($"PIM_B_CONTROL_{countermeasureControlSetting}");
+            });
+
+            VehContr.AddItem(reqPersonalVeh);
+            VehContr.AddItem(reqPersonalAir);
+            VehContr.AddItem(reqSpecialVeh);
+            VehContr.AddItem(reqAntiAirTrailer);
+            VehContr.AddItem(returnPersVehStorage);
+            VehContr.AddItem(emptyPersVeh);
+            VehContr.AddItem(vehAccess);
+            VehContr.AddItem(vehDoors);
+            VehContr.AddItem(vehRoof);
+            VehContr.AddItem(vehStance);
+            VehContr.AddItem(vehHydr);
+            VehContr.AddItem(vehRemoteFuncItem);
+            VehContr.AddItem(vehBombControl);
+            VehContr.AddItem(countermeasureControl);
 
             #endregion
 
