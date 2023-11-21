@@ -69,8 +69,8 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
                 else
                 {
                     Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_13"), 50);
-                    if (Cache.PlayerCache.MyPlayer.Ped.IsInFlyingVehicle || !Cache.PlayerCache.MyPlayer.Ped.Weapons.HasWeapon(WeaponHash.Parachute))
-                        Cache.PlayerCache.MyPlayer.Ped.Weapons.Give(WeaponHash.Parachute, 1, true, true);
+                    if (Cache.PlayerCache.MyClient.Ped.IsInFlyingVehicle || !Cache.PlayerCache.MyClient.Ped.Weapons.HasWeapon(WeaponHash.Parachute))
+                        Cache.PlayerCache.MyClient.Ped.Weapons.Give(WeaponHash.Parachute, 1, true, true);
                     float x = 0f;
                     StatGetFloat(unchecked((uint)PlayerStat), ref x, -1);
                     if (x != 0)

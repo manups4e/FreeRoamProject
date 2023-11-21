@@ -49,7 +49,7 @@ namespace FreeRoamProject.Shared
                     {
 #if CLIENT
                         await PlayerCache.Loaded();
-                        if (key.EndsWith(PlayerCache.MyPlayer.Player.State["serverID"] + ""))
+                        if (key.EndsWith(PlayerCache.MyClient.Player.State["serverID"] + ""))
                         {
                             SharedWeather meteo = (value as byte[]).FromBytes<SharedWeather>();
                             OnWeatherChange?.Invoke(meteo);
@@ -72,7 +72,7 @@ namespace FreeRoamProject.Shared
                             PlayerClient player = null;
 #if CLIENT
                             if (userId == Game.Player.ServerId)
-                                player = PlayerCache.MyPlayer;
+                                player = PlayerCache.MyClient;
                             else
                                 player = ClientMain.Instance.Clients.FirstOrDefault(x => x.Handle == userId);
 #elif SERVER

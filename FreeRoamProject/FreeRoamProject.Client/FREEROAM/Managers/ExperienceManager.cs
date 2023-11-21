@@ -15,8 +15,8 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
         {
             try
             {
-                Cache.PlayerCache.MyPlayer.User.Character.Level = updatedLevel;
-                Cache.PlayerCache.MyPlayer.User.Character.TotalXp = updatedXp;
+                Cache.PlayerCache.MyClient.User.Character.Level = updatedLevel;
+                Cache.PlayerCache.MyClient.User.Character.TotalXp = updatedXp;
 
                 if (!leveledUp)
                 {
@@ -82,8 +82,8 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
             if (HasHudScaleformLoaded(19)) return;
             RequestHudScaleform(19);
             while (!HasHudScaleformLoaded(19)) await BaseScript.Delay(0);
-            int rank = Cache.PlayerCache.MyPlayer.User.Character.Level;
-            int xp = Cache.PlayerCache.MyPlayer.User.Character.TotalXp;
+            int rank = Cache.PlayerCache.MyClient.User.Character.Level;
+            int xp = Cache.PlayerCache.MyClient.User.Character.TotalXp;
             int nowMaxXp = Experience.RankRequirement[rank];
             int maxXp = Experience.NextLevelExperiencePoints(rank);
             PushScaleformMovieFunctionFromHudComponent(19, "SET_COLOUR");

@@ -57,7 +57,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
 
         public static async Task HouseCouches()
         {
-            Ped playerped = Cache.PlayerCache.MyPlayer.Ped;
+            Ped playerped = Cache.PlayerCache.MyClient.Ped;
 
             if (!sitting)
             {
@@ -87,7 +87,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
 
         public static async Task TVTick()
         {
-            Ped playerped = Cache.PlayerCache.MyPlayer.Ped;
+            Ped playerped = Cache.PlayerCache.MyClient.Ped;
 
             //TODO: ADD TV TICK FOR GARAGES AND RANDOM PLACES
             if (sitting /*&&control for home*/)

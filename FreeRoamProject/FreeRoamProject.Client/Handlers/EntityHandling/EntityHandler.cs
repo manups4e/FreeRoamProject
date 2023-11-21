@@ -15,7 +15,7 @@ namespace FreeRoamProject.Client.Handlers.EntityHandling
         {
             foreach (var entity in Entità)
             {
-                if (entity.Position.Distance(Cache.PlayerCache.MyPlayer.Position) < 100)
+                if (entity.Position.Distance(Cache.PlayerCache.MyClient.Position) < 100)
                 {
                     if (entity.GetType() == typeof(PedHandle))
                     {

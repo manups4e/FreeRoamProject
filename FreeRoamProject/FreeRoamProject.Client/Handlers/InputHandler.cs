@@ -70,7 +70,7 @@ namespace FreeRoamProject.Client.Handlers
             try
             {
                 await Cache.PlayerCache.Loaded();
-                Ped p = Cache.PlayerCache.MyPlayer.Ped;
+                Ped p = Cache.PlayerCache.MyClient.Ped;
 
                 foreach (InputController input in _listaInput)
                 {

@@ -47,7 +47,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
         public static int SavedAction = 0;
         public static int SavedMood = 4;
         public static int SavedWalkStyle = 0;
-        public static int SavedGlowIndex = PlayerCache.MyPlayer.Status.FreeRoamStates.IlluminatedClothing;
+        public static int SavedGlowIndex = PlayerCache.MyClient.Status.FreeRoamStates.IlluminatedClothing;
         #endregion
 
         // TODO: Since i want to keep performances at their best!
@@ -132,8 +132,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
         public static async void menuPersonal()
         {
             MenuHandler.CloseAndClearHistory();
-            Ped playerPed = PlayerCache.MyPlayer.Ped;
-            Player player = PlayerCache.MyPlayer.Player;
+            Ped playerPed = PlayerCache.MyClient.Ped;
+            Player player = PlayerCache.MyClient.Player;
             string playerName = player.Name;
 
             float safeSize = GetSafeZoneSize(); // 0.9f to 1.0f
@@ -235,7 +235,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             MainMenu.AddItem(gangsItem);
 
             // TODO: UNCENSORED IS SO ESX... WE WANT A GANG NAME BUT ALSO A SIMPLE CHECK IsBoss true/false...
-            if (PlayerCache.MyPlayer.User.Character.Gang.Name == "Uncensored")
+            if (PlayerCache.MyClient.User.Character.Gang.Name == "Uncensored")
             {
                 UIMenuItem becomeBoss = new UIMenuItem("Become a gang boss!");
                 List<dynamic> job = new List<dynamic>() { Game.GetGXTEntry("FE_HLP31"), Game.GetGXTEntry("FE_HLP29") };
@@ -246,7 +246,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 // GB_GOON_OPEN = Hold ~INPUT_VEH_EXIT~to open the door for your Boss
                 becomeBoss.Activated += async (menu, item) =>
                 {
-                    if (PlayerCache.MyPlayer.User.Bank > 5000)
+                    if (PlayerCache.MyClient.User.Bank > 5000)
                     {
                         // TODO: ADD CHECK FOR ACTIVE CONCURRENT GANGS (CEO, BIKERS, WHATEVER) PER BUCKET
                         //if (Main.ActiveGangs.Count < 3)
@@ -255,7 +255,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                             MenuHandler.CloseAndClearHistory();
                             ScaleformUI.Main.BigMessageInstance.ShowSimpleShard("Boss", $"You have become the Boss of the ~o~{gname}~w~ gang.");
                             Game.PlaySound("Boss_Message_Orange", "GTAO_Boss_Goons_FM_Soundset");
-                            PlayerCache.MyPlayer.User.Character.Gang = new Gang(gname, 5);
+                            PlayerCache.MyClient.User.Character.Gang = new Gang(gname, 5);
                             //Main.ActiveGangs.Add(new Gang(gname, Main.ActiveGangs.Count + 1));
 
                         }
@@ -274,7 +274,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             }
             else
             {
-                if (PlayerCache.MyPlayer.User.Character.Gang.Grade > 4)
+                if (PlayerCache.MyClient.User.Character.Gang.Grade > 4)
                 {
                     UIMenuItem hireItem = new UIMenuItem("Recruit members");
                     UIMenu hire = new("Recruit members", Game.GetGXTEntry("PIM_TITLE1"));
@@ -296,9 +296,9 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     {
                         MenuHandler.CloseAndClearHistory();
                         //Main.ActiveGangs.Remove(PlayerCache.MyPlayer.User.Character.Gang);
-                        ScaleformUI.Main.BigMessageInstance.ShowSimpleShard("Retired", $"You're no longer the boss of the ~o~{PlayerCache.MyPlayer.User.Character.Gang.Name}~w~ gang.");
+                        ScaleformUI.Main.BigMessageInstance.ShowSimpleShard("Retired", $"You're no longer the boss of the ~o~{PlayerCache.MyClient.User.Character.Gang.Name}~w~ gang.");
                         Game.PlaySound("Boss_Message_Orange", "GTAO_Boss_Goons_FM_Soundset");
-                        PlayerCache.MyPlayer.User.Character.Gang = new Gang("Uncensored", 0);
+                        PlayerCache.MyClient.User.Character.Gang = new Gang("Uncensored", 0);
                     };
                 }
                 else
@@ -308,9 +308,9 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     retire.Activated += (menu, item) =>
                     {
                         MenuHandler.CloseAndClearHistory();
-                        ScaleformUI.Main.BigMessageInstance.ShowSimpleShard("Retired", $"You're not a member of the ~o~{PlayerCache.MyPlayer.User.Character.Gang.Name}~w~ gang anymore.");
+                        ScaleformUI.Main.BigMessageInstance.ShowSimpleShard("Retired", $"You're not a member of the ~o~{PlayerCache.MyClient.User.Character.Gang.Name}~w~ gang anymore.");
                         Game.PlaySound("Boss_Message_Orange", "GTAO_Boss_Goons_FM_Soundset");
-                        PlayerCache.MyPlayer.User.Character.Gang = new Gang("Uncensored", 0);
+                        PlayerCache.MyClient.User.Character.Gang = new Gang("Uncensored", 0);
                     };
                 }
             }
@@ -560,7 +560,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                         SetPedHelmetUnk(playerPed.Handle, isAlt, currentHelmet, nextDraw);
                     }
                 }
-                PlayerCache.MyPlayer.User.SetPlayerStat("SavedHelmet", SavedHelmet[1], SavedHelmet[0]);
+                PlayerCache.MyClient.User.SetPlayerStat("SavedHelmet", SavedHelmet[1], SavedHelmet[0]);
 
                 return Game.GetGXTEntry(prop);
             });
@@ -576,7 +576,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 if (VisorUpDown < 0) VisorUpDown = 1;
                 if (VisorUpDown > 1) VisorUpDown = 0;
 
-                Ped playerPed = PlayerCache.MyPlayer.Ped;
+                Ped playerPed = PlayerCache.MyClient.Ped;
                 int pedHandle = playerPed.Handle;
                 int component = GetPedPropIndex(pedHandle, 0);
                 int texture = GetPedPropTextureIndex(pedHandle, 0);
@@ -593,7 +593,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     SetPedHelmetUnk(playerPed.Handle, isAlt, component, newHelmetData[0].altPropVariationIndex);
                     await InteractionMethods.SwitchComponent(false, VisorUpDown);
                 }
-                PlayerCache.MyPlayer.User.SetPlayerStat("VisorUpDown", VisorUpDown);
+                PlayerCache.MyClient.User.SetPlayerStat("VisorUpDown", VisorUpDown);
                 return Game.GetGXTEntry($"PIM_HELV{VisorUpDown}");
             });
 
@@ -605,7 +605,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 if (AutoShowHelmet < 0) AutoShowHelmet = 1;
                 if (AutoShowHelmet > 1) AutoShowHelmet = 0;
                 SetPedConfigFlag(playerPed.Handle, 380, AutoShowHelmet == 0);
-                PlayerCache.MyPlayer.User.SetPlayerStat("AutoShowHelmet", AutoShowHelmet);
+                PlayerCache.MyClient.User.SetPlayerStat("AutoShowHelmet", AutoShowHelmet);
                 return Game.GetGXTEntry($"PIM_AHLM{AutoShowHelmet}");
             });
 
@@ -616,7 +616,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 if (AutoShowAircraft < 0) AutoShowAircraft = 1;
                 if (AutoShowAircraft > 1) AutoShowAircraft = 0;
                 SetPedConfigFlag(playerPed.Handle, 381, AutoShowAircraft == 0);
-                PlayerCache.MyPlayer.User.SetPlayerStat("AutoShowAircraft", AutoShowAircraft);
+                PlayerCache.MyClient.User.SetPlayerStat("AutoShowAircraft", AutoShowAircraft);
                 return Game.GetGXTEntry($"PIM_AAHLM{AutoShowAircraft}");
             });
 
@@ -676,13 +676,13 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 };
                 sender.Description = SavedAction switch
                 {
-                    39 when PlayerCache.MyPlayer.Ped.IsOnFoot => Game.GetGXTEntry("PIM_HANIM3"),
-                    62 when PlayerCache.MyPlayer.Ped.IsOnFoot => Game.GetGXTEntry("PIM_HANIM4"),
+                    39 when PlayerCache.MyClient.Ped.IsOnFoot => Game.GetGXTEntry("PIM_HANIM3"),
+                    62 when PlayerCache.MyClient.Ped.IsOnFoot => Game.GetGXTEntry("PIM_HANIM4"),
                     58 => Game.GetGXTEntry("PIM_HANIM5"),
                     _ => VehicleChecker.IsInVehicle || !value ? Game.GetGXTEntry("PIM_HANIM") : Game.GetGXTEntry("PIM_HANIM2"),
                 };
 
-                PlayerCache.MyPlayer.User.SetPlayerStat("SavedAction", SavedAction);
+                PlayerCache.MyClient.User.SetPlayerStat("SavedAction", SavedAction);
                 return Game.GetGXTEntry(result);
             });
 
@@ -703,7 +703,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
              */
             UIMenuDynamicListItem playerMood = new(Game.GetGXTEntry("PIM_TMOODN"), Game.GetGXTEntry("PIM_HMOODN"), Game.GetGXTEntry($"PM_MOOD_{SavedMood}"), async (item, direction) =>
             {
-                Ped ped = PlayerCache.MyPlayer.Ped;
+                Ped ped = PlayerCache.MyClient.Ped;
 
                 SavedMood += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
                 if (SavedMood < 0)
@@ -720,7 +720,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                             ped.Task.ClearAll();
                             Function.Call(Hash.SET_PED_STEALTH_MOVEMENT, false, 0);
                             SetPlayerControl(PlayerId(), false, 2560);
-                            Position coords = PlayerCache.MyPlayer.Position;
+                            Position coords = PlayerCache.MyClient.Position;
                             InteractionMethods.MoodCam = new Camera(CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.X, coords.Y, coords.Z, 0f, 0f, 0f, 50f, false, 2));
                             InteractionMethods.MoodCam.AttachTo(ped.Bones[31086], new Vector3(0f, 0.9f, 0f));
                             PointCamAtPedBone(InteractionMethods.MoodCam.Handle, ped.Handle, 31086, 0, 0, 0, true);
@@ -731,7 +731,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     }
                 }
                 InteractionMethods.SetFacialAnim(SavedMood);
-                PlayerCache.MyPlayer.User.SetPlayerStat("SavedMood", SavedMood);
+                PlayerCache.MyClient.User.SetPlayerStat("SavedMood", SavedMood);
                 return Game.GetGXTEntry($"PM_MOOD_{SavedMood}");
             });
 
@@ -743,7 +743,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 if (SavedWalkStyle > 5)
                     SavedWalkStyle = 0;
                 InteractionMethods.SetWalkingStyle(SavedWalkStyle);
-                PlayerCache.MyPlayer.User.SetPlayerStat("SavedWalkStyle", SavedWalkStyle);
+                PlayerCache.MyClient.User.SetPlayerStat("SavedWalkStyle", SavedWalkStyle);
                 return Game.GetGXTEntry($"PM_WALK_{SavedWalkStyle}");
             });
 
@@ -765,13 +765,13 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 if (!(DoesShopPedApparelHaveRestrictionTag((uint)hashName, Functions.HashUint("DEADLINE_OUTFIT"), 0) || DoesShopPedApparelHaveRestrictionTag((uint)hashName, Functions.HashUint("MORPH_SUIT"), 0) || DoesShopPedApparelHaveRestrictionTag((uint)hashName, Functions.HashUint("LIGHT_UP"), 0) || Function.Call<bool>((Hash)0x7796B21B76221BC5, ped, 8, Functions.HashUint("LIGHT_UP")) || Function.Call<bool>((Hash)0xD726BAB4554DA580, ped, 0, Functions.HashUint("LIGHT_UP")) || Function.Call<bool>((Hash)0xD726BAB4554DA580, ped, 6, Functions.HashUint("LIGHT_UP")) || Function.Call<bool>((Hash)0xD726BAB4554DA580, ped, 7, Functions.HashUint("LIGHT_UP")) || Function.Call<bool>((Hash)0x7796B21B76221BC5, ped, 6, Functions.HashUint("LIGHT_UP")) || Function.Call<bool>((Hash)0x7796B21B76221BC5, ped, 1, Functions.HashUint("LIGHT_UP"))))
                 {
                     SavedGlowIndex = 0;
-                    PlayerCache.MyPlayer.User.SetPlayerStat("IlluminatedClothing", SavedGlowIndex);
+                    PlayerCache.MyClient.User.SetPlayerStat("IlluminatedClothing", SavedGlowIndex);
                     // if loaded param != 0 then loaded param = 0 and we save, and we set a statebag with the value
                 }
                 else
                 {
                     if (PlayerCache.Character.Stats.IlluminatedClothing != SavedGlowIndex)
-                        PlayerCache.MyPlayer.User.SetPlayerStat("IlluminatedClothing", SavedGlowIndex);
+                        PlayerCache.MyClient.User.SetPlayerStat("IlluminatedClothing", SavedGlowIndex);
                     // if loaded param != index then loaded param = index and we save, and we set a statebag with the value
                     // R* handles luminescent clothing per ped on each client.. it's not networked..
                     // so we have to loop all clients in the server to handle their blooming
@@ -809,7 +809,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                         choodSelection++;
                         break;
                 }
-                PlayerCache.MyPlayer.User.SetPlayerStat("CHood", choodSelection);
+                PlayerCache.MyClient.User.SetPlayerStat("CHood", choodSelection);
                 return Game.GetGXTEntry($"PM_CHOOD_{choodSelection}");
             });
             hood.Enabled = false;
@@ -858,14 +858,14 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             StyleMenu.OnIndexChange += (menu, index) =>
             {
-                PlayerCache.MyPlayer.Player.CanControlCharacter = true;
+                PlayerCache.MyClient.Player.CanControlCharacter = true;
                 if (InteractionMethods.MoodCam != null && InteractionMethods.MoodCam.Exists())
                 {
                     InteractionMethods.MoodCam.IsActive = false;
                     RenderScriptCams(false, false, 3000, true, false);
                     InteractionMethods.MoodCam.Delete();
                 }
-                if (PlayerCache.MyPlayer.Ped.IsWearingHelmet && !PlayerCache.MyPlayer.Ped.IsOnBike)
+                if (PlayerCache.MyClient.Ped.IsWearingHelmet && !PlayerCache.MyClient.Ped.IsOnBike)
                 {
                     SetPedHelmet(playerPed.Handle, false);
                     RemovePedHelmet(playerPed.Handle, true);
@@ -963,7 +963,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             StyleMenu.OnMenuClose += (menu) =>
             {
-                PlayerCache.MyPlayer.Player.CanControlCharacter = true;
+                PlayerCache.MyClient.Player.CanControlCharacter = true;
                 if (InteractionMethods.MoodCam != null && InteractionMethods.MoodCam.Exists())
                 {
                     InteractionMethods.MoodCam.IsActive = false;
@@ -991,7 +991,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             VehContr.AddItem(doors);
             VehContr.AddItem(engine);
 
-            if (!PlayerCache.MyPlayer.Status.PlayerStates.InVehicle)
+            if (!PlayerCache.MyClient.Status.PlayerStates.InVehicle)
             {
                 close.Enabled = false;
                 doors.Enabled = false;
@@ -1006,7 +1006,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 {
                     switch (_checked)
                     {
-                        case true when PlayerCache.MyPlayer.Status.PlayerStates.InVehicle:
+                        case true when PlayerCache.MyClient.Status.PlayerStates.InVehicle:
                             {
                                 InteractionMethods.Save(_checked);
 
@@ -1341,16 +1341,16 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             UIMenuItem item9 = new UIMenuItem("Drunk");
             animMenu1.OnItemSelect += (_menu, _item, _index) =>
             {
-                if (!PlayerCache.MyPlayer.Status.PlayerStates.InVehicle && playerPed.IsAlive)
+                if (!PlayerCache.MyClient.Status.PlayerStates.InVehicle && playerPed.IsAlive)
                 {
                     if (_item == item1)
-                        playerPed.Task.StartScenario("WORLD_HUMAN_MUSICIAN", PlayerCache.MyPlayer.Position.ToVector3);
+                        playerPed.Task.StartScenario("WORLD_HUMAN_MUSICIAN", PlayerCache.MyClient.Position.ToVector3);
                     else if (_item == item2)
                         playerPed.Task.PlayAnimation("anim@mp_player_intcelebrationmale@dj", "dj");
                     else if (_item == item3)
-                        playerPed.Task.StartScenario("WORLD_HUMAN_DRINKING", PlayerCache.MyPlayer.Position.ToVector3);
+                        playerPed.Task.StartScenario("WORLD_HUMAN_DRINKING", PlayerCache.MyClient.Position.ToVector3);
                     else if (_item == item4)
-                        playerPed.Task.StartScenario("WORLD_HUMAN_PARTYING", PlayerCache.MyPlayer.Position.ToVector3);
+                        playerPed.Task.StartScenario("WORLD_HUMAN_PARTYING", PlayerCache.MyClient.Position.ToVector3);
                     else if (_item == item5)
                         playerPed.Task.PlayAnimation("anim@mp_player_intcelebrationmale@air_guitar", "air_guitar");
                     else if (_item == item6)
@@ -1358,7 +1358,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     else if (_item == item7)
                         playerPed.Task.PlayAnimation("mp_player_int_upperrock", "mp_player_int_rock");
                     else if (_item == item8)
-                        playerPed.Task.StartScenario("WORLD_HUMAN_SMOKING_POT", PlayerCache.MyPlayer.Position.ToVector3);
+                        playerPed.Task.StartScenario("WORLD_HUMAN_SMOKING_POT", PlayerCache.MyClient.Position.ToVector3);
                     else if (_item == item9) playerPed.Task.PlayAnimation("amb@world_human_bum_standing@drunk@idle_a", "idle_a");
                 }
                 else
@@ -1389,7 +1389,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             animMenu2.AddItem(item13);
             animMenu2.OnItemSelect += (_menu, _item, _index) =>
             {
-                if (!PlayerCache.MyPlayer.Status.PlayerStates.InVehicle && playerPed.IsAlive)
+                if (!PlayerCache.MyClient.Status.PlayerStates.InVehicle && playerPed.IsAlive)
                 {
                     if (_item == item10)
                         playerPed.Task.PlayAnimation("gestures@m@standing@casual", "gesture_hello");
@@ -1445,26 +1445,26 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             animMenu3.AddItem(item30);
             animMenu3.OnItemSelect += (_menu, _item, _index) =>
             {
-                if (!PlayerCache.MyPlayer.Status.PlayerStates.InVehicle && playerPed.IsAlive)
+                if (!PlayerCache.MyClient.Status.PlayerStates.InVehicle && playerPed.IsAlive)
                 {
                     if (_item == item14)
                         playerPed.Task.PlayAnimation("random@arrests@busted", "idle_c");
                     else if (_item == item15)
-                        playerPed.Task.StartScenario("world_human_stand_fishing", PlayerCache.MyPlayer.Position.ToVector3);
+                        playerPed.Task.StartScenario("world_human_stand_fishing", PlayerCache.MyClient.Position.ToVector3);
                     else if (_item == item16)
-                        playerPed.Task.StartScenario("world_human_gardener_plant", PlayerCache.MyPlayer.Position.ToVector3);
+                        playerPed.Task.StartScenario("world_human_gardener_plant", PlayerCache.MyClient.Position.ToVector3);
                     else if (_item == item17)
-                        playerPed.Task.StartScenario("world_human_vehicle_mechanic", PlayerCache.MyPlayer.Position.ToVector3);
+                        playerPed.Task.StartScenario("world_human_vehicle_mechanic", PlayerCache.MyClient.Position.ToVector3);
                     else if (_item == item18)
                         playerPed.Task.PlayAnimation("mini@repair", "fixing_a_ped");
                     else if (_item == item19)
-                        playerPed.Task.StartScenario("WORLD_HUMAN_CAR_PARK_ATTENDANT", PlayerCache.MyPlayer.Position.ToVector3);
+                        playerPed.Task.StartScenario("WORLD_HUMAN_CAR_PARK_ATTENDANT", PlayerCache.MyClient.Position.ToVector3);
                     else if (_item == item20)
                         playerPed.Task.PlayAnimation("amb@code_human_police_investigate@idle_b", "idle_f");
                     else if (_item == item21)
-                        playerPed.Task.StartScenario("WORLD_HUMAN_BINOCULARS", PlayerCache.MyPlayer.Position.ToVector3);
+                        playerPed.Task.StartScenario("WORLD_HUMAN_BINOCULARS", PlayerCache.MyClient.Position.ToVector3);
                     else if (_item == item22)
-                        playerPed.Task.StartScenario("CODE_HUMAN_MEDIC_KNEEL", PlayerCache.MyPlayer.Position.ToVector3);
+                        playerPed.Task.StartScenario("CODE_HUMAN_MEDIC_KNEEL", PlayerCache.MyClient.Position.ToVector3);
                     else if (_item == item23)
                         playerPed.Task.PlayAnimation("oddjobs@taxi@driver", "leanover_idle");
                     else if (_item == item24)
@@ -1472,14 +1472,14 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     else if (_item == item25)
                         playerPed.Task.PlayAnimation("mp_am_hold_up", "purchase_beerbox_shopkeeper");
                     else if (_item == item26)
-                        playerPed.Task.StartScenario("WORLD_HUMAN_PAPARAZZI", PlayerCache.MyPlayer.Position.ToVector3);
+                        playerPed.Task.StartScenario("WORLD_HUMAN_PAPARAZZI", PlayerCache.MyClient.Position.ToVector3);
                     else if (_item == item27)
-                        playerPed.Task.StartScenario("WORLD_HUMAN_CLIPBOARD", PlayerCache.MyPlayer.Position.ToVector3);
+                        playerPed.Task.StartScenario("WORLD_HUMAN_CLIPBOARD", PlayerCache.MyClient.Position.ToVector3);
                     else if (_item == item28)
-                        playerPed.Task.StartScenario("WORLD_HUMAN_HAMMERING", PlayerCache.MyPlayer.Position.ToVector3);
+                        playerPed.Task.StartScenario("WORLD_HUMAN_HAMMERING", PlayerCache.MyClient.Position.ToVector3);
                     else if (_item == item29)
-                        playerPed.Task.StartScenario("WORLD_HUMAN_BUM_FREEWAY", PlayerCache.MyPlayer.Position.ToVector3);
-                    else if (_item == item30) playerPed.Task.StartScenario("WORLD_HUMAN_HUMAN_STATUE", PlayerCache.MyPlayer.Position.ToVector3);
+                        playerPed.Task.StartScenario("WORLD_HUMAN_BUM_FREEWAY", PlayerCache.MyClient.Position.ToVector3);
+                    else if (_item == item30) playerPed.Task.StartScenario("WORLD_HUMAN_HUMAN_STATUE", PlayerCache.MyClient.Position.ToVector3);
                 }
                 else
                 {
@@ -1522,10 +1522,10 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             animMenu4.AddItem(item45);
             animMenu4.OnItemSelect += (_menu, _item, _index) =>
             {
-                if (!PlayerCache.MyPlayer.Status.PlayerStates.InVehicle && playerPed.IsAlive)
+                if (!PlayerCache.MyClient.Status.PlayerStates.InVehicle && playerPed.IsAlive)
                 {
                     if (_item == item31)
-                        playerPed.Task.StartScenario("WORLD_HUMAN_CHEERING", PlayerCache.MyPlayer.Position.ToVector3);
+                        playerPed.Task.StartScenario("WORLD_HUMAN_CHEERING", PlayerCache.MyClient.Position.ToVector3);
                     else if (_item == item32)
                         playerPed.Task.PlayAnimation("mp_action", "thanks_male_06");
                     else if (_item == item33)
@@ -1575,7 +1575,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             animMenu5.AddItem(item50);
             animMenu5.OnItemSelect += (_menu, _item, _index) =>
             {
-                if (!PlayerCache.MyPlayer.Status.PlayerStates.InVehicle && playerPed.IsAlive)
+                if (!PlayerCache.MyClient.Status.PlayerStates.InVehicle && playerPed.IsAlive)
                 {
                     if (_item == item46)
                         playerPed.Task.PlayAnimation("amb@world_human_muscle_flex@arms_at_side@base", "base");
@@ -1614,23 +1614,23 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             animMenu6.AddItem(item58);
             animMenu6.OnItemSelect += (_menu, _item, _index) =>
             {
-                if (!PlayerCache.MyPlayer.Status.PlayerStates.InVehicle && playerPed.IsAlive)
+                if (!PlayerCache.MyClient.Status.PlayerStates.InVehicle && playerPed.IsAlive)
                 {
                     if (_item == item51)
                         playerPed.Task.PlayAnimation("amb@world_human_aa_coffee@idle_a", "idle_a");
                     else if (_item == item52)
                         playerPed.Task.PlayAnimation("anim@heists@prison_heistunfinished_biztarget_idle", "target_idle");
                     else if (_item == item53)
-                        playerPed.Task.StartScenario("WORLD_HUMAN_PICNIC", PlayerCache.MyPlayer.Position.ToVector3);
+                        playerPed.Task.StartScenario("WORLD_HUMAN_PICNIC", PlayerCache.MyClient.Position.ToVector3);
                     else if (_item == item54)
-                        playerPed.Task.StartScenario("world_human_leaning", PlayerCache.MyPlayer.Position.ToVector3);
+                        playerPed.Task.StartScenario("world_human_leaning", PlayerCache.MyClient.Position.ToVector3);
                     else if (_item == item55)
-                        playerPed.Task.StartScenario("WORLD_HUMAN_SUNBATHE_BACK", PlayerCache.MyPlayer.Position.ToVector3);
+                        playerPed.Task.StartScenario("WORLD_HUMAN_SUNBATHE_BACK", PlayerCache.MyClient.Position.ToVector3);
                     else if (_item == item56)
-                        playerPed.Task.StartScenario("WORLD_HUMAN_SUNBATHE", PlayerCache.MyPlayer.Position.ToVector3);
+                        playerPed.Task.StartScenario("WORLD_HUMAN_SUNBATHE", PlayerCache.MyClient.Position.ToVector3);
                     else if (_item == item57)
-                        playerPed.Task.StartScenario("world_human_maid_clean", PlayerCache.MyPlayer.Position.ToVector3);
-                    else if (_item == item58) playerPed.Task.StartScenario("world_human_tourist_mobile", PlayerCache.MyPlayer.Position.ToVector3);
+                        playerPed.Task.StartScenario("world_human_maid_clean", PlayerCache.MyClient.Position.ToVector3);
+                    else if (_item == item58) playerPed.Task.StartScenario("world_human_tourist_mobile", PlayerCache.MyClient.Position.ToVector3);
                 }
                 else
                 {
@@ -1665,7 +1665,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             animMenu7.AddItem(item69);
             animMenu7.OnItemSelect += (_menu, _item, _index) =>
             {
-                if (!PlayerCache.MyPlayer.Status.PlayerStates.InVehicle && playerPed.IsAlive)
+                if (!PlayerCache.MyClient.Status.PlayerStates.InVehicle && playerPed.IsAlive)
                 {
                     if (_item == item59)
                         playerPed.Task.PlayAnimation("oddjobs@towing", "m_blow_job_loop");
@@ -1680,7 +1680,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     else if (_item == item64)
                         playerPed.Task.PlayAnimation("mini@strip_club@idles@stripper", "stripper_idle_02");
                     else if (_item == item65)
-                        playerPed.Task.StartScenario("WORLD_HUMAN_PROSTITUTE_HIGH_CLASS", PlayerCache.MyPlayer.Position.ToVector3);
+                        playerPed.Task.StartScenario("WORLD_HUMAN_PROSTITUTE_HIGH_CLASS", PlayerCache.MyClient.Position.ToVector3);
                     else if (_item == item66)
                         playerPed.Task.PlayAnimation("mini@strip_club@backroom@", "stripper_b_backroom_idle_b");
                     else if (_item == item67)
@@ -1708,7 +1708,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             UIMenuItem item77 = new UIMenuItem("Hold the crowd2", "I said calm down");
             animMenu7.OnItemSelect += (_menu, _item, _index) =>
             {
-                if (!PlayerCache.MyPlayer.Status.PlayerStates.InVehicle && playerPed.IsAlive)
+                if (!PlayerCache.MyClient.Status.PlayerStates.InVehicle && playerPed.IsAlive)
                 {
                     if (_item == item70)
                         playerPed.Task.PlayAnimation("anim@mp_player_intupperface_palm", "idle_a");
@@ -1758,13 +1758,13 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
                 //TODO: TO BE CHECKED IF PLAYER HAS A GUN OR DRUGS WITH HIM
 
-                if (PlayerCache.MyPlayer.User.HasWeapon(WeaponHash.Pistol) || PlayerCache.MyPlayer.User.HasWeapon(WeaponHash.PistolMk2))
+                if (PlayerCache.MyClient.User.HasWeapon(WeaponHash.Pistol) || PlayerCache.MyClient.User.HasWeapon(WeaponHash.PistolMk2))
                 {
-                    if (PlayerCache.MyPlayer.User.GetWeapon(WeaponHash.Pistol).Item2.Ammo > 0)
+                    if (PlayerCache.MyClient.User.GetWeapon(WeaponHash.Pistol).Item2.Ammo > 0)
                     {
                         playerPed.Weapons.Select(WeaponHash.Pistol);
                     }
-                    else if (PlayerCache.MyPlayer.User.GetWeapon(WeaponHash.PistolMk2).Item2.Ammo > 0)
+                    else if (PlayerCache.MyClient.User.GetWeapon(WeaponHash.PistolMk2).Item2.Ammo > 0)
                     {
                         playerPed.Weapons.Select(WeaponHash.Pistol);
                     }
@@ -1860,18 +1860,18 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
         public static async Task routeColor()
         {
-            Player me = PlayerCache.MyPlayer.Player;
-            if (Vector3.Distance(PlayerCache.MyPlayer.Position.ToVector3, b.Position) > 5000f)
+            Player me = PlayerCache.MyClient.Player;
+            if (Vector3.Distance(PlayerCache.MyClient.Position.ToVector3, b.Position) > 5000f)
                 SetBlipRouteColour(b.Handle, (int)RouteColor.Red);
-            else if (Vector3.Distance(PlayerCache.MyPlayer.Position.ToVector3, b.Position) < 5000f && Vector3.Distance(PlayerCache.MyPlayer.Position.ToVector3, b.Position) > 4500f)
+            else if (Vector3.Distance(PlayerCache.MyClient.Position.ToVector3, b.Position) < 5000f && Vector3.Distance(PlayerCache.MyClient.Position.ToVector3, b.Position) > 4500f)
                 SetBlipRouteColour(b.Handle, (int)RouteColor.Blue);
-            else if (Vector3.Distance(PlayerCache.MyPlayer.Position.ToVector3, b.Position) < 4500f && Vector3.Distance(PlayerCache.MyPlayer.Position.ToVector3, b.Position) > 2500f)
+            else if (Vector3.Distance(PlayerCache.MyClient.Position.ToVector3, b.Position) < 4500f && Vector3.Distance(PlayerCache.MyClient.Position.ToVector3, b.Position) > 2500f)
                 SetBlipRouteColour(b.Handle, (int)RouteColor.Yellow);
-            else if (Vector3.Distance(PlayerCache.MyPlayer.Position.ToVector3, b.Position) < 2500f && Vector3.Distance(PlayerCache.MyPlayer.Position.ToVector3, b.Position) > 1500f)
+            else if (Vector3.Distance(PlayerCache.MyClient.Position.ToVector3, b.Position) < 2500f && Vector3.Distance(PlayerCache.MyClient.Position.ToVector3, b.Position) > 1500f)
                 SetBlipRouteColour(b.Handle, (int)RouteColor.Yellow);
-            else if (Vector3.Distance(PlayerCache.MyPlayer.Position.ToVector3, b.Position) < 1500f) SetBlipRouteColour(b.Handle, (int)RouteColor.Green);
+            else if (Vector3.Distance(PlayerCache.MyClient.Position.ToVector3, b.Position) < 1500f) SetBlipRouteColour(b.Handle, (int)RouteColor.Green);
 
-            if (Vector3.Distance(PlayerCache.MyPlayer.Position.ToVector3, b.Position) < 20)
+            if (Vector3.Distance(PlayerCache.MyClient.Position.ToVector3, b.Position) < 20)
             {
                 Notifications.ShowNotification("GPS: You arrived at your ~b~Destination~w~!", NotificationColor.GreenDark, true);
                 b.ShowRoute = false;

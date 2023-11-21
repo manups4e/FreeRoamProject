@@ -39,7 +39,7 @@ namespace FreeRoamProject.Client.Core.Utility
 
         public static void PlayerJoined(PlayerClient client)
         {
-            if (client.Handle == PlayerCache.MyPlayer.Handle) return;
+            if (client.Handle == PlayerCache.MyClient.Handle) return;
             client.Status ??= new(client.Player);
             //TODO: shownotification with additional text, to be added as a separate function?
             BeginTextCommandThefeedPost("TICK_JOIN");
@@ -76,7 +76,7 @@ namespace FreeRoamProject.Client.Core.Utility
         public static void sendUserInfo(string _char_data, string _group)
         {
             //PlayerCache.MyPlayer.User.char_data = _char_data;
-            PlayerCache.MyPlayer.User.group = _group;
+            PlayerCache.MyClient.User.group = _group;
         }
 
         public static bool On = false;
@@ -114,7 +114,7 @@ namespace FreeRoamProject.Client.Core.Utility
 
         public static void death()
         {
-            PlayerCache.MyPlayer.Ped.Kill();
+            PlayerCache.MyClient.Ped.Kill();
         }
 
         public static async void announce(string msg)
@@ -128,7 +128,7 @@ namespace FreeRoamProject.Client.Core.Utility
             Screen.Fading.FadeOut(800);
             while (Screen.Fading.IsFadingOut) await BaseScript.Delay(50);
             // TODO: PLAYER MUST BE REVIVED NEAR THEIR CURRENT POSITION
-            Functions.RespawnPed(PlayerCache.MyPlayer.Position);
+            Functions.RespawnPed(PlayerCache.MyClient.Position);
             //BaseScript.TriggerServerEvent("tlg:updateCurChar", "needs", nee.ToJson());
             //BaseScript.TriggerServerEvent("tlg:setDeathStatus", false);
             Screen.Effects.Stop(ScreenEffect.DeathFailOut);
@@ -137,8 +137,8 @@ namespace FreeRoamProject.Client.Core.Utility
 
         public static async void SpawnVehicle(string model)
         {
-            Vector3 coords = PlayerCache.MyPlayer.Position.ToVector3;
-            Vehicle Veh = await Functions.SpawnVehicle(model, coords, PlayerCache.MyPlayer.Ped.Heading);
+            Vector3 coords = PlayerCache.MyClient.Position.ToVector3;
+            Vehicle Veh = await Functions.SpawnVehicle(model, coords, PlayerCache.MyClient.Ped.Heading);
             Veh.PreviouslyOwnedByPlayer = true;
             Veh.FadeEntity(false);
             await Veh.FadeEntityAsync(true);
@@ -177,7 +177,7 @@ namespace FreeRoamProject.Client.Core.Utility
             uint weaponHash = Functions.HashUint(weaponName);
             uint componentHash = Functions.HashUint(weaponComponent);
 
-            if (!Cache.PlayerCache.MyPlayer.User.HasWeaponComponent(weaponName, weaponComponent))
+            if (!Cache.PlayerCache.MyClient.User.HasWeaponComponent(weaponName, weaponComponent))
             {
                 GiveWeaponComponentToPed(PlayerPedId(), weaponHash, componentHash);
             }

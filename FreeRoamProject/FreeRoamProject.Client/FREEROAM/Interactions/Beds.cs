@@ -32,7 +32,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
 
         public static async Task CheckBeds()
         {
-            Ped playerPed = Cache.PlayerCache.MyPlayer.Ped;
+            Ped playerPed = Cache.PlayerCache.MyClient.Ped;
             if (!IsEntityPlayingAnim(playerPed.Handle, "mp_bedmid", "f_getin_l_bighouse", 2) &&
                 !IsEntityPlayingAnim(playerPed.Handle, "mp_bedmid", "f_getin_r_bighouse", 2) &&
                 !IsEntityPlayingAnim(playerPed.Handle, "mp_bedmid", "f_getout_l_bighouse", 2) &&
@@ -115,7 +115,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
                 int i;
                 for (i = 0; i <= 7; i++)
                     if (!peds[i].IsInjured)
-                        if (IsEntityInAngledArea(peds[i].Handle, n1.X, n1.Y, n1.Z, n2.X, n2.Y, n2.Z, 2f, false, true, 0) && peds[i].Handle != PlayerCache.MyPlayer.Ped.Handle)
+                        if (IsEntityInAngledArea(peds[i].Handle, n1.X, n1.Y, n1.Z, n2.X, n2.Y, n2.Z, 2f, false, true, 0) && peds[i].Handle != PlayerCache.MyClient.Ped.Handle)
                             return false;
             }
             return true;
@@ -124,10 +124,10 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
         protected bool Controllo1(Vector3 vParam0, float fParam3)
         {
             if (IsPlayerPlaying(PlayerId()))
-                if (!IsPedInAnyVehicle(PlayerCache.MyPlayer.Ped.Handle, false) && !IsEntityOnFire(PlayerCache.MyPlayer.Ped.Handle) && IsPlayerControlOn(PlayerId()))
+                if (!IsPedInAnyVehicle(PlayerCache.MyClient.Ped.Handle, false) && !IsEntityOnFire(PlayerCache.MyClient.Ped.Handle) && IsPlayerControlOn(PlayerId()))
                     if (!IsExplosionInSphere(-1, vParam0.X, vParam0.Y, vParam0.Z, 2f))
                         if (IsGameplayCamRendering() && !IsCinematicCamRendering())
-                            if (Controllo2(Cache.PlayerCache.MyPlayer.Ped.Position, vParam0, fParam3, false))
+                            if (Controllo2(Cache.PlayerCache.MyClient.Ped.Position, vParam0, fParam3, false))
                                 return true;
             return false;
         }
@@ -170,7 +170,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
 
         public override async void LayDown()
         {
-            Ped playerPed = Cache.PlayerCache.MyPlayer.Ped;
+            Ped playerPed = Cache.PlayerCache.MyClient.Ped;
             RequestAnimDict("mp_bedmid");
             while (!HasAnimDictLoaded("mp_bedmid")) await BaseScript.Delay(0);
             Vector3 vVar0 = new Vector3(1.5f);
@@ -222,11 +222,11 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
             RequestAnimDict("mp_bedmid");
             while (!HasAnimDictLoaded("mp_bedmid")) await BaseScript.Delay(0);
             uLocal_331 = NetworkCreateSynchronisedScene(vLocal_348.X, vLocal_348.Y, vLocal_348.Z, vLocal_351.X, vLocal_351.Y, vLocal_351.Z, 2, false, true, 1065353216, 0, 1065353216);
-            NetworkAddPedToSynchronisedScene(PlayerCache.MyPlayer.Ped.Handle, uLocal_331, sLocal_334, sLocal_336, 8f, -2f, 261, 0, 1148846080, 0);
+            NetworkAddPedToSynchronisedScene(PlayerCache.MyClient.Ped.Handle, uLocal_331, sLocal_334, sLocal_336, 8f, -2f, 261, 0, 1148846080, 0);
             NetworkStartSynchronisedScene(uLocal_331);
 
             uLocal_331 = NetworkCreateSynchronisedScene(vLocal_348.X, vLocal_348.Y, vLocal_348.Z, vLocal_351.X, vLocal_351.Y, vLocal_351.Z, 2, false, false, 1065353216, 0, 1065353216);
-            NetworkAddPedToSynchronisedScene(PlayerCache.MyPlayer.Ped.Handle, uLocal_331, sLocal_334, sLocal_337, 1000f, -2f, 261, 0, 1148846080, 0);
+            NetworkAddPedToSynchronisedScene(PlayerCache.MyClient.Ped.Handle, uLocal_331, sLocal_334, sLocal_337, 1000f, -2f, 261, 0, 1148846080, 0);
             NetworkStartSynchronisedScene(uLocal_331);
 
             ABed = false;
@@ -252,7 +252,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
 
         public async override void LayDown()
         {
-            Ped playerPed = Cache.PlayerCache.MyPlayer.Ped;
+            Ped playerPed = Cache.PlayerCache.MyClient.Ped;
             RequestAnimDict("mp_bedmid");
             while (!HasAnimDictLoaded("mp_bedmid")) await BaseScript.Delay(0);
             playerPed.Weapons.Select(WeaponHash.Unarmed);
@@ -297,11 +297,11 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
             RequestAnimDict("mp_bedmid");
             while (!HasAnimDictLoaded("mp_bedmid")) await BaseScript.Delay(0);
             uLocal_330 = NetworkCreateSynchronisedScene(vLocal_347.X, vLocal_347.Y, vLocal_347.Z, vLocal_350.X, vLocal_350.Y, vLocal_350.Z, 2, false, false, 1065353216, 0, 1065353216);
-            NetworkAddPedToSynchronisedScene(PlayerCache.MyPlayer.Ped.Handle, uLocal_330, sLocal_333, sLocal_336, 2f, -2f, 261, 0, 1148846080, 0);
+            NetworkAddPedToSynchronisedScene(PlayerCache.MyClient.Ped.Handle, uLocal_330, sLocal_333, sLocal_336, 2f, -2f, 261, 0, 1148846080, 0);
             NetworkStartSynchronisedScene(uLocal_330);
 
             uLocal_330 = NetworkCreateSynchronisedScene(vLocal_347.X, vLocal_347.Y, vLocal_347.Z, vLocal_350.X, vLocal_350.Y, vLocal_350.Z, 2, false, false, 1065353216, 0, 1065353216);
-            NetworkAddPedToSynchronisedScene(PlayerCache.MyPlayer.Ped.Handle, uLocal_330, sLocal_333, sLocal_336, 1000f, -2f, 261, 0, 1148846080, 0);
+            NetworkAddPedToSynchronisedScene(PlayerCache.MyClient.Ped.Handle, uLocal_330, sLocal_333, sLocal_336, 1000f, -2f, 261, 0, 1148846080, 0);
             NetworkStartSynchronisedScene(uLocal_330);
 
             ABed = false;
@@ -761,13 +761,13 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
         public async override void LayDown() { }
         public async void Sdraiati(BedsCoordsAnim lato, bool destra)
         {
-            Ped playerPed = PlayerCache.MyPlayer.Ped;
+            Ped playerPed = PlayerCache.MyClient.Ped;
             RequestAnimDict("mp_bedmid");
             while (!HasAnimDictLoaded("mp_bedmid")) await BaseScript.Delay(0);
             Vector3 var0 = lato.CoordAnim;
             Vector3 var1 = lato.RotAnim;
 
-            Cache.PlayerCache.MyPlayer.Ped.Weapons.Select(WeaponHash.Unarmed);
+            Cache.PlayerCache.MyClient.Ped.Weapons.Select(WeaponHash.Unarmed);
             Vector3 vVar3;
             if (GetFollowPedCamViewMode() == 4)
                 SetFollowPedCamViewMode(1);
@@ -805,11 +805,11 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
             RequestAnimDict("mp_bedmid");
             while (!HasAnimDictLoaded("mp_bedmid")) await BaseScript.Delay(0);
             int uLocal_410 = NetworkCreateSynchronisedScene(coords[0].X, coords[0].Y, coords[0].Z, coords[1].X, coords[1].Y, coords[1].Z, 2, false, false, 1065353216, 0, 1065353216);
-            NetworkAddPedToSynchronisedScene(PlayerCache.MyPlayer.Ped.Handle, uLocal_410, sLocal_413, func_9(destra), 2f, -2f, 261, 0, 1148846080, 0);
+            NetworkAddPedToSynchronisedScene(PlayerCache.MyClient.Ped.Handle, uLocal_410, sLocal_413, func_9(destra), 2f, -2f, 261, 0, 1148846080, 0);
             NetworkStartSynchronisedScene(uLocal_410);
 
             uLocal_410 = NetworkCreateSynchronisedScene(coords[0].X, coords[0].Y, coords[0].Z, coords[1].X, coords[1].Y, coords[1].Z, 2, false, false, 1065353216, 0, 1065353216);
-            NetworkAddPedToSynchronisedScene(PlayerCache.MyPlayer.Ped.Handle, uLocal_410, sLocal_413, func_9(destra), 1000f, -2f, 261, 0, 1148846080, 0);
+            NetworkAddPedToSynchronisedScene(PlayerCache.MyClient.Ped.Handle, uLocal_410, sLocal_413, func_9(destra), 1000f, -2f, 261, 0, 1148846080, 0);
             NetworkStartSynchronisedScene(uLocal_410);
 
             ABedDestra = false;

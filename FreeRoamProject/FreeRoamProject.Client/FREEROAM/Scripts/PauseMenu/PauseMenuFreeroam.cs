@@ -17,7 +17,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.PauseMenu
         public static async void FreeRoamMenu(Ped me, object[] _unused)
         {
             if (MenuHandler.IsAnyPauseMenuOpen) return;
-            PlayerClient client = Cache.PlayerCache.MyPlayer;
+            PlayerClient client = Cache.PlayerCache.MyClient;
 
             int day = GetClockDayOfWeek();
             string giorno = "Monday";
@@ -48,7 +48,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.PauseMenu
 
             TabView MainMenu = new("The Last Galaxy", "FreeRoam")
             {
-                SideStringTop = Cache.PlayerCache.MyPlayer.Player.Name,
+                SideStringTop = Cache.PlayerCache.MyClient.Player.Name,
                 SideStringMiddle = $"{giorno.ToUpper()} {GetClockHours()}:{GetClockMinutes()}",
                 SideStringBottom = "CASH: $" + client.User.Money + " BANK: $" + client.User.Bank,
                 DisplayHeader = true

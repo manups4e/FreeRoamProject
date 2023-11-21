@@ -31,7 +31,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
 
         public static async void FirstTimeTransition()
         {
-            PlayerCache.MyPlayer.Ped.Detach();
+            PlayerCache.MyClient.Ped.Detach();
             ScaleformUI.Main.Warning.ShowWarningWithButtons("Would you like to skip the Intro video?", "Select yes to be directly sent into the game.", "", new List<InstructionalButton>
             {
                 new InstructionalButton(CitizenFX.Core.Control.FrontendCancel, Game.GetGXTEntry("FE_HLP31")),
@@ -55,14 +55,14 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
         public static async Task ToStart()
         {
             Screen.Fading.FadeIn(1000);
-            Ped playerPed = PlayerCache.MyPlayer.Ped;
+            Ped playerPed = PlayerCache.MyClient.Ped;
             TriggerMusicEvent("FM_INTRO_START");
             playerPed.Detach();
             ClientMain.Instance.AddTick(Control);
             ClientMain.Instance.AddTick(ShowCredits);
             playerPed.IsPositionFrozen = true;
             playerPed.IsVisible = false;
-            PlayerCache.MyPlayer.Status.Instance.InstancePlayer("PlayerEntrance_FR");
+            PlayerCache.MyClient.Status.Instance.InstancePlayer("PlayerEntrance_FR");
             playerPed.Position = new Vector3(745.877f, 1215.591f, 359.405f);
             Camera Cam1 = new Camera(CreateCam("DEFAULT_SCRIPTED_CAMERA", true)) { FieldOfView = 60f, Position = new Vector3(745.877f, 1215.591f, 359.405f) };
             Cam1.IsActive = true;
@@ -149,7 +149,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
 
         public static async void ToContinue(Camera Cam)
         {
-            Ped playerPed = PlayerCache.MyPlayer.Ped;
+            Ped playerPed = PlayerCache.MyClient.Ped;
             ClientMain.Instance.AddTick(Control);
             ClientMain.Instance.AddTick(ShowCredits);
             Camera Cam9 = new Camera(CreateCam("DEFAULT_SCRIPTED_CAMERA", true)) { FieldOfView = 60f };
@@ -234,12 +234,12 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
 
         private static async void ToTheEnd()
         {
-            Ped playerPed = PlayerCache.MyPlayer.Ped;
+            Ped playerPed = PlayerCache.MyClient.Ped;
             TriggerMusicEvent("GLOBAL_KILL_MUSIC");
             playerPed.Position = new Vector3(262.687f, -875.486f, 29.153f);
             RenderScriptCams(false, false, 0, false, false);
             playerPed.IsVisible = true;
-            PlayerCache.MyPlayer.Status.Instance.RemoveInstance();
+            PlayerCache.MyClient.Status.Instance.RemoveInstance();
             playerPed.IsPositionFrozen = false;
             NetworkClearClockTimeOverride();
             await BaseScript.Delay(1000);
@@ -248,9 +248,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             Screen.Fading.FadeIn(800);
             ClientMain.Instance.RemoveTick(Control);
             EventDispatcher.Send("worldEventsManage.Server:AddParticipant");
-            AccessingEvents.FreeRoamSpawn(PlayerCache.MyPlayer);
-            PlayerCache.MyPlayer.Status.PlayerStates.Spawned = true;
-            PlayerCache.MyPlayer.Player.CanControlCharacter = true;
+            AccessingEvents.FreeRoamSpawn(PlayerCache.MyClient);
+            PlayerCache.MyClient.Status.PlayerStates.Spawned = true;
+            PlayerCache.MyClient.Player.CanControlCharacter = true;
             FreeRoamCreator.Stop();
         }
 

@@ -30,7 +30,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
                 {
                     foreach (Vehicle v in veh)
                     {
-                        if (DecorExistOn(v.Handle, "weOwnedVeh") || v.Driver == Cache.PlayerCache.MyPlayer.Ped) continue;
+                        if (DecorExistOn(v.Handle, "weOwnedVeh") || v.Driver == Cache.PlayerCache.MyClient.Ped) continue;
                         v.Delete();
                     }
                 }
@@ -91,7 +91,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
             if (justDestroyed)
             {
                 if (GetNetworkTime() - start < 25000)
-                    Cache.PlayerCache.MyPlayer.Player.WantedLevel = 0;
+                    Cache.PlayerCache.MyClient.Player.WantedLevel = 0;
                 else
                     justDestroyed = false;
             }
@@ -123,19 +123,19 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
             {
                 ClientMain.Logger.Debug("Still in an event vehicle, destroying..");
                 Audio.PlaySoundFrontend("BOATS_PLANES_HELIS_BOOM", "MP_LOBBY_SOUNDS");
-                if (Cache.PlayerCache.MyPlayer.Ped.IsInFlyingVehicle)
+                if (Cache.PlayerCache.MyClient.Ped.IsInFlyingVehicle)
                 {
                     Notifications.ShowAdvancedNotification("Press ~INPUT_PARACHUTE_DEPLOY~ per usare il paracadute!", "Emergenza Paracadute", "");
-                    Cache.PlayerCache.MyPlayer.Ped.Weapons.Give(WeaponHash.Parachute, 999, true, true);
+                    Cache.PlayerCache.MyClient.Ped.Weapons.Give(WeaponHash.Parachute, 999, true, true);
                 }
 
-                Cache.PlayerCache.MyPlayer.Ped.Task.LeaveVehicle(LeaveVehicleFlags.BailOut);
+                Cache.PlayerCache.MyClient.Ped.Task.LeaveVehicle(LeaveVehicleFlags.BailOut);
 
                 await BaseScript.Delay(5000);
                 currentVehicle.ExplodeNetworked();
 
-                if (Cache.PlayerCache.MyPlayer.Ped.IsFalling)
-                    Cache.PlayerCache.MyPlayer.Ped.OpenParachute();
+                if (Cache.PlayerCache.MyClient.Ped.IsFalling)
+                    Cache.PlayerCache.MyClient.Ped.OpenParachute();
 
                 Notifications.ShowAdvancedNotification("Sei stato cacciato dal tuo veicolo", "Attenzione!", "");
             }

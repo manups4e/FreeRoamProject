@@ -59,7 +59,7 @@ namespace FreeRoamProject.Client.Handlers
         {
             foreach (PlayerClient client in ClientMain.Instance.Clients)
             {
-                if (client.Handle == PlayerCache.MyPlayer.Handle) continue;
+                if (client.Handle == PlayerCache.MyClient.Handle) continue;
                 if (client.Status != null && client.Status.PlayerStates.Spawned)
                 {
                     //TODO: ADD CHECKS FOR AT HOME.. AND OTHER STATES TO CHANGE ACCORDINGLY.. LIKE.. IF IT'S IN A TANK.. OR ARMORED VEH

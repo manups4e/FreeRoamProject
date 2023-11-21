@@ -12,7 +12,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
         }
         public override void OnEventActivated()
         {
-            Cache.PlayerCache.MyPlayer.Ped.Weapons.RemoveAll();
+            Cache.PlayerCache.MyClient.Ped.Weapons.RemoveAll();
             ClientMain.Instance.AddTick(OnTick);
             base.OnEventActivated();
         }

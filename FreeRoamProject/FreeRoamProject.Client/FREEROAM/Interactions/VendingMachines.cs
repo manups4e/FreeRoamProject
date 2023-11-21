@@ -43,12 +43,12 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
         {
             if (VendingMachineClosest == null)
             {
-                VendingMachineClosest = World.GetAllProps().Select(o => new Prop(o.Handle)).Where(o => VendingHashes.Contains((ObjectHash)(uint)o.Model.Hash)).FirstOrDefault(o => Cache.PlayerCache.MyPlayer.Position.Distance(o.Position) < MachineRange);
+                VendingMachineClosest = World.GetAllProps().Select(o => new Prop(o.Handle)).Where(o => VendingHashes.Contains((ObjectHash)(uint)o.Model.Hash)).FirstOrDefault(o => Cache.PlayerCache.MyClient.Position.Distance(o.Position) < MachineRange);
                 await BaseScript.Delay(250);
             }
             else
             {
-                if (!PlayerCache.MyPlayer.Ped.IsDead && !MenuHandler.IsAnyMenuOpen)
+                if (!PlayerCache.MyClient.Ped.IsDead && !MenuHandler.IsAnyMenuOpen)
                 {
                     if (VendingMachineClosest.Model.Hash == (int)ObjectHash.prop_vend_soda_01 || VendingMachineClosest.Model.Hash == (int)ObjectHash.prop_vend_soda_02)
                     {
@@ -64,9 +64,9 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
 
         public static async Task VendingMachinesAnim()
         {
-            if (Cache.PlayerCache.MyPlayer.User.Money > 5)
+            if (Cache.PlayerCache.MyClient.User.Money > 5)
             {
-                Ped playerPed = PlayerCache.MyPlayer.Ped;
+                Ped playerPed = PlayerCache.MyClient.Ped;
                 RequestAmbientAudioBank(AudioBank, false);
                 RequestAnimDict(anim);
                 while (!HasAnimDictLoaded(anim)) await BaseScript.Delay(0);

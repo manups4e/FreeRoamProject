@@ -801,16 +801,16 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 RequestModel(hash);
                 while (!HasModelLoaded(hash)) await BaseScript.Delay(1);
             }
-            SetPlayerModel(PlayerCache.MyPlayer.Player.Handle, hash);
-            int id = PlayerCache.MyPlayer.Ped.Handle;
+            SetPlayerModel(PlayerCache.MyClient.Player.Handle, hash);
+            int id = PlayerCache.MyClient.Ped.Handle;
             int[][] aa = GetCreatorSuit(_selected == "Male", 0);
             ComponentDrawables comp = new ComponentDrawables(aa[0][0], aa[0][1], aa[0][2], aa[0][3], aa[0][4], aa[0][5], aa[0][6], aa[0][7], aa[0][8], aa[0][9], aa[0][10], aa[0][11]);
             ComponentDrawables text = new ComponentDrawables(aa[1][0], aa[1][1], aa[1][2], aa[1][3], aa[1][4], aa[1][5], aa[1][6], aa[1][7], aa[1][8], aa[1][9], aa[1][10], aa[1][11]);
             PropIndices _prop = new PropIndices(GetPedPropIndex(id, 0), GetPedPropIndex(id, 1), GetPedPropIndex(id, 2), GetPedPropIndex(id, 3), GetPedPropIndex(id, 4), GetPedPropIndex(id, 5), GetPedPropIndex(id, 6), GetPedPropIndex(id, 7), GetPedPropIndex(id, 8));
             PropIndices _proptxt = new PropIndices(GetPedPropTextureIndex(id, 0), GetPedPropTextureIndex(id, 1), GetPedPropTextureIndex(id, 2), GetPedPropTextureIndex(id, 3), GetPedPropTextureIndex(id, 4), GetPedPropTextureIndex(id, 5), GetPedPropTextureIndex(id, 6), GetPedPropTextureIndex(id, 7), GetPedPropTextureIndex(id, 8));
             plpl.Dressing = new("", "", comp, text, _prop, _proptxt);
-            UpdateFace(Cache.PlayerCache.MyPlayer.Ped.Handle, plpl.Skin);
-            UpdateDress(Cache.PlayerCache.MyPlayer.Ped.Handle, plpl.Dressing);
+            UpdateFace(Cache.PlayerCache.MyClient.Ped.Handle, plpl.Skin);
+            UpdateDress(Cache.PlayerCache.MyClient.Ped.Handle, plpl.Dressing);
         }
 
         #region Creator Menu
@@ -821,7 +821,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
         {
             try
             {
-                _dummyPed = await Functions.CreatePedLocally(PedHash.FreemodeFemale01, Cache.PlayerCache.MyPlayer.Ped.Position + new Vector3(10));
+                _dummyPed = await Functions.CreatePedLocally(PedHash.FreemodeFemale01, Cache.PlayerCache.MyClient.Ped.Position + new Vector3(10));
                 _dummyPed.IsVisible = false;
                 _dummyPed.IsPositionFrozen = false;
                 _dummyPed.IsCollisionEnabled = true;
@@ -833,21 +833,21 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 if (IsValidInterior(94722)) LoadInterior(94722);
                 while (!IsInteriorReady(94722)) await BaseScript.Delay(1000);
                 sub_8d2b2();
-                PlayerCache.MyPlayer.Player.CanControlCharacter = false;
-                Cache.PlayerCache.MyPlayer.Status.Instance.InstancePlayer(Cache.PlayerCache.MyPlayer.Handle, "CharCreation");
+                PlayerCache.MyClient.Player.CanControlCharacter = false;
+                Cache.PlayerCache.MyClient.Status.Instance.InstancePlayer(Cache.PlayerCache.MyClient.Handle, "CharCreation");
                 // TODO: CHANGE THE FINANCE ACCORDINGLY I THINK? 1000, 3000 SOUNDS SO EARLY ESX...
-                _dataMale = new FreeRoamChar(SnowflakeGenerator.Instance.Next().ToInt64(), new Finance(1000, 3000), new Gang("Uncensored", 0), new Skin("Male", (uint)PedHash.FreemodeMale01, 0, GetRandomFloatInRange(.5f, 1f), new Face(0, 0, new float[20] { Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(1f, -1, 1) }), new A2(GetRandomIntInRange(0, Ageing.Count), GetRandomFloatInRange(0f, 1f)), new A2(255, 0f), new A2(GetRandomIntInRange(0, Blemishes.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Complexions.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_Damage.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_moles_and_leeks.Count), GetRandomFloatInRange(0f, 1f)), new A3(255, 0f, new int[2] { 0, 0 }), new A3(255, 0f, new int[2] { 0, 0 }), new Facial(new A3(GetRandomIntInRange(0, Beards.Count), GetRandomFloatInRange(0f, 1f), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) }), new A3(GetRandomIntInRange(0, eyebrow.Count), GetRandomFloatInRange(0f, 1f), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) })), new Hair(GetRandomIntInRange(0, HairMale.Count), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) }), new Eye(GetRandomIntInRange(0, EyesColor.Count)), new Ears(255, 0)), new Dressing("Iniziale", "Per cominciare", new ComponentDrawables(-1, 0, GetPedDrawableVariation(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), 0, 0, -1, 15, 0, 15, 0, 0, 56), new ComponentDrawables(-1, 0, GetPedTextureVariation(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), 0, 4, -1, 14, 0, 0, 0, 0, 0), new PropIndices(-1, GetPedPropIndex(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1), new PropIndices(-1, GetPedPropTextureIndex(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1)), new FreeRoamStats(), new GameStats());
-                _dataFemale = new FreeRoamChar(SnowflakeGenerator.Instance.Next().ToInt64(), new Finance(1000, 3000), new Gang("Uncensored", 0), new Skin("Female", (uint)PedHash.FreemodeFemale01, 0, GetRandomFloatInRange(.5f, 1f), new Face(21, 0, new float[20] { Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1) }), new A2(GetRandomIntInRange(0, Ageing.Count), GetRandomFloatInRange(0f, 1f)), new A2(255, 0f), new A2(GetRandomIntInRange(0, Blemishes.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Complexions.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_Damage.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_moles_and_leeks.Count), GetRandomFloatInRange(0f, 1f)), new A3(255, 0f, new int[2] { 0, 0 }), new A3(255, 0f, new int[2] { 0, 0 }), new Facial(new A3(255, 0f, new int[2] { 0, 0 }), new A3(GetRandomIntInRange(0, eyebrow.Count), GetRandomFloatInRange(0f, 1f), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) })), new Hair(GetRandomIntInRange(0, HairMale.Count), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) }), new Eye(GetRandomIntInRange(0, EyesColor.Count)), new Ears(255, 0)), new Dressing("Iniziale", "Per cominciare", new ComponentDrawables(-1, 0, GetPedDrawableVariation(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), 0, 0, -1, 15, 0, 15, 0, 0, 56), new ComponentDrawables(-1, 0, GetPedTextureVariation(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), 0, 4, -1, 14, 0, 0, 0, 0, 0), new PropIndices(-1, GetPedPropIndex(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1), new PropIndices(-1, GetPedPropTextureIndex(Cache.PlayerCache.MyPlayer.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1)), new FreeRoamStats(), new GameStats());
+                _dataMale = new FreeRoamChar(SnowflakeGenerator.Instance.Next().ToInt64(), new Finance(1000, 3000), new Gang("Uncensored", 0), new Skin("Male", (uint)PedHash.FreemodeMale01, 0, GetRandomFloatInRange(.5f, 1f), new Face(0, 0, new float[20] { Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(1f, -1, 1) }), new A2(GetRandomIntInRange(0, Ageing.Count), GetRandomFloatInRange(0f, 1f)), new A2(255, 0f), new A2(GetRandomIntInRange(0, Blemishes.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Complexions.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_Damage.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_moles_and_leeks.Count), GetRandomFloatInRange(0f, 1f)), new A3(255, 0f, new int[2] { 0, 0 }), new A3(255, 0f, new int[2] { 0, 0 }), new Facial(new A3(GetRandomIntInRange(0, Beards.Count), GetRandomFloatInRange(0f, 1f), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) }), new A3(GetRandomIntInRange(0, eyebrow.Count), GetRandomFloatInRange(0f, 1f), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) })), new Hair(GetRandomIntInRange(0, HairMale.Count), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) }), new Eye(GetRandomIntInRange(0, EyesColor.Count)), new Ears(255, 0)), new Dressing("Iniziale", "Per cominciare", new ComponentDrawables(-1, 0, GetPedDrawableVariation(Cache.PlayerCache.MyClient.Ped.Handle, 2), 0, 0, -1, 15, 0, 15, 0, 0, 56), new ComponentDrawables(-1, 0, GetPedTextureVariation(Cache.PlayerCache.MyClient.Ped.Handle, 2), 0, 4, -1, 14, 0, 0, 0, 0, 0), new PropIndices(-1, GetPedPropIndex(Cache.PlayerCache.MyClient.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1), new PropIndices(-1, GetPedPropTextureIndex(Cache.PlayerCache.MyClient.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1)), new FreeRoamStats(), new GameStats());
+                _dataFemale = new FreeRoamChar(SnowflakeGenerator.Instance.Next().ToInt64(), new Finance(1000, 3000), new Gang("Uncensored", 0), new Skin("Female", (uint)PedHash.FreemodeFemale01, 0, GetRandomFloatInRange(.5f, 1f), new Face(21, 0, new float[20] { Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1) }), new A2(GetRandomIntInRange(0, Ageing.Count), GetRandomFloatInRange(0f, 1f)), new A2(255, 0f), new A2(GetRandomIntInRange(0, Blemishes.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Complexions.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_Damage.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_moles_and_leeks.Count), GetRandomFloatInRange(0f, 1f)), new A3(255, 0f, new int[2] { 0, 0 }), new A3(255, 0f, new int[2] { 0, 0 }), new Facial(new A3(255, 0f, new int[2] { 0, 0 }), new A3(GetRandomIntInRange(0, eyebrow.Count), GetRandomFloatInRange(0f, 1f), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) })), new Hair(GetRandomIntInRange(0, HairMale.Count), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) }), new Eye(GetRandomIntInRange(0, EyesColor.Count)), new Ears(255, 0)), new Dressing("Iniziale", "Per cominciare", new ComponentDrawables(-1, 0, GetPedDrawableVariation(Cache.PlayerCache.MyClient.Ped.Handle, 2), 0, 0, -1, 15, 0, 15, 0, 0, 56), new ComponentDrawables(-1, 0, GetPedTextureVariation(Cache.PlayerCache.MyClient.Ped.Handle, 2), 0, 4, -1, 14, 0, 0, 0, 0, 0), new PropIndices(-1, GetPedPropIndex(Cache.PlayerCache.MyClient.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1), new PropIndices(-1, GetPedPropTextureIndex(Cache.PlayerCache.MyClient.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1)), new FreeRoamStats(), new GameStats());
                 _data = _selected.ToLower() == "male" ? _dataMale : _dataFemale;
                 UpdateModel(_data.ToJson());
                 await BaseScript.Delay(1000);
-                Cache.PlayerCache.MyPlayer.Ped.Position = new Vector3(402.91f, -996.74f, -180.00025f);
-                while (!HasCollisionLoadedAroundEntity(PlayerCache.MyPlayer.Ped.Handle)) await BaseScript.Delay(1);
-                Cache.PlayerCache.MyPlayer.Ped.IsVisible = true;
-                Cache.PlayerCache.MyPlayer.Ped.IsPositionFrozen = false;
-                Cache.PlayerCache.MyPlayer.Ped.BlockPermanentEvents = true;
+                Cache.PlayerCache.MyClient.Ped.Position = new Vector3(402.91f, -996.74f, -180.00025f);
+                while (!HasCollisionLoadedAroundEntity(PlayerCache.MyClient.Ped.Handle)) await BaseScript.Delay(1);
+                Cache.PlayerCache.MyClient.Ped.IsVisible = true;
+                Cache.PlayerCache.MyClient.Ped.IsPositionFrozen = false;
+                Cache.PlayerCache.MyClient.Ped.BlockPermanentEvents = true;
                 ped_cre_board(_data);
-                await TaskWalkInToRoom(Cache.PlayerCache.MyPlayer.Ped, _selected == "Male" ? sub_7dd83(1, 0, "Male") : sub_7dd83(1, 0, "Female"));
+                await TaskWalkInToRoom(Cache.PlayerCache.MyClient.Ped, _selected == "Male" ? sub_7dd83(1, 0, "Male") : sub_7dd83(1, 0, "Female"));
                 await BaseScript.Delay(2000);
                 RenderScriptCams(true, true, 0, false, false);
                 cam2.Delete();
@@ -1192,8 +1192,8 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                             break;
                     }
                     UpdateModel(_data.ToJson());
-                    PlayerCache.MyPlayer.Ped.IsPositionFrozen = true;
-                    BD1.AttachTo(Cache.PlayerCache.MyPlayer.Ped.Bones[Bone.PH_R_Hand], Vector3.Zero, Vector3.Zero);
+                    PlayerCache.MyClient.Ped.IsPositionFrozen = true;
+                    BD1.AttachTo(Cache.PlayerCache.MyClient.Ped.Bones[Bone.PH_R_Hand], Vector3.Zero, Vector3.Zero);
                     TaskPlayAnim(PlayerPedId(), sub_7dd83(1, 0, _selected), "Loop", 8f, -4f, -1, 513, 0, false, false, false);
                 };
 
@@ -1218,7 +1218,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                         _dataMale = _data;
                     else
                         _dataFemale = _data;
-                    UpdateFace(Cache.PlayerCache.MyPlayer.Ped.Handle, _data.Skin);
+                    UpdateFace(Cache.PlayerCache.MyClient.Ped.Handle, _data.Skin);
                 };
                 Parents.OnSliderChange += async (_sender, _item, _newIndex) =>
                 {
@@ -1230,7 +1230,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                         _dataMale = _data;
                     else
                         _dataFemale = _data;
-                    UpdateFace(Cache.PlayerCache.MyPlayer.Ped.Handle, _data.Skin);
+                    UpdateFace(Cache.PlayerCache.MyClient.Ped.Handle, _data.Skin);
                 };
 
                 #endregion
@@ -1274,7 +1274,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                         else if (b == a.Panels[1])
                             _data.Skin.Lipstick.Color[1] = c;
                     }
-                    UpdateFace(Cache.PlayerCache.MyPlayer.Ped.Handle, _data.Skin);
+                    UpdateFace(Cache.PlayerCache.MyClient.Ped.Handle, _data.Skin);
                 };
 
                 Appearances.OnPercentagePanelChange += (a, b, c) =>
@@ -1330,7 +1330,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                         if (b == a.Panels[0])
                             _data.Skin.Makeup.Opacity = perc;
                     }
-                    UpdateFace(Cache.PlayerCache.MyPlayer.Ped.Handle, _data.Skin);
+                    UpdateFace(Cache.PlayerCache.MyClient.Ped.Handle, _data.Skin);
                 };
 
                 Appearances.OnListChange += async (_sender, _listItem, _newIndex) =>
@@ -1360,7 +1360,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                     else if (_listItem == eyeMakup)
                         _data.Skin.Makeup.Style = (string)_listItem.Items[_newIndex] == Game.GetGXTEntry("FACE_F_P_OFF") ? 255 : _newIndex - 1;
 
-                    UpdateFace(Cache.PlayerCache.MyPlayer.Ped.Handle, _data.Skin);
+                    UpdateFace(Cache.PlayerCache.MyClient.Ped.Handle, _data.Skin);
                 };
 
                 #endregion
@@ -1440,7 +1440,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                         _data.Skin.Face.Traits[17] = Functions.Denormalize(-c.X, -1f, 1f);
                         _data.Skin.Face.Traits[18] = Functions.Denormalize(c.Y, -1f, 1f);
                     }
-                    UpdateFace(Cache.PlayerCache.MyPlayer.Ped.Handle, _data.Skin);
+                    UpdateFace(Cache.PlayerCache.MyClient.Ped.Handle, _data.Skin);
                 };
 
                 Details.OnListChange += async (_sender, _listItem, _newIndex) =>
@@ -1736,7 +1736,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                         _data.Skin.Face.Traits[17] = Functions.Denormalize(var.Y, -1, 1);
                     }
 
-                    UpdateFace(Cache.PlayerCache.MyPlayer.Ped.Handle, _data.Skin);
+                    UpdateFace(Cache.PlayerCache.MyClient.Ped.Handle, _data.Skin);
                 };
 
                 #endregion
@@ -1746,7 +1746,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 int first = 0;
                 Apparel.OnListChange += async (sender, item, index) =>
                 {
-                    int handle = PlayerCache.MyPlayer.Ped.Handle;
+                    int handle = PlayerCache.MyClient.Ped.Handle;
                     if (item == style)
                     {
                         List<dynamic> list = new();
@@ -1827,8 +1827,8 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                             _data.Dressing = new("", "", comp, text, _prop, _proptxt);
                         }
                     }
-                    UpdateDress(Cache.PlayerCache.MyPlayer.Ped.Handle, _data.Dressing);
-                    TaskTryClothes(Cache.PlayerCache.MyPlayer.Ped, sub_7dd83(1, 0, _data.Skin.Sex));
+                    UpdateDress(Cache.PlayerCache.MyClient.Ped.Handle, _data.Dressing);
+                    TaskTryClothes(Cache.PlayerCache.MyClient.Ped, sub_7dd83(1, 0, _data.Skin.Sex));
                 };
 
                 #endregion
@@ -1994,7 +1994,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
 
                 Apparel.OnMenuOpen += (a, b) =>
                 {
-                    TaskCreateClothes(Cache.PlayerCache.MyPlayer.Ped, sub_7dd83(1, 0, _selected));
+                    TaskCreateClothes(Cache.PlayerCache.MyClient.Ped, sub_7dd83(1, 0, _selected));
                 };
 
                 Parents.OnMenuOpen += (a, _) =>
@@ -2024,7 +2024,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 };
                 Apparel.OnMenuClose += (a) =>
                 {
-                    TaskClothesALoop(Cache.PlayerCache.MyPlayer.Ped, sub_7dd83(1, 0, _selected));
+                    TaskClothesALoop(Cache.PlayerCache.MyClient.Ped, sub_7dd83(1, 0, _selected));
                 };
 
                 #endregion
@@ -2044,11 +2044,11 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                     MenuHandler.CloseAndClearHistory();
                     BD1.Detach();
                     BD1.Delete();
-                    PlayerCache.MyPlayer.Ped.Detach();
+                    PlayerCache.MyClient.Ped.Detach();
 
                     EventDispatcher.Send("tlg:freeroam:finishCharServer", _data);
                     //PlayerCache.MyPlayer.User.FreeRoamChar = await EventDispatcher.Get<FreeRoamChar>("tlg:freeroam:Select_Char", _data.CharID);
-                    PlayerCache.MyPlayer.User.Character = _data;
+                    PlayerCache.MyClient.User.Character = _data;
 
                     ClientMain.Instance.RemoveTick(Controls);
                     ClientMain.Instance.RemoveTick(Scaleform);
@@ -2086,7 +2086,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
 
         public static async Task menuKeys()
         {
-            Ped playerPed = Cache.PlayerCache.MyPlayer.Ped;
+            Ped playerPed = Cache.PlayerCache.MyClient.Ped;
             if (Creation.Visible || Details.Visible || Appearances.Visible || Parents.Visible)
             {
                 if ((IsControlPressed(0, 205) || IsDisabledControlPressed(0, 205)) && IsInputDisabled(2) || (IsControlPressed(2, 205) || IsDisabledControlPressed(2, 205)) && !IsInputDisabled(2))
@@ -2607,7 +2607,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 ncamm = new Camera(CreateCam("DEFAULT_SCRIPTED_CAMERA", false));
                 ncamm.Position = new Vector3(402.6746f, -1000.129f, -98.46554f);
                 ncamm.Rotation = new Vector3(0.861356f, 0f, -2.348183f);
-                Cache.PlayerCache.MyPlayer.Ped.IsVisible = true;
+                Cache.PlayerCache.MyClient.Ped.IsVisible = true;
                 ncamm.FieldOfView = 10.00255f;
                 ncamm.IsActive = true;
                 func_1711(ncamm.Handle, 3.8f, 1f, 1.2f, 1f);
@@ -2649,7 +2649,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
 
         public static async void ped_cre_board(FreeRoamChar data)
         {
-            Cache.PlayerCache.MyPlayer.Ped.BlockPermanentEvents = true;
+            Cache.PlayerCache.MyClient.Ped.BlockPermanentEvents = true;
             sub_7cddb();
             Pol_Board2(data);
         }
@@ -2670,7 +2670,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             while (!BD1.Exists()) await BaseScript.Delay(0);
             while (!Overlay1.Exists()) await BaseScript.Delay(0);
             Overlay1.AttachTo(BD1);
-            BD1.AttachTo(Cache.PlayerCache.MyPlayer.Ped.Bones[Bone.PH_R_Hand], Vector3.Zero, Vector3.Zero);
+            BD1.AttachTo(Cache.PlayerCache.MyClient.Ped.Bones[Bone.PH_R_Hand], Vector3.Zero, Vector3.Zero);
             CreaScaleform_Cre(data, overlay1);
             Overlay1.MarkAsNoLongerNeeded();
             bd1.MarkAsNoLongerNeeded();
@@ -2687,7 +2687,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
 
         public static async Task Scaleform()
         {
-            if (Cache.PlayerCache.MyPlayer.Ped.Exists())
+            if (Cache.PlayerCache.MyClient.Ped.Exists())
             {
                 SetTextRenderId(_handle1);
                 Function.Call((Hash)0x40332D115A898AF5, _boardScalep1.Handle, true);
@@ -2733,7 +2733,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                         MenuHandler.CloseAndClearHistory();
                         BD1.Detach();
                         BD1.Delete();
-                        Cache.PlayerCache.MyPlayer.Ped.Detach();
+                        Cache.PlayerCache.MyClient.Ped.Detach();
                         ClientMain.Instance.RemoveTick(Controls);
                         ClientMain.Instance.RemoveTick(Scaleform);
                         ClientMain.Instance.RemoveTick(menuKeys);
@@ -2762,7 +2762,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             string v_3 = sub_7ce29(SharedMath.GetRandomInt(0, 7));
             if (AreStringsEqual(v_3, "mood_smug_1")) v_3 = "mood_Happy_1";
             if (AreStringsEqual(v_3, "mood_sulk_1")) v_3 = "mood_Angry_1";
-            if (!Cache.PlayerCache.MyPlayer.Ped.IsInjured) SetFacialIdleAnimOverride(Cache.PlayerCache.MyPlayer.Ped.Handle, v_3, "0");
+            if (!Cache.PlayerCache.MyClient.Ped.IsInjured) SetFacialIdleAnimOverride(Cache.PlayerCache.MyClient.Ped.Handle, v_3, "0");
         }
 
         public static string sub_7ce29(int a_0)
@@ -3008,10 +3008,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
         {
             int sequence = 0;
             OpenSequenceTask(ref sequence);
-            TaskPlayAnim(Cache.PlayerCache.MyPlayer.Ped.Handle, sub_7dd83(1, 0, _selected), "react_light", 8.0f, -8.0f, -1, 512, 0, false, false, false);
-            TaskPlayAnim(Cache.PlayerCache.MyPlayer.Ped.Handle, sub_7dd83(1, 0, _selected), "Loop", 8.0f, -8.0f, -1, 513, 0, false, false, false);
+            TaskPlayAnim(Cache.PlayerCache.MyClient.Ped.Handle, sub_7dd83(1, 0, _selected), "react_light", 8.0f, -8.0f, -1, 512, 0, false, false, false);
+            TaskPlayAnim(Cache.PlayerCache.MyClient.Ped.Handle, sub_7dd83(1, 0, _selected), "Loop", 8.0f, -8.0f, -1, 513, 0, false, false, false);
             CloseSequenceTask(sequence);
-            TaskPerformSequence(Cache.PlayerCache.MyPlayer.Ped.Handle, sequence);
+            TaskPerformSequence(Cache.PlayerCache.MyClient.Ped.Handle, sequence);
             ClearSequenceTask(ref sequence);
         }
 

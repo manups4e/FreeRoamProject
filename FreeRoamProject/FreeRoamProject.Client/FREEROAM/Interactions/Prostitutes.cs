@@ -34,26 +34,26 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
 
         public static async Task CheckProstitutes()
         {
-            _hooker = World.GetAllPeds().Select(o => new Ped(o.Handle)).Where(o => IsPedUsingScenario(o.Handle, "WORLD_HUMAN_PROSTITUTE_LOW_CLASS") || IsPedUsingScenario(o.Handle, "WORLD_HUMAN_PROSTITUTE_HIGH_CLASS")).FirstOrDefault(o => Vector3.Distance(Cache.PlayerCache.MyPlayer.Position.ToVector3, o.Position) < ProstDistance);
+            _hooker = World.GetAllPeds().Select(o => new Ped(o.Handle)).Where(o => IsPedUsingScenario(o.Handle, "WORLD_HUMAN_PROSTITUTE_LOW_CLASS") || IsPedUsingScenario(o.Handle, "WORLD_HUMAN_PROSTITUTE_HIGH_CLASS")).FirstOrDefault(o => Vector3.Distance(Cache.PlayerCache.MyClient.Position.ToVector3, o.Position) < ProstDistance);
             await BaseScript.Delay(200);
         }
 
         public static async Task LoopProstitutes()
         {
-            Ped playerPed = Cache.PlayerCache.MyPlayer.Ped;
+            Ped playerPed = Cache.PlayerCache.MyClient.Ped;
             Vehicle currentVeh = playerPed.CurrentVehicle;
 
             if (_hooker != null)
             {
                 if (_hooker.IsPlayer) return;
 
-                if (Cache.PlayerCache.MyPlayer.Status.PlayerStates.InVehicle && currentVeh.GetPedOnSeat(VehicleSeat.Passenger) != _hooker && currentVeh.IsStopped)
+                if (Cache.PlayerCache.MyClient.Status.PlayerStates.InVehicle && currentVeh.GetPedOnSeat(VehicleSeat.Passenger) != _hooker && currentVeh.IsStopped)
                 {
                     Notifications.ShowHelpNotification(Game.GetGXTEntry("PROS_ACCEPT"));
 
                     if (Input.IsControlJustPressed(Control.VehicleHorn) || Input.IsControlJustPressed(Control.Context))
                     {
-                        if (Cache.PlayerCache.MyPlayer.User.Money > 50f)
+                        if (Cache.PlayerCache.MyClient.User.Money > 50f)
                         {
                             if (currentVeh.ClassType != VehicleClass.Boats && currentVeh.ClassType != VehicleClass.Cycles && currentVeh.ClassType != VehicleClass.Motorcycles && currentVeh.ClassType != VehicleClass.Helicopters && currentVeh.ClassType != VehicleClass.Military && currentVeh.ClassType != VehicleClass.Motorcycles && currentVeh.ClassType != VehicleClass.Planes && currentVeh.ClassType != VehicleClass.Trains)
                             {
@@ -162,12 +162,12 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
                                                     UIMenuItem secondopt = new UIMenuItem(Game.GetGXTEntry("PROS_DOLLAR").Replace("~1~", "70"));
                                                     UIMenuItem thirdopt = new UIMenuItem(Game.GetGXTEntry("PROS_DOLLAR").Replace("~1~", "100"));
                                                     UIMenuItem fourthopt = new UIMenuItem(Game.GetGXTEntry("PROS_QUIT"));
-                                                    if (Cache.PlayerCache.MyPlayer.User.Money < 70)
+                                                    if (Cache.PlayerCache.MyClient.User.Money < 70)
                                                     {
                                                         secondopt.Enabled = false;
                                                         thirdopt.Enabled = false;
                                                     }
-                                                    if (Cache.PlayerCache.MyPlayer.User.Money > 70 && Cache.PlayerCache.MyPlayer.User.Money < 100)
+                                                    if (Cache.PlayerCache.MyClient.User.Money > 70 && Cache.PlayerCache.MyClient.User.Money < 100)
                                                     {
                                                         thirdopt.Enabled = false;
                                                     }
@@ -250,7 +250,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
         private static async void DoSex(Ped hooker, int type, int price)
         {
             EventDispatcher.Send("tlg:removeCharMoney", 0, price);
-            if (!PlayerCache.MyPlayer.Ped.IsDead && !hooker.IsDead)
+            if (!PlayerCache.MyClient.Ped.IsDead && !hooker.IsDead)
             {
                 currentSexType = type;
                 havingSex = true;
@@ -262,7 +262,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
                     PlayPedAmbientSpeechNative(hooker.Handle, "SEX_GENERIC", "SPEECH_PARAMS_FORCE_SHOUTED_CLEAR");
 
                 SexAnimation(hooker, type, true);
-                SexAnimation(PlayerCache.MyPlayer.Ped, type, false);
+                SexAnimation(PlayerCache.MyClient.Ped, type, false);
 
                 await BaseScript.Delay(2000);
                 while (GetSequenceProgress(hooker.Handle) != -1) await BaseScript.Delay(0);

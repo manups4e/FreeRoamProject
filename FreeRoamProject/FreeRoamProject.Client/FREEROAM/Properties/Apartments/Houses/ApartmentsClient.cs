@@ -86,13 +86,13 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
             home.AddItem(buzzItem);
             UIMenuItem enter;
 
-            if (Cache.PlayerCache.MyPlayer.User.Character.Properties.Contains(app.Key))
+            if (Cache.PlayerCache.MyClient.User.Character.Properties.Contains(app.Key))
             {
                 enter = new UIMenuItem("Enter the house");
                 home.AddItem(enter);
                 enter.Activated += async (_submenu, _subitem) =>
                 {
-                    Cache.PlayerCache.MyPlayer.Status.Instance.InstancePlayer(app.Key);
+                    Cache.PlayerCache.MyClient.Status.Instance.InstancePlayer(app.Key);
                     Screen.Fading.FadeOut(500);
                     while (!Screen.Fading.IsFadedOut) await BaseScript.Delay(0);
                     MenuHandler.CloseAndClearHistory();
@@ -106,7 +106,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
                     }
 
                     RequestCollisionAtCoord(app.Value.SpawnInside.X, app.Value.SpawnInside.Y, app.Value.SpawnInside.Z);
-                    Cache.PlayerCache.MyPlayer.Ped.Position = app.Value.SpawnInside.ToVector3;
+                    Cache.PlayerCache.MyClient.Ped.Position = app.Value.SpawnInside.ToVector3;
                     while (!HasCollisionLoadedAroundEntity(PlayerPedId())) await BaseScript.Delay(1000);
                     await BaseScript.Delay(2000);
                     Screen.Fading.FadeIn(500);
@@ -117,7 +117,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
             buzzMenu.OnMenuOpen += (_menu, b) =>
             {
                 _menu.Clear();
-                List<PlayerClient> gioc = (from p in ClientMain.Instance.Clients.ToList() where p != PlayerCache.MyPlayer let pl = p where pl.Status.Instance.Instanced where pl.Status.Instance.IsOwner where pl.Status.Instance.Instance == app.Key select p).ToList();
+                List<PlayerClient> gioc = (from p in ClientMain.Instance.Clients.ToList() where p != PlayerCache.MyClient let pl = p where pl.Status.Instance.Instanced where pl.Status.Instance.IsOwner where pl.Status.Instance.Instance == app.Key select p).ToList();
 
                 if (gioc.Count > 0)
                 {
@@ -183,14 +183,14 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
             esci.OnItemSelect += async (_menu, _item, _index) =>
             {
                 MenuHandler.CloseAndClearHistory();
-                if (Cache.PlayerCache.MyPlayer.Ped.IsVisible) NetworkFadeOutEntity(PlayerPedId(), true, false);
+                if (Cache.PlayerCache.MyClient.Ped.IsVisible) NetworkFadeOutEntity(PlayerPedId(), true, false);
                 Screen.Fading.FadeOut(500);
                 while (!Screen.Fading.IsFadedOut) await BaseScript.Delay(0);
 
                 if (_item == escisci)
                 {
                     Functions.Teleport(app.SpawnOutside.ToVector3);
-                    Cache.PlayerCache.MyPlayer.Status.Instance.RemoveInstance();
+                    Cache.PlayerCache.MyClient.Status.Instance.RemoveInstance();
                 }
                 else if (_item == home)
                 {
@@ -198,9 +198,9 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
                 }
                 else if (_item == garage)
                 {
-                    ClearPedTasksImmediately(Cache.PlayerCache.MyPlayer.Ped.Handle);
-                    Cache.PlayerCache.MyPlayer.Ped.IsPositionFrozen = true;
-                    if (Cache.PlayerCache.MyPlayer.Ped.IsVisible) NetworkFadeOutEntity(PlayerPedId(), true, false);
+                    ClearPedTasksImmediately(Cache.PlayerCache.MyClient.Ped.Handle);
+                    Cache.PlayerCache.MyClient.Ped.IsPositionFrozen = true;
+                    if (Cache.PlayerCache.MyClient.Ped.IsVisible) NetworkFadeOutEntity(PlayerPedId(), true, false);
                     DoScreenFadeOut(500);
                     while (!IsScreenFadedOut()) await BaseScript.Delay(0);
                     RequestCollisionAtCoord(app.SpawnGarageWalkInside.X, app.SpawnGarageWalkInside.Y, app.SpawnGarageWalkInside.Z);
@@ -225,7 +225,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
                     tempTimer = GetGameTimer();
 
                     // Wait for the collision to be loaded around the entity in this new location.
-                    while (!HasCollisionLoadedAroundEntity(Cache.PlayerCache.MyPlayer.Ped.Handle))
+                    while (!HasCollisionLoadedAroundEntity(Cache.PlayerCache.MyClient.Ped.Handle))
                     {
                         // If this takes too long, then just abort, it's not worth waiting that long since we haven't found the real ground coord yet anyway.
                         if (GetGameTimer() - tempTimer > 1000)
@@ -238,9 +238,9 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
                         await BaseScript.Delay(0);
                     }
 
-                    foreach (OwnedVehicle veh in Cache.PlayerCache.MyPlayer.User.Character.Vehicles)
+                    foreach (OwnedVehicle veh in Cache.PlayerCache.MyClient.User.Character.Vehicles)
                     {
-                        if (veh.Garage.ID == Cache.PlayerCache.MyPlayer.Status.Instance.Instance)
+                        if (veh.Garage.ID == Cache.PlayerCache.MyClient.Status.Instance.Instance)
                         {
                             if (veh.Garage.InGarage)
                             {
@@ -251,8 +251,8 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
                         }
                     }
 
-                    NetworkFadeInEntity(Cache.PlayerCache.MyPlayer.Ped.Handle, true);
-                    Cache.PlayerCache.MyPlayer.Ped.IsPositionFrozen = false;
+                    NetworkFadeInEntity(Cache.PlayerCache.MyClient.Ped.Handle, true);
+                    Cache.PlayerCache.MyClient.Ped.IsPositionFrozen = false;
                     DoScreenFadeIn(500);
                     SetGameplayCamRelativePitch(0.0f, 1.0f);
                     ClientMain.Instance.AddTick(Garage);
@@ -260,7 +260,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
                 else if (_item == roof)
                 {
                     Functions.Teleport(app.SpawnRoof.ToVector3);
-                    Cache.PlayerCache.MyPlayer.Status.Instance.RemoveInstance();
+                    Cache.PlayerCache.MyClient.Status.Instance.RemoveInstance();
                 }
 
                 await BaseScript.Delay(2000);
@@ -317,35 +317,35 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
             Player InCasa = ClientMain.Instance.GetPlayers.ToList().FirstOrDefault(x => x.ServerId == serverIdInCasa);
 
             if (InCasa == null) return;
-            if (!Cache.PlayerCache.MyPlayer.Ped.IsInRangeOf(app.Value.MarkerEntrance.ToVector3, 3f)) return;
-            if (Cache.PlayerCache.MyPlayer.Status.Instance.Instanced) return;
-            Cache.PlayerCache.MyPlayer.Status.Instance.InstancePlayer(InCasa.ServerId, app.Key);
+            if (!Cache.PlayerCache.MyClient.Ped.IsInRangeOf(app.Value.MarkerEntrance.ToVector3, 3f)) return;
+            if (Cache.PlayerCache.MyClient.Status.Instance.Instanced) return;
+            Cache.PlayerCache.MyClient.Status.Instance.InstancePlayer(InCasa.ServerId, app.Key);
             Functions.Teleport(app.Value.SpawnInside.ToVector3);
         }
 
         public static async Task Garage()
         {
-            if (Cache.PlayerCache.MyPlayer.Ped.IsInRangeOf(ClientMain.Settings.FreeRoam.Properties.Garages.LowEnd.ModifyMarker.ToVector3, 1.375f))
+            if (Cache.PlayerCache.MyClient.Ped.IsInRangeOf(ClientMain.Settings.FreeRoam.Properties.Garages.LowEnd.ModifyMarker.ToVector3, 1.375f))
             {
                 // TODO: TO BE HANDLED
             }
 
-            if (Cache.PlayerCache.MyPlayer.Ped.IsInRangeOf(ClientMain.Settings.FreeRoam.Properties.Garages.MidEnd4.ModifyMarker.ToVector3, 1.375f))
+            if (Cache.PlayerCache.MyClient.Ped.IsInRangeOf(ClientMain.Settings.FreeRoam.Properties.Garages.MidEnd4.ModifyMarker.ToVector3, 1.375f))
             {
                 // TODO: TO BE HANDLED
             }
 
-            if (Cache.PlayerCache.MyPlayer.Ped.IsInRangeOf(ClientMain.Settings.FreeRoam.Properties.Garages.MidEnd6.ModifyMarker.ToVector3, 1.375f))
+            if (Cache.PlayerCache.MyClient.Ped.IsInRangeOf(ClientMain.Settings.FreeRoam.Properties.Garages.MidEnd6.ModifyMarker.ToVector3, 1.375f))
             {
                 // TODO: TO BE HANDLED
             }
 
-            if (Cache.PlayerCache.MyPlayer.Ped.IsInRangeOf(ClientMain.Settings.FreeRoam.Properties.Garages.HighEnd.ModifyMarker.ToVector3, 1.375f))
+            if (Cache.PlayerCache.MyClient.Ped.IsInRangeOf(ClientMain.Settings.FreeRoam.Properties.Garages.HighEnd.ModifyMarker.ToVector3, 1.375f))
             {
                 // TODO: TO BE HANDLED
             }
 
-            if (Cache.PlayerCache.MyPlayer.Status.PlayerStates.InVehicle)
+            if (Cache.PlayerCache.MyClient.Status.PlayerStates.InVehicle)
             {
                 Notifications.ShowHelpNotification("To select this vehicle and exit~n~~y~Start the engine~w~ and ~y~accelerate~w~.");
 
@@ -357,10 +357,10 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
                     foreach (Vehicle vehicle in VeicoliParcheggio) vehicle.Delete();
                     VeicoliParcheggio.Clear();
                     Vector4 exit = Vector4.Zero;
-                    if (ClientMain.Settings.FreeRoam.Properties.Apartments.ContainsKey(Cache.PlayerCache.MyPlayer.Status.Instance.Instance))
-                        exit = ClientMain.Settings.FreeRoam.Properties.Apartments[Cache.PlayerCache.MyPlayer.Status.Instance.Instance].SpawnGarageVehicleOutside.ToVector4;
+                    if (ClientMain.Settings.FreeRoam.Properties.Apartments.ContainsKey(Cache.PlayerCache.MyClient.Status.Instance.Instance))
+                        exit = ClientMain.Settings.FreeRoam.Properties.Apartments[Cache.PlayerCache.MyClient.Status.Instance.Instance].SpawnGarageVehicleOutside.ToVector4;
                     else
-                        exit = ClientMain.Settings.FreeRoam.Properties.Garages.Garages[Cache.PlayerCache.MyPlayer.Status.Instance.Instance].SpawnOutside.ToVector4;
+                        exit = ClientMain.Settings.FreeRoam.Properties.Garages.Garages[Cache.PlayerCache.MyClient.Status.Instance.Instance].SpawnOutside.ToVector4;
                     int tempo = GetGameTimer();
                     Vector3 newPos = exit.ToVector3();
                     float Head = exit.W;
@@ -377,12 +377,12 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
                     }
 
                     if (!Functions.IsSpawnPointClear(exit.ToVector3(), 2f)) GetClosestVehicleNodeWithHeading(exit.X, exit.Y, exit.Z, ref newPos, ref Head, 1, 3, 0);
-                    Vehicle vehi = await Functions.SpawnVehicle(Cache.PlayerCache.MyPlayer.User.Character.Vehicles.FirstOrDefault(x => x.Plate == plate).VehData.Props.Model, newPos, Head);
-                    vehi.SetVehicleProperties(Cache.PlayerCache.MyPlayer.User.Character.Vehicles.FirstOrDefault(x => x.Plate == plate).VehData.Props);
+                    Vehicle vehi = await Functions.SpawnVehicle(Cache.PlayerCache.MyClient.User.Character.Vehicles.FirstOrDefault(x => x.Plate == plate).VehData.Props.Model, newPos, Head);
+                    vehi.SetVehicleProperties(Cache.PlayerCache.MyClient.User.Character.Vehicles.FirstOrDefault(x => x.Plate == plate).VehData.Props);
                     VehicleChecker.CurrentVehicle.IsEngineRunning = true;
                     VehicleChecker.CurrentVehicle.IsDriveable = true;
                     EventDispatcher.Send("lprp:vehInGarage", plate, false);
-                    Cache.PlayerCache.MyPlayer.Status.Instance.RemoveInstance();
+                    Cache.PlayerCache.MyClient.Status.Instance.RemoveInstance();
                     await BaseScript.Delay(1000);
                     Screen.Fading.FadeIn(800);
                     ClientMain.Instance.RemoveTick(Garage);
@@ -392,7 +392,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
 
         private static async void EnterGarageWithOwner(Vector3 pos)
         {
-            if (Cache.PlayerCache.MyPlayer.Ped.IsVisible) NetworkFadeOutEntity(VehicleChecker.CurrentVehicle.Handle, true, false);
+            if (Cache.PlayerCache.MyClient.Ped.IsVisible) NetworkFadeOutEntity(VehicleChecker.CurrentVehicle.Handle, true, false);
             Screen.Fading.FadeOut(500);
             await BaseScript.Delay(1000);
             RequestCollisionAtCoord(pos.X, pos.Y, pos.Z);
@@ -416,7 +416,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
             tempTimer = GetGameTimer();
 
             // Wait for the collision to be loaded around the entity in this new location.
-            while (!HasCollisionLoadedAroundEntity(Cache.PlayerCache.MyPlayer.Ped.Handle))
+            while (!HasCollisionLoadedAroundEntity(Cache.PlayerCache.MyClient.Ped.Handle))
             {
                 // If this takes too long, then just abort, it's not worth waiting that long since we haven't found the real ground coord yet anyway.
                 if (GetGameTimer() - tempTimer > 1000)
@@ -428,9 +428,9 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
                 await BaseScript.Delay(0);
             }
 
-            foreach (OwnedVehicle veh in Cache.PlayerCache.MyPlayer.User.Character.Vehicles)
+            foreach (OwnedVehicle veh in Cache.PlayerCache.MyClient.User.Character.Vehicles)
             {
-                if (veh.Garage.ID == Cache.PlayerCache.MyPlayer.Status.Instance.Instance)
+                if (veh.Garage.ID == Cache.PlayerCache.MyClient.Status.Instance.Instance)
                 {
                     if (veh.Garage.InGarage)
                     {
@@ -441,8 +441,8 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
                 }
             }
 
-            NetworkFadeInEntity(Cache.PlayerCache.MyPlayer.Ped.Handle, true);
-            Cache.PlayerCache.MyPlayer.Ped.IsPositionFrozen = false;
+            NetworkFadeInEntity(Cache.PlayerCache.MyClient.Ped.Handle, true);
+            Cache.PlayerCache.MyClient.Ped.IsPositionFrozen = false;
             DoScreenFadeIn(500);
             SetGameplayCamRelativePitch(0.0f, 1.0f);
             ClientMain.Instance.AddTick(Garage);

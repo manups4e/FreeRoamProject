@@ -14,7 +14,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
         public override void OnEventActivated()
         {
             FirstStartedTick = true;
-            Cache.PlayerCache.MyPlayer.Ped.Weapons.RemoveAll();
+            Cache.PlayerCache.MyClient.Ped.Weapons.RemoveAll();
             base.OnEventActivated();
             ClientMain.Instance.AddTick(OnTick);
         }
@@ -22,7 +22,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
         public override void ResetEvent()
         {
             base.ResetEvent();
-            Cache.PlayerCache.MyPlayer.Player.WantedLevel = 0;
+            Cache.PlayerCache.MyClient.Player.WantedLevel = 0;
             ClientMain.Instance.RemoveTick(OnTick);
         }
         private async Task OnTick()

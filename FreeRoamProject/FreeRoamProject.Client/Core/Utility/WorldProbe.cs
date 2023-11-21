@@ -32,7 +32,7 @@ namespace FreeRoamProject.Client.Core.Utility
         {
             try
             {
-                Entity source = Cache.PlayerCache.MyPlayer.Status.PlayerStates.InVehicle ? VehicleChecker.CurrentVehicle : Cache.PlayerCache.MyPlayer.Ped;
+                Entity source = Cache.PlayerCache.MyClient.Status.PlayerStates.InVehicle ? VehicleChecker.CurrentVehicle : Cache.PlayerCache.MyClient.Ped;
 
                 return GetVehicleInFrontOfPlayer(source, source, distance);
             }

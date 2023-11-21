@@ -9,26 +9,26 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Spawner
     {
         public static async Task LoadPlayer()
         {
-            PlayerCache.MyPlayer.Player.CanControlCharacter = false;
-            PlayerCache.MyPlayer.Ped.IsPositionFrozen = true;
+            PlayerCache.MyClient.Player.CanControlCharacter = false;
+            PlayerCache.MyClient.Ped.IsPositionFrozen = true;
 
-            if (PlayerCache.MyPlayer.Ped.IsVisible)
-                await Functions.FadeEntityAsync(PlayerCache.MyPlayer.Ped, false, false, false);
+            if (PlayerCache.MyClient.Ped.IsVisible)
+                await Functions.FadeEntityAsync(PlayerCache.MyClient.Ped, false, false, false);
             await BaseScript.Delay(2000);
             if (Screen.Fading.IsFadedOut) Screen.Fading.FadeIn(1000);
 
             Screen.LoadingPrompt.Show("Loading", LoadingSpinnerType.Clockwise1);
 
-            uint model = PlayerCache.MyPlayer.User.Character.Skin.Model;
-            while (!await PlayerCache.MyPlayer.Player.ChangeModel(new Model((PedHash)model))) await BaseScript.Delay(0);
+            uint model = PlayerCache.MyClient.User.Character.Skin.Model;
+            while (!await PlayerCache.MyClient.Player.ChangeModel(new Model((PedHash)model))) await BaseScript.Delay(0);
 
-            Functions.UpdateFace(PlayerCache.MyPlayer.Ped.Handle, PlayerCache.MyPlayer.User.Character.Skin);
-            Functions.UpdateDress(PlayerCache.MyPlayer.Ped.Handle, PlayerCache.MyPlayer.User.Character.Dressing);
+            Functions.UpdateFace(PlayerCache.MyClient.Ped.Handle, PlayerCache.MyClient.User.Character.Skin);
+            Functions.UpdateDress(PlayerCache.MyClient.Ped.Handle, PlayerCache.MyClient.User.Character.Dressing);
             RestoreWeapons();
 
             // TODO: HIDE THIS FROM THE PLAYER VIEW WHILE CAMERA IS UP IN THE AIR
-            StatSetInt(Functions.HashUint("MP0_WALLET_BALANCE"), Cache.PlayerCache.MyPlayer.User.Money, true);
-            StatSetInt(Functions.HashUint("BANK_BALANCE"), Cache.PlayerCache.MyPlayer.User.Bank, true);
+            StatSetInt(Functions.HashUint("MP0_WALLET_BALANCE"), Cache.PlayerCache.MyClient.User.Money, true);
+            StatSetInt(Functions.HashUint("BANK_BALANCE"), Cache.PlayerCache.MyClient.User.Bank, true);
 
             if (Screen.LoadingPrompt.IsActive) Screen.LoadingPrompt.Hide();
             Screen.LoadingPrompt.Show("Syncing with the server", LoadingSpinnerType.Clockwise1);
@@ -41,23 +41,23 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Spawner
             if (Screen.LoadingPrompt.IsActive)
                 Screen.LoadingPrompt.Hide();
 
-            ClientMain.Logger.Warning("PlayerCache.MyPlayer.User.Character.Position: " + PlayerCache.MyPlayer.User.Character.Position);
-            ClientMain.Logger.Warning("Ped.Position: " + PlayerCache.MyPlayer.Ped.Position);
-            if (PlayerCache.MyPlayer.User.Character.Position is null)
+            ClientMain.Logger.Warning("PlayerCache.MyPlayer.User.Character.Position: " + PlayerCache.MyClient.User.Character.Position);
+            ClientMain.Logger.Warning("Ped.Position: " + PlayerCache.MyClient.Ped.Position);
+            if (PlayerCache.MyClient.User.Character.Position is null)
             {
                 ClientMain.Logger.Debug("player coord are null");
                 Vector3 vect = await new Vector3(0).GetVector3WithGroundZ();
                 GetSafeCoordForPed(vect.X, vect.Y, vect.Z, true, ref vect, 16);
-                PlayerCache.MyPlayer.Ped.Position = vect;
+                PlayerCache.MyClient.Ped.Position = vect;
             }
             else
             {
-                PlayerCache.MyPlayer.Ped.Position = (await PlayerCache.MyPlayer.User.Character.Position.GetPositionWithGroundZ()).ToVector3;
+                PlayerCache.MyClient.Ped.Position = (await PlayerCache.MyClient.User.Character.Position.GetPositionWithGroundZ()).ToVector3;
             }
 
             // TODO: LOADING PROPERTIES (AND SPAWN IN PROPERTY IF DISCONNECTED INSIDE)
             // TODO: LOAD VEHICLES (AND SPAWN LAST USED VEHICLE IF DISCONNECTED ON THE STREET WITH ITS PERSONAL VEHICLE OUT)
-            while (!HasCollisionLoadedAroundEntity(PlayerCache.MyPlayer.Ped.Handle))
+            while (!HasCollisionLoadedAroundEntity(PlayerCache.MyClient.Ped.Handle))
                 await BaseScript.Delay(0);
             ClearFocus();
             SwitchInPlayer(PlayerPedId());
@@ -65,31 +65,31 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Spawner
                 await BaseScript.Delay(0);
             DisplayHud(true);
             MinimapHandler.EnableMinimap = true;
-            Function.Call(Hash.NETWORK_FADE_IN_ENTITY, PlayerCache.MyPlayer.Ped.Handle, true, 1);
-            if (!PlayerCache.MyPlayer.Ped.IsVisible)
-                await Functions.FadeEntityAsync(PlayerCache.MyPlayer.Ped, true, false, true);
-            PlayerCache.MyPlayer.Ped.IsPositionFrozen = false;
-            PlayerCache.MyPlayer.Player.CanControlCharacter = true;
+            Function.Call(Hash.NETWORK_FADE_IN_ENTITY, PlayerCache.MyClient.Ped.Handle, true, 1);
+            if (!PlayerCache.MyClient.Ped.IsVisible)
+                await Functions.FadeEntityAsync(PlayerCache.MyClient.Ped, true, false, true);
+            PlayerCache.MyClient.Ped.IsPositionFrozen = false;
+            PlayerCache.MyClient.Player.CanControlCharacter = true;
             EventDispatcher.Send("worldEventsManage.Server:AddParticipant");
-            AccessingEvents.FreeRoamSpawn(PlayerCache.MyPlayer);
-            PlayerCache.MyPlayer.Status.PlayerStates.Spawned = true;
+            AccessingEvents.FreeRoamSpawn(PlayerCache.MyClient);
+            PlayerCache.MyClient.Status.PlayerStates.Spawned = true;
         }
 
         public static void RestoreWeapons()
         {
             Dictionary<int, bool> ammoTypes = new();
 
-            if (PlayerCache.MyPlayer.User.Character.Weapons.Count > 0)
+            if (PlayerCache.MyClient.User.Character.Weapons.Count > 0)
             {
-                PlayerCache.MyPlayer.Ped.Weapons.RemoveAll();
-                List<Weapons> weaps = PlayerCache.MyPlayer.User.GetCharWeapons();
+                PlayerCache.MyClient.Ped.Weapons.RemoveAll();
+                List<Weapons> weaps = PlayerCache.MyClient.User.GetCharWeapons();
 
                 for (int i = 0; i < weaps.Count; i++)
                 {
                     string weaponName = weaps[i].Name;
                     uint weaponHash = Functions.HashUint(weaponName);
                     int tint = weaps[i].Tint;
-                    PlayerCache.MyPlayer.Ped.Weapons.Give((WeaponHash)weaponHash, 0, false, false);
+                    PlayerCache.MyClient.Ped.Weapons.Give((WeaponHash)weaponHash, 0, false, false);
                     int ammoType = GetPedAmmoTypeFromWeapon(PlayerPedId(), weaponHash);
 
                     if (weaps[i].Components.Count > 0)

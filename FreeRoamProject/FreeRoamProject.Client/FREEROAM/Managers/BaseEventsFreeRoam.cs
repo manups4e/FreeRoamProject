@@ -43,9 +43,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 
         private static async void BeginRespawn()
         {
-            Vector3 coords = PlayerCache.MyPlayer.Position.ToVector3;
+            Vector3 coords = PlayerCache.MyClient.Position.ToVector3;
             int flags = 2 + 16 + 32 + 2048 + 512 + 1024;
-            NetworkStartRespawnSearchForPlayer(PlayerCache.MyPlayer.Player.Handle, coords.X, coords.Y, coords.Z, 100f, 0, 0, 0, flags);
+            NetworkStartRespawnSearchForPlayer(PlayerCache.MyClient.Player.Handle, coords.X, coords.Y, coords.Z, 100f, 0, 0, 0, flags);
             _respawnTimerBar = new ProgressTimerBar(Game.GetGXTEntry("KS_RESPAWN_B"));
             _timerBarPool.Add(_respawnTimerBar);
             ClientMain.Instance.AddTick(DrawRespawnTimer);
@@ -54,12 +54,67 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 
         private static void FreeRoamLogin_OnPlayerJoined(PlayerClient client)
         {
+            //InternalGameEvents.OnPedDied += InternalGameEvents_OnPedDied; ;
             InternalGameEvents.OnPedKilledByPlayer += OnPedKilledByPlayer;
             InternalGameEvents.OnPedDied += OnPedDied;
             InternalGameEvents.OnPedKilledByPed += OnPedKilledByPed;
             InternalGameEvents.OnPedKilledByVehicle += OnPedKilledByVehicle;
             Environment.EnablePvP(true);
         }
+        /*
+        private static async void InternalGameEvents_OnPedDied(int ped, int attacker, uint weaponHash, bool isMeleeDamage)
+        {
+            if (IsPedAPlayer(ped))
+            {
+                bool suicide = weaponHash == 3452007600;
+                if (ped == PlayerPedId())
+                {
+                    RequestAnimDict("missarmenian2");
+                    while (!HasAnimDictLoaded("missarmenian2")) await BaseScript.Delay(0);
+                    RequestAnimDict("mini@cpr@char_a@cpr_def");
+                    while (!HasAnimDictLoaded("mini@cpr@char_a@cpr_def")) await BaseScript.Delay(0);
+                    RequestAnimDict("mini@cpr@char_b@cpr_def");
+                    while (!HasAnimDictLoaded("mini@cpr@char_b@cpr_def")) await BaseScript.Delay(0);
+                    RequestAnimDict("mini@cpr@char_a@cpr_def");
+                    while (!HasAnimDictLoaded("mini@cpr@char_a@cpr_str")) await BaseScript.Delay(0);
+                    RequestAnimDict("mini@cpr@char_b@cpr_def");
+                    while (!HasAnimDictLoaded("mini@cpr@char_b@cpr_str")) await BaseScript.Delay(0);
+                    Function.Call(Hash.SET_PED_STEALTH_MOVEMENT, false, 0);
+                    Position coords = PlayerCache.MyPlayer.Position;
+                    NetworkResurrectLocalPlayer(coords.X, coords.Y, coords.Z, PlayerCache.MyPlayer.Ped.Heading, false, false);
+                    Ped medic = await Functions.CreatePedLocally(PedHash.Paramedic01SMM, Game.PlayerPed.Position);
+                    Debug.WriteLine(medic.Handle.ToString());
+                    medic.Position = PlayerCache.MyPlayer.Ped.Position;
+                    //TaskPlayAnim(PlayerPedId(), "missarmenian2", "drunk_loop", -8f, 8f, -1, 2, 0, false, false, false);
+                    InteractionMethods.MoodCam = new Camera(CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.X, coords.Y, coords.Z, 0f, 0f, 0f, 50f, false, 2));
+                    InteractionMethods.MoodCam.AttachTo(PlayerCache.MyPlayer.Ped.Bones[31086], new Vector3(0f, 0.9f, 0f));
+                    PointCamAtPedBone(InteractionMethods.MoodCam.Handle, PlayerCache.MyPlayer.Ped.Handle, 31086, 0, 0, 0, true);
+                    InteractionMethods.MoodCam.FieldOfView = 50f;
+                    InteractionMethods.MoodCam.IsActive = true;
+                    //RenderScriptCams(true, false, 3000, true, false);
+
+                    SetBlockingOfNonTemporaryEvents(medic.Handle, true);
+                    Position groundc = await coords.GetPositionWithGroundZ();
+                    Vector3 rot = GetEntityRotation(Game.PlayerPed.Handle, 2);
+                    int iLocal_336 = CreateSynchronizedScene(groundc.X, groundc.Y, groundc.Z, rot.X, rot.Y, rot.Z, 2);
+                    TaskSynchronizedScene(medic.Handle, iLocal_336, "mini@cpr@char_a@cpr_def", "cpr_intro", 4f, -8f, 1, 0, 4f, 0);
+                    TaskSynchronizedScene(Game.PlayerPed.Handle, iLocal_336, "mini@cpr@char_b@cpr_def", "cpr_intro", 8f, -8f, 4, 0, 1000f, 0);
+
+                    while (GetSynchronizedScenePhase(iLocal_336) < 0.99f)
+                    {
+                        await BaseScript.Delay(0);
+                        Debug.WriteLine(GetSynchronizedScenePhase(iLocal_336).ToString());
+                    }
+
+                    iLocal_336 = CreateSynchronizedScene(groundc.X, groundc.Y, groundc.Z, rot.X, rot.Y, rot.Z, 2);
+                    TaskSynchronizedScene(medic.Handle, iLocal_336, "mini@cpr@char_a@cpr_str", "cpr_pumpchest", 4f, -8f, 1, 0, 1000f, 0);
+                    TaskSynchronizedScene(Game.PlayerPed.Handle, iLocal_336, "mini@cpr@char_b@cpr_str", "cpr_pumpchest", 8f, -8f, 4, 0, 1000f, 0);
+                    SetSynchronizedSceneLooped(iLocal_336, true);
+
+                }
+            }
+        }
+        */
         // old method for "returning to lobby" we can keep it for team events or whatever
         private static void FreeRoamLogin_OnPlayerLeft(PlayerClient client)
         {
@@ -91,12 +146,12 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
                     {
                         Player playerKiller = new(NetworkGetPlayerIndexFromPed(lastPed.Handle));
                         // player it's not me
-                        if (lastPed.Handle != PlayerCache.MyPlayer.Ped.Handle)
+                        if (lastPed.Handle != PlayerCache.MyClient.Ped.Handle)
                         {
                             func_19419(DeathType.Victim, NetworkGetPlayerIndexFromPed(ped), playerKiller.Handle, false, weaponHash);
                             //EventDispatcher.Send("tlg:onPlayerDied", 1, playerKiller.Handle, GetEntityCoords(ped, false).ToPosition());
                         }
-                        else if (lastPed.Handle == PlayerCache.MyPlayer.Ped.Handle)
+                        else if (lastPed.Handle == PlayerCache.MyClient.Ped.Handle)
                         {
                             func_19419(DeathType.Killer, NetworkGetPlayerIndexFromPed(ped), playerKiller.Handle, false, weaponHash);
                         }
@@ -255,12 +310,12 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
             Screen.Effects.Stop();
 
             // TODO: correct IsInvincible with Anticheat
-            Position pos = PlayerCache.MyPlayer.Position;
+            Position pos = PlayerCache.MyClient.Position;
             NetworkResurrectLocalPlayer(coords.X, coords.Y, coords.Z, heading, true, false);
 
-            PlayerCache.MyPlayer.Ped.Health = 100;
-            PlayerCache.MyPlayer.Ped.IsInvincible = false;
-            PlayerCache.MyPlayer.Ped.ClearBloodDamage();
+            PlayerCache.MyClient.Ped.Health = 100;
+            PlayerCache.MyClient.Ped.IsInvincible = false;
+            PlayerCache.MyClient.Ped.ClearBloodDamage();
             Screen.Fading.FadeIn(800);
         }
 

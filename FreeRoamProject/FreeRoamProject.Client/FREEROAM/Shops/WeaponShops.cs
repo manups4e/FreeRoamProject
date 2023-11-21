@@ -125,7 +125,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.Negozi
             {
                 foreach (Vector3 pos in Entrances)
                 {
-                    if (PlayerCache.MyPlayer.Position.IsInRangeOf(pos, 50))
+                    if (PlayerCache.MyClient.Position.IsInRangeOf(pos, 50))
                     {
                         ShopLoaded = true;
                         ShopId = Entrances.IndexOf(pos) + 28;
@@ -348,7 +348,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.Negozi
                     func_583();
                     func_932();
                 }
-                if (!PlayerCache.MyPlayer.Position.IsInRangeOf(pos, 200))
+                if (!PlayerCache.MyClient.Position.IsInRangeOf(pos, 200))
                 {
                     if (ShopLoaded)
                     {
@@ -371,7 +371,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.Negozi
             if (ArmCam is null)
                 ArmCam = World.CreateCamera(new Vector3(-662.5455f, -934.1703f, 22.72922f), new Vector3(-89.34778f, 0, 0), 52f);
             RenderScriptCams(true, true, 1000, false, true);
-            PlayerCache.MyPlayer.Player.CanControlCharacter = false;
+            PlayerCache.MyClient.Player.CanControlCharacter = false;
             Armeria();
         }
 
@@ -379,7 +379,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.Negozi
         {
             Prop armaObj = null;
             UIMenu armeria = new("", "", new PointF(20, 20), new KeyValuePair<string, string>("ShopUI_Title_GunClub", "ShopUI_Title_GunClub"));
-            Position coords = PlayerCache.MyPlayer.Position;
+            Position coords = PlayerCache.MyClient.Position;
             Prop pp = new Prop(GetClosestObjectOfType(coords.X, coords.Y, coords.Z, 10, 1948561556, false, true, true));
             Vector3 left = pp.Position + (pp.RightVector * 0.6f) + (pp.UpVector * 0.2f);
             armeria.InstructionalButtons.Add(new(InputGroup.INPUTGROUP_FRONTEND_DPAD_LR, "Scegli arma"));
@@ -409,7 +409,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.Negozi
             {
                 if (armaObj != null && armaObj.Exists())
                     armaObj.Delete();
-                PlayerCache.MyPlayer.Player.CanControlCharacter = true;
+                PlayerCache.MyClient.Player.CanControlCharacter = true;
                 RenderScriptCams(false, true, 2000, false, true);
                 ArmCam = null;
             };
@@ -1569,18 +1569,18 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.Negozi
         {
             return variant switch
             {
-                WeaponHash.Pistol => PlayerCache.MyPlayer.Ped.Weapons.HasWeapon(WeaponHash.PistolMk2),
-                WeaponHash.SMG => PlayerCache.MyPlayer.Ped.Weapons.HasWeapon(WeaponHash.SMGMk2),
-                WeaponHash.HeavySniper => PlayerCache.MyPlayer.Ped.Weapons.HasWeapon(WeaponHash.HeavySniperMk2),
-                WeaponHash.CombatMG => PlayerCache.MyPlayer.Ped.Weapons.HasWeapon(WeaponHash.CombatMGMk2),
-                WeaponHash.AssaultRifle => PlayerCache.MyPlayer.Ped.Weapons.HasWeapon(WeaponHash.AssaultRifleMk2),
-                WeaponHash.CarbineRifle => PlayerCache.MyPlayer.Ped.Weapons.HasWeapon(WeaponHash.CarbineRifleMk2),
-                WeaponHash.PumpShotgun => PlayerCache.MyPlayer.Ped.Weapons.HasWeapon(WeaponHash.PumpShotgunMk2),
-                WeaponHash.SpecialCarbine => PlayerCache.MyPlayer.Ped.Weapons.HasWeapon(WeaponHash.SpecialCarbineMk2),
-                WeaponHash.SNSPistol => PlayerCache.MyPlayer.Ped.Weapons.HasWeapon(WeaponHash.SNSPistolMk2),
-                WeaponHash.MarksmanRifle => PlayerCache.MyPlayer.Ped.Weapons.HasWeapon(WeaponHash.MarksmanRifleMk2),
-                WeaponHash.Revolver => PlayerCache.MyPlayer.Ped.Weapons.HasWeapon(WeaponHash.RevolverMk2),
-                WeaponHash.BullpupRifle => PlayerCache.MyPlayer.Ped.Weapons.HasWeapon(WeaponHash.BullpupRifleMk2),
+                WeaponHash.Pistol => PlayerCache.MyClient.Ped.Weapons.HasWeapon(WeaponHash.PistolMk2),
+                WeaponHash.SMG => PlayerCache.MyClient.Ped.Weapons.HasWeapon(WeaponHash.SMGMk2),
+                WeaponHash.HeavySniper => PlayerCache.MyClient.Ped.Weapons.HasWeapon(WeaponHash.HeavySniperMk2),
+                WeaponHash.CombatMG => PlayerCache.MyClient.Ped.Weapons.HasWeapon(WeaponHash.CombatMGMk2),
+                WeaponHash.AssaultRifle => PlayerCache.MyClient.Ped.Weapons.HasWeapon(WeaponHash.AssaultRifleMk2),
+                WeaponHash.CarbineRifle => PlayerCache.MyClient.Ped.Weapons.HasWeapon(WeaponHash.CarbineRifleMk2),
+                WeaponHash.PumpShotgun => PlayerCache.MyClient.Ped.Weapons.HasWeapon(WeaponHash.PumpShotgunMk2),
+                WeaponHash.SpecialCarbine => PlayerCache.MyClient.Ped.Weapons.HasWeapon(WeaponHash.SpecialCarbineMk2),
+                WeaponHash.SNSPistol => PlayerCache.MyClient.Ped.Weapons.HasWeapon(WeaponHash.SNSPistolMk2),
+                WeaponHash.MarksmanRifle => PlayerCache.MyClient.Ped.Weapons.HasWeapon(WeaponHash.MarksmanRifleMk2),
+                WeaponHash.Revolver => PlayerCache.MyClient.Ped.Weapons.HasWeapon(WeaponHash.RevolverMk2),
+                WeaponHash.BullpupRifle => PlayerCache.MyClient.Ped.Weapons.HasWeapon(WeaponHash.BullpupRifleMk2),
                 _ => false,
             };
         }
@@ -1868,10 +1868,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.Negozi
 
             Vector3 Var3 = new(-10.583f, 0f, -19.206f);
             Vector3 Var6 = new(-4.33f, -1.21f, -0.75f);
-            Vector3 Var9 = PlayerCache.MyPlayer.Ped.Position;
-            Vector3 Var12 = Var9 - GetOffsetFromEntityInWorldCoords(PlayerCache.MyPlayer.Ped.Handle, 0f, 0f, 1f);
-            Vector3 Var15 = Var9 - GetOffsetFromEntityInWorldCoords(PlayerCache.MyPlayer.Ped.Handle, 1f, 0f, 0f);
-            Vector3 Var18 = Var9 - GetOffsetFromEntityInWorldCoords(PlayerCache.MyPlayer.Ped.Handle, 0f, 1f, 0f);
+            Vector3 Var9 = PlayerCache.MyClient.Ped.Position;
+            Vector3 Var12 = Var9 - GetOffsetFromEntityInWorldCoords(PlayerCache.MyClient.Ped.Handle, 0f, 0f, 1f);
+            Vector3 Var15 = Var9 - GetOffsetFromEntityInWorldCoords(PlayerCache.MyClient.Ped.Handle, 1f, 0f, 0f);
+            Vector3 Var18 = Var9 - GetOffsetFromEntityInWorldCoords(PlayerCache.MyClient.Ped.Handle, 0f, 1f, 0f);
             func_820(ref Var12);
             func_820(ref Var15);
             func_820(ref Var18);

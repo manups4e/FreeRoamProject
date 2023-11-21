@@ -183,7 +183,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
                     Vehicle currentVehicle = VehicleChecker.CurrentVehicle;
                     if (currentVehicle == null) { return; }
 
-                    if (!Cache.PlayerCache.MyPlayer.Ped.IsInFlyingVehicle) { return; }
+                    if (!Cache.PlayerCache.MyClient.Ped.IsInFlyingVehicle) { return; }
 
                     Vector3 vehiclePos = currentVehicle.Position;
                     foreach (Vector3 bridge in UnderBridgeLocations.Keys.ToList())
@@ -194,7 +194,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
                             float dist = vehiclePos.DistanceToSquared(bridge);
                             if (dist > 90000f) { continue; }
                             World.DrawMarker(MarkerType.HorizontalCircleFat, bridge, Vector3.Zero, new Vector3(90, 90, 0), new Vector3(22f), Color.FromArgb(150, 240, 200, 80), faceCamera: true);
-                            World.DrawMarker(MarkerType.ChevronUpx2, bridge, Cache.PlayerCache.MyPlayer.Ped.ForwardVector, new Vector3(90, 90, 0), new Vector3(11f), Color.FromArgb(110, 93, 182, 229));
+                            World.DrawMarker(MarkerType.ChevronUpx2, bridge, Cache.PlayerCache.MyClient.Ped.ForwardVector, new Vector3(90, 90, 0), new Vector3(11f), Color.FromArgb(110, 93, 182, 229));
 
                             if (dist < 225f)
                             {

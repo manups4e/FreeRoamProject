@@ -44,12 +44,12 @@ namespace FreeRoamProject.Client.Core.Utility.HUD
             World.DrawMarker(MarkerType, Position.ToVector3, Direction, Rotation, Scale, Color.ToColor(), BobUpDown, FaceCamera, Rotate);
             if (CheckZ)
             {
-                float num = Position.ToVector3.DistanceToSquared(PlayerCache.MyPlayer.Position.ToVector3);
+                float num = Position.ToVector3.DistanceToSquared(PlayerCache.MyClient.Position.ToVector3);
                 IsInMarker = (double)num < Math.Pow(Scale.X / 2f, 2.0) || (double)num < Math.Pow(Scale.Y / 2f, 2.0) || (double)num < Math.Pow(Scale.Z / 2f, 2.0);
             }
             else
             {
-                float num2 = Position.ToVector3.DistanceToSquared2D(PlayerCache.MyPlayer.Position.ToVector3);
+                float num2 = Position.ToVector3.DistanceToSquared2D(PlayerCache.MyClient.Position.ToVector3);
                 IsInMarker = (double)num2 <= Math.Pow(Scale.X / 2f, 2.0) || (double)num2 <= Math.Pow(Scale.Y / 2f, 2.0);
             }
         }

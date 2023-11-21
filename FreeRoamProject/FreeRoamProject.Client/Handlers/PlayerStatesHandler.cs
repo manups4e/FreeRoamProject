@@ -15,7 +15,7 @@
         private static async void OnInstanceBagChange(int userId, InstanceBag value)
         {
             await PlayerCache.Loaded();
-            if (userId != PlayerCache.MyPlayer.Handle)
+            if (userId != PlayerCache.MyClient.Handle)
             {
                 PlayerClient client = Functions.GetPlayerClientFromServerId(userId);
                 if (client == null || client.User == null || !client.Status.PlayerStates.Spawned) return;
@@ -27,16 +27,16 @@
                 }
                 if (value.Instance != string.Empty)
                 {
-                    if (value.ServerIdOwner != 0 || PlayerCache.MyPlayer.Status.Instance.ServerIdOwner != 0)
+                    if (value.ServerIdOwner != 0 || PlayerCache.MyClient.Status.Instance.ServerIdOwner != 0)
                     {
-                        if (value.ServerIdOwner != PlayerCache.MyPlayer.Player.ServerId && PlayerCache.MyPlayer.Status.Instance.ServerIdOwner != client.Handle)
+                        if (value.ServerIdOwner != PlayerCache.MyClient.Player.ServerId && PlayerCache.MyClient.Status.Instance.ServerIdOwner != client.Handle)
                         {
                             if (!NetworkIsPlayerConcealed(client.Player.Handle))
                                 NetworkConcealPlayer(client.Player.Handle, true, true);
                         }
                         else
                         {
-                            if (value.ServerIdOwner == PlayerCache.MyPlayer.Player.ServerId || PlayerCache.MyPlayer.Player.ServerId == value.ServerIdOwner)
+                            if (value.ServerIdOwner == PlayerCache.MyClient.Player.ServerId || PlayerCache.MyClient.Player.ServerId == value.ServerIdOwner)
                                 if (NetworkIsPlayerConcealed(client.Player.Handle))
                                     NetworkConcealPlayer(client.Player.Handle, false, false);
                         }

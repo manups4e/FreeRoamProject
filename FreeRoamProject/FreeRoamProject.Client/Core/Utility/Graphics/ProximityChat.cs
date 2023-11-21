@@ -60,7 +60,7 @@ namespace FreeRoamProject.Client.Core.Utility.HUD
 
         private static bool ProximityVehCheck(Ped io, Ped lui)
         {
-            bool ioInVeh = Cache.PlayerCache.MyPlayer.Status.PlayerStates.InVehicle;
+            bool ioInVeh = Cache.PlayerCache.MyClient.Status.PlayerStates.InVehicle;
             bool luiInVeh = lui.IsInVehicle();
 
             switch (ioInVeh)

@@ -115,7 +115,7 @@ namespace FreeRoamProject.Client.Core.Utility
 
         public static User GetPlayerData(this Player player)
         {
-            return player == PlayerCache.MyPlayer.Player ? PlayerCache.MyPlayer.User : GetPlayerCharFromServerId(player.ServerId);
+            return player == PlayerCache.MyClient.Player ? PlayerCache.MyClient.User : GetPlayerCharFromServerId(player.ServerId);
         }
 
         /*
@@ -129,7 +129,7 @@ namespace FreeRoamProject.Client.Core.Utility
         {
             List<Player> players = GetPlayersInArea(coord, radius);
             foreach (Player pl in players)
-                if (!NetworkIsPlayerConcealed(pl.Handle) && pl.Handle != PlayerCache.MyPlayer.Player.Handle)
+                if (!NetworkIsPlayerConcealed(pl.Handle) && pl.Handle != PlayerCache.MyClient.Player.Handle)
                     NetworkConcealPlayer(pl.Handle, true, true);
         }
         /// <summary>
@@ -139,7 +139,7 @@ namespace FreeRoamProject.Client.Core.Utility
         {
             ClientMain.Instance.GetPlayers.ToList().ForEach(pl =>
             {
-                if (!NetworkIsPlayerConcealed(pl.Handle) && pl.Handle != PlayerCache.MyPlayer.Player.Handle) NetworkConcealPlayer(pl.Handle, true, true);
+                if (!NetworkIsPlayerConcealed(pl.Handle) && pl.Handle != PlayerCache.MyClient.Player.Handle) NetworkConcealPlayer(pl.Handle, true, true);
             });
         }
 
@@ -147,7 +147,7 @@ namespace FreeRoamProject.Client.Core.Utility
         {
             List<Player> players = GetPlayersInArea(coord, radius);
             foreach (Player pl in players)
-                if (NetworkIsPlayerConcealed(pl.Handle) && pl.Handle != PlayerCache.MyPlayer.Player.Handle)
+                if (NetworkIsPlayerConcealed(pl.Handle) && pl.Handle != PlayerCache.MyClient.Player.Handle)
                     NetworkConcealPlayer(pl.Handle, false, false);
         }
 
@@ -158,7 +158,7 @@ namespace FreeRoamProject.Client.Core.Utility
         {
             ClientMain.Instance.GetPlayers.ToList().ForEach(pl =>
             {
-                if (NetworkIsPlayerConcealed(pl.Handle) && pl.Handle != PlayerCache.MyPlayer.Player.Handle) NetworkConcealPlayer(pl.Handle, false, false);
+                if (NetworkIsPlayerConcealed(pl.Handle) && pl.Handle != PlayerCache.MyClient.Player.Handle) NetworkConcealPlayer(pl.Handle, false, false);
             });
         }
 
@@ -296,7 +296,7 @@ namespace FreeRoamProject.Client.Core.Utility
         }
         public static async void Teleport(Vector3 coords)
         {
-            Ped playerPed = PlayerCache.MyPlayer.Ped;
+            Ped playerPed = PlayerCache.MyClient.Ped;
             ClearPedTasksImmediately(playerPed.Handle);
             playerPed.IsPositionFrozen = true;
             if (playerPed.IsVisible) NetworkFadeOutEntity(playerPed.Handle, true, false);
@@ -338,7 +338,7 @@ namespace FreeRoamProject.Client.Core.Utility
 
         public static async void TeleportWithVeh(Vector3 coords)
         {
-            Ped playerPed = PlayerCache.MyPlayer.Ped;
+            Ped playerPed = PlayerCache.MyClient.Ped;
             ClearPedTasksImmediately(playerPed.Handle);
             playerPed.IsPositionFrozen = true;
             if (playerPed.IsVisible) NetworkFadeOutEntity(playerPed.Handle, true, false);
@@ -393,8 +393,8 @@ namespace FreeRoamProject.Client.Core.Utility
 
         public static int GetVehicleInDirection()
         {
-            int ped = PlayerCache.MyPlayer.Ped.Handle;
-            Vector3 coords = PlayerCache.MyPlayer.Ped.Position;
+            int ped = PlayerCache.MyClient.Ped.Handle;
+            Vector3 coords = PlayerCache.MyClient.Ped.Position;
             Vector3 inDirection = GetOffsetFromEntityInWorldCoords(ped, 0.0f, 5.0f, 0.0f);
             int rayHandle = CastRayPointToPoint(coords.X, coords.Y, coords.Z, inDirection.X, inDirection.Y, inDirection.Z, 10, ped, 0);
             bool a = false;
@@ -464,7 +464,7 @@ namespace FreeRoamProject.Client.Core.Utility
                 */
                 result.IsPersistent = true;
                 result.PlaceOnGround();
-                TaskWarpPedIntoVehicle(PlayerCache.MyPlayer.Ped.Handle, result.Handle, -1);
+                TaskWarpPedIntoVehicle(PlayerCache.MyClient.Ped.Handle, result.Handle, -1);
                 vehicleModel.MarkAsNoLongerNeeded();
                 return result;
             }
@@ -759,11 +759,11 @@ namespace FreeRoamProject.Client.Core.Utility
         }
         public static void RespawnPed(Position coords)
         {
-            Cache.PlayerCache.MyPlayer.Ped.Position = coords.ToVector3;
+            Cache.PlayerCache.MyClient.Ped.Position = coords.ToVector3;
             NetworkResurrectLocalPlayer(coords.X, coords.Y, coords.Z, coords.Heading, true, false);
-            Cache.PlayerCache.MyPlayer.Ped.Health = 100;
-            Cache.PlayerCache.MyPlayer.Ped.IsInvincible = false;
-            Cache.PlayerCache.MyPlayer.Ped.ClearBloodDamage();
+            Cache.PlayerCache.MyClient.Ped.Health = 100;
+            Cache.PlayerCache.MyClient.Ped.IsInvincible = false;
+            Cache.PlayerCache.MyClient.Ped.ClearBloodDamage();
         }
 
         public static void spectatePlayer(int targetPed, int targetId, string name, bool enableSpectate)
@@ -799,7 +799,7 @@ namespace FreeRoamProject.Client.Core.Utility
         /// <returns></returns>
         public static List<Player> GetPlayersInArea(Vector3 coords, float area, bool ignoreCallerPlayer = true)
         {
-            List<Player> playersInArea = ignoreCallerPlayer ? ClientMain.Instance.GetPlayers.ToList().FindAll(p => Vector3.Distance(p.Character.Position, coords) < area && p != PlayerCache.MyPlayer.Player) : ClientMain.Instance.GetPlayers.ToList().FindAll(p => Vector3.Distance(p.Character.Position, coords) < area);
+            List<Player> playersInArea = ignoreCallerPlayer ? ClientMain.Instance.GetPlayers.ToList().FindAll(p => Vector3.Distance(p.Character.Position, coords) < area && p != PlayerCache.MyClient.Player) : ClientMain.Instance.GetPlayers.ToList().FindAll(p => Vector3.Distance(p.Character.Position, coords) < area);
 
             return playersInArea;
         }
@@ -944,7 +944,7 @@ namespace FreeRoamProject.Client.Core.Utility
         /// <summary>
         /// Gets closest player to yourself
         /// </summary>
-        public static Tuple<Player, float> GetClosestPlayer() { return GetClosestPlayer(PlayerCache.MyPlayer.Position.ToVector3); }
+        public static Tuple<Player, float> GetClosestPlayer() { return GetClosestPlayer(PlayerCache.MyClient.Position.ToVector3); }
 
         /// <summary>
         /// Gets closest player to coordinates
@@ -953,7 +953,7 @@ namespace FreeRoamProject.Client.Core.Utility
         public static Tuple<Player, float> GetClosestPlayer(Vector3 coords)
         {
             if (ClientMain.Instance.GetPlayers.ToList().Count <= 1) return new Tuple<Player, float>(null, -1);
-            Player closestPlayer = ClientMain.Instance.GetPlayers.ToList().OrderBy(x => Vector3.Distance(x.Character.Position, coords)).FirstOrDefault(x => x != PlayerCache.MyPlayer.Player);
+            Player closestPlayer = ClientMain.Instance.GetPlayers.ToList().OrderBy(x => Vector3.Distance(x.Character.Position, coords)).FirstOrDefault(x => x != PlayerCache.MyClient.Player);
 
             return new Tuple<Player, float>(closestPlayer, Vector3.Distance(coords, closestPlayer.Character.Position));
         }

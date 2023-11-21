@@ -30,23 +30,23 @@ namespace FreeRoamProject.Client.Handlers
         }
         private static void OnPedLeftVehicleCheck(Ped ped, Vehicle vehicle, VehicleSeat seatIndex)
         {
-            if (ped.Handle == PlayerCache.MyPlayer.Ped.Handle)
+            if (ped.Handle == PlayerCache.MyClient.Ped.Handle)
             {
-                PlayerCache.MyPlayer.Status.PlayerStates.InVehicle = false;
+                PlayerCache.MyClient.Status.PlayerStates.InVehicle = false;
             }
         }
 
         private static void OnPedEnteredVehicleCheck(Ped ped, Vehicle vehicle, VehicleSeat seat)
         {
-            if (ped.Handle == PlayerCache.MyPlayer.Ped.Handle)
+            if (ped.Handle == PlayerCache.MyClient.Ped.Handle)
             {
-                PlayerCache.MyPlayer.Status.PlayerStates.InVehicle = true;
+                PlayerCache.MyClient.Status.PlayerStates.InVehicle = true;
             }
         }
 
         private static async Task VehicleCheck()
         {
-            Ped me = PlayerCache.MyPlayer.Ped;
+            Ped me = PlayerCache.MyClient.Ped;
             int meHandle = me.Handle;
             if (!(isInVehicle || me.IsDead))
             {

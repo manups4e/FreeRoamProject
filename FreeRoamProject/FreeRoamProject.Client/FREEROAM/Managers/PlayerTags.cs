@@ -53,7 +53,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
         {
             foreach (Player player in ClientMain.Instance.GetPlayers)
             {
-                if (NetworkIsPlayerActive(player.Handle) && player.Handle != PlayerCache.MyPlayer.Player.Handle)
+                if (NetworkIsPlayerActive(player.Handle) && player.Handle != PlayerCache.MyClient.Player.Handle)
                 {
                     Ped ped = player.Character;
 
@@ -82,10 +82,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 						end
 					*/
 
-                    if (PlayerCache.MyPlayer.Position.Distance(ped.Position) < 250f && HasEntityClearLosToEntity(PlayerCache.MyPlayer.Ped.Handle, ped.Handle, 17))
+                    if (PlayerCache.MyClient.Position.Distance(ped.Position) < 250f && HasEntityClearLosToEntity(PlayerCache.MyClient.Ped.Handle, ped.Handle, 17))
                     {
                         SetMpGamerTagVisibility(tag, (int)GamerTagType.GAMER_NAME, true);
-                        SetMpGamerTagVisibility(tag, (int)GamerTagType.healthArmour, PlayerCache.MyPlayer.Player.IsTargetting(ped));
+                        SetMpGamerTagVisibility(tag, (int)GamerTagType.healthArmour, PlayerCache.MyClient.Player.IsTargetting(ped));
                         SetMpGamerTagVisibility(tag, (int)GamerTagType.AUDIO_ICON, NetworkIsPlayerTalking(player.Handle));
                         SetMpGamerTagVisibility(tag, (int)GamerTagType.WANTED_STARS, player.WantedLevel > 0);
 

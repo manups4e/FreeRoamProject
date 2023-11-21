@@ -23,7 +23,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
         public override void ResetEvent()
         {
             base.ResetEvent();
-            Cache.PlayerCache.MyPlayer.Player.WantedLevel = 0;
+            Cache.PlayerCache.MyClient.Player.WantedLevel = 0;
             ClientMain.Instance.RemoveTick(OnTick);
         }
         private async Task OnTick()

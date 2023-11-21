@@ -69,14 +69,14 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
                     Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_PREPARE").Replace("~a~", Name), 50);
                 else
                 {
-                    if (!Cache.PlayerCache.MyPlayer.Position.IsInRangeOf(CurrentPlace, 50f))
+                    if (!Cache.PlayerCache.MyClient.Position.IsInRangeOf(CurrentPlace, 50f))
                     {
                         Screen.ShowSubtitle(Game.GetGXTEntry("KOTC_1STHELP"), 50);
                         if (CurrentAttempt > 0) CurrentAttempt = 0;
                     }
                     else
                     {
-                        if (PlayerCache.MyPlayer.Player.WantedLevel > 0)
+                        if (PlayerCache.MyClient.Player.WantedLevel > 0)
                             Environment.EnableWanted(false);
                         Screen.ShowSubtitle(Game.GetGXTEntry("KOTC_KINGOB1"), 1);
                         if (GetNetworkTime() - _timer > 1000)

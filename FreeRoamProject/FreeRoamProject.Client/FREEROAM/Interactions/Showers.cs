@@ -180,11 +180,11 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
         {
             if (!InShower)
             {
-                NearShower = World.GetAllProps().Select(o => new Prop(o.Handle)).Where(o => ShowerList.Contains(o.Model.Hash)).Any(o => Vector3.Distance(Cache.PlayerCache.MyPlayer.Position.ToVector3, o.Position) < 1.375f);
+                NearShower = World.GetAllProps().Select(o => new Prop(o.Handle)).Where(o => ShowerList.Contains(o.Model.Hash)).Any(o => Vector3.Distance(Cache.PlayerCache.MyClient.Position.ToVector3, o.Position) < 1.375f);
 
                 if (NearShower)
                 {
-                    ShowerDoor = World.GetAllProps().Select(o => new Prop(o.Handle)).Where(o => ShowerList.Contains(o.Model.Hash)).First(o => Vector3.Distance(Cache.PlayerCache.MyPlayer.Position.ToVector3, o.Position) < 1.375f);
+                    ShowerDoor = World.GetAllProps().Select(o => new Prop(o.Handle)).Where(o => ShowerList.Contains(o.Model.Hash)).First(o => Vector3.Distance(Cache.PlayerCache.MyClient.Position.ToVector3, o.Position) < 1.375f);
                     if (!ShowerDoor.IsAttached()) ShowerDoor.IsPositionFrozen = true;
                     actual = Coords.First(o => Vector3.Distance(o.anim, ShowerDoor.Position) < 2f);
                 }
@@ -212,7 +212,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
             {
                 if (!InShower)
                 {
-                    int ped = PlayerCache.MyPlayer.Ped.Handle;
+                    int ped = PlayerCache.MyClient.Ped.Handle;
                     InShower = true;
 
                     //CreaCam(CameraCoords(GetInteriorFromGameplayCam()));
@@ -221,7 +221,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
                     if (DoesEntityHaveDrawable(ShowerDoor.Handle)) PlaySynchronizedEntityAnim(ShowerDoor.Handle, Scene1, sLocal_444, sLocal_436, 2f, -8f, 1, 1148846080);
                     while (GetSynchronizedScenePhase(Scene1) < Global_2499242_f_20) await BaseScript.Delay(0);
                     func_314();
-                    Cache.PlayerCache.MyPlayer.Ped.ClearBloodDamage();
+                    Cache.PlayerCache.MyClient.Ped.ClearBloodDamage();
                     Function.Call(Hash.PLAY_SOUND_FROM_ENTITY, -1, "MP_APARTMENT_SHOWER_GET_UNDRESSED_MASTER", ped, 0, 0, 0);
                     while (GetSynchronizedScenePhase(Scene1) < Global_2499242_f_22) await BaseScript.Delay(0);
                     Function.Call(Hash.PLAY_SOUND_FROM_ENTITY, Global_2499242_f_25, "MP_APARTMENT_SHOWER_MASTER", ped, 0, 0, 0);
@@ -269,7 +269,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
 
                     while (GetSynchronizedScenePhase(Scene1) < Global_2499242_f_21) await BaseScript.Delay(0);
                     Function.Call(Hash.PLAY_SOUND_FROM_ENTITY, -1, "MP_APARTMENT_SHOWER_GET_DRESSED_MASTER", ped, 0, 0, 0);
-                    Functions.UpdateDress(ped, PlayerCache.MyPlayer.User.Character.Dressing);
+                    Functions.UpdateDress(ped, PlayerCache.MyClient.User.Character.Dressing);
                     while (GetSynchronizedScenePhase(Scene1) < 0.99f) await BaseScript.Delay(0);
                     ClearPedTasks(ped);
                     InShower = false;
@@ -280,7 +280,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
 
         private static void func_314()
         {
-            int ped = PlayerCache.MyPlayer.Ped.Handle;
+            int ped = PlayerCache.MyClient.Ped.Handle;
             //			func_315(ped , 4, -1, -1);
             SetPedComponentVariation(ped, 11, 15, 0, 0);
             if (GetPedDrawableVariation(ped, 3) != 15) SetPedComponentVariation(ped, 3, 15, 0, 0);

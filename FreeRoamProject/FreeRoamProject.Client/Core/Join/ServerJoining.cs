@@ -46,19 +46,19 @@ namespace FreeRoamProject.Client.Core.Ingresso
             MinimapHandler.EnableMinimap = false;
             await PlayerCache.InitPlayer();
             await PlayerCache.Loaded();
-            while (!NetworkIsPlayerActive(PlayerCache.MyPlayer.Player.Handle))
+            while (!NetworkIsPlayerActive(PlayerCache.MyClient.Player.Handle))
                 await BaseScript.Delay(0);
-            if (PlayerCache.MyPlayer.Ped.Model.Hash != (int)PedHash.FreemodeMale01)
+            if (PlayerCache.MyClient.Ped.Model.Hash != (int)PedHash.FreemodeMale01)
             {
-                await PlayerCache.MyPlayer.Player.ChangeModel(new Model(PedHash.FreemodeMale01));
-                PlayerCache.MyPlayer.Ped.Style.SetDefaultClothes();
+                await PlayerCache.MyClient.Player.ChangeModel(new Model(PedHash.FreemodeMale01));
+                PlayerCache.MyClient.Ped.Style.SetDefaultClothes();
             }
 
             // utility events.. to be fixed (remove non utility events and move them)
             Events.Init();
-            PlayerCache.MyPlayer.Ped.IsPositionFrozen = true;
-            PlayerCache.MyPlayer.Player.IgnoredByPolice = false;
-            PlayerCache.MyPlayer.Player.DispatchsCops = true;
+            PlayerCache.MyClient.Ped.IsPositionFrozen = true;
+            PlayerCache.MyClient.Player.IgnoredByPolice = false;
+            PlayerCache.MyClient.Player.DispatchsCops = true;
             //Screen.Hud.IsRadarVisible = false;
             Screen.Hud.IsRadarVisible = true;
             // TODO: maybe this part too 🤔
@@ -67,21 +67,21 @@ namespace FreeRoamProject.Client.Core.Ingresso
 
         public static async void CharLoad()
         {
-            if (PlayerCache.MyPlayer.Ped.IsVisible)
-                await Functions.FadeEntityAsync(PlayerCache.MyPlayer.Ped, false, false, false);
+            if (PlayerCache.MyClient.Ped.IsVisible)
+                await Functions.FadeEntityAsync(PlayerCache.MyClient.Ped, false, false, false);
             StopPlayerSwitch();
             RequestCollisionAtCoord(-103.310f, -1215.578f, 1000);
-            PlayerCache.MyPlayer.Ped.Position = new Vector3(-103.310f, -1215.578f, 1000);
-            PlayerCache.MyPlayer.Ped.Heading = 270.975f;
-            PlayerCache.MyPlayer.Player.CanControlCharacter = false;
+            PlayerCache.MyClient.Ped.Position = new Vector3(-103.310f, -1215.578f, 1000);
+            PlayerCache.MyClient.Ped.Heading = 270.975f;
+            PlayerCache.MyClient.Player.CanControlCharacter = false;
 
             string settings = await EventDispatcher.Get<string>("Config.CallClientConfig");
             string sharedSettings = await EventDispatcher.Get<string>("Config.CallSharedConfig");
             ConfigShared.SharedConfig = sharedSettings.FromJson<SharedConfig>();
             ClientMain.Settings.LoadConfig(settings);
 
-            FreeRoamChar roamchar = await EventDispatcher.Get<FreeRoamChar>("tlg:Select_FreeRoamChar", Cache.PlayerCache.MyPlayer.User.ID);
-            PlayerCache.MyPlayer.User.Character = roamchar;
+            FreeRoamChar roamchar = await EventDispatcher.Get<FreeRoamChar>("tlg:Select_FreeRoamChar", Cache.PlayerCache.MyClient.User.ID);
+            PlayerCache.MyClient.User.Character = roamchar;
             if (roamchar.CharID == 0 && roamchar.Skin is null)
             {
                 StopPlayerSwitch();
@@ -95,13 +95,13 @@ namespace FreeRoamProject.Client.Core.Ingresso
                 return;
             }
             await BaseScript.Delay(1000);
-            if (PlayerCache.MyPlayer.User.Character.Position is not null)
+            if (PlayerCache.MyClient.User.Character.Position is not null)
             {
                 Vector3 newVec = new Vector3();
-                Position coords = PlayerCache.MyPlayer.User.Character.Position;
+                Position coords = PlayerCache.MyClient.User.Character.Position;
                 SetFocusPosAndVel(coords.X, coords.Y, coords.Z, 0, 0, 0);
                 RequestCollisionAtCoord(coords.X, coords.Y, coords.Z);
-                Vector3 loadVect = (await PlayerCache.MyPlayer.User.Character.Position.GetPositionWithGroundZ()).ToVector3;
+                Vector3 loadVect = (await PlayerCache.MyClient.User.Character.Position.GetPositionWithGroundZ()).ToVector3;
                 int tempTimer = GetNetworkTime();
                 bool safe = GetSafeCoordForPed(loadVect.X, loadVect.Y, loadVect.Z, true, ref newVec, 0);
                 while (!safe)
@@ -116,13 +116,13 @@ namespace FreeRoamProject.Client.Core.Ingresso
                 }
                 if (safe)
                 {
-                    PlayerCache.MyPlayer.User.Character.Position = await new Position(newVec, PlayerCache.MyPlayer.User.Character.Position.ToRotationVector).GetPositionWithGroundZ();
+                    PlayerCache.MyClient.User.Character.Position = await new Position(newVec, PlayerCache.MyClient.User.Character.Position.ToRotationVector).GetPositionWithGroundZ();
                     ClearFocus();
                 }
             }
             await BaseScript.Delay(1000);
 
-            SwitchOutPlayer(PlayerCache.MyPlayer.Ped.Handle, 1, 1);
+            SwitchOutPlayer(PlayerCache.MyClient.Ped.Handle, 1, 1);
             // wait until the camera has done the 3 steps.. only after we start
             while (GetPlayerSwitchState() != 5) await BaseScript.Delay(0);
 

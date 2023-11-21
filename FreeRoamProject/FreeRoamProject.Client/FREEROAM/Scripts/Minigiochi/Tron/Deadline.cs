@@ -16,7 +16,7 @@ namespace Client.Scripts.Minigiochi.Tron
         {
             if (Function.Call<bool>(Hash.HAS_STREAMED_TEXTURE_DICT_LOADED, "Deadline"))
             {
-                if (PlayerCache.MyPlayer.Ped.IsSittingInVehicle())
+                if (PlayerCache.MyClient.Ped.IsSittingInVehicle())
                 {
                     if (!Function.Call<bool>(Hash._GET_SCREEN_EFFECT_IS_ACTIVE, "DeadlineNeon"))
                     {

@@ -141,7 +141,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
                 int place = 0;
 
                 // Winner
-                if (top3.ElementAt(0).Key == Cache.PlayerCache.MyPlayer.Player.Name)
+                if (top3.ElementAt(0).Key == Cache.PlayerCache.MyClient.Player.Name)
                 {
                     if (top3.ElementAt(0).Value != 0)
                     {
@@ -150,7 +150,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
                     }
                 }
                 // 2nd Place
-                else if (top3.ElementAt(1).Key == Cache.PlayerCache.MyPlayer.Player.Name)
+                else if (top3.ElementAt(1).Key == Cache.PlayerCache.MyClient.Player.Name)
                 {
                     if (top3.ElementAt(1).Value != 0)
                     {
@@ -159,7 +159,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
                     }
                 }
                 // 3rd Place
-                else if (top3.ElementAt(2).Key == Cache.PlayerCache.MyPlayer.Player.Name)
+                else if (top3.ElementAt(2).Key == Cache.PlayerCache.MyClient.Player.Name)
                 {
                     if (top3.ElementAt(2).Value != 0)
                     {

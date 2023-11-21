@@ -26,7 +26,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
 
         public static async Task MarkerOutside()
         {
-            Ped playerPed = Cache.PlayerCache.MyPlayer.Ped;
+            Ped playerPed = Cache.PlayerCache.MyClient.Ped;
 
             foreach (KeyValuePair<string, ConfigHouses> app in Properties.Apartments)
             {
@@ -39,14 +39,14 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
                 }
 
                 if (!playerPed.IsInRangeOf(app.Value.MarkerGarageExtern.ToVector3, 3f)) continue;
-                if (!Cache.PlayerCache.MyPlayer.User.Character.Properties.Contains(app.Key)) continue;
+                if (!Cache.PlayerCache.MyClient.User.Character.Properties.Contains(app.Key)) continue;
 
-                if (Cache.PlayerCache.MyPlayer.Status.PlayerStates.InVehicle)
+                if (Cache.PlayerCache.MyClient.Status.PlayerStates.InVehicle)
                 {
                     string plate = playerPed.CurrentVehicle.Mods.LicensePlate;
                     int model = playerPed.CurrentVehicle.Model.Hash;
 
-                    if (Cache.PlayerCache.MyPlayer.User.Character.Vehicles.FirstOrDefault(x => x.Plate == plate && x.VehData.Props.Model == model) == null)
+                    if (Cache.PlayerCache.MyClient.User.Character.Vehicles.FirstOrDefault(x => x.Plate == plate && x.VehData.Props.Model == model) == null)
                         continue;
                     if (playerPed.IsVisible)
                         NetworkFadeOutEntity(playerPed.CurrentVehicle.Handle, true, false);
@@ -54,7 +54,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
                     await BaseScript.Delay(1000);
                     VehProp vehProps = await playerPed.CurrentVehicle.GetVehicleProperties();
                     EventDispatcher.Send("lprp:vehInGarage", plate, true, vehProps.ToJson(settings: JsonHelper.IgnoreJsonIgnoreAttributes));
-                    Cache.PlayerCache.MyPlayer.Status.Instance.InstancePlayer(app.Key);
+                    Cache.PlayerCache.MyClient.Status.Instance.InstancePlayer(app.Key);
                     await BaseScript.Delay(1000);
 
                     if (playerPed.CurrentVehicle.PassengerCount > 0)
@@ -63,7 +63,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
                         {
                             Player pl = Functions.GetPlayerFromPed(p);
                             PlayerClient pp = Functions.GetPlayerClientFromServerId(pl.ServerId);
-                            pp.Status.Instance.InstancePlayer(Cache.PlayerCache.MyPlayer.Player.ServerId, Cache.PlayerCache.MyPlayer.Status.Instance.Instance);
+                            pp.Status.Instance.InstancePlayer(Cache.PlayerCache.MyClient.Player.ServerId, Cache.PlayerCache.MyClient.Status.Instance.Instance);
                             // TODO: DO WE REALLY NEED TO HANDLE THIS FROM THE SERVER?
                             EventDispatcher.Send("tlg:enterGarageWithOwner", app.Value.SpawnGarageWalkInside);
                         }
@@ -105,7 +105,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
                         await BaseScript.Delay(0);
                     }
 
-                    foreach (OwnedVehicle veh in Cache.PlayerCache.MyPlayer.User.Character.Vehicles.Where(veh => veh.Garage.ID == Cache.PlayerCache.MyPlayer.Status.Instance.Instance).Where(veh => veh.Garage.InGarage))
+                    foreach (OwnedVehicle veh in Cache.PlayerCache.MyClient.User.Character.Vehicles.Where(veh => veh.Garage.ID == Cache.PlayerCache.MyClient.Status.Instance.Instance).Where(veh => veh.Garage.InGarage))
                     {
                         Vehicle veic = await Functions.SpawnLocalVehicle(veh.VehData.Props.Model, new Vector3(ClientMain.Settings.FreeRoam.Properties.Garages.LowEnd.PosVehs[veh.Garage.Place].X, ClientMain.Settings.FreeRoam.Properties.Garages.LowEnd.PosVehs[veh.Garage.Place].Y, ClientMain.Settings.FreeRoam.Properties.Garages.LowEnd.PosVehs[veh.Garage.Place].Z), ClientMain.Settings.FreeRoam.Properties.Garages.LowEnd.PosVehs[veh.Garage.Place].Heading);
                         veic.SetVehicleProperties(veh.VehData.Props);
@@ -133,13 +133,13 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
         static bool exitMenuOpen = false;
         public static async Task MarkerInside()
         {
-            Ped playerPed = Cache.PlayerCache.MyPlayer.Ped;
+            Ped playerPed = Cache.PlayerCache.MyClient.Ped;
 
-            if (Cache.PlayerCache.MyPlayer.Status.Instance.Instanced)
+            if (Cache.PlayerCache.MyClient.Status.Instance.Instanced)
             {
-                if (Properties.Apartments.ContainsKey(Cache.PlayerCache.MyPlayer.Status.Instance.Instance))
+                if (Properties.Apartments.ContainsKey(Cache.PlayerCache.MyClient.Status.Instance.Instance))
                 {
-                    ConfigHouses app = Properties.Apartments[Cache.PlayerCache.MyPlayer.Status.Instance.Instance];
+                    ConfigHouses app = Properties.Apartments[Cache.PlayerCache.MyClient.Status.Instance.Instance];
 
                     if (playerPed.IsInRangeOf(app.MarkerExit.ToVector3, 1.375f) || playerPed.IsInRangeOf(app.MarkerGarageInternal.ToVector3, 1.375f))
                     {

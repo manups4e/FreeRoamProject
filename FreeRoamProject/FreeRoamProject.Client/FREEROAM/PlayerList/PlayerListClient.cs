@@ -40,7 +40,7 @@ namespace FreeRoamProject.Client.FREEROAM.PlayerList
 
                 foreach (PlayerSlot p in list)
                 {
-                    Ped ped = p.ServerId == PlayerCache.MyPlayer.Handle ? PlayerCache.MyPlayer.Ped : Functions.GetPlayerClientFromServerId(p.ServerId)?.Ped;
+                    Ped ped = p.ServerId == PlayerCache.MyClient.Handle ? PlayerCache.MyClient.Ped : Functions.GetPlayerClientFromServerId(p.ServerId)?.Ped;
                     System.Tuple<int, string> mug = await Functions.GetPedMugshotAsync(ped);
                     if (Main.PlayerListInstance.PlayerRows.Any(x => x.ServerId == p.ServerId)) continue;
                     PlayerRow row = new PlayerRow()

@@ -9,20 +9,26 @@ namespace FreeRoamProject.Client.Cache
         private static bool _paused;
         private static SharedTimeChecker _checkTimer;
 
-        public static PlayerClient MyPlayer { get; private set; }
-        public static FreeRoamChar Character => MyPlayer.User.Character;
+        public static PlayerClient MyClient { get; private set; }
+        public static FreeRoamChar Character => MyClient.User.Character;
+        public static Ped MyPed => MyClient.Ped;
+        public static Player MyPlayer => MyClient.Player;
+
 
 
         public static async Task InitPlayer()
         {
             Tuple<Snowflake, BasePlayerShared> player = await EventDispatcher.Get<Tuple<Snowflake, BasePlayerShared>>("tlg:setupUser");
-            MyPlayer = new PlayerClient(player);
+            MyClient = new PlayerClient(player);
             _checkTimer = new(3000);
+            // TODO: THIS TICK STATUS... I DON'T LIKE IT HERE...
+            // BUT THE POSITION THING IS LIKE A GLOBAL.. IT'S USED EVERYWHERE EVEN BEFORE SPAWNING SO...
+            // WE CAN LEAVE IT HERE?
             ClientMain.Instance.AddTick(TickStatus);
         }
         public static async Task Loaded()
         {
-            while (MyPlayer == null || MyPlayer != null && !MyPlayer.Ready) await BaseScript.Delay(0);
+            while (MyClient == null || MyClient != null && !MyClient.Ready) await BaseScript.Delay(0);
         }
 
 
@@ -37,7 +43,7 @@ namespace FreeRoamProject.Client.Cache
             #region Position
             // TODO: PLAYERS SAVED INSIDE INTERIORS HAVE SPAWNPOINTS INSIDE + THE CAMERA ANIMATION LIKE IN GTA:O
 
-            MyPlayer.Position = new Position(MyPlayer.Ped.Position, MyPlayer.Ped.Rotation);
+            MyClient.Position = new Position(MyClient.Ped.Position, MyClient.Ped.Rotation);
             #endregion
 
             #region Check Pausa
@@ -47,7 +53,7 @@ namespace FreeRoamProject.Client.Cache
                 if (Game.IsPaused || MenuHandler.IsAnyPauseMenuOpen)
                 {
                     _paused = true;
-                    MyPlayer.Status.PlayerStates.Paused = true;
+                    MyClient.Status.PlayerStates.Paused = true;
                 }
             }
             else
@@ -55,7 +61,7 @@ namespace FreeRoamProject.Client.Cache
                 if (!Game.IsPaused & !MenuHandler.IsAnyPauseMenuOpen)
                 {
                     _paused = false;
-                    MyPlayer.Status.PlayerStates.Paused = false;
+                    MyClient.Status.PlayerStates.Paused = false;
                 }
             }
 

@@ -168,7 +168,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             else
             {
                 // DO WE NEED IT?...
-                Ped playerPed = PlayerCache.MyPlayer.Ped;
+                Ped playerPed = PlayerCache.MyClient.Ped;
                 UIMenu curMenu = (UIMenu)MenuHandler.CurrentMenu;
                 if (curMenu == InteractionMenu.MainMenu ||
                     curMenu == InteractionMenu.GangsMenu ||
@@ -187,7 +187,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                             Tuple<bool, int> doubleTap = await Input.HasControlBeenPressedMultipleTimes(Control.FrontendAccept);
                             if (doubleTap.Item1)
                             {
-                                if (PlayerCache.MyPlayer.Ped.IsOnFoot)
+                                if (PlayerCache.MyClient.Ped.IsOnFoot)
                                 {
                                     if (CurrentAnimSelection == 0) return;
                                     await PerformCurrentAction(true);
@@ -206,7 +206,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
         public static async Task PerformCurrentAction(bool @double)
         {
-            int ped = PlayerCache.MyPlayer.Ped.Handle;
+            int ped = PlayerCache.MyClient.Ped.Handle;
             #region loadAnim
             Anim = func_13801(CurrentAnimMode, CurrentAnimSelection, true, true); // param2 is the anim index.. 0 == none
 
@@ -479,40 +479,40 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             {
                 case 0:
                     RemoveClipSets(0);
-                    ResetPedMovementClipset(PlayerCache.MyPlayer.Ped.Handle, 0.25f);
+                    ResetPedMovementClipset(PlayerCache.MyClient.Ped.Handle, 0.25f);
                     break;
                 case 1:
                     RequestClipSet(sex == "Male" ? "MOVE_M@FEMME@" : "MOVE_F@FEMME@");
                     while (!HasClipSetLoaded(sex == "Male" ? "MOVE_M@FEMME@" : "MOVE_F@FEMME@")) await BaseScript.Delay(0);
-                    SetPedMovementClipset(PlayerCache.MyPlayer.Ped.Handle, sex == "Male" ? "MOVE_M@FEMME@" : "MOVE_F@FEMME@", 0.25f);
+                    SetPedMovementClipset(PlayerCache.MyClient.Ped.Handle, sex == "Male" ? "MOVE_M@FEMME@" : "MOVE_F@FEMME@", 0.25f);
                     RemoveClipSets(1);
                     break;
 
                 case 2:
                     RequestClipSet(sex == "Male" ? "MOVE_M@GANGSTER@NG" : "MOVE_F@GANGSTER@NG");
                     while (!HasClipSetLoaded(sex == "Male" ? "MOVE_M@GANGSTER@NG" : "MOVE_F@GANGSTER@NG")) await BaseScript.Delay(0);
-                    SetPedMovementClipset(PlayerCache.MyPlayer.Ped.Handle, sex == "Male" ? "MOVE_M@GANGSTER@NG" : "MOVE_F@GANGSTER@NG", 0.25f);
+                    SetPedMovementClipset(PlayerCache.MyClient.Ped.Handle, sex == "Male" ? "MOVE_M@GANGSTER@NG" : "MOVE_F@GANGSTER@NG", 0.25f);
                     RemoveClipSets(2);
                     break;
 
                 case 3:
                     RequestClipSet(sex == "Male" ? "MOVE_M@POSH@" : "MOVE_F@POSH@");
                     while (!HasClipSetLoaded(sex == "Male" ? "MOVE_M@POSH@" : "MOVE_F@POSH@")) await BaseScript.Delay(0);
-                    SetPedMovementClipset(PlayerCache.MyPlayer.Ped.Handle, sex == "Male" ? "MOVE_M@POSH@" : "MOVE_F@POSH@", 0.25f);
+                    SetPedMovementClipset(PlayerCache.MyClient.Ped.Handle, sex == "Male" ? "MOVE_M@POSH@" : "MOVE_F@POSH@", 0.25f);
                     RemoveClipSets(3);
                     break;
 
                 case 4:
                     RequestClipSet(sex == "Male" ? "MOVE_M@TOUGH_GUY@" : "MOVE_F@TOUGH_GUY@");
                     while (!HasClipSetLoaded(sex == "Male" ? "MOVE_M@TOUGH_GUY@" : "MOVE_F@TOUGH_GUY@")) await BaseScript.Delay(0);
-                    SetPedMovementClipset(PlayerCache.MyPlayer.Ped.Handle, sex == "Male" ? "MOVE_M@TOUGH_GUY@" : "MOVE_F@TOUGH_GUY@", 0.25f);
+                    SetPedMovementClipset(PlayerCache.MyClient.Ped.Handle, sex == "Male" ? "MOVE_M@TOUGH_GUY@" : "MOVE_F@TOUGH_GUY@", 0.25f);
                     RemoveClipSets(4);
                     break;
 
                 case 5:
                     RequestClipSet(sex == "Male" ? "ANIM@MOVE_M@GROOVING@" : "ANIM@MOVE_F@GROOVING@");
                     while (!HasClipSetLoaded(sex == "Male" ? "ANIM@MOVE_M@GROOVING@" : "ANIM@MOVE_F@GROOVING@")) await BaseScript.Delay(0);
-                    SetPedMovementClipset(PlayerCache.MyPlayer.Ped.Handle, sex == "Male" ? "ANIM@MOVE_M@GROOVING@" : "ANIM@MOVE_F@GROOVING@", 0.25f);
+                    SetPedMovementClipset(PlayerCache.MyClient.Ped.Handle, sex == "Male" ? "ANIM@MOVE_M@GROOVING@" : "ANIM@MOVE_F@GROOVING@", 0.25f);
                     RemoveClipSets(5);
                     break;
             }
@@ -546,7 +546,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
         internal static void SetFacialAnim(int selection)
         {
             string mood = GetMoodDict(selection);
-            Function.Call(Hash.SET_FACIAL_IDLE_ANIM_OVERRIDE, PlayerCache.MyPlayer.Ped.Handle, mood, 0);
+            Function.Call(Hash.SET_FACIAL_IDLE_ANIM_OVERRIDE, PlayerCache.MyClient.Ped.Handle, mood, 0);
         }
 
         internal static string GetMoodDict(int selection)
@@ -599,7 +599,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             Vehicle vehicle = saveVehicle;
 
-            if (PlayerCache.MyPlayer.Status.PlayerStates.InVehicle)
+            if (PlayerCache.MyClient.Status.PlayerStates.InVehicle)
             {
                 Vehicle veh = VehicleChecker.CurrentVehicle;
 
@@ -624,7 +624,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             else
             {
                 if (vehicle == null || !vehicle.Exists()) return;
-                float distanceToVeh = Vector3.Distance(PlayerCache.MyPlayer.Position.ToVector3, vehicle.Position);
+                float distanceToVeh = Vector3.Distance(PlayerCache.MyClient.Position.ToVector3, vehicle.Position);
 
                 if (distanceToVeh <= 20f)
                 {
@@ -664,8 +664,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
         public static void Windows(string finestrini)
         {
-            if (!PlayerCache.MyPlayer.Status.PlayerStates.InVehicle) return;
-            if (VehicleChecker.CurrentVehicle.Driver != PlayerCache.MyPlayer.Ped) return;
+            if (!PlayerCache.MyClient.Status.PlayerStates.InVehicle) return;
+            if (VehicleChecker.CurrentVehicle.Driver != PlayerCache.MyClient.Ped) return;
 
             switch (finestrini)
             {
@@ -722,7 +722,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
         public static void Save(bool saved)
         {
-            if (!PlayerCache.MyPlayer.Ped.IsSittingInVehicle() || VehicleChecker.CurrentVehicle.Driver != PlayerCache.MyPlayer.Ped) return;
+            if (!PlayerCache.MyClient.Ped.IsSittingInVehicle() || VehicleChecker.CurrentVehicle.Driver != PlayerCache.MyClient.Ped) return;
 
             if (!saved)
             {
@@ -755,13 +755,13 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             {
                 Vehicle vehicle = saveVehicle;
                 VehicleLockStatus islocked = vehicle.LockStatus;
-                float distanceToVeh = Vector3.Distance(PlayerCache.MyPlayer.Position.ToVector3, vehicle.Position);
+                float distanceToVeh = Vector3.Distance(PlayerCache.MyClient.Position.ToVector3, vehicle.Position);
 
                 if (toggle)
                 {
                     if (vehicle.Exists())
                     {
-                        if (vehicle.Driver == PlayerCache.MyPlayer.Ped)
+                        if (vehicle.Driver == PlayerCache.MyClient.Ped)
                         {
                             vehicle.LockStatus = VehicleLockStatus.Locked;
                             SetVehicleDoorsLockedForAllPlayers(vehicle.Handle, true);
@@ -799,7 +799,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 {
                     if (vehicle.Exists())
                     {
-                        if (vehicle.Driver == PlayerCache.MyPlayer.Ped)
+                        if (vehicle.Driver == PlayerCache.MyClient.Ped)
                         {
                             vehicle.LockStatus = VehicleLockStatus.Unlocked;
                             SetVehicleDoorsLockedForAllPlayers(vehicle.Handle, false);
@@ -864,7 +864,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             {
                 ((UIMenu)MenuHandler.CurrentMenu).MenuItems[6].Enabled = false;
             }
-            Ped playerPed = PlayerCache.MyPlayer.Ped;
+            Ped playerPed = PlayerCache.MyClient.Ped;
             int pedHandle = playerPed.Handle;
             int component = GetPedPropIndex(pedHandle, 0);
             int texture = GetPedPropTextureIndex(pedHandle, 0);
@@ -3466,7 +3466,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             get
             {
                 int iVar2 = 0;
-                if (PlayerCache.MyPlayer.Ped.IsSittingInVehicle())
+                if (PlayerCache.MyClient.Ped.IsSittingInVehicle())
                 {
                     Vehicle iVar0 = VehicleChecker.CurrentVehicle;
                     int iVar1 = 0;
@@ -3475,7 +3475,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                         iVar2 = (iVar1 - 1);
                         if (!iVar0.IsSeatFree((VehicleSeat)iVar2))
                         {
-                            if (iVar0.GetPedOnSeat((VehicleSeat)iVar2) == PlayerCache.MyPlayer.Ped)
+                            if (iVar0.GetPedOnSeat((VehicleSeat)iVar2) == PlayerCache.MyClient.Ped)
                             {
                                 return (VehicleSeat)iVar2;
                             }

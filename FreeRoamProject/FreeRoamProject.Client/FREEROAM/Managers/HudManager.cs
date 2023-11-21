@@ -64,8 +64,8 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 
         private static void OnGetLevelXp(int level, int xp)
         {
-            PlayerCache.MyPlayer.User.Character.Level = level;
-            PlayerCache.MyPlayer.User.Character.TotalXp = xp;
+            PlayerCache.MyClient.User.Character.Level = level;
+            PlayerCache.MyClient.User.Character.TotalXp = xp;
             ClientMain.Logger.Info($"OnGetLevelXp | Level [{level}] | XP [{xp}]");
             BaseScript.TriggerEvent("worldeventsManage.Client:UpdatedLevel", level, false); // da aggiornare perché non esiste nel codice
         }
@@ -175,7 +175,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
                     else
                     {
                         Vector3 playerCoords = GetEntityCoords(player, true);
-                        Vector3 myCoords = Cache.PlayerCache.MyPlayer.Ped.Position;
+                        Vector3 myCoords = Cache.PlayerCache.MyClient.Ped.Position;
 
                         int alpha = 0;
                         if (myCoords.DistanceToSquared(playerCoords) < 40000f)

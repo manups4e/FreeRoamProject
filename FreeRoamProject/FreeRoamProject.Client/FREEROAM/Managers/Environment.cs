@@ -151,21 +151,21 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
         {
             if (!active)
             {
-                PlayerCache.MyPlayer.Ped.CanBeDraggedOutOfVehicle = true;
-                PlayerCache.MyPlayer.Ped.SetConfigFlag(342, false);
-                PlayerCache.MyPlayer.Ped.SetConfigFlag(122, false);
-                SetPlayerVehicleDefenseModifier(PlayerCache.MyPlayer.Player.Handle, 1f);
+                PlayerCache.MyClient.Ped.CanBeDraggedOutOfVehicle = true;
+                PlayerCache.MyClient.Ped.SetConfigFlag(342, false);
+                PlayerCache.MyClient.Ped.SetConfigFlag(122, false);
+                SetPlayerVehicleDefenseModifier(PlayerCache.MyClient.Player.Handle, 1f);
                 NetworkSetPlayerIsPassive(false);
                 EnablePvP(true);
                 Function.Call(Hash._SET_LOCAL_PLAYER_AS_GHOST, false, false);
             }
             else
             {
-                PlayerCache.MyPlayer.Ped.CanBeDraggedOutOfVehicle = false;
-                PlayerCache.MyPlayer.Ped.Weapons.Select(WeaponHash.Unarmed);
-                PlayerCache.MyPlayer.Ped.SetConfigFlag(342, true);
-                PlayerCache.MyPlayer.Ped.SetConfigFlag(122, true);
-                SetPlayerVehicleDefenseModifier(PlayerCache.MyPlayer.Player.Handle, 0.5f);
+                PlayerCache.MyClient.Ped.CanBeDraggedOutOfVehicle = false;
+                PlayerCache.MyClient.Ped.Weapons.Select(WeaponHash.Unarmed);
+                PlayerCache.MyClient.Ped.SetConfigFlag(342, true);
+                PlayerCache.MyClient.Ped.SetConfigFlag(122, true);
+                SetPlayerVehicleDefenseModifier(PlayerCache.MyClient.Player.Handle, 0.5f);
                 Function.Call(Hash._SET_LOCAL_PLAYER_AS_GHOST, true, false);
                 NetworkSetPlayerIsPassive(true);
                 EnablePvP(false);
@@ -183,12 +183,12 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
                 SetPlayerWantedLevelNow(PlayerId(), false);
             }
             SetMaxWantedLevel(enabled ? 5 : 0);
-            Cache.PlayerCache.MyPlayer.Status.PlayerStates.Wanted = enabled;
+            Cache.PlayerCache.MyClient.Status.PlayerStates.Wanted = enabled;
         }
 
         public static void SetWantedLevel(int level, bool permanent, int maxLevel = 5)
         {
-            if (!Cache.PlayerCache.MyPlayer.Status.PlayerStates.Wanted)
+            if (!Cache.PlayerCache.MyClient.Status.PlayerStates.Wanted)
                 return;
 
             if (permanent)

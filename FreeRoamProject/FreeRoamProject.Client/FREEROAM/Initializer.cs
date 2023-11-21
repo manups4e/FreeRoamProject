@@ -41,7 +41,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM
         {
             WeatherClient.Stop();
             TimeClient.Stop();
-            AccessingEvents.FreeRoamLeave(PlayerCache.MyPlayer);
+            AccessingEvents.FreeRoamLeave(PlayerCache.MyClient);
             HudManager.Stop();
             WeaponShops.Stop();
             // TODO: SAME COMMENTS AS ABOVE
