@@ -33,6 +33,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Spawner
             if (Screen.LoadingPrompt.IsActive) Screen.LoadingPrompt.Hide();
             Screen.LoadingPrompt.Show("Syncing with the server", LoadingSpinnerType.Clockwise1);
             // TODO: TURN THIS INTO A GET (CALLBACK) RETURNING THE BUCKET ID
+            // do we need it?
             EventDispatcher.Send("tlg:addPlayerToBucket");
             NetworkClearClockTimeOverride();
             await BaseScript.Delay(7000);

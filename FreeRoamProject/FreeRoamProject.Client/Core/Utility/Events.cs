@@ -21,32 +21,28 @@ namespace FreeRoamProject.Client.Core.Utility
             EventDispatcher.Mount("tlg:spawnVehicle", new Action<string>(SpawnVehicle));
             EventDispatcher.Mount("tlg:deleteVehicle", new Action(DeleteVehicle));
             EventDispatcher.Mount("tlg:showSaving", new Action(Save));
-            EventDispatcher.Mount("tlg:onPlayerEntrance", new Action<PlayerClient>(PlayerJoined));
             EventDispatcher.Mount("tlg:PlayerLeft", new Action<string, string>(PlayerLeft));
             EventDispatcher.Mount("tlg:removeWeaponComponent", new Action<string, string>(RemoveWeaponComponent));
             EventDispatcher.Mount("tlg:removeWeapon", new Action<string>(RemoveWeapon));
             EventDispatcher.Mount("tlg:addWeapon", new Action<string, int>(AddWeapon));
             EventDispatcher.Mount("tlg:addWeaponComponent", new Action<string, string>(AddWeaponComponent));
             EventDispatcher.Mount("tlg:addWeaponTint", new Action<string, int>(AddWeaponTint));
-            AccessingEvents.OnFreeRoamSpawn += OnSpawn;
+            ClientMain.Instance.StateBagsHandler.OnPlayerStateBagChange += OnSpawn;
         }
 
-        private static void OnSpawn(PlayerClient client)
+        private static void OnSpawn(int userId, string type, bool value)
         {
             // TODO: MOVE THIS TO WHEN THE PLAYER IS DONE WITH THE SWITCH CAMERA ANIMATION.
-            EventDispatcher.Send("tlg:sendPlayerJoinedMessage");
-        }
-
-        //TODO: WITH THE "CLIENTLIST" WE DON'T NEED TO SEND PLAYERCLIENTS TO CLIENT ANYMORE..
-        //WE CAN SIMPLY SEND THE Handle (ints better than strings)
-        public static void PlayerJoined(PlayerClient client)
-        {
-            if (client.Handle == PlayerCache.MyClient.Handle) return;
-            //client.Status ??= new(client.Player);
-            //TODO: shownotification with additional text, to be added as a separate function?
-            BeginTextCommandThefeedPost("TICK_JOIN");
-            AddTextComponentSubstringPlayerName("<C>" + client.Player.Name + "</C>~s~");
-            EndTextCommandThefeedPostTicker(false, true);
+            if (type == "Spawned")
+            {
+                if (value)
+                {
+                    if (userId == PlayerCache.MyClient.Handle) return;
+                    BeginTextCommandThefeedPost("TICK_JOIN");
+                    AddTextComponentSubstringPlayerName("<C>" + GetPlayerName(GetPlayerFromServerId(userId)) + "</C>~s~");
+                    EndTextCommandThefeedPostTicker(false, true);
+                }
+            }
         }
 
         public static void PlayerLeft(string name, string reason)

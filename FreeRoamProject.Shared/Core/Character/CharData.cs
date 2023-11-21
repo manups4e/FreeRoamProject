@@ -253,8 +253,8 @@ namespace FreeRoamProject.Shared.Core.Character
     {
         public string Sex { get; set; } = "Male";
         public uint Model { get; set; } = 1885233650u;
-        public float Resemblance { get; set; } = 0f;
-        public float Skinmix { get; set; } = 0f;
+        public float Resemblance { get; set; } = 0.5f;
+        public float Skinmix { get; set; } = 0.5f;
         public Face Face { get; set; }
         public A2 Ageing { get; set; }
         public A2 Makeup { get; set; }

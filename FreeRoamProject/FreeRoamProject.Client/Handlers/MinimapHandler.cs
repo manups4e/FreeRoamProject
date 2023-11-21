@@ -57,12 +57,12 @@ namespace FreeRoamProject.Client.Handlers
 
         public static async Task Blips()
         {
+            await BaseScript.Delay(15);
             foreach (PlayerClient client in ClientMain.Instance.Clients)
             {
                 if (client.Handle == PlayerCache.MyClient.Handle) continue;
                 if (client.Status != null && client.Status.PlayerStates.Spawned)
                 {
-                    //TODO: ADD CHECKS FOR AT HOME.. AND OTHER STATES TO CHANGE ACCORDINGLY.. LIKE.. IF IT'S IN A TANK.. OR ARMORED VEH
                     if (client.Ped.AttachedBlip != null)
                     {
                         Blip blip = client.Ped.AttachedBlip;
@@ -70,19 +70,25 @@ namespace FreeRoamProject.Client.Handlers
                         ShowHeadingIndicatorOnBlip(blip.Handle, true);
                         if (client.Status.PlayerStates.InVehicle)
                         {
-                            Model model = client.Ped.CurrentVehicle.Model;
-
+                            Vehicle vehicle = client.Ped.CurrentVehicle;
+                            Model model = vehicle.Model;
+                            //TODO: ADD CHECKS FOR OTHER VEHICLES LIKE TANK, KHANJALI, KURUMA2, DLC VEHICLES
+                            //TODO: ADD CHECKS FOR WHEN PLAYER IS AT HOME AND ADD THE RELATIVE BLIP
                             if (model.IsHelicopter)
-                                sprite = (BlipSprite)422;
+                            {
+                                sprite = BlipSprite.HelicopterAnimated;
+                                ShowHeadingIndicatorOnBlip(blip.Handle, false);
+                                SetBlipSquaredRotation(blip.Handle, client.Ped.Heading);
+                            }
                             else if (model.IsPlane && !JetHashes.Contains(model))
                             {
-                                sprite = (BlipSprite)423;
+                                sprite = BlipSprite.Plane;
                                 ShowHeadingIndicatorOnBlip(blip.Handle, false);
                                 SetBlipSquaredRotation(blip.Handle, client.Ped.Heading);
                             }
                             else if (JetHashes.Contains(model))
                             {
-                                sprite = (BlipSprite)424;
+                                sprite = BlipSprite.Jet;
                                 ShowHeadingIndicatorOnBlip(blip.Handle, false);
                                 SetBlipSquaredRotation(blip.Handle, client.Ped.Heading);
                             }

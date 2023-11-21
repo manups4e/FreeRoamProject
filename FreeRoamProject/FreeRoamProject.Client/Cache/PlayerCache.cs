@@ -18,8 +18,7 @@ namespace FreeRoamProject.Client.Cache
 
         public static async Task InitPlayer()
         {
-            Tuple<Snowflake, BasePlayerShared> player = await EventDispatcher.Get<Tuple<Snowflake, BasePlayerShared>>("tlg:setupUser");
-            MyClient = new PlayerClient(player);
+            MyClient = new PlayerClient(await EventDispatcher.Get<Tuple<Snowflake, BasePlayerShared>>("tlg:setupUser"));
             _checkTimer = new(3000);
             // TODO: THIS TICK STATUS... I DON'T LIKE IT HERE...
             // BUT THE POSITION THING IS LIKE A GLOBAL.. IT'S USED EVERYWHERE EVEN BEFORE SPAWNING SO...

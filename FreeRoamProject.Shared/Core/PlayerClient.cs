@@ -57,6 +57,8 @@ namespace FreeRoamProject.Shared
 
 #if CLIENT
 
+        private Ped _ped;
+        private Player _player;
         [JsonIgnore]
         internal Position Position { get; set; }
 
@@ -64,8 +66,17 @@ namespace FreeRoamProject.Shared
         internal bool Ready => User != null;
 
         [JsonIgnore]
-        internal Player Player { get => new(API.GetPlayerFromServerId(Handle)); }
-        private Ped _ped;
+        internal Player Player
+        {
+            get
+            {
+                int handle = GetPlayerFromServerId(Handle);
+                if (_player is null || _player.Handle != handle)
+                    _player = new Player(handle);
+                return _player;
+
+            }
+        }
 
         [JsonIgnore]
         internal Ped Ped
@@ -85,6 +96,7 @@ namespace FreeRoamProject.Shared
             Handle = Game.Player.ServerId;
             User = new(value.Item2);
             Status = new(Player);
+            Status.Clear();
         }
 
         public PlayerClient(Snowflake id)

@@ -25,12 +25,6 @@ namespace FreeRoamProject.Server.Core
             EventDispatcher.Mount("tlg:removeCharMoney", new Action<PlayerClient, int, int>(RemoveCharMoney));
             EventDispatcher.Mount("tlg:SetPlayerStat", new Action<PlayerClient, string, int, int>(SetSavedState));
 
-            EventDispatcher.Mount("tlg:sendPlayerJoinedMessage", new Action<PlayerClient>(([FromSource] client) =>
-            {
-                Shared.Core.Buckets.Bucket bucket = BucketsHandler.FreeRoam.GetPlayerBucket(client.Handle);
-                EventDispatcher.Send(bucket.Players, "tlg:onPlayerEntrance", client);
-            }));
-
             EventDispatcher.Mount("tlg:callPlayers", new Func<PlayerClient, Position, Task<List<PlayerClient>>>(async ([FromSource] a, b) =>
             {
                 if (a.Status.PlayerStates.Spawned)
