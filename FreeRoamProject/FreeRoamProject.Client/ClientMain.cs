@@ -21,7 +21,6 @@ using FreeRoamProject.Client.GameMode.FREEROAM;
 using FreeRoamProject.Client.Handlers;
 using FreeRoamProject.Shared.Core.Log;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FreeRoamProject.Client
@@ -34,7 +33,7 @@ namespace FreeRoamProject.Client
         public static Configuration Settings = new Configuration();
         public CitizenFX.Core.PlayerList GetPlayers => Players;
         // public static Configuration Settings = new Configuration();
-        public List<PlayerClient> Clients { get; set; }
+        public ClientList Clients { get; set; }
         public NuiManager NuiManager { get; set; }
         public StateBagsHandler StateBagsHandler { get; set; }
         public StateBag ServerState => GlobalState;

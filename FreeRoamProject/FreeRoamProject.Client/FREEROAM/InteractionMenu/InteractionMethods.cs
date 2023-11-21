@@ -51,8 +51,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             int iVar3 = GetGameTimer();
             foreach (PlayerClient client in ClientMain.Instance.Clients)
             {
-                ClientMain.Logger.Debug(client.User.Character.Stats.ToJson());
-                int iVar8 = ClientMain.Instance.Clients.IndexOf(client);
+                //ClientMain.Logger.Debug(client.User.Character.Stats.ToJson());
+                int iVar8 = client.Handle;
                 Ped ped = client.Ped;
                 if (!ped.IsInjured && DoesEntityHaveDrawable(ped.Handle) && DoesEntityHavePhysics(ped.Handle) && HaveAllStreamingRequestsCompleted(ped.Handle) && IsPedShaderEffectValid(ped.Handle))
                 {

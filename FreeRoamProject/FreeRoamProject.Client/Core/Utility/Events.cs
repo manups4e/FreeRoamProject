@@ -1,7 +1,5 @@
 ﻿using FreeRoamProject.Client.Handlers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace FreeRoamProject.Client.Core.Utility
 {
@@ -30,30 +28,19 @@ namespace FreeRoamProject.Client.Core.Utility
             EventDispatcher.Mount("tlg:addWeapon", new Action<string, int>(AddWeapon));
             EventDispatcher.Mount("tlg:addWeaponComponent", new Action<string, string>(AddWeaponComponent));
             EventDispatcher.Mount("tlg:addWeaponTint", new Action<string, int>(AddWeaponTint));
-            EventDispatcher.Mount("tlg:receivePlayersUpdate", new Action<List<PlayerClient>>(ReceivePlayers));
             AccessingEvents.OnFreeRoamSpawn += OnSpawn;
-        }
-
-        private static void ReceivePlayers(List<PlayerClient> clients)
-        {
-            ClientMain.Instance.Clients = clients.ToList();
         }
 
         private static void OnSpawn(PlayerClient client)
         {
-            updatePlayers();
             // TODO: MOVE THIS TO WHEN THE PLAYER IS DONE WITH THE SWITCH CAMERA ANIMATION.
             EventDispatcher.Send("tlg:sendPlayerJoinedMessage");
-
         }
 
         public static void PlayerJoined(PlayerClient client)
         {
             if (client.Handle == PlayerCache.MyPlayer.Handle) return;
-
-            if (client.Status == null)
-                client.Status = new(client.Player);
-            ClientMain.Instance.Clients.Add(client);
+            client.Status ??= new(client.Player);
             //TODO: shownotification with additional text, to be added as a separate function?
             BeginTextCommandThefeedPost("TICK_JOIN");
             AddTextComponentSubstringPlayerName("<C>" + client.Player.Name + "</C>~s~");
@@ -73,13 +60,6 @@ namespace FreeRoamProject.Client.Core.Utility
                 BeginTextCommandThefeedPost("TICK_LEFT");
             AddTextComponentSubstringPlayerName("<C>" + name + "</C>~s~");
             EndTextCommandThefeedPostTicker(false, true);
-        }
-
-        public static async void updatePlayers()
-        {
-            ClientMain.Instance.Clients = await EventDispatcher.Get<List<PlayerClient>>("tlg:callPlayers", PlayerCache.MyPlayer.Position);
-            foreach (PlayerClient client in ClientMain.Instance.Clients)
-                client.Status = new(client.Player);
         }
 
         public static async void teleportCoords(Position pos)

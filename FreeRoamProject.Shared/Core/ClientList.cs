@@ -15,10 +15,10 @@ namespace FreeRoamProject.Shared
         public IEnumerator<PlayerClient> GetEnumerator()
         {
 #if CLIENT
-            IList<object> list = (IList<object>)(object)API.GetActivePlayers();
+            IList<object> list = (IList<object>)(object)GetActivePlayers();
             foreach (object p in list)
             {
-                yield return new PlayerClient(API.GetPlayerServerId(Convert.ToInt32(p)));
+                yield return new PlayerClient(GetPlayerServerId(Convert.ToInt32(p)));
             }
 #elif SERVER
             int numIndices = GetNumPlayerIndices();

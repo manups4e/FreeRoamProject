@@ -17,7 +17,7 @@ namespace FreeRoamProject.Server.Core
             EventDispatcher.Mount("tlg:kickPlayerClient", new Action<string, string, int>(Kick));
             EventDispatcher.Mount("tlg:CheckPing", new Action<PlayerClient>(Ping));
             EventDispatcher.Mount("tlg:checkAFK", new Action<PlayerClient>(AFK));
-            EventDispatcher.Mount("tlg:bannaPlayer", new Action<string, string, bool, long, int>(BanPlayer));
+            EventDispatcher.Mount("tlg:banPlayer", new Action<string, string, bool, long, int>(BanPlayer));
             EventDispatcher.Mount("tlg:setStateBag", new Action<PlayerClient, string, string>(SetStateBag));
             EventDispatcher.Mount("tlg:GetUserFromServerId", new Func<int, Task<BasePlayerShared>>(GetUserFromHandle));
             EventDispatcher.Mount("tlg:getPlayers", new Func<Task<List<Player>>>(GetAllPlayers));
