@@ -30,7 +30,7 @@
 		  <GeneratePathProperty>False</GeneratePathProperty>
 	  </PackageReference>
 	  <PackageReference Include="FxEvents.Server" Version="2.5.4" />
-	  <PackageReference Include="MySqlConnector" Version="2.3.0" />
+	  <PackageReference Include="MySqlConnector" Version="2.3.1" />
 	  <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
 
