@@ -37,10 +37,12 @@ namespace FreeRoamProject.Client.Core.Utility
             EventDispatcher.Send("tlg:sendPlayerJoinedMessage");
         }
 
+        //TODO: WITH THE "CLIENTLIST" WE DON'T NEED TO SEND PLAYERCLIENTS TO CLIENT ANYMORE..
+        //WE CAN SIMPLY SEND THE Handle (ints better than strings)
         public static void PlayerJoined(PlayerClient client)
         {
             if (client.Handle == PlayerCache.MyClient.Handle) return;
-            client.Status ??= new(client.Player);
+            //client.Status ??= new(client.Player);
             //TODO: shownotification with additional text, to be added as a separate function?
             BeginTextCommandThefeedPost("TICK_JOIN");
             AddTextComponentSubstringPlayerName("<C>" + client.Player.Name + "</C>~s~");

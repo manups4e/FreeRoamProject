@@ -57,8 +57,6 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Spawner
 
             // TODO: LOADING PROPERTIES (AND SPAWN IN PROPERTY IF DISCONNECTED INSIDE)
             // TODO: LOAD VEHICLES (AND SPAWN LAST USED VEHICLE IF DISCONNECTED ON THE STREET WITH ITS PERSONAL VEHICLE OUT)
-            while (!HasCollisionLoadedAroundEntity(PlayerCache.MyClient.Ped.Handle))
-                await BaseScript.Delay(0);
             ClearFocus();
             SwitchInPlayer(PlayerPedId());
             while (IsPlayerSwitchInProgress())

@@ -107,7 +107,7 @@ namespace FreeRoamProject.Shared
         {
             Handle = handle;
             Status = new(Player);
-            LoadUser();
+            //LoadUser();
         }
 
         // TODO: THIS IS USED TO LOAD USER DATA ON THE GO..
