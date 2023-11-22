@@ -3,7 +3,7 @@ game 'gta5'
 
 loadscreen_manual_shutdown 'yes'
 clr_experimental_2021_12_31_use_sync_context 'on'
-fxevents_debug_mode '1'
+--fxevents_debug_mode '1'
 
 files {
 	--"html/**/*",
