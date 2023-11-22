@@ -363,3 +363,11 @@ FodyWeavers.xsd
 
 # Jetbrains
 /.idea/
+
+/CompiledLibs/**/*.dll
+/CompiledLibs/**/*.pdb
+/CompiledLibs/**/*.json
+!/CompiledLibs/fxmanifest.lua
+!/CompiledLibs/Client/pedComponentExtensions.lua
+/scripts/*.log
+/scripts/*.bat

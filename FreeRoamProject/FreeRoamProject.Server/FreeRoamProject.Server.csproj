@@ -5,6 +5,8 @@
 	  <LangVersion>latest</LangVersion>
 	  <DefineConstants>SERVER</DefineConstants>
 	  <AssemblyName>FreeRoamProject.Server.net</AssemblyName>
+      <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+      <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -68,9 +70,12 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Copy SkipUnchangedFiles="true" SourceFiles="@(SourceFiles)" DestinationFolder="L:\FiveM\FreeRoamProject\resources\[local]\frp\Server\" />
-		<Copy SkipUnchangedFiles="true" SourceFiles="@(JsonConfigFiles)" DestinationFolder="L:\FiveM\FreeRoamProject\resources\[local]\frp\Server\Resources" />
-	</Target>
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Copy SkipUnchangedFiles="true" SourceFiles="@(SourceFiles)" DestinationFolder="..\..\CompiledLibs\Server\" />
+        <Copy SkipUnchangedFiles="true" SourceFiles="@(JsonConfigFiles)" DestinationFolder="..\..\CompiledLibs\Server\Resources" />
+
+        <Exec Command="IF EXIST &quot;$(SolutionDir)scripts\post_server.bat&quot; call &quot;$(SolutionDir)scripts\post_server.bat&quot; &gt; &quot;$(SolutionDir)\scripts\post_server.log&quot; 2&gt;&amp;1" IgnoreExitCode="true" />
+    </Target>
+
 
 </Project>
