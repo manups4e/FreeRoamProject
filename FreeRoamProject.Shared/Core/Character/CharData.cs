@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -75,12 +74,9 @@ namespace FreeRoamProject.Shared.Core.Character
     }
     public class BankTransaction
     {
-        public BankTransactionType Type { get; set; }
         public long Amount { get; set; }
-        [JsonIgnore] public DateTime Date { get; set; }
-        public string Information { get; set; }
-
-        [JsonProperty("Date")] public string _Date => Date.ToString("MM/dd/yyyy HH:mm:ss");
+        public string Label { get; set; }
+        public string PlayerName { get; set; }
     }
 
     public class Weapons

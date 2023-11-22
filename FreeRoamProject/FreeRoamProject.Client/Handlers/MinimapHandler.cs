@@ -113,7 +113,7 @@ namespace FreeRoamProject.Client.Handlers
                         blip.Sprite = BlipSprite.Standard;
                         SetBlipCategory(blip.Handle, 7);
                         SetBlipDisplay(blip.Handle, 4);
-                        SetBlipShrink(blip.Handle, true);
+                        SetBlipShrink(blip.Handle, false);
                         SetBlipHighDetail(blip.Handle, true);
                         SetBlipPriority(blip.Handle, 1);
                         //SetBlipShowCone(blip.Handle, true);

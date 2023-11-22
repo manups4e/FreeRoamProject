@@ -603,6 +603,13 @@ namespace FreeRoamProject.FREEROAM.Banking
 
                         break;
                     case 3: // TransactionList TODO: TO BE SAVED
+                        switch (_currentSelection)
+                        {
+                            case 1:
+                                _actualMenu = 0;
+                                TryBankingNew(false, _actualMenu);
+                                break;
+                        }
                         break;
                     case 4: // Esci
                         Game.PlaySound("PIN_BUTTON", "ATM_SOUNDS");
@@ -881,10 +888,14 @@ namespace FreeRoamProject.FREEROAM.Banking
                     break;
                 case 3:
                     BeginScaleformMovieMethod(atm.Handle, "SET_DATA_SLOT");
-                    ScaleformMovieMethodAddParamInt(4);
-                    BeginTextCommandScaleformString("MPATM_BACK");
-                    EndTextCommandScaleformString();
+                    ScaleformMovieMethodAddParamInt(0);
+                    AddText("MPATM_LOG");
                     EndScaleformMovieMethod();
+                    BeginScaleformMovieMethod(atm.Handle, "SET_DATA_SLOT");
+                    ScaleformMovieMethodAddParamInt(1);
+                    AddText("MPATM_BACK");
+                    EndScaleformMovieMethod();
+                    atm.CallFunction("DISPLAY_TRANSACTIONS");
                     break;
                 case 4:
                     break;
@@ -933,7 +944,6 @@ namespace FreeRoamProject.FREEROAM.Banking
                     atm.CallFunction("DISPLAY_MESSAGE");
                     await BaseScript.Delay(2000);
                     TryBankingNew(false, 0);
-
                     break;
             }
 
@@ -942,6 +952,8 @@ namespace FreeRoamProject.FREEROAM.Banking
             AddText("MPATM_ACBA");
             PushScaleformMovieMethodParameterButtonName(PlayerCache.MyClient.User.Bank.ToString());
             EndScaleformMovieMethod();
+
+            //PlayerCache.Character.Finance.Transactions
         }
 
         static void AddText(string text)
