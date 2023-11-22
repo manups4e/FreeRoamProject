@@ -736,8 +736,8 @@ namespace FreeRoamProject.Client.Core.Utility
 
         private static void ClearKeyboard(string windowTitle, string defaultText, int maxLength)
         {
-            AddTextEntry("FMlprp_KEY_TIP1", windowTitle);
-            DisplayOnscreenKeyboard(1, "FMlprp_KEY_TIP1", null, defaultText, null, null, null, maxLength + 1);
+            AddTextEntry("FMtlg_KEY_TIP1", windowTitle);
+            DisplayOnscreenKeyboard(1, "FMtlg_KEY_TIP1", null, defaultText, null, null, null, maxLength + 1);
         }
 
         public async static Task FadeEntityAsync(this Entity entity, bool fadeIn, bool fadeNormal = false, bool slow = true)

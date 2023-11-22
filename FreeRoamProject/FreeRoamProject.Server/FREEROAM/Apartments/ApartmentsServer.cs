@@ -57,7 +57,7 @@ namespace FreeRoamProject.Server.FREEROAM.Apartments
                     source.User.Character.Properties.Add(ap);
                 }
             }
-            //p.TriggerEvent("lprp:sendUserInfo", p.GetCurrentChar().Characters.ToJson(includeEverything: true), p.GetCurrentChar().char_current, p.GetCurrentChar().group);
+            //p.TriggerEvent("tlg:sendUserInfo", p.GetCurrentChar().Characters.ToJson(includeEverything: true), p.GetCurrentChar().char_current, p.GetCurrentChar().group);
         }
 
         private static void EnterWithOwner([FromSource] PlayerClient p, Vector3 pos)

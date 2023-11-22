@@ -157,7 +157,6 @@ namespace FreeRoamProject.Server.Core.PlayerJoining
                 }
 
                 ServerMain.Instance.Clients.RemoveAll(x => x.Handle.ToString() == player.Handle);
-                ServerMain.Logger.Info(text);
             }
             catch (Exception e)
             {

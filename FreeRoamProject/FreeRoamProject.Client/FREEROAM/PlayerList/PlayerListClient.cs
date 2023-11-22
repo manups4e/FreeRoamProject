@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FreeRoamProject.FREEROAM.Banking;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,10 +15,10 @@ namespace FreeRoamProject.Client.FREEROAM.PlayerList
 
         public static void ShowMoney()
         {
-            N_0x170f541e1cadd1de(true);
+            //N_0x170f541e1cadd1de(true);
             SetMultiplayerWalletCash();
             SetMultiplayerBankCash();
-            N_0x170f541e1cadd1de(false);
+            //N_0x170f541e1cadd1de(false);
         }
 
         public static void HideMoney()
@@ -103,7 +104,7 @@ namespace FreeRoamProject.Client.FREEROAM.PlayerList
             }
             else
             {
-                if (Screen.Hud.IsComponentActive(HudComponent.MpCash))
+                if (Screen.Hud.IsComponentActive(HudComponent.MpCash) && !BankingClient.interfaceOpen)
                     HideMoney();
             }
         }

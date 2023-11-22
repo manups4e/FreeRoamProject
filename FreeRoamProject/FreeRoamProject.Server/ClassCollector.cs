@@ -4,6 +4,7 @@ using FreeRoamProject.Server.Core.Buckets;
 using FreeRoamProject.Server.Core.PlayerJoining;
 using FreeRoamProject.Server.Discord;
 using FreeRoamProject.Server.FreeRoam.Scripts.FreeroamEvents;
+using FreeRoamProject.Server.FREEROAM.Banking;
 using FreeRoamProject.Server.TimeWeather;
 using System.Threading.Tasks;
 
@@ -34,6 +35,7 @@ namespace FreeRoamProject.Server
             VehicleManager.Init();
             BaseEventsFreeRoam.Init();
             FreeRoamEvents.Init();
+            BankingServer.Init();
             await Task.FromResult(0);
         }
     }

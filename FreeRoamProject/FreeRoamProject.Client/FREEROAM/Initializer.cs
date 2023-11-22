@@ -5,6 +5,7 @@ using FreeRoamProject.Client.GameMode.FREEROAM.Scripts.PauseMenu;
 using FreeRoamProject.Client.Handlers;
 using FreeRoamProject.Client.IPLs;
 using FreeRoamProject.Client.TimeWeather;
+using FreeRoamProject.FREEROAM.Banking;
 using System.Threading.Tasks;
 using TheLastPlanet.Client.GameMode.ROLEPLAY.Personale;
 
@@ -28,6 +29,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM
             TimeClient.Init();
             PauseMenuFreeroam.Init();
             WeaponShops.Init();
+            BankingClient.Init();
             TickController.Init();
             // TODO: ADD STATISTICS HANDLING
             // TODO: ADD VEHICLES HANDLING

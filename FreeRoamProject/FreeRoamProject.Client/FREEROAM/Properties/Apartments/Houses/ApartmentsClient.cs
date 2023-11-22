@@ -49,7 +49,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
             ClientMain.Instance.AddEventHandler("tlg:buzz:canEnter", new Action<int, string>(CanEnter));
             ClientMain.Instance.AddEventHandler("tlg:enterGarageWithOwner", new Action<Vector3>(EnterGarageWithOwner));
             // TODO: THIS MUST BE LOADED FROM THE SETTINGS or even better.. this is from the RP side where you'd load the real estate apartments to sell..
-            ClientMain.Instance.AddEventHandler("lprp:housedealer:caricaImmobiliDaDB", new Action<string, string>(LoadHousesFromDB));
+            ClientMain.Instance.AddEventHandler("tlg:housedealer:caricaImmobiliDaDB", new Action<string, string>(LoadHousesFromDB));
         }
 
         public static void onPlayerLeft(PlayerClient client)
@@ -57,7 +57,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
             ClientMain.Instance.RemoveEventHandler("tlg:enterRequest", new Action<int, string>(Request));
             ClientMain.Instance.RemoveEventHandler("tlg:buzz:canEnter", new Action<int, string>(CanEnter));
             ClientMain.Instance.RemoveEventHandler("tlg:enterGarageWithOwner", new Action<Vector3>(EnterGarageWithOwner));
-            ClientMain.Instance.RemoveEventHandler("lprp:housedealer:caricaImmobiliDaDB", new Action<string, string>(LoadHousesFromDB));
+            ClientMain.Instance.RemoveEventHandler("tlg:housedealer:caricaImmobiliDaDB", new Action<string, string>(LoadHousesFromDB));
 
             ClientMain.Settings.FreeRoam.Properties.Apartments.Clear();
             ClientMain.Settings.FreeRoam.Properties.Garages.Garages.Clear();
@@ -381,7 +381,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Appartamenti.Case
                     vehi.SetVehicleProperties(Cache.PlayerCache.MyClient.User.Character.Vehicles.FirstOrDefault(x => x.Plate == plate).VehData.Props);
                     VehicleChecker.CurrentVehicle.IsEngineRunning = true;
                     VehicleChecker.CurrentVehicle.IsDriveable = true;
-                    EventDispatcher.Send("lprp:vehInGarage", plate, false);
+                    EventDispatcher.Send("tlg:vehInGarage", plate, false);
                     Cache.PlayerCache.MyClient.Status.Instance.RemoveInstance();
                     await BaseScript.Delay(1000);
                     Screen.Fading.FadeIn(800);

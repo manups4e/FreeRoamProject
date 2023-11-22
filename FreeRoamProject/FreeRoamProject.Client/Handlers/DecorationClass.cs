@@ -12,7 +12,7 @@ namespace FreeRoamProject.Client
             EntityDecoration.RegisterProperty("NuovaGM2019fighissimo!yeah!", DecorationType.Int);
             EntityDecoration.RegisterProperty("Testdecor", DecorationType.Int);
             /* DECOR VEICOLI */
-            EntityDecoration.RegisterProperty("lprp_fuel", DecorationType.Float);
+            EntityDecoration.RegisterProperty("tlg_fuel", DecorationType.Float);
             EntityDecoration.RegisterProperty("VehiclePolice", DecorationType.Int);
             EntityDecoration.RegisterProperty("MedicsVehicle", DecorationType.Int);
             EntityDecoration.RegisterProperty("VeicoloRimozione", DecorationType.Int);

@@ -53,7 +53,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
                     Screen.Fading.FadeOut(500);
                     await BaseScript.Delay(1000);
                     VehProp vehProps = await playerPed.CurrentVehicle.GetVehicleProperties();
-                    EventDispatcher.Send("lprp:vehInGarage", plate, true, vehProps.ToJson(settings: JsonHelper.IgnoreJsonIgnoreAttributes));
+                    EventDispatcher.Send("tlg:vehInGarage", plate, true, vehProps.ToJson(settings: JsonHelper.IgnoreJsonIgnoreAttributes));
                     Cache.PlayerCache.MyClient.Status.Instance.InstancePlayer(app.Key);
                     await BaseScript.Delay(1000);
 

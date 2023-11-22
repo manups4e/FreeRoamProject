@@ -92,7 +92,7 @@ namespace FreeRoamProject.Server.Core.PlayerChar
             {
                 int var = value - Character.Finance.Bank;
                 Character.Finance.Bank += var;
-                if (var < 0) Player.TriggerSubsystemEvent("tlg:rimuoviBank", var);
+                Player.TriggerSubsystemEvent("tlg:changeBank", var);
             }
         }
 

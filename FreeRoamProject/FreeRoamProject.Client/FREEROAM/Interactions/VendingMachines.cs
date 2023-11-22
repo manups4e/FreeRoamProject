@@ -70,7 +70,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
                 RequestAmbientAudioBank(AudioBank, false);
                 RequestAnimDict(anim);
                 while (!HasAnimDictLoaded(anim)) await BaseScript.Delay(0);
-                //BaseScript.TriggerServerEvent("lprp:removemoney", 5);
+                //BaseScript.TriggerServerEvent("tlg:removemoney", 5);
                 Vector3 offset = GetOffsetFromEntityInWorldCoords(VendingMachineClosest.Handle, 0f, -0.97f, 0.05f);
                 playerPed.Task.LookAt(VendingMachineClosest);
                 TaskGoStraightToCoord(PlayerPedId(), offset.X, offset.Y, offset.Z, 1f, 20000, VendingMachineClosest.Heading, 0.1f);
