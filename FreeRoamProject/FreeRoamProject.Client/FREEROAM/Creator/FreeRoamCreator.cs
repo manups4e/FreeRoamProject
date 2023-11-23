@@ -771,7 +771,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
 
         public static void Init()
         {
-            MinimapHandler.EnableMinimap = false;
+            MinimapHandler.MinimapEnabled = false;
             ClientMain.Instance.AddTick(Scaleform);
             sub_8d2b2();
         }

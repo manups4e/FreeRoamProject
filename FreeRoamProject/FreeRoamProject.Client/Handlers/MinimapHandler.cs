@@ -8,10 +8,24 @@ namespace FreeRoamProject.Client.Handlers
         private static bool hideRadar;
         private static bool enableMinimap;
         private static bool showPlayerBlips;
+        private static bool bigMapEnabled;
 
         public static bool HideRadar { get => hideRadar; set => hideRadar = value; }
-        public static bool EnableMinimap { get => enableMinimap; set => enableMinimap = value; }
+        public static bool MinimapEnabled { get => enableMinimap; set => enableMinimap = value; }
         public static bool ShowPlayerBlips { get => showPlayerBlips; set => showPlayerBlips = value; }
+        public static bool BigMapEnabled
+        {
+            get => IsBigmapActive();
+            set
+            {
+                bigMapEnabled = value;
+                SetBigmapActive(value, false);
+                if (showPlayerBlips)
+                {
+                    DisplayPlayerNameTagsOnBlips(value);
+                }
+            }
+        }
 
         public static void Init()
         {

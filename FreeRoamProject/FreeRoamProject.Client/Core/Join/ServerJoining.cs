@@ -43,7 +43,7 @@ namespace FreeRoamProject.Client.Core.Ingresso
             _firstTick = false;
             Screen.Fading.FadeOut(800);
             while (!Screen.Fading.IsFadedOut) await BaseScript.Delay(1000);
-            MinimapHandler.EnableMinimap = false;
+            MinimapHandler.MinimapEnabled = false;
             await PlayerCache.InitPlayer();
             await PlayerCache.Loaded();
             while (!NetworkIsPlayerActive(PlayerCache.MyClient.Player.Handle))

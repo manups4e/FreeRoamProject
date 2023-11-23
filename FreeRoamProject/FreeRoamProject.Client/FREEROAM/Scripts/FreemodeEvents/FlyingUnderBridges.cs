@@ -128,7 +128,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
             uint hash = (uint)GetHashKey("mp0_fly_under_bridges");
             StatSetInt(hash, 0, true);
 
-            MinimapHandler.EnableMinimap = true;
+            MinimapHandler.MinimapEnabled = true;
             //HudManager.OnEnableMap(true);
             ActiveBlips.Clear();
 

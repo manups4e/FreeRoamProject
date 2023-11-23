@@ -1,4 +1,5 @@
-﻿using FreeRoamProject.FREEROAM.Banking;
+﻿using FreeRoamProject.Client.Handlers;
+using FreeRoamProject.FREEROAM.Banking;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -69,7 +70,10 @@ namespace FreeRoamProject.Client.FREEROAM.PlayerList
                   "HUD_LBD_TDM": "Team Deathmatch Leaderboard",
                 */
                 Main.PlayerListInstance.SetTitle($"The Last Galaxy (Public, {num})", $"{Main.PlayerListInstance.CurrentPage + 1} / {Main.PlayerListInstance.MaxPages}", 2);
-                Main.PlayerListInstance.CurrentPage++;
+                if (Main.PlayerListInstance.CurrentPage == Main.PlayerListInstance.MaxPages && MinimapHandler.MinimapEnabled && !MinimapHandler.BigMapEnabled)
+                    MinimapHandler.BigMapEnabled = true;
+                else
+                    Main.PlayerListInstance.CurrentPage++;
             }
             if (Main.PlayerListInstance.Enabled)
             {
@@ -91,7 +95,11 @@ namespace FreeRoamProject.Client.FREEROAM.PlayerList
             else
             {
                 if (Screen.Hud.IsComponentActive(HudComponent.MpCash) && !BankingClient.InterfaceOpen && !BankingClient.MoneyHUDShowing)
+                {
                     BankingClient.HideMoney();
+                }
+                if (MinimapHandler.MinimapEnabled && MinimapHandler.BigMapEnabled)
+                    MinimapHandler.BigMapEnabled = false;
             }
         }
     }
