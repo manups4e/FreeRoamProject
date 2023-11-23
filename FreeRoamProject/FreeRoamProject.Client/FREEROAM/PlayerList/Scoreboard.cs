@@ -5,26 +5,12 @@ using System.Threading.Tasks;
 
 namespace FreeRoamProject.Client.FREEROAM.PlayerList
 {
-    internal static class PlayerListClient
+    internal static class Scoreboard
     {
         static int maxPlayers = 0;
         public static void Init()
         {
             ClientMain.Instance.AddTick(DisplayController);
-        }
-
-        public static void ShowMoney()
-        {
-            //N_0x170f541e1cadd1de(true);
-            SetMultiplayerWalletCash();
-            SetMultiplayerBankCash();
-            //N_0x170f541e1cadd1de(false);
-        }
-
-        public static void HideMoney()
-        {
-            RemoveMultiplayerWalletCash();
-            RemoveMultiplayerBankCash();
         }
 
         /// <summary>
@@ -88,7 +74,7 @@ namespace FreeRoamProject.Client.FREEROAM.PlayerList
             if (Main.PlayerListInstance.Enabled)
             {
                 if (!Screen.Hud.IsComponentActive(HudComponent.MpCash))
-                    ShowMoney();
+                    BankingClient.ShowMoney();
                 if (Main.PlayerListInstance.PlayerRows.Count > 0)
                 {
                     foreach (PlayerRow p in Main.PlayerListInstance.PlayerRows)
@@ -104,8 +90,8 @@ namespace FreeRoamProject.Client.FREEROAM.PlayerList
             }
             else
             {
-                if (Screen.Hud.IsComponentActive(HudComponent.MpCash) && !BankingClient.interfaceOpen)
-                    HideMoney();
+                if (Screen.Hud.IsComponentActive(HudComponent.MpCash) && !BankingClient.InterfaceOpen && !BankingClient.MoneyHUDShowing)
+                    BankingClient.HideMoney();
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using FreeRoamProject.Shared.Core.Character;
+﻿using FreeRoamProject.Shared.Core;
+using FreeRoamProject.Shared.Core.Character;
 using FreeRoamProject.Shared.PlayerChar;
 using Newtonsoft.Json;
 using System;
@@ -88,12 +89,143 @@ namespace FreeRoamProject.Server.Core.PlayerChar
         internal int Bank
         {
             get => Character.Finance.Bank;
-            set
+            private set
             {
                 int var = value - Character.Finance.Bank;
                 Character.Finance.Bank += var;
                 Player.TriggerSubsystemEvent("tlg:changeBank", var);
             }
+        }
+
+        /// <summary>
+        /// Performs a Bank transaction with automatic adding to player's transaction List
+        /// </summary>
+        /// <param name="amount">amount can be positive or negative</param>
+        /// <param name="type">Type of transaction</param>
+        /// <param name="transaction">Transaction hash, if None specified and type == MoneySpent / MoneyEarn, their default values will be used (purchase/refund labels)</param>
+        /// <param name="playerName">(Optional) if the transaction was made from / to another player, specify the player's name</param>
+        public void PerformBankTransaction(int amount, BankTransactionType type, BankingTransactionHash transaction = BankingTransactionHash.NONE, string playerName = null)
+        {
+            if (amount == 0) return;
+            bool isPayment = false;
+            string transactionLabel = "";
+            switch (type)
+            {
+                case BankTransactionType.AdminAdd:
+                    transactionLabel = "ADMIN_REGULATION";
+                    isPayment = false;
+                    break;
+                case BankTransactionType.AdminRemove:
+                    transactionLabel = "ADMIN_REGULATION";
+                    isPayment = true;
+                    break;
+                case BankTransactionType.Withdraw:
+                    transactionLabel = "MPATM_PLCHLDR_WDR";
+                    isPayment = false;
+                    break;
+                case BankTransactionType.Deposit:
+                    transactionLabel = "MPATM_PLCHLDR_CAD";
+                    isPayment = true;
+                    break;
+                case BankTransactionType.DepositedBySomeone:
+                    transactionLabel = "MPATM_PLCHLDR_CRF";
+                    isPayment = true;
+                    break;
+                case BankTransactionType.CashSentToSomeone:
+                    transactionLabel = "MPATM_PLCHLDR_CST";
+                    isPayment = false;
+                    break;
+                case BankTransactionType.VirtualCurrencyBought:
+                    transactionLabel = "MPATM_PLCHLDR_BRT";
+                    isPayment = true;
+                    break;
+                case BankTransactionType.MoneySpent:
+                    switch (transaction)
+                    {
+                        case BankingTransactionHash.MONEY_SPENT_CONTACT_SERVICE:
+                            transactionLabel = "MONEY_SPENT_CONTACT_SERVICE";
+                            break;
+                        case BankingTransactionHash.MONEY_SPENT_PROPERTY_UTIL:
+                            transactionLabel = "MONEY_SPENT_PROPERTY_UTIL";
+                            break;
+                        case BankingTransactionHash.MONEY_SPENT_JOB_ACTIVITY:
+                            transactionLabel = "MONEY_SPENT_JOB_ACTIVITY";
+                            break;
+                        case BankingTransactionHash.MONEY_SPENT_BETTING:
+                            transactionLabel = "MONEY_SPENT_BETTING";
+                            break;
+                        case BankingTransactionHash.MONEY_SPENT_STYLE_ENT:
+                            transactionLabel = "MONEY_SPENT_STYLE_ENT";
+                            break;
+                        case BankingTransactionHash.MONEY_SPENT_HEALTHCARE:
+                            transactionLabel = "MONEY_SPENT_HEALTHCARE";
+                            break;
+                        case BankingTransactionHash.MONEY_SPENT_FROM_DEBUG:
+                            transactionLabel = "MONEY_SPENT_FROM_DEBUG";
+                            break;
+                        case BankingTransactionHash.MONEY_SPENT_DROPPED_STOLEN:
+                            transactionLabel = "MONEY_SPENT_DROPPED_STOLEN";
+                            break;
+                        case BankingTransactionHash.MONEY_SPENT_VEH_MAINTENANCE:
+                            transactionLabel = "MONEY_SPENT_VEH_MAINTENANCE";
+                            break;
+                        case BankingTransactionHash.MONEY_SPENT_HOLDUPS:
+                            transactionLabel = "MONEY_SPENT_HOLDUPS";
+                            break;
+                        case BankingTransactionHash.MONEY_SPENT_PASSIVEMODE:
+                            transactionLabel = "MONEY_SPENT_PASSIVEMODE";
+                            break;
+                        default:
+                            transactionLabel = "MPATM_PLCHLDR_PRCH";
+                            break;
+                    }
+                    isPayment = true;
+                    break;
+                case BankTransactionType.MoneyEarn:
+                    switch (transaction)
+                    {
+                        case BankingTransactionHash.MONEY_EARN_JOBS:
+                            transactionLabel = "MONEY_EARN_JOBS";
+                            break;
+                        case BankingTransactionHash.MONEY_EARN_SELLING_VEH:
+                            transactionLabel = "MONEY_EARN_SELLING_VEH";
+                            break;
+                        case BankingTransactionHash.MONEY_EARN_BETTING:
+                            transactionLabel = "MONEY_EARN_BETTING";
+                            break;
+                        case BankingTransactionHash.MONEY_EARN_GOOD_SPORT:
+                            transactionLabel = "MONEY_EARN_GOOD_SPORT";
+                            break;
+                        case BankingTransactionHash.MONEY_EARN_PICKED_UP:
+                            transactionLabel = "MONEY_EARN_PICKED_UP";
+                            break;
+                        case BankingTransactionHash.MONEY_EARN_SHARED:
+                            transactionLabel = "MONEY_EARN_SHARED";
+                            break;
+                        case BankingTransactionHash.MONEY_EARN_JOBSHARED:
+                            transactionLabel = "MONEY_EARN_JOBSHARED";
+                            break;
+                        case BankingTransactionHash.MONEY_EARN_ROCKSTAR_AWARD:
+                            transactionLabel = "MONEY_EARN_ROCKSTAR_AWARD";
+                            break;
+                        case BankingTransactionHash.MONEY_EARN_REFUND:
+                            transactionLabel = "MONEY_EARN_REFUND";
+                            break;
+                        case BankingTransactionHash.MONEY_EARN_JOB_BONUS:
+                            transactionLabel = "MONEY_EARN_JOB_BONUS";
+                            break;
+                        case BankingTransactionHash.MONEY_EARN_HEIST_JOB:
+                            transactionLabel = "MONEY_EARN_HEIST_JOB";
+                            break;
+                        default:
+                            transactionLabel = "MPATM_PLCHLDR_REF";
+                            break;
+                    }
+                    isPayment = false;
+                    break;
+            }
+            Bank += amount;
+            Character.Finance.Transactions.Add(new BankTransaction(isPayment, amount, transactionLabel, playerName));
         }
 
         // TODO: Handle CEO, Motorcycle club, and all

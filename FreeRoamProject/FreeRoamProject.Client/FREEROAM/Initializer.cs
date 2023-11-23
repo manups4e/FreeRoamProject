@@ -23,7 +23,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM
             ExperienceManager.Init();
             WorldEventsManager.Init();
             BaseEventsFreeRoam.Init();
-            PlayerListClient.Init();
+            Scoreboard.Init();
             PlayerTags.Init();
             WeatherClient.Init();
             TimeClient.Init();

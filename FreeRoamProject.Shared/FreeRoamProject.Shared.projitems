@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Config\ConfigShared.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\AccessingEvents.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\BankingTransactionHashes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\BaseEventsShared.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buckets\Bucket.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Character\CharData.cs" />

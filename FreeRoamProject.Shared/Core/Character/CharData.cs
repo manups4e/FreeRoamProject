@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -33,12 +34,20 @@ namespace FreeRoamProject.Shared.Core.Character
         Bracelets = 7,
         Unk_8 = 8,
     }
+    /// <summary>
+    /// When selected an option "withSomeone", please specify also the other player's name
+    /// </summary>
     public enum BankTransactionType
     {
+        AdminAdd = -2,
+        AdminRemove = -1,
         Withdraw,
         Deposit,
-        Receiving,
-        Sending
+        DepositedBySomeone,
+        CashSentToSomeone,
+        VirtualCurrencyBought,
+        MoneySpent,
+        MoneyEarn,
     }
 
     public class CharData
@@ -74,9 +83,20 @@ namespace FreeRoamProject.Shared.Core.Character
     }
     public class BankTransaction
     {
+        public bool Paid { get; set; }
         public long Amount { get; set; }
         public string Label { get; set; }
         public string PlayerName { get; set; }
+        public DateTime TransactionDate { get; set; }
+        public BankTransaction() { }
+        public BankTransaction(bool paid, long amount, string label, string playerName = null)
+        {
+            Paid = paid;
+            Amount = amount;
+            Label = label;
+            PlayerName = playerName;
+            TransactionDate = DateTime.Now;
+        }
     }
 
     public class Weapons

@@ -135,7 +135,7 @@ namespace FreeRoamProject.Server.Core
         {
             PlayerClient client = Functions.GetClientFromPlayerId(int.Parse(args[0]));
             if (client != null)
-                client.User.Bank += Convert.ToInt32(args[1]);
+                client.User.PerformBankTransaction(Convert.ToInt32(args[1]), Shared.Core.Character.BankTransactionType.AdminAdd);
             else
                 sender.Player.TriggerEvent("chat:addMessage", new { args = new[] { "[COMANDO givebank] = ", "Player with ID " + args[0] + " is not online!" }, color = new[] { 255, 0, 0 } });
         }
@@ -153,7 +153,7 @@ namespace FreeRoamProject.Server.Core
         {
             PlayerClient client = Functions.GetClientFromPlayerId(int.Parse(args[0]));
             if (client != null)
-                client.User.Bank -= Convert.ToInt32(args[1]);
+                client.User.PerformBankTransaction(-Convert.ToInt32(args[1]), Shared.Core.Character.BankTransactionType.AdminRemove);
             else
                 sender.Player.TriggerEvent("chat:addMessage", new { args = new[] { "[COMANDO givedirty] = ", "Player with ID " + args[0] + " is not online!" }, color = new[] { 255, 0, 0 } });
         }
@@ -170,8 +170,7 @@ namespace FreeRoamProject.Server.Core
                 }
                 else if (args[1] == "bank")
                 {
-                    player.Bank -= player.Bank;
-                    player.Bank += Convert.ToInt32(args[2]);
+                    player.PerformBankTransaction(-player.Bank + Convert.ToInt32(args[2]), Shared.Core.Character.BankTransactionType.AdminAdd);
                 }
                 else
                 {

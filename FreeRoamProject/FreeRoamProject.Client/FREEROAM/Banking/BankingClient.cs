@@ -1,5 +1,6 @@
 ﻿using FreeRoamProject.Client;
 using FreeRoamProject.Client.Handlers;
+using FreeRoamProject.Shared.Core.Character;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -106,7 +107,9 @@ namespace FreeRoamProject.FREEROAM.Banking
 
         private static List<InputController> atmInputs = new();
         private static Prop ClosestATM;
-        public static bool interfaceOpen = false;
+        public static bool InterfaceOpen = false;
+        public static bool MoneyHUDShowing = false;
+        private static int transactionMoney = 0;
 
         public static void Init()
         {
@@ -140,29 +143,37 @@ namespace FreeRoamProject.FREEROAM.Banking
 
         private static async void UpdateMoney(int mon)
         {
+            ShowMoney();
             PlayerCache.Character.Finance.Money += mon;
-            UseFakeMpCash(true);
-            ChangeFakeMpCash(PlayerCache.Character.Finance.Money, 0);
-            UseFakeMpCash(false);
+            N_0xe67c6dfd386ea5e7(false); //_ALLOW_ADDITIONAL_INFO_FOR_MULTIPLAYER_HUD_CASH
             StatSetInt(Functions.HashUint("MP0_WALLET_BALANCE"), PlayerCache.Character.Finance.Money, true);
+            await BaseScript.Delay(5000);
+            MoneyHUDShowing = false;
         }
 
         private static async void UpdateBank(int mon)
         {
+            ShowMoney();
             PlayerCache.Character.Finance.Bank += mon;
+            N_0xe67c6dfd386ea5e7(false); //_ALLOW_ADDITIONAL_INFO_FOR_MULTIPLAYER_HUD_CASH
             StatSetInt(Functions.HashUint("BANK_BALANCE"), PlayerCache.Character.Finance.Bank, true);
         }
 
-        public static void ShowMoney()
+        public static async void ShowMoney()
         {
+            MoneyHUDShowing = true;
+            N_0xe67c6dfd386ea5e7(false); //_ALLOW_ADDITIONAL_INFO_FOR_MULTIPLAYER_HUD_CASH
             SetMultiplayerWalletCash();
             SetMultiplayerBankCash();
+            await BaseScript.Delay(5000);
+            MoneyHUDShowing = false;
         }
 
         public static void HideMoney()
         {
             RemoveMultiplayerWalletCash();
             RemoveMultiplayerBankCash();
+            MoneyHUDShowing = false;
         }
 
         public static async Task CheckATM()
@@ -178,7 +189,7 @@ namespace FreeRoamProject.FREEROAM.Banking
                 if (PlayerCache.MyClient.Position.Distance(pos) > 2f)
                     ClosestATM = null;
 
-                if (!interfaceOpen)
+                if (!InterfaceOpen)
                 {
                     //if not wearing ballistic equipment (SHOP_JUGG_NONE, GB_COUT_ATM)
                     Notifications.ShowHelpNotification(Game.GetGXTEntry("FINH_ATMNEAR").Replace("~a~", "~INPUT_CONTEXT~"));
@@ -195,7 +206,7 @@ namespace FreeRoamProject.FREEROAM.Banking
 
         public static void OpenCount(Ped _, object[] args)
         {
-            if (ClosestATM != null && !interfaceOpen) EnableBank();
+            if (ClosestATM != null && !InterfaceOpen) EnableBank();
         }
         public static void Status(bool success, string msg)
         {
@@ -208,7 +219,6 @@ namespace FreeRoamProject.FREEROAM.Banking
         private static int iLocal_675;
         private static float fLocal_591 = -1f;
         private static float fLocal_592;
-        private static int _transactionMoney;
         private static string _recipient;
 
         private static async void EnableBank()
@@ -226,7 +236,7 @@ namespace FreeRoamProject.FREEROAM.Banking
             ClientMain.Instance.AddTick(BankControls);
             ClientMain.Instance.AddTick(AtmDraw);
             ShowMoney();
-            interfaceOpen = true;
+            InterfaceOpen = true;
         }
 
         private static async Task AtmDraw()
@@ -375,7 +385,7 @@ namespace FreeRoamProject.FREEROAM.Banking
                                 Main.InstructionalButtons.ClearButtonList();
                                 atm.Dispose();
                                 StopAudioScene("ATM_PLAYER_SCENE");
-                                interfaceOpen = false;
+                                InterfaceOpen = false;
                                 HideMoney();
                                 break;
                         }
@@ -384,10 +394,10 @@ namespace FreeRoamProject.FREEROAM.Banking
                     case 1: // witdraw
                         switch (_currentSelection)
                         {
-                            case 1: // 50
-                                if (PlayerCache.MyClient.User.Bank >= func_21(0, 0))
+                            case 1:
+                                if (PlayerCache.MyClient.User.Bank >= func_21(0, false))
                                 {
-                                    TryBankingNew(false, 5, func_21(0, 0));
+                                    TryBankingNew(false, 5, func_21(0, false));
                                     _actualMenu = 5;
                                 }
                                 else
@@ -397,10 +407,10 @@ namespace FreeRoamProject.FREEROAM.Banking
                                 }
 
                                 break;
-                            case 2: // 100
-                                if (PlayerCache.MyClient.User.Bank >= func_21(1, 0))
+                            case 2:
+                                if (PlayerCache.MyClient.User.Bank >= func_21(1, false))
                                 {
-                                    TryBankingNew(false, 5, func_21(1, 0));
+                                    TryBankingNew(false, 5, func_21(1, false));
                                     _actualMenu = 5;
                                 }
                                 else
@@ -410,10 +420,10 @@ namespace FreeRoamProject.FREEROAM.Banking
                                 }
 
                                 break;
-                            case 3: // 200
-                                if (PlayerCache.MyClient.User.Bank >= func_21(2, 0))
+                            case 3:
+                                if (PlayerCache.MyClient.User.Bank >= func_21(2, false))
                                 {
-                                    TryBankingNew(false, 5, func_21(2, 0));
+                                    TryBankingNew(false, 5, func_21(2, false));
                                     _actualMenu = 5;
                                 }
                                 else
@@ -449,10 +459,10 @@ namespace FreeRoamProject.FREEROAM.Banking
 
                                 TryBankingNew(false, _actualMenu);
                                 break;
-                            case 5: // 500
-                                if (PlayerCache.MyClient.User.Bank >= func_21(3, 0))
+                            case 5:
+                                if (PlayerCache.MyClient.User.Bank >= func_21(3, false))
                                 {
-                                    TryBankingNew(false, 5, func_21(3, 0));
+                                    TryBankingNew(false, 5, func_21(3, false));
                                     _actualMenu = 5;
                                 }
                                 else
@@ -462,10 +472,10 @@ namespace FreeRoamProject.FREEROAM.Banking
                                 }
 
                                 break;
-                            case 6: // 1000
-                                if (PlayerCache.MyClient.User.Bank >= func_21(4, 0))
+                            case 6:
+                                if (PlayerCache.MyClient.User.Bank >= func_21(4, false))
                                 {
-                                    TryBankingNew(false, 5, func_21(4, 0));
+                                    TryBankingNew(false, 5, func_21(4, false));
                                     _actualMenu = 5;
                                 }
                                 else
@@ -475,10 +485,10 @@ namespace FreeRoamProject.FREEROAM.Banking
                                 }
 
                                 break;
-                            case 7: // personalizzato
-                                if (PlayerCache.MyClient.User.Bank >= func_21(5, 0))
+                            case 7:
+                                if (PlayerCache.MyClient.User.Bank >= func_21(5, false))
                                 {
-                                    TryBankingNew(false, 5, func_21(5, 0));
+                                    TryBankingNew(false, 5, func_21(5, false));
                                     _actualMenu = 5;
                                 }
                                 else
@@ -493,10 +503,10 @@ namespace FreeRoamProject.FREEROAM.Banking
                     case 2: // deposit
                         switch (_currentSelection)
                         {
-                            case 1: // 50
-                                if (PlayerCache.MyClient.User.Money >= func_21(0, 1))
+                            case 1:
+                                if (PlayerCache.MyClient.User.Money >= func_21(0, true))
                                 {
-                                    TryBankingNew(false, 6, func_21(0, 1));
+                                    TryBankingNew(false, 6, func_21(0, true));
                                     _actualMenu = 6;
                                 }
                                 else
@@ -506,10 +516,10 @@ namespace FreeRoamProject.FREEROAM.Banking
                                 }
 
                                 break;
-                            case 2: // 100
-                                if (PlayerCache.MyClient.User.Money >= func_21(1, 1))
+                            case 2:
+                                if (PlayerCache.MyClient.User.Money >= func_21(1, true))
                                 {
-                                    TryBankingNew(false, 6, func_21(1, 1));
+                                    TryBankingNew(false, 6, func_21(1, true));
                                     _actualMenu = 6;
                                 }
                                 else
@@ -519,10 +529,10 @@ namespace FreeRoamProject.FREEROAM.Banking
                                 }
 
                                 break;
-                            case 3: // 200
-                                if (PlayerCache.MyClient.User.Money >= func_21(2, 1))
+                            case 3:
+                                if (PlayerCache.MyClient.User.Money >= func_21(2, true))
                                 {
-                                    TryBankingNew(false, 6, func_21(2, 1));
+                                    TryBankingNew(false, 6, func_21(2, true));
                                     _actualMenu = 6;
                                 }
                                 else
@@ -559,10 +569,10 @@ namespace FreeRoamProject.FREEROAM.Banking
 
                                 TryBankingNew(false, _actualMenu);
                                 break;
-                            case 5: // 500
-                                if (PlayerCache.MyClient.User.Money >= func_21(3, 1))
+                            case 5:
+                                if (PlayerCache.MyClient.User.Money >= func_21(3, true))
                                 {
-                                    TryBankingNew(false, 6, func_21(3, 1));
+                                    TryBankingNew(false, 6, func_21(3, true));
                                     _actualMenu = 6;
                                 }
                                 else
@@ -572,10 +582,10 @@ namespace FreeRoamProject.FREEROAM.Banking
                                 }
 
                                 break;
-                            case 6: // 1000
-                                if (PlayerCache.MyClient.User.Money >= func_21(4, 1))
+                            case 6:
+                                if (PlayerCache.MyClient.User.Money >= func_21(4, true))
                                 {
-                                    TryBankingNew(false, 6, func_21(4, 1));
+                                    TryBankingNew(false, 6, func_21(4, true));
                                     _actualMenu = 6;
                                 }
                                 else
@@ -585,10 +595,10 @@ namespace FreeRoamProject.FREEROAM.Banking
                                 }
 
                                 break;
-                            case 7: // personalizzato
-                                if (PlayerCache.MyClient.User.Money >= func_21(5, 1))
+                            case 7:
+                                if (PlayerCache.MyClient.User.Money >= func_21(5, true))
                                 {
-                                    TryBankingNew(false, 6, func_21(5, 1));
+                                    TryBankingNew(false, 6, func_21(5, true));
                                     _actualMenu = 6;
                                 }
                                 else
@@ -602,7 +612,7 @@ namespace FreeRoamProject.FREEROAM.Banking
                         }
 
                         break;
-                    case 3: // TransactionList TODO: TO BE SAVED
+                    case 3:
                         switch (_currentSelection)
                         {
                             case 1:
@@ -617,7 +627,7 @@ namespace FreeRoamProject.FREEROAM.Banking
                         ClientMain.Instance.RemoveTick(BankControls);
                         atm.Dispose();
                         StopAudioScene("ATM_PLAYER_SCENE");
-                        interfaceOpen = false;
+                        InterfaceOpen = false;
 
                         break;
                     case 5: // ritiro
@@ -681,7 +691,7 @@ namespace FreeRoamProject.FREEROAM.Banking
                     Main.InstructionalButtons.ClearButtonList();
                     atm.Dispose();
                     StopAudioScene("ATM_PLAYER_SCENE");
-                    interfaceOpen = false;
+                    InterfaceOpen = false;
                     HideMoney();
                 }
                 else
@@ -753,35 +763,35 @@ namespace FreeRoamProject.FREEROAM.Banking
                     atm.CallFunction("DISPLAY_MENU");
 
                     break;
-                case 1:
+                case 1: // withdraw
                     BeginScaleformMovieMethod(atm.Handle, "SET_DATA_SLOT");
                     ScaleformMovieMethodAddParamInt(0);
                     AddText("MPATM_WITMT");
                     EndScaleformMovieMethod();
-                    if (PlayerCache.Character.Finance.Money >= func_21(0, 1))
+                    if (PlayerCache.Character.Finance.Bank >= func_21(0, false))
                     {
                         BeginScaleformMovieMethod(atm.Handle, "SET_DATA_SLOT");
                         ScaleformMovieMethodAddParamInt(1);
                         BeginTextCommandScaleformString("ESDOLLA");
-                        AddTextComponentFormattedInteger(func_21(0, 1), true);
+                        AddTextComponentFormattedInteger(func_21(0, false), true);
                         EndTextCommandScaleformString();
                         EndScaleformMovieMethod();
                     }
-                    if (PlayerCache.Character.Finance.Money >= func_21(1, 1))
+                    if (PlayerCache.Character.Finance.Bank >= func_21(1, false))
                     {
                         BeginScaleformMovieMethod(atm.Handle, "SET_DATA_SLOT");
                         ScaleformMovieMethodAddParamInt(2);
                         BeginTextCommandScaleformString("ESDOLLA");
-                        AddTextComponentFormattedInteger(func_21(1, 1), true);
+                        AddTextComponentFormattedInteger(func_21(1, false), true);
                         EndTextCommandScaleformString();
                         EndScaleformMovieMethod();
                     }
-                    if (PlayerCache.Character.Finance.Money >= func_21(2, 1))
+                    if (PlayerCache.Character.Finance.Bank >= func_21(2, false))
                     {
                         BeginScaleformMovieMethod(atm.Handle, "SET_DATA_SLOT");
                         ScaleformMovieMethodAddParamInt(3);
                         BeginTextCommandScaleformString("ESDOLLA");
-                        AddTextComponentFormattedInteger(func_21(2, 1), true);
+                        AddTextComponentFormattedInteger(func_21(2, false), true);
                         EndTextCommandScaleformString();
                         EndScaleformMovieMethod();
                     }
@@ -790,64 +800,64 @@ namespace FreeRoamProject.FREEROAM.Banking
                     BeginTextCommandScaleformString("MPATM_BACK");
                     EndTextCommandScaleformString();
                     EndScaleformMovieMethod();
-                    if (PlayerCache.Character.Finance.Money >= func_21(3, 1))
+                    if (PlayerCache.Character.Finance.Bank >= func_21(3, false))
                     {
                         BeginScaleformMovieMethod(atm.Handle, "SET_DATA_SLOT");
                         ScaleformMovieMethodAddParamInt(5);
                         BeginTextCommandScaleformString("ESDOLLA");
-                        AddTextComponentFormattedInteger(func_21(3, 1), true);
+                        AddTextComponentFormattedInteger(func_21(3, false), true);
                         EndTextCommandScaleformString();
                         EndScaleformMovieMethod();
                     }
-                    if (PlayerCache.Character.Finance.Money >= func_21(4, 1))
+                    if (PlayerCache.Character.Finance.Bank >= func_21(4, false))
                     {
                         BeginScaleformMovieMethod(atm.Handle, "SET_DATA_SLOT");
                         ScaleformMovieMethodAddParamInt(6);
                         BeginTextCommandScaleformString("ESDOLLA");
-                        AddTextComponentFormattedInteger(func_21(4, 1), true);
+                        AddTextComponentFormattedInteger(func_21(4, false), true);
                         EndTextCommandScaleformString();
                         EndScaleformMovieMethod();
                     }
-                    if (PlayerCache.Character.Finance.Money >= func_21(5, 1))
+                    if (PlayerCache.Character.Finance.Bank >= func_21(5, false))
                     {
                         BeginScaleformMovieMethod(atm.Handle, "SET_DATA_SLOT");
                         ScaleformMovieMethodAddParamInt(7);
                         BeginTextCommandScaleformString("ESDOLLA");
-                        AddTextComponentFormattedInteger(func_21(5, 1), true);
+                        AddTextComponentFormattedInteger(func_21(5, false), true);
                         EndTextCommandScaleformString();
                         EndScaleformMovieMethod();
                     }
                     atm.CallFunction("DISPLAY_CASH_OPTIONS");
                     break;
-                case 2:
+                case 2: // deposit
                     BeginScaleformMovieMethod(atm.Handle, "SET_DATA_SLOT");
                     ScaleformMovieMethodAddParamInt(0);
                     AddText("MPATM_DITMT");
                     EndScaleformMovieMethod();
-                    if (PlayerCache.Character.Finance.Bank >= func_21(0, 0))
+                    if (PlayerCache.Character.Finance.Money >= func_21(0, true))
                     {
                         BeginScaleformMovieMethod(atm.Handle, "SET_DATA_SLOT");
                         ScaleformMovieMethodAddParamInt(1);
                         BeginTextCommandScaleformString("ESDOLLA");
-                        AddTextComponentFormattedInteger(func_21(0, 0), true);
+                        AddTextComponentFormattedInteger(func_21(0, true), true);
                         EndTextCommandScaleformString();
                         EndScaleformMovieMethod();
                     }
-                    if (PlayerCache.Character.Finance.Bank >= func_21(1, 0))
+                    if (PlayerCache.Character.Finance.Money >= func_21(1, true))
                     {
                         BeginScaleformMovieMethod(atm.Handle, "SET_DATA_SLOT");
                         ScaleformMovieMethodAddParamInt(2);
                         BeginTextCommandScaleformString("ESDOLLA");
-                        AddTextComponentFormattedInteger(func_21(1, 0), true);
+                        AddTextComponentFormattedInteger(func_21(1, true), true);
                         EndTextCommandScaleformString();
                         EndScaleformMovieMethod();
                     }
-                    if (PlayerCache.Character.Finance.Bank >= func_21(2, 0))
+                    if (PlayerCache.Character.Finance.Money >= func_21(2, true))
                     {
                         BeginScaleformMovieMethod(atm.Handle, "SET_DATA_SLOT");
                         ScaleformMovieMethodAddParamInt(3);
                         BeginTextCommandScaleformString("ESDOLLA");
-                        AddTextComponentFormattedInteger(func_21(2, 0), true);
+                        AddTextComponentFormattedInteger(func_21(2, true), true);
                         EndTextCommandScaleformString();
                         EndScaleformMovieMethod();
                     }
@@ -856,30 +866,30 @@ namespace FreeRoamProject.FREEROAM.Banking
                     BeginTextCommandScaleformString("MPATM_BACK");
                     EndTextCommandScaleformString();
                     EndScaleformMovieMethod();
-                    if (PlayerCache.Character.Finance.Bank >= func_21(3, 0))
+                    if (PlayerCache.Character.Finance.Money >= func_21(3, true))
                     {
                         BeginScaleformMovieMethod(atm.Handle, "SET_DATA_SLOT");
                         ScaleformMovieMethodAddParamInt(5);
                         BeginTextCommandScaleformString("ESDOLLA");
-                        AddTextComponentFormattedInteger(func_21(3, 0), true);
+                        AddTextComponentFormattedInteger(func_21(3, true), true);
                         EndTextCommandScaleformString();
                         EndScaleformMovieMethod();
                     }
-                    if (PlayerCache.Character.Finance.Bank >= func_21(4, 0))
+                    if (PlayerCache.Character.Finance.Money >= func_21(4, true))
                     {
                         BeginScaleformMovieMethod(atm.Handle, "SET_DATA_SLOT");
                         ScaleformMovieMethodAddParamInt(6);
                         BeginTextCommandScaleformString("ESDOLLA");
-                        AddTextComponentFormattedInteger(func_21(4, 0), true);
+                        AddTextComponentFormattedInteger(func_21(4, true), true);
                         EndTextCommandScaleformString();
                         EndScaleformMovieMethod();
                     }
-                    if (PlayerCache.Character.Finance.Bank >= func_21(5, 0))
+                    if (PlayerCache.Character.Finance.Money >= func_21(5, true))
                     {
                         BeginScaleformMovieMethod(atm.Handle, "SET_DATA_SLOT");
                         ScaleformMovieMethodAddParamInt(7);
                         BeginTextCommandScaleformString("ESDOLLA");
-                        AddTextComponentFormattedInteger(func_21(5, 0), true);
+                        AddTextComponentFormattedInteger(func_21(5, true), true);
                         EndTextCommandScaleformString();
                         EndScaleformMovieMethod();
                     }
@@ -887,6 +897,7 @@ namespace FreeRoamProject.FREEROAM.Banking
 
                     break;
                 case 3:
+                    List<BankTransaction> transactions = await EventDispatcher.Get<List<BankTransaction>>("tlg:banking:requestTransactions");
                     BeginScaleformMovieMethod(atm.Handle, "SET_DATA_SLOT");
                     ScaleformMovieMethodAddParamInt(0);
                     AddText("MPATM_LOG");
@@ -895,13 +906,41 @@ namespace FreeRoamProject.FREEROAM.Banking
                     ScaleformMovieMethodAddParamInt(1);
                     AddText("MPATM_BACK");
                     EndScaleformMovieMethod();
+                    int slot = 2;
+                    foreach (BankTransaction trans in transactions.OrderByDescending(x => x.TransactionDate).Take(16))
+                    {
+                        BeginScaleformMovieMethod(atm.Handle, "SET_DATA_SLOT");
+                        ScaleformMovieMethodAddParamInt(slot);
+                        ScaleformMovieMethodAddParamInt(trans.Paid ? 0 : 1);
+                        ScaleformMovieMethodAddParamInt((int)trans.Amount);
+                        if (string.IsNullOrWhiteSpace(trans.PlayerName))
+                        {
+                            BeginTextCommandScaleformString(trans.Label);
+                            AddTextComponentSubstringPlayerName(trans.PlayerName);
+                            EndTextCommandScaleformString();
+                        }
+                        else
+                        {
+                            if (trans.Label != "ADMIN_REGULATION")
+                                AddText(trans.Label);
+                            else
+                            {
+                                BeginTextCommandScaleformString("STRING");
+                                AddTextComponentSubstringPlayerName("Admin transaction");
+                                EndTextCommandScaleformString();
+                            }
+                        }
+                        EndScaleformMovieMethod();
+                        slot++;
+                    }
+                    //ATM_TIGGER.C func_29
+
                     atm.CallFunction("DISPLAY_TRANSACTIONS");
                     break;
                 case 4:
                     break;
                 case 5: // confirm withdraw
                 case 6: // confirm deposit
-                    _transactionMoney = cash;
                     BeginScaleformMovieMethod(atm.Handle, "SET_DATA_SLOT");
                     ScaleformMovieMethodAddParamInt(0);
                     BeginTextCommandScaleformString(menu == 5 ? "MPATC_CONFW" : "MPATM_CONF");
@@ -918,6 +957,7 @@ namespace FreeRoamProject.FREEROAM.Banking
                     EndScaleformMovieMethod();
                     BeginScaleformMovieMethod(atm.Handle, "DISPLAY_MESSAGE");
                     EndScaleformMovieMethod();
+                    transactionMoney = cash;
 
                     break;
                 case 7: // waiting
@@ -928,8 +968,8 @@ namespace FreeRoamProject.FREEROAM.Banking
                         EndScaleformMovieMethod();
                         atm.CallFunction("DISPLAY_MESSAGE");
                         await BaseScript.Delay(SharedMath.GetRandomInt(2500, 4500));
-                        KeyValuePair<bool, string> trans = await EventDispatcher.Get<KeyValuePair<bool, string>>("tlg:banking:" + @event, _transactionMoney);
-                        TryBankingNew(false, 13, 0, GetLabelText(trans.Key ? "MPATM_TRANCOM" : "MPATM_ERR"));
+                        KeyValuePair<bool, string> trans = await EventDispatcher.Get<KeyValuePair<bool, string>>("tlg:banking:" + @event, transactionMoney);
+                        TryBankingNew(false, 13, 0, trans.Key ? "MPATM_TRANCOM" : "MPATM_ERR");
                         _actualMenu = 13;
                         _currentSelection = 0;
                     }
@@ -937,13 +977,13 @@ namespace FreeRoamProject.FREEROAM.Banking
                 case 13: // display message
                     BeginScaleformMovieMethod(atm.Handle, "SET_DATA_SLOT");
                     ScaleformMovieMethodAddParamInt(0);
-                    BeginTextCommandScaleformString("STRING");
-                    AddTextComponentScaleform(msg);
-                    EndTextCommandScaleformString();
+                    AddText(msg);
                     EndScaleformMovieMethod();
                     atm.CallFunction("DISPLAY_MESSAGE");
                     await BaseScript.Delay(2000);
                     TryBankingNew(false, 0);
+                    _actualMenu = 0;
+                    _currentSelection = 0;
                     break;
             }
 
@@ -1044,10 +1084,10 @@ namespace FreeRoamProject.FREEROAM.Banking
             return sParam1;
         }
 
-        static int func_21(int slot, int isWallet)//Position - 0x23E6
+        static int func_21(int slot, bool isWallet)//Position - 0x23E6
         {
             int iVar0;
-            if (isWallet == 1)
+            if (isWallet)
             {
                 iVar0 = PlayerCache.Character.Finance.Money;
             }
