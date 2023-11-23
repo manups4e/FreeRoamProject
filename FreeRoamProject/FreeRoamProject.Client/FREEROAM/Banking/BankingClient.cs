@@ -11,6 +11,7 @@ namespace FreeRoamProject.FREEROAM.Banking
 {
     static class BankingClient
     {
+        #region "mightBeUseful" variables
         private static List<Position> _atmpos = new List<Position>()
         {
             new Position(-717.651f, -915.619f, 19.215f),
@@ -104,12 +105,15 @@ namespace FreeRoamProject.FREEROAM.Banking
         public static List<Vector3> cleanspotcoords = new List<Vector3>() { new Vector3(1274.053f, -1711.756f, 54.771f), new Vector3(-1096.847f, 4947.532f, 218.354f) };
 
         private static List<ObjectHash> ATMs = new List<ObjectHash>() { ObjectHash.prop_atm_01, ObjectHash.prop_atm_02, ObjectHash.prop_atm_03, ObjectHash.prop_fleeca_atm };
+        #endregion
 
-        private static List<InputController> atmInputs = new();
         private static Prop ClosestATM;
         public static bool InterfaceOpen = false;
         public static bool MoneyHUDShowing = false;
         private static int transactionMoney = 0;
+        private static int currentAnimState = 0;
+        private static int iLocal_505 = -1;
+        private static bool stopAnim = true;
 
         public static void Init()
         {
@@ -197,7 +201,7 @@ namespace FreeRoamProject.FREEROAM.Banking
                     {
                         PlayerCache.MyPed.Weapons.Select(WeaponHash.Unarmed);
                         PlayerCache.MyPed.Task.GoTo(ClosestATM.Position);
-                        await BaseScript.Delay(200);
+                        await BaseScript.Delay(1000);
                         EnableBank();
                     }
                 }
@@ -235,6 +239,8 @@ namespace FreeRoamProject.FREEROAM.Banking
             });
             ClientMain.Instance.AddTick(BankControls);
             ClientMain.Instance.AddTick(AtmDraw);
+            Vector3 coords = ClosestATM.Position;
+            TaskUseNearestScenarioToCoord(PlayerPedId(), coords.X, coords.Y, coords.Z, 2f, -1);
             ShowMoney();
             InterfaceOpen = true;
         }
@@ -379,14 +385,29 @@ namespace FreeRoamProject.FREEROAM.Banking
 
                                 break;
                             case 4:
-                                Game.PlaySound("PIN_BUTTON", "ATM_SOUNDS");
-                                ClientMain.Instance.RemoveTick(AtmDraw);
-                                ClientMain.Instance.RemoveTick(BankControls);
-                                Main.InstructionalButtons.ClearButtonList();
-                                atm.Dispose();
-                                StopAudioScene("ATM_PLAYER_SCENE");
-                                InterfaceOpen = false;
-                                HideMoney();
+                                {
+                                    Game.PlaySound("PIN_BUTTON", "ATM_SOUNDS");
+                                    ClientMain.Instance.RemoveTick(AtmDraw);
+                                    ClientMain.Instance.RemoveTick(BankControls);
+                                    Main.InstructionalButtons.ClearButtonList();
+                                    atm.Dispose();
+                                    StopAudioScene("ATM_PLAYER_SCENE");
+                                    InterfaceOpen = false;
+                                    HideMoney();
+                                    if (IsPedUsingAnyScenario(PlayerPedId()))
+                                    {
+                                        SetPedShouldPlayImmediateScenarioExit(PlayerPedId());
+                                        if (!IsPedDeadOrDying(PlayerPedId(), true))
+                                            ClearPedTasks(PlayerPedId());
+                                    }
+                                    string Var7 = func_63(3);
+                                    Vector3 coords = PlayerCache.MyPed.Position;
+                                    Vector3 rot = ClosestATM.Rotation;
+                                    iLocal_505 = NetworkCreateSynchronisedScene(coords.X, coords.Y, coords.Z, rot.X, rot.Y, rot.Z, 2, false, false, 1f, 0f, 1f);
+                                    NetworkAddPedToSynchronisedScene(PlayerPedId(), iLocal_505, Var7, "exit", 8f, -4f, 5, 0, 1000f, 0);
+                                    NetworkStartSynchronisedScene(iLocal_505);
+                                    RemoveAnimDict(Var7);
+                                }
                                 break;
                         }
 
@@ -622,13 +643,27 @@ namespace FreeRoamProject.FREEROAM.Banking
                         }
                         break;
                     case 4: // Esci
-                        Game.PlaySound("PIN_BUTTON", "ATM_SOUNDS");
-                        ClientMain.Instance.RemoveTick(AtmDraw);
-                        ClientMain.Instance.RemoveTick(BankControls);
-                        atm.Dispose();
-                        StopAudioScene("ATM_PLAYER_SCENE");
-                        InterfaceOpen = false;
-
+                        {
+                            Game.PlaySound("PIN_BUTTON", "ATM_SOUNDS");
+                            ClientMain.Instance.RemoveTick(AtmDraw);
+                            ClientMain.Instance.RemoveTick(BankControls);
+                            atm.Dispose();
+                            StopAudioScene("ATM_PLAYER_SCENE");
+                            InterfaceOpen = false;
+                            if (IsPedUsingAnyScenario(PlayerPedId()))
+                            {
+                                SetPedShouldPlayImmediateScenarioExit(PlayerPedId());
+                                if (!IsPedDeadOrDying(PlayerPedId(), true))
+                                    ClearPedTasks(PlayerPedId());
+                            }
+                            string Var7 = func_63(3);
+                            Vector3 coords = PlayerCache.MyPed.Position;
+                            Vector3 rot = ClosestATM.Rotation;
+                            iLocal_505 = NetworkCreateSynchronisedScene(coords.X, coords.Y, coords.Z, rot.X, rot.Y, rot.Z, 2, false, false, 1f, 0f, 1f);
+                            NetworkAddPedToSynchronisedScene(PlayerPedId(), iLocal_505, Var7, "exit", 8f, -4f, 5, 0, 1000f, 0);
+                            NetworkStartSynchronisedScene(iLocal_505);
+                            RemoveAnimDict(Var7);
+                        }
                         break;
                     case 5: // ritiro
                         switch (_currentSelection)
@@ -693,6 +728,19 @@ namespace FreeRoamProject.FREEROAM.Banking
                     StopAudioScene("ATM_PLAYER_SCENE");
                     InterfaceOpen = false;
                     HideMoney();
+                    if (IsPedUsingAnyScenario(PlayerPedId()))
+                    {
+                        SetPedShouldPlayImmediateScenarioExit(PlayerPedId());
+                        if (!IsPedDeadOrDying(PlayerPedId(), true))
+                            ClearPedTasks(PlayerPedId());
+                        string Var7 = func_63(3);
+                        Vector3 coords = PlayerCache.MyPed.Position;
+                        Vector3 rot = ClosestATM.Rotation;
+                        iLocal_505 = NetworkCreateSynchronisedScene(coords.X, coords.Y, coords.Z, rot.X, rot.Y, rot.Z, 2, false, false, 1f, 0f, 1f);
+                        NetworkAddPedToSynchronisedScene(PlayerPedId(), iLocal_505, Var7, "exit", 8f, -4f, 5, 0, 1000f, 0);
+                        NetworkStartSynchronisedScene(iLocal_505);
+                        RemoveAnimDict(Var7);
+                    }
                 }
                 else
                 {
@@ -1002,7 +1050,126 @@ namespace FreeRoamProject.FREEROAM.Banking
             EndTextCommandScaleformString();
         }
 
+        /*
+        static async void PerformAnimation()
+        {
+            string sVar0 = func_63(0);
+            string sVar1 = func_63(1);
+            string sVar2 = func_63(2);
+            string sVar3 = func_63(3);
+            int iVar4 = 3;
+            int iVar5 = 0;
+            int iVar6;
 
+            RequestAnimDict(sVar3);
+            while (!HasAnimDictLoaded(sVar3)) await BaseScript.Delay(0);
+
+            Vector3 coords = PlayerCache.MyPed.Position;
+            Vector3 rot = ClosestATM.Rotation;
+
+            // ANIM 0
+
+            RequestAnimDict(sVar0);
+            while (!HasAnimDictLoaded(sVar0)) await BaseScript.Delay(0);
+            if (IsSynchronizedSceneRunning(iLocal_505))
+            {
+                DetachSynchronizedScene(iLocal_505);
+                iLocal_505 = -1;
+            }
+            iLocal_505 = NetworkCreateSynchronisedScene(coords.X, coords.Y, coords.Z, rot.X, rot.Y, rot.Z, 2, false, false, 1f, 0f, 1f);
+            NetworkAddPedToSynchronisedScene(PlayerCache.MyPed.Handle, iLocal_505, sVar0, "enter", 4f, -2f, 5, 0, 1000f, 0);
+            NetworkStartSynchronisedScene(iLocal_505);
+            RemoveAnimDict(sVar0);
+            currentAnimState = 1;
+
+            // ANIM 1
+
+            RequestAnimDict(sVar1);
+            while (!HasAnimDictLoaded(sVar1)) await BaseScript.Delay(0);
+            RequestAnimDict(sVar2);
+            while (!HasAnimDictLoaded(sVar2)) await BaseScript.Delay(0);
+            iVar5 = NetworkGetLocalSceneFromNetworkId(iLocal_505);
+            while (GetSynchronizedScenePhase(iVar5) < 0.99f) await BaseScript.Delay(1);
+            if (!IsSynchronizedSceneRunning(iLocal_505) || !IsSynchronizedSceneRunning(iVar5))
+            {
+                iLocal_505 = NetworkCreateSynchronisedScene(coords.X, coords.Y, coords.Z, rot.X, rot.Y, rot.Z, 2, false, true, 1f, 0f, 1f);
+                NetworkAddPedToSynchronisedScene(PlayerCache.MyPed.Handle, iLocal_505, sVar1, "base", 4f, -2f, 5, 0, 1000f, 0);
+                NetworkStartSynchronisedScene(iLocal_505);
+                currentAnimState = 2;
+            }
+
+            // ANIM 2
+
+            RequestAnimDict(sVar1);
+            while (!HasAnimDictLoaded(sVar1)) await BaseScript.Delay(0);
+            RequestAnimDict(sVar2);
+            while (!HasAnimDictLoaded(sVar2)) await BaseScript.Delay(0);
+            iVar5 = NetworkGetLocalSceneFromNetworkId(iLocal_505);
+            while (GetSynchronizedScenePhase(iVar5) < 0.99f) await BaseScript.Delay(1);
+            if (!IsSynchronizedSceneRunning(iVar5) || IsSynchronizedSceneRunning(iVar5))
+            {
+                iLocal_505 = NetworkCreateSynchronisedScene(coords.X, coords.Y, coords.Z, rot.X, rot.Y, rot.Z, 2, false, true, 1f, 0f, 1f);
+                iVar5 = NetworkGetLocalSceneFromNetworkId(iLocal_505);
+                if (IsSynchronizedSceneRunning(iVar5))
+                    SetSynchronizedScenePhase(iVar5, 0f);
+                NetworkAddPedToSynchronisedScene(PlayerCache.MyPed.Handle, iLocal_505, sVar1, "base", 4f, -2f, 5, 0, 1000f, 0);
+                NetworkStartSynchronisedScene(iLocal_505);
+            }
+            while (GetSynchronizedScenePhase(iVar5) < 0.99f) await BaseScript.Delay(0);
+
+            iVar6 = SharedMath.GetRandomInt(0, iVar4);
+            string anim = "";
+            anim = iVar6 switch
+            {
+                0 => "idle_a",
+                1 => "idle_a",
+                2 => "idle_a",
+                3 => "idle_a",
+                _ => "idle_XXX",
+            };
+            if (IsSynchronizedSceneRunning(iLocal_505))
+            {
+                DetachSynchronizedScene(iLocal_505);
+                iLocal_505 = -1;
+            }
+            iLocal_505 = NetworkCreateSynchronisedScene(coords.X, coords.Y, coords.Z, rot.X, rot.Y, rot.Z, 2, false, true, 1f, 0f, 1f);
+            NetworkAddPedToSynchronisedScene(PlayerCache.MyPed.Handle, iLocal_505, sVar2, anim, 4f, -2f, 5, 0, 1000f, 0);
+            currentAnimState = 3;
+
+            // ANIM 3
+
+            iVar5 = NetworkGetLocalSceneFromNetworkId(iLocal_505);
+            if (IsSynchronizedSceneRunning(iLocal_505) && !IsSynchronizedSceneRunning(iVar5))
+            {
+                if (IsSynchronizedSceneRunning(iLocal_505))
+                {
+                    DetachSynchronizedScene(iLocal_505);
+                    iLocal_505 = -1;
+                }
+                iLocal_505 = NetworkCreateSynchronisedScene(coords.X, coords.Y, coords.Z, rot.X, rot.Y, rot.Z, 2, false, true, 1f, 0f, 1f);
+                iVar5 = NetworkGetLocalSceneFromNetworkId(iLocal_505);
+                if (IsSynchronizedSceneRunning(iVar5))
+                {
+                    SetSynchronizedScenePhase(iVar5, 0f);
+                }
+                NetworkAddPedToSynchronisedScene(PlayerCache.MyPed.Handle, iLocal_505, sVar1, "base", 4f, -2f, 5, 0, 1000f, 0);
+                NetworkStartSynchronisedScene(iLocal_505);
+                currentAnimState = 2;
+            }
+            while (!IsSynchronizedSceneRunning(iVar5) || GetSynchronizedScenePhase(iVar5) < 0.99f) await BaseScript.Delay(0);
+
+            if (IsSynchronizedSceneRunning(iLocal_505))
+            {
+                DetachSynchronizedScene(iLocal_505);
+                iLocal_505 = -1;
+            }
+            iLocal_505 = NetworkCreateSynchronisedScene(coords.X, coords.Y, coords.Z, rot.X, rot.Y, rot.Z, 2, false, true, 1f, 0f, 1f);
+            NetworkAddPedToSynchronisedScene(PlayerCache.MyPed.Handle, iLocal_505, sVar1, "base", 4f, -2f, 5, 0, 1000f, 0);
+            NetworkStartSynchronisedScene(iLocal_505);
+            currentAnimState = 2;
+
+        }
+        */
         static string func_63(int iParam0)//Position - 0x4B59
         {
             string sParam1 = "";
