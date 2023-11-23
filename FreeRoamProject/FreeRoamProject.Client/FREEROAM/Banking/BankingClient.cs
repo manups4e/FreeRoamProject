@@ -1040,8 +1040,6 @@ namespace FreeRoamProject.FREEROAM.Banking
             AddText("MPATM_ACBA");
             PushScaleformMovieMethodParameterButtonName(PlayerCache.MyClient.User.Bank.ToString());
             EndScaleformMovieMethod();
-
-            //PlayerCache.Character.Finance.Transactions
         }
 
         static void AddText(string text)

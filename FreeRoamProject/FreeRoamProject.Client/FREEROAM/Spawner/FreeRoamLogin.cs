@@ -60,6 +60,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Spawner
             // TODO: LOAD VEHICLES (AND SPAWN LAST USED VEHICLE IF DISCONNECTED ON THE STREET WITH ITS PERSONAL VEHICLE OUT)
             ClearFocus();
             SwitchInPlayer(PlayerPedId());
+            await Initializer.Init();
             while (IsPlayerSwitchInProgress())
                 await BaseScript.Delay(0);
             DisplayHud(true);

@@ -50,22 +50,6 @@ namespace FreeRoamProject.Shared.Core.Character
         MoneyEarn,
     }
 
-    public class CharData
-    {
-        public ulong CharID { get; set; }
-        public bool Is_dead { get; set; }
-        public Finance Finance { get; set; }
-        public Position Position { get; set; }
-        public Gang Gang { get; set; }
-        public Skin Skin { get; set; }
-        public List<Weapons> Weapons = new();
-        public List<string> Properties = new(); // properties have their own data to be stored
-        public List<OwnedVehicle> Vehicles = new();
-        public Dressing Dressing { get; set; }
-        public Statistics Statistics { get; set; }
-
-    }
-
     public class Finance
     {
         public int Money { get; set; } = 1000;
@@ -96,6 +80,74 @@ namespace FreeRoamProject.Shared.Core.Character
             Label = label;
             PlayerName = playerName;
             TransactionDate = DateTime.Now;
+        }
+    }
+
+    public class PhoneData
+    {
+        public int Id { get; set; } = 1;
+        public int Theme { get; set; } = 1;
+        public int Wallpaper { get; set; } = 4;
+        public int Ringtone { get; set; } = 0;
+        public int SleepMode { get; set; } = 0;
+        public int Vibration { get; set; } = 1;
+        public List<Message> Messages { get; set; } = new List<Message>();
+        public List<Contact> Contacts = new List<Contact>()
+        {
+            new Contact("Law Enforcements", "CHAR_CALL911", false, 0),
+            new Contact("Medic", "CHAR_CALL911", false, 0),
+            new Contact("Mechanic", "CHAR_LS_CUSTOMS", false, 0),
+            new Contact("Taxi", "CHAR_TAXI", false, 0),
+            new Contact("Car Dealer", "CHAR_CARSITE2", false, 0),
+            new Contact("Real Estate Agent", "CHAR_PEGASUS_DELIVERY", false, 0),
+            new Contact("Reporter", "CHAR_LIFEINVADER", false, 0),
+        };
+
+        public PhoneData() { }
+
+
+        public PhoneData(dynamic result)
+        {
+            Theme = (int)result["Theme"].Value;
+            Wallpaper = (int)result["WallPaper"].Value;
+            // TODO: LOAD CONTACTS AND MESSAGES
+        }
+    }
+
+
+    public class Message
+    {
+        public string From { get; set; }
+        public string Title { get; set; }
+        public string TxtMessage { get; set; }
+        public DateTime Data { get; set; }
+
+        public Message(string _from, string _title, string _message, DateTime _data)
+        {
+            this.From = _from;
+            this.Title = _title;
+            this.TxtMessage = _message;
+            this.Data = _data;
+        }
+    }
+
+
+    public class Contact
+    {
+        public int Player { get; set; }
+        public string Name { get; set; }
+        public string Icon { get; set; }
+        public bool IsPlayer { get; set; }
+        public int PlayerIndex { get; set; }
+
+
+        public Contact(string name, string icon, bool isPlayer, int playerIndex = 0, int player = 0)
+        {
+            this.Name = name;
+            this.Icon = icon;
+            this.IsPlayer = isPlayer;
+            this.PlayerIndex = playerIndex;
+            this.Player = player;
         }
     }
 

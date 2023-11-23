@@ -45,6 +45,7 @@ namespace FreeRoamProject.Shared
         //TODO: SAVE ALSO PROPERTY PREFERENCES, MAKE A CLASS FOR IT
         public List<string?> Properties { get; set; }
         public List<OwnedVehicle> Vehicles { get; set; }
+        public PhoneData PhoneData { get; set; }
         public Dressing Dressing { get; set; }
         public FreeRoamStats Statistics { get; set; }
         public GameStats Stats { get; set; }
@@ -60,6 +61,7 @@ namespace FreeRoamProject.Shared
             Finance = new();
             Gang = new();
             Skin = new();
+            PhoneData = new PhoneData();
             Dressing = new();
             Properties = new(); // to be added
             Vehicles = new(); // to be added
