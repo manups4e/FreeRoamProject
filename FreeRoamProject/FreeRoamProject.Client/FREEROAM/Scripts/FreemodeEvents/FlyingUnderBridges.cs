@@ -174,11 +174,11 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
 
                 if (!IsStarted)
                 {
-                    Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_PREPAIR").Replace("~a~", Name), 50);
+                    Notifications.ShowHelpNotification(Game.GetGXTEntry("AMCH_PREPAIR").Replace("~a~", Name));
                 }
                 else
                 {
-                    Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_BRBL2"), 50);
+                    Notifications.ShowHelpNotification(Game.GetGXTEntry("AMCH_BRBL2"));
 
                     Vehicle currentVehicle = VehicleChecker.CurrentVehicle;
                     if (currentVehicle == null) { return; }

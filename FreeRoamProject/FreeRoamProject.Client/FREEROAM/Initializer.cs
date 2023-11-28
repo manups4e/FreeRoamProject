@@ -33,6 +33,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM
             BankingClient.Init();
             PhoneMainClient.Init();
             TickController.Init();
+            DialogueControllerClient.Init();
             // TODO: ADD STATISTICS HANDLING
             // TODO: ADD VEHICLES HANDLING
             // TODO: ADD APARTMENTS AND IPLS HANDLING

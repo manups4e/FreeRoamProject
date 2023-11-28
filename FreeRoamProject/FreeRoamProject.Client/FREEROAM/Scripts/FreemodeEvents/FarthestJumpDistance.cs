@@ -33,10 +33,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
 
                 if (!IsStarted)
 
-                    Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_PREPLAND").Replace("~a~", Name), 50);
+                    Notifications.ShowHelpNotification(Game.GetGXTEntry("AMCH_PREPLAND").Replace("~a~", Name));
                 else
                 {
-                    Screen.ShowSubtitle(GetLabelText("AMCH_BIG_0"), 50);
+                    Notifications.ShowHelpNotification(GetLabelText("AMCH_BIG_0"));
                     if (VehicleChecker.IsInVehicle)
                     {
                         StatGetFloat(unchecked((uint)PlayerStat), ref currentAttempt, -1);

@@ -637,7 +637,19 @@ namespace FreeRoamProject.Client.Core.Utility
         /// <param name="position">The position to spawn the <see cref="Ped"/> at.</param>
         /// <param name="heading">The heading of the <see cref="Ped"/>.</param>
         /// <remarks>returns <c>null</c> if the <see cref="Ped"/> could not be spawned</remarks>
-        public static async Task<Ped> CreatePedLocally(dynamic model, Vector3 position, float heading = 0f, PedTypes PedType = PedTypes.Mission)
+        public static async Task<Ped> CreatePedLocally(string model, Vector3 position, float heading = 0f, PedTypes PedType = PedTypes.Mission)
+        {
+            return await CreatePedLocally(GetHashKey(model), position, heading, PedType);
+        }
+        public static async Task<Ped> CreatePedLocally(Model model, Vector3 position, float heading = 0f, PedTypes PedType = PedTypes.Mission)
+        {
+            return await CreatePedLocally(model.Hash, position, heading, PedType);
+        }
+        public static async Task<Ped> CreatePedLocally(PedHash model, Vector3 position, float heading = 0f, PedTypes PedType = PedTypes.Mission)
+        {
+            return await CreatePedLocally((int)model, position, heading, PedType);
+        }
+        public static async Task<Ped> CreatePedLocally(int model, Vector3 position, float heading = 0f, PedTypes PedType = PedTypes.Mission)
         {
             Model mod = new(model);
 

@@ -244,6 +244,8 @@ namespace FreeRoamProject.Client
                     break;
                 case "CEventNetworkVehicleUndrivable": // (veh Handle, int, int) (9443078, -1, 0)...
                     break;
+                case "CEventNetworkPlayerCollectedAmbientPickup": // suuuuper useful
+                    break;
             }
         }
     }

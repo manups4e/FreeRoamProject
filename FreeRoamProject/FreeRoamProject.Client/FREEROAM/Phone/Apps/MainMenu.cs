@@ -7,24 +7,24 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
 {
     public class MainMenu : App
     {
-        public int SelectedItem { get; set; }
+        public int SelectedItem { get; set; } = 4;
         public List<App> AllApps { get; set; }
 
-        public MainMenu(Phone phone, List<App> allApps) : base("Main", 0, phone, false)
+        public MainMenu(Phone phone, List<App> allApps) : base("HOMEMENU", 0, phone, PhoneView.HOMEMENU, false)
         {
             AllApps = allApps;
 
             ClientMain.Logger.Debug($"Apps totali {AllApps.Count}");
         }
 
-        public override async Task Tick()
+        public override async Task TickVisual()
         {
             try
             {
                 if (Phone.Scaleform == null || AllApps == null) return;
                 if (SelectedItem < AllApps.Count && !String.IsNullOrEmpty(AllApps[SelectedItem].Name))
                 {
-                    Name = AllApps[SelectedItem].Name;
+                    Title = AllApps[SelectedItem].Name;
                 }
 
                 for (int i = 0; i < 9; i++)
@@ -34,80 +34,79 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                     {
                         if (AllApps[i].Icon != 0)
                         {
-                            thirdParam = AllApps[i].Icon;
+                            thirdParam = (int)AllApps[i].Icon;
                         }
                     }
-                    Phone.Scaleform.CallFunction("SET_DATA_SLOT", 1, i, thirdParam);
+                    Phone.Scaleform.CallFunction("SET_DATA_SLOT", (int)CurrentView, i, thirdParam);
                 }
 
-                Phone.Scaleform.CallFunction("DISPLAY_VIEW", 1, SelectedItem);
-
-                bool navigated = true;
-                if (Input.IsControlJustPressed(Control.PhoneUp))
-                {
-                    SelectedItem -= 3;
-                    CellCamMoveFinger(1);
-                    Phone.Scaleform.CallFunction("SET_INPUT_EVENT", 1);
-                    if (SelectedItem < 0)
-                        SelectedItem += 8;
-                }
-                else if (Input.IsControlJustPressed(Control.PhoneDown))
-                {
-                    SelectedItem += 3;
-                    CellCamMoveFinger(2);
-                    Phone.Scaleform.CallFunction("SET_INPUT_EVENT", 3);
-                    if (SelectedItem > 8)
-                        SelectedItem -= 8;
-                }
-                else if (Input.IsControlJustPressed(Control.PhoneRight))
-                {
-                    SelectedItem += 1;
-                    CellCamMoveFinger(3);
-                    Phone.Scaleform.CallFunction("SET_INPUT_EVENT", 2);
-                    if (SelectedItem > 8)
-                        SelectedItem = 0;
-                }
-                else if (Input.IsControlJustPressed(Control.PhoneLeft))
-                {
-                    SelectedItem -= 1;
-                    CellCamMoveFinger(4);
-                    Phone.Scaleform.CallFunction("SET_INPUT_EVENT", 4);
-                    if (SelectedItem < 0)
-                        SelectedItem = 8;
-
-                }
-                else if (Input.IsControlJustPressed(Control.PhoneSelect))
-                {
-                    CellCamMoveFinger(5);
-                    PhoneMainClient.StartApp(AllApps[SelectedItem].Name);
-                }
-                else if (Input.IsControlJustPressed(Control.PhoneCancel))
-                {
-                }
-                else
-                    navigated = false;
-
-                if (navigated)
-                {
-                    Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
-                }
+                Phone.Scaleform.CallFunction("DISPLAY_VIEW", (int)CurrentView, SelectedItem);
+                // the error shouldn't happen if we have all the apps!!!! anyway..
+                Phone.Scaleform.CallFunction("SET_HEADER", SelectedItem >= AllApps.Count ? "" : AllApps[SelectedItem].Title);
             }
             catch (Exception e)
             {
-                ClientMain.Logger.Error($"{e.Message} : Exception thrown on Apps.Main.Tick()");
+                ClientMain.Logger.Error($"{e}");
             }
         }
-
+        public override async Task TickControls()
+        {
+            bool navigated = true;
+            if (Input.IsControlJustPressed(Control.PhoneUp))
+            {
+                CellCamMoveFinger(1);
+                Phone.Scaleform.CallFunction("SET_INPUT_EVENT", 1);
+                Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
+                SelectedItem = await Phone.Scaleform.CallFunctionReturnValueInt("GET_CURRENT_SELECTION");
+            }
+            else if (Input.IsControlJustPressed(Control.PhoneDown))
+            {
+                CellCamMoveFinger(2);
+                Phone.Scaleform.CallFunction("SET_INPUT_EVENT", 3);
+                Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
+                SelectedItem = await Phone.Scaleform.CallFunctionReturnValueInt("GET_CURRENT_SELECTION");
+            }
+            else if (Input.IsControlJustPressed(Control.PhoneRight))
+            {
+                CellCamMoveFinger(3);
+                Phone.Scaleform.CallFunction("SET_INPUT_EVENT", 2);
+                Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
+                SelectedItem = await Phone.Scaleform.CallFunctionReturnValueInt("GET_CURRENT_SELECTION");
+            }
+            else if (Input.IsControlJustPressed(Control.PhoneLeft))
+            {
+                CellCamMoveFinger(4);
+                Phone.Scaleform.CallFunction("SET_INPUT_EVENT", 4);
+                Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
+                SelectedItem = await Phone.Scaleform.CallFunctionReturnValueInt("GET_CURRENT_SELECTION");
+            }
+            else if (Input.IsControlJustPressed(Control.PhoneSelect))
+            {
+                CellCamMoveFinger(5);
+                Phone.StartApp(AllApps[SelectedItem].Name);
+                Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
+            }
+            else if (Input.IsControlJustPressed(Control.PhoneCancel))
+            {
+                Phone.ClosePhone();
+            }
+        }
         public override void Initialize(Phone phone)
         {
             Phone = phone;
-            SelectedItem = 0;
             SetMobilePhoneRotation(-90.0f, 0.0f, 0.0f, 0);
             SetPhoneLean(false);
+            Phone.SetSoftKeys(1, SoftKeys.BLANK, false, SColor.HUD_Freemode);
+            Phone.SetSoftKeys(2, SoftKeys.SELECT, true, SColor.HUD_Freemode);
+            Phone.SetSoftKeys(3, SoftKeys.BACK, true, SColor.HUD_Red);
+            ClientMain.Instance.AddTick(TickVisual);
+            ClientMain.Instance.AddTick(TickControls);
         }
 
         public override void Kill()
         {
+            ClientMain.Instance.RemoveTick(TickVisual);
+            ClientMain.Instance.RemoveTick(TickControls);
         }
     }
 }

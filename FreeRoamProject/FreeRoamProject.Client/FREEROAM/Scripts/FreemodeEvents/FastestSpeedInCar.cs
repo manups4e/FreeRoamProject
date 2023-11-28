@@ -24,10 +24,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
                 if (!IsActive) { return; }
 
                 if (!IsStarted)
-                    Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_PREPLAND").Replace("~a~", Name), 50);
+                    Notifications.ShowHelpNotification(Game.GetGXTEntry("AMCH_PREPLAND").Replace("~a~", Name));
                 else
                 {
-                    Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_2"), 1);
+                    Notifications.ShowHelpNotification(Game.GetGXTEntry("AMCH_2"));
                     if (VehicleChecker.IsInVehicle && VehicleChecker.CurrentVehicle.Speed > 0)
                     {
                         float speed = VehicleChecker.CurrentVehicle.Speed;

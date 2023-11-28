@@ -1,24 +1,15 @@
-﻿using FreeRoamProject.Client.FREEROAM.Phone.Models;
-using FreeRoamProject.FREEROAM.Banking;
-using System.Linq;
+﻿using FreeRoamProject.FREEROAM.Banking;
 using System.Threading.Tasks;
 
 namespace FreeRoamProject.Client.FREEROAM.Phone
 {
-    public enum ModelPhone : int
-    {
-        Micheal = 0,
-        Franklin = 1,
-        Trevor = 2,
-        Prologue = 4
-    }
-
     //prop_phone_proto
     //npcphone
 
     static class PhoneMainClient
     {
         public static Phone Phone;
+        public static bool PhoneActive = false;
         public static void Init()
         {
             Phone = new Phone();
@@ -30,105 +21,15 @@ namespace FreeRoamProject.Client.FREEROAM.Phone
         {
             Ped ped = PlayerCache.MyPed;
 
-            if (!(MenuHandler.IsAnyMenuOpen || Game.IsPaused || BankingClient.InterfaceOpen || ped.IsAiming || ped.IsAimingFromCover || ped.IsInCover() || ped.IsShooting))
+            if (!MenuHandler.IsAnyMenuOpen && !Game.IsPaused && !BankingClient.InterfaceOpen && !ped.IsAiming && !ped.IsAimingFromCover && !ped.IsInCover() && !ped.IsShooting)
             {
                 if (Input.IsControlJustPressed(Control.Phone) && !IsPedRunningMobilePhoneTask(ped.Handle))
                 {
                     Phone.OpenPhone();
-                    Phone.currentApp = Phone.mainApp;
-                }
-                else if (IsPedRunningMobilePhoneTask(ped.Handle) && Input.IsControlJustPressed(Control.PhoneCancel))
-                {
-                    if (Phone.IsBackOverriddenByApp)
-                        Phone.IsBackOverriddenByApp = false;
-                    else
-                        KillApp();
+                    PhoneActive = true;
                 }
             }
         }
-
-        /*
-         email, messages, contacts, 
-         quickjoin, jobList, settings,
-         snapmatic, web, securoserv,
-         */
-
-        public static void StartApp(string app)
-        {
-            if (app == "Main")
-            {
-                KillApp();
-                if (Phone.currentApp != null)
-                {
-                    Phone.currentApp.Kill();
-                    ClientMain.Instance.RemoveTick(Phone.currentApp.Tick);
-                }
-                Phone.currentApp = Phone.mainApp;
-            }
-            else if (Phone.apps.Exists(x => x.Name == app))
-            {
-                ClientMain.Instance.RemoveTick(Phone.mainApp.Tick);
-                Phone.currentApp = Phone.apps.FirstOrDefault(x => x.Name == app);
-            }
-
-            Phone.currentApp.Initialize(Phone);
-            ClientMain.Instance.AddTick(Phone.currentApp.Tick);
-
-            ClientMain.Logger.Debug($"CurrentApp = {Phone.currentApp.Name}");
-        }
-
-        public static void KillApp()
-        {
-            if (Phone.currentApp != null)
-            {
-                ClientMain.Logger.Debug($"Killing App {Phone.currentApp.Name}");
-                ClientMain.Instance.RemoveTick(Phone.currentApp.Tick);
-                Phone.currentApp.Kill();
-
-                App lastApp = Phone.currentApp;
-                Phone.currentApp = null;
-
-                if (lastApp.Icon == 0)
-                {
-                    foreach (App app in Phone.apps)
-                    {
-                        app.Kill();
-                        ClientMain.Instance.RemoveTick(app.Tick);
-                    }
-                    Phone.ClosePhone();
-                }
-                else
-                {
-                    Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
-                    StartApp("Main");
-                }
-            }
-        }
-
-    }
-
-    public enum SoftKeyIcon
-    {
-        Blank = 1,
-        Select = 2,
-        Pages = 3,
-        Back = 4,
-        Call = 5,
-        Hangup = 6,
-        HangupHuman = 7,
-        Week = 8,
-        Keypad = 9,
-        Open = 10,
-        Reply = 11,
-        Delete = 12,
-        Yes = 13,
-        No = 14,
-        Sort = 15,
-        Website = 16,
-        Police = 17,
-        Ambulance = 18,
-        Fire = 19,
-        Pages2 = 20
     }
 
     public sealed class Wallpapers

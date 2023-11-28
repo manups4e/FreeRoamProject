@@ -33,10 +33,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
                 if (!IsActive) { return; }
 
                 if (!IsStarted)
-                    Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_PREPLAND").Replace("~a~", Name), 50);
+                    Notifications.ShowHelpNotification(Game.GetGXTEntry("AMCH_PREPLAND").Replace("~a~", Name));
                 else
                 {
-                    Screen.ShowSubtitle("Make the highest jump with a land vehicle.", 50);
+                    Notifications.ShowHelpNotification("Make the highest jump with a land vehicle.");
 
                     if (VehicleChecker.IsInVehicle)
                     {

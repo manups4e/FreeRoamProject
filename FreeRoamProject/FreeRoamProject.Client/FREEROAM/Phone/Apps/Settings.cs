@@ -80,7 +80,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             new SettingsSubMenu(GetLabelText("CELL_730"), 20, Vibrate),
         };
 
-        public Settings(Phone phone) : base(GetLabelText("CELL_16"), 24, phone)
+        public Settings(Phone phone) : base(GetLabelText("CELL_16"), IconLabels.SETTINGS_2, phone, PhoneView.SETTINGS)
         {
             numero = PlayerCache.MyPlayer.Name;
 
@@ -95,22 +95,16 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
              */
         }
 
-        public override async Task Tick()
+        public override async Task TickVisual()
         {
-            if (FirstTick)
-            {
-                FirstTick = false;
-                await BaseScript.Delay(100);
-                return;
-            }
-            Phone.Scaleform.CallFunction("SET_DATA_SLOT_EMPTY", 13);
+            Phone.Scaleform.CallFunction("SET_DATA_SLOT_EMPTY", (int)CurrentView);
 
             string appName = GetLabelText("CELL_16");
             if (CurrentSubMenu != null)
             {
                 foreach (SettingsSubMenuItem item in CurrentSubMenu.Items)
                 {
-                    Phone.Scaleform.CallFunction("SET_DATA_SLOT", 13, CurrentSubMenu.Items.IndexOf(item), item.Icon, item.Name);
+                    Phone.Scaleform.CallFunction("SET_DATA_SLOT", (int)CurrentView, CurrentSubMenu.Items.IndexOf(item), item.Icon, item.Name);
                 }
                 if (SelectedItem < CurrentSubMenu.Items.Count)
                 {
@@ -124,13 +118,16 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             {
                 foreach (SettingsSubMenu subMenu in SubMenus)
                 {
-                    Phone.Scaleform.CallFunction("SET_DATA_SLOT", 13, SubMenus.IndexOf(subMenu), subMenu.Icon, subMenu.Name);
+                    Phone.Scaleform.CallFunction("SET_DATA_SLOT", (int)CurrentView, SubMenus.IndexOf(subMenu), subMenu.Icon, subMenu.Name);
                 }
             }
 
-            Phone.Scaleform.CallFunction("DISPLAY_VIEW", 13, SelectedItem);
-
-            bool navigated = true;
+            Phone.Scaleform.CallFunction("SET_HEADER", appName);
+            Phone.Scaleform.CallFunction("DISPLAY_VIEW", (int)CurrentView, SelectedItem);
+            await Task.FromResult(0);
+        }
+        public override async Task TickControls()
+        {
             if (Input.IsControlJustPressed(Control.PhoneUp))
             {
                 MoveFinger(1);
@@ -140,6 +137,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                     SelectedItem = CurrentSubMenu.Items.Count - 1;
                 else
                     SelectedItem = SubMenus.Count - 1;
+                Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
             }
             else if (Input.IsControlJustPressed(Control.PhoneDown))
             {
@@ -158,6 +156,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                     else
                         SelectedItem = 0;
                 }
+                Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
             }
             else if (Input.IsControlJustPressed(Control.FrontendAccept))
             {
@@ -180,6 +179,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                     else if (CurrentSubMenu.Name == GetLabelText("CELL_730"))
                         SetVibration(CurrentSubMenu.Items[SelectedItem].Id);
                 }
+                Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
             }
             else if (Input.IsControlJustPressed(Control.FrontendCancel))
             {
@@ -191,20 +191,10 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                 }
                 else
                 {
-                    navigated = false;
-                    PhoneMainClient.StartApp("Main");
+                    Phone.StartApp("MAINMENU");
                 }
-            }
-            else
-            {
-                navigated = false;
-            }
-
-            if (navigated)
-            {
                 Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
             }
-            await Task.FromResult(0);
         }
 
         public override void Initialize(Phone phone)
@@ -213,11 +203,14 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             CurrentSubMenu = null;
             FirstTick = true;
             SelectedItem = 0;
+            ClientMain.Instance.AddTick(TickVisual);
+            ClientMain.Instance.AddTick(TickControls);
         }
 
         public override void Kill()
         {
-
+            ClientMain.Instance.RemoveTick(TickVisual);
+            ClientMain.Instance.RemoveTick(TickControls);
         }
 
         public void SetTheme(int themeId)

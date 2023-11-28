@@ -2,86 +2,239 @@
 using FreeRoamProject.Client.FREEROAM.Phone.Models;
 using FreeRoamProject.Shared.Core.Character;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FreeRoamProject.Client.FREEROAM.Phone
 {
+    public enum ModelPhone : int
+    {
+        Micheal = 0,
+        Franklin = 1,
+        Trevor = 2,
+        Prologue = 4
+    }
+    public enum PhoneAnimation
+    {
+        CLOSE,
+        OPEN,
+        OPEN_ROTATION,
+        SET_HORIZONTAL,
+        SET_VERTICAL
+    }
+
+    public enum SoftKeys
+    {
+        BLANK = 1,
+        SELECT,
+        PAGES,
+        BACK,
+        CALL,
+        HANGUP,
+        HANGUP_HUMAN,
+        WEEK,
+        KEYPAD,
+        OPEN,
+        REPLY,
+        DELETE,
+        YES,
+        NO,
+        SORT,
+        WEBSITE,
+        POLICE,
+        AMBULANCE,
+        FIRE,
+        PAGES2
+    }
+
+    public enum IconLabels
+    {
+        CAMERA = 1,
+        TEXT_MESSAGE = 2,
+        CALENDAR = 3,
+        EMAIL = 4,
+        CALL = 5,
+        EYEFIND = 6,
+        MAP = 7,
+        APPS = 8,
+        MEDIA = 9,
+        ATTACHMENT = 10,
+        NEW_CONTACT = 11,
+        SIDE_TASKS = 12,
+        BAWSAQ = 13,
+        MULTIPLAYER = 14,
+        MUSIC = 15,
+        GPS = 16,
+        SPARE = 17,
+        RINGTONE = 18,
+        TEXT_TONE = 19,
+        VIBRATE_ON = 20,
+        VIBRATE_OFF = 21,
+        VOLUME = 22,
+        SETTINGS_1 = 23,
+        SETTINGS_2 = 24,
+        PROFILE = 25,
+        SLEEP_MODE = 26,
+        MISSED_CALL = 27,
+        UNREAD_EMAIL = 28,
+        READ_EMAIL = 29,
+        REPLY_EMAIL = 30,
+        REPLAYMISSION = 31,
+        SHITSKIP = 32,
+        UNREAD_SMS = 33,
+        READ_SMS = 34,
+        PLAYER_LIST = 35,
+        COP_BACKUP = 36,
+        GANG_TAXI = 37,
+        REPEAT_PLAY = 38,
+        CHECKLIST = 39,
+        SNIPER = 40,
+        ZIT_IT = 41,
+        TRACKIFY = 42,
+        SAVE = 43,
+        ADD_TAG = 44,
+        REMOVE_TAG = 45,
+        LOCATION = 46,
+        PARTY = 47,
+        TICKED = 48,
+        BROADCAST = 49,
+        GAMEPAD = 50,
+        SILENT = 51,
+        INVITES_PENDING = 52,
+        ON_CALL = 53,
+        H_LOCK = 54,
+        PUSH_TO_TALK = 55,
+        BENNYS = 56,
+        GANG = 57,
+        TRACKER = 58,
+        SIGHT_SEER = 59,
+        BEACON = 60,
+    }
+
+    public enum PhoneView
+    {
+        SHUTDOWN_MOVIE = 0,
+        HOMEMENU,
+        CONTACTLIST,
+        unk_3,
+        CALLSCREEN,
+        unk_5,
+        TEXT_MESSAGE_LIST,
+        TEXT_MESSAGE_VIEW,
+        EMAIL_LIST,
+        EMAIL_VIEW,
+        unk_10,
+        APP_NUMBERPAD,
+        unk_12,
+        SETTINGS,
+        APP_TODO_LIST,
+        APP_TODO_VIEW,
+        SHUTTER,
+        APP_TODO_VIEW_2,
+        MISSION_REPEAT_LIST,
+        APP_MISSION_STATS_VIEW,
+        JOB_LIST,
+        EMAIL_RESPONSE,
+        SETTINGS_2,
+        APP_TRACKIFY,
+        XYZ,
+        BOSS_JOB_LIST,
+        BOSS_JOB_LIST_VIEW,
+        APP_SECUROSERV_HACKING
+    }
+
     public class Phone
     {
-        public Scaleform Scaleform = new Scaleform("CELLPHONE_IFRUIT");
+        public ScaleformWideScreen Scaleform = new ScaleformWideScreen("CELLPHONE_IFRUIT");
         public bool Visible = false;
         public bool SleepMode = false;
-        public List<PhoneData> phone_data = new List<PhoneData>();
         public List<App> apps;
-        public App mainApp;
-        public App currentApp = null;
+        public App MainMenu;
+        public App Callscreen;
+        public App CurrentApp = null;
         public int VisibleAnimProgress;
         public bool IsBackOverriddenByApp;
         public bool InCall = false;
         public float Scale = 0;
-        internal Vector3 Position1 = Vector3.Zero;
-        internal Vector3 Position2 = Vector3.Zero;
+        private float currentScale = 0;
+
+        internal Vector3 RotationHidden = Vector3.Zero;
+        internal Vector3 PositionHidden = Vector3.Zero;
+        internal Vector3 PositionOpen = Vector3.Zero;
+        internal Vector3 PositionLean = Vector3.Zero;
+        internal Vector3 RotationHorizontal = Vector3.Zero;
+        internal Vector3 RotationVertical = Vector3.Zero;
         private bool firstOpen = true;
         internal int iLocal18;
 
         Vector3 Global_20226 = new(-90, 0, 0);
         public Phone()
         {
-            phone_data.Add(new PhoneData());
+            /*
+            email, messages, contacts, 
+            quickjoin, jobList, settings,
+            snapmatic, web, securoserv,
+            */
+
             apps = new List<App>()
             {
-                new Contacts(this), new Messages(this), new QuickSave(this), new Apps.Settings(this)
+                new Emails(this), new Messages(this), new Contacts(this),
+                new QuickSave(this), new Apps.Settings(this),
             };
-            mainApp = new MainMenu(this, apps);
+            MainMenu = new MainMenu(this, apps);
+            Callscreen = new CallScreen(this);
+            RotationHidden = new Vector3(-90f, -130f, 0f);
             if (GetIsHidef())
             {
-                Position1 = new Vector3(GetSafeZoneSize() * 117.2f, GetSafeZoneSize() * -158.8f, -113f);
-                Position2 = new Vector3(GetSafeZoneSize() * 117.2f, GetSafeZoneSize() * -53.3f, -113f);
+                PositionHidden = new Vector3(GetSafeZoneSize() * 117.2f, GetSafeZoneSize() * -158.8f, -113f);
+                PositionOpen = new Vector3(GetSafeZoneSize() * 117.2f, GetSafeZoneSize() * -53.3f, -113f);
             }
             else
             {
-                Position1 = new Vector3(GetSafeZoneSize() * 85.7f, GetSafeZoneSize() * -121.8f, -91.5f);
-                Position2 = new Vector3(GetSafeZoneSize() * 85.7f, GetSafeZoneSize() * -35.3f, -91.5f);
+                PositionHidden = new Vector3(GetSafeZoneSize() * 85.7f, GetSafeZoneSize() * -121.8f, -91.5f);
+                PositionOpen = new Vector3(GetSafeZoneSize() * 85.7f, GetSafeZoneSize() * -35.3f, -91.5f);
             }
-            Scaleform = new Scaleform("CELLPHONE_IFRUIT");
+            PositionLean = Vector3.Add(PositionOpen, new Vector3(-10, 20, 0));
+            RotationVertical = new Vector3(-90, 0, 0);
+            RotationHorizontal = new Vector3(-90, 0, 90);
+            currentScale = 500f;
         }
 
         public async void OpenPhone()
         {
-            Scaleform = new Scaleform("CELLPHONE_IFRUIT");
+            ScriptIsMovingMobilePhoneOffscreen(false);
+            Scaleform = new ScaleformWideScreen("CELLPHONE_IFRUIT");
+            while (!Scaleform.IsLoaded) await BaseScript.Delay(0);
             Game.PlaySound("Pull_Out", "Phone_SoundSet_Default");
             CreateMobilePhone((int)ModelPhone.Micheal);
-            PhoneMainClient.StartApp("Main");
+            ClientMain.Instance.AddTick(Screen);
+            StartApp("MAINMENU");
             PlayerCache.MyPed.SetConfigFlag(242, false);
             PlayerCache.MyPed.SetConfigFlag(243, false);
             PlayerCache.MyPed.SetConfigFlag(244, true);
-            VisibleAnimProgress = 21;
-            N_0x83a169eabcdb10a2(PlayerPedId(), 0); // TODO: here we load the saved theme
-            if (GetFollowPedCamViewMode() == 4)
-                Scale = 0f;
-            else
-                Scale = 500f;
-            SetMobilePhoneScale(Scale);
             Visible = true;
-            SetMobilePhoneRotation(-90f, 0f, 0f, 0);
-            SetMobilePhonePosition(Position1.X, Position1.Y, Position1.Z);
-            SetMobilePhoneScale(Scale);
-            SetMobilePhoneUnk(true);
-            ClientMain.Instance.AddTick(Screen);
-            await RotateAnimation(Position1, Position2, new Vector3(-90f, 0f, 0f), new Vector3(-90f, 0f, 0f), 350f, false);
+            SetMobilePhonePosition(PositionHidden.X, PositionHidden.Y, PositionHidden.Z);
+            SetMobilePhoneRotation(RotationHidden.X, RotationHidden.Y, RotationHidden.Z, 0);
+            SetMobilePhoneScale(currentScale);
+            await RotateAnimation(PhoneAnimation.OPEN);
         }
 
         public async void ClosePhone()
         {
-            await RotateAnimation(Position2, Position1, new Vector3(-90f, 0f, 0f), new Vector3(-90f, 0f, 0f), 350f, false);
+            if (!PhoneMainClient.PhoneActive) return;
+            Game.PlaySound("Put_Away", "Phone_SoundSet_Default");
+            await RotateAnimation(PhoneAnimation.CLOSE);
             Scaleform.CallFunction("SHUTDOWN_MOVIE");
+            ClientMain.Instance.RemoveTick(Screen);
+            if (CurrentApp != null) CurrentApp.Kill();
+            apps.ForEach(app => app.Kill());
             Scaleform.Dispose();
             DestroyMobilePhone();
             Visible = false;
             PlayerCache.MyPed.SetConfigFlag(242, true);
             PlayerCache.MyPed.SetConfigFlag(243, true);
             PlayerCache.MyPed.SetConfigFlag(244, false);
-            ClientMain.Instance.RemoveTick(Screen);
+            ScriptIsMovingMobilePhoneOffscreen(true);
         }
 
         public PhoneData getCurrentCharPhone()
@@ -89,43 +242,38 @@ namespace FreeRoamProject.Client.FREEROAM.Phone
             if (PlayerCache.Character.PhoneData == null)
                 PlayerCache.Character.PhoneData = new PhoneData();
             return PlayerCache.Character.PhoneData;
-            /*
-			for (int i = 0; i < phone_data.Count; i++)
-			{
-				if (Cache.MyPlayer.User.char_current - 1 == phone_data[i].id - 1)
-					return phone_data[i];
-			}
-			*/
-            return null;
         }
 
-        public void SetSoftKeys(int index, int icon)
+        public void SetSoftKeys(int index, SoftKeys icon, bool enabled, SColor color)
         {
-            Scaleform.CallFunction("SET_SOFT_KEYS", index, true, icon);
+            Scaleform.CallFunction("SET_SOFT_KEYS", index, enabled, (int)icon);
+            Scaleform.CallFunction("SET_SOFT_KEYS_COLOUR", index, (int)color.R, (int)color.G, (int)color.B);
         }
 
         private async Task Screen()
         {
             Game.DisableControlThisFrame(0, Control.Sprint);
+            HideHudComponentThisFrame(6);
+            HideHudComponentThisFrame(7);
+            HideHudComponentThisFrame(8);
+            HideHudComponentThisFrame(9);
 
-            Scaleform.CallFunction("SET_TITLEBAR_TIME", World.CurrentDayTime.Hours, World.CurrentDayTime.Minutes);
-
+            Scaleform.CallFunction("SET_TITLEBAR_TIME", World.CurrentDayTime.Hours, World.CurrentDayTime.Minutes, getDay(World.CurrentDayTime.Days));
             Scaleform.CallFunction("SET_SLEEP_MODE", SleepMode);
             Scaleform.CallFunction("SET_THEME", 1); // TODO: USE SAVED DATA
             N_0x83a169eabcdb10a2(PlayerPedId(), 0); // theme -1
             Scaleform.CallFunction("SET_BACKGROUND_IMAGE", 0); // TODO: USE SAVED DATA
-            SetSoftKeys(2, 19);
             Vector3 playerPos = PlayerCache.MyClient.Position.ToVector3;
             Scaleform.CallFunction("SET_SIGNAL_STRENGTH", GetZoneScumminess(GetZoneAtCoords(playerPos.X, playerPos.Y, playerPos.Z)));
 
             if (GetFollowPedCamViewMode() == 4)
-                Scale = 0f;
-            else
-                Scale = 350f;
-            if (currentApp != null)
             {
-                Scaleform.CallFunction("SET_HEADER", currentApp.Name);
-                if (currentApp.OverrideBack)
+                SetMobilePhoneScale(0);
+            }
+
+            if (CurrentApp != null)
+            {
+                if (CurrentApp.OverrideBack)
                     IsBackOverriddenByApp = true;
                 else
                     IsBackOverriddenByApp = false;
@@ -133,72 +281,159 @@ namespace FreeRoamProject.Client.FREEROAM.Phone
             int renderId = 0;
             GetMobilePhoneRenderId(ref renderId);
             SetTextRenderId(renderId);
-            DrawScaleformMovie(Scaleform.Handle, 0.0998f, 0.1775f, 0.1983f, 0.364f, 255, 255, 255, 255, 0);
+            SetScriptGfxDrawOrder(4);
+            DrawScaleformMovie(Scaleform.Handle, 0.1f, 0.179f, 0.2f, 0.356f, 255, 255, 255, 255, 0);
             SetTextRenderId(1);
-
         }
 
-        public async Task RotateAnimation(Vector3 Param0, Vector3 Param1, Vector3 Param2, Vector3 Param3, float fParam4, bool bParam5)
+        public void StartApp(string app, bool callscreen = false)
         {
-            iLocal18 = GetGameTimer();
-            while (RotatePhone(Param0, Param1, Param2, Param3, fParam4, bParam5) < 1f)
-                await BaseScript.Delay(0);
-        }
-
-        private float RotatePhone(Vector3 Param0, Vector3 Param1, Vector3 Param2, Vector3 Param3, float fParam4, bool bParam5)
-        {
-            float fVar1;
-            float fVar2;
-            float fVar3;
-            // if something then 25f
-            // if something then new rotation Vector3 = -45f, 45f, 25f
-            Vector3 Var0 = Vector3.Zero;
-            Vector3 pos = Vector3.Zero;
-            Vector3 rot = Vector3.Zero;
-            GetMobilePhonePosition(ref Var0);
-            fVar1 = func_17(((GetGameTimer() - iLocal18) / fParam4), 0f, 1f); // or / 25f
-            if (fVar1 < 1f)
+            CurrentApp?.Kill();
+            if (!callscreen)
             {
-                fVar2 = fVar1;
-                if (bParam5)
+                if (app == "MAINMENU")
                 {
-                    fVar2 = (fVar2 - 1f);
-                    fVar3 = 0.670158f;
-                    fVar2 = (((fVar2 * fVar2) * (((fVar3 + 1f) * fVar2) + fVar3)) + 1f);
+                    CurrentApp = MainMenu;
                 }
-                else
+                else if (apps.Exists(x => x.Name == app))
                 {
-                    fVar2 = Sin((fVar1 * 90f));
+                    CurrentApp = apps.FirstOrDefault(x => x.Name == app);
                 }
-                pos = func_16(Param0, Param1, fVar2);
-                rot = func_16(Param2, Param3, fVar2);
             }
             else
             {
-                pos = Param1;
-                rot = Param3;
+                CurrentApp = Callscreen;
+            }
+
+            CurrentApp.Initialize(this);
+        }
+
+        public async Task RotateAnimation(PhoneAnimation animation)
+        {
+            if (GetFollowPedCamViewMode() == 4)
+            {
+                return;
+            }
+            switch (animation)
+            {
+                case PhoneAnimation.CLOSE:
+                    {
+                        while (RotatePhone(PositionOpen, PositionHidden, RotationVertical, RotationVertical, 350f, false) < 1f)
+                        {
+                            await BaseScript.Delay(0);
+                        }
+                        iLocal18 = 0;
+                    }
+                    break;
+                case PhoneAnimation.OPEN:
+                    {
+                        while (RotatePhone(PositionHidden, PositionOpen, RotationVertical, RotationVertical, 350f, false) < 1f)
+                        {
+                            await BaseScript.Delay(0);
+                        }
+                        iLocal18 = 0;
+                    }
+                    break;
+                case PhoneAnimation.OPEN_ROTATION:
+                    {
+                        while (RotatePhone(PositionOpen, PositionOpen, RotationHidden, RotationVertical, 450f, false) < 1f)
+                        {
+                            await BaseScript.Delay(0);
+                            SetMobilePhoneScale(500f);
+                        }
+                        iLocal18 = 0;
+                    }
+                    break;
+                case PhoneAnimation.SET_HORIZONTAL:
+                    {
+                        float val = 0;
+                        while (val < 1f)
+                        {
+                            await BaseScript.Delay(0);
+                            val = RotatePhone(PositionOpen, PositionLean, RotationVertical, RotationHorizontal, 350f, false);
+                            SetMobilePhoneScale(500f + (75f * val));
+                        }
+                        iLocal18 = 0;
+                    }
+                    break;
+                case PhoneAnimation.SET_VERTICAL:
+                    {
+                        float val = 0;
+                        while (val < 1f)
+                        {
+                            await BaseScript.Delay(0);
+                            val = RotatePhone(PositionLean, PositionOpen, RotationHorizontal, RotationVertical, 350f, false);
+                            SetMobilePhoneScale(500f + (75f * (1f - val)));
+                        }
+                        iLocal18 = 0;
+                    }
+                    break;
+            }
+        }
+
+        // taken from cellphone_flashhand.c and appemail.c
+        private float RotatePhone(Vector3 startPosition, Vector3 endPosition, Vector3 startRotation, Vector3 endRotation, float step, bool someBool)
+        {
+            float fVar1;
+            float fVar2;
+            if (iLocal18 == 0)
+            {
+                iLocal18 = GetGameTimer();
+            }
+            fVar1 = GetValueInRange(ToFloat(GetGameTimer() - iLocal18) / step, 0f, 1f);
+            Vector3 pos;
+            Vector3 rot;
+            if (fVar1 < 1f)
+            {
+                fVar2 = fVar1;
+                if (someBool)
+                {
+                    fVar2--;
+                    float fVar3 = 0.670158f;
+                    fVar2 = (fVar2 * fVar2 * (((fVar3 + 1f) * fVar2) + fVar3)) + 1f;
+                }
+                else
+                {
+                    fVar2 = Sin(fVar1 * 90f);
+                }
+                pos = func_16(startPosition, endPosition, fVar2);
+                rot = func_16(startRotation, endRotation, fVar2);
+            }
+            else
+            {
+                pos = endPosition;
+                rot = endRotation;
             }
             SetMobilePhonePosition(pos.X, pos.Y, pos.Z);
             SetMobilePhoneRotation(rot.X, rot.Y, rot.Z, 0);
             return fVar1;
         }
 
-        private Vector3 func_16(Vector3 Param0, Vector3 Param1, float fParam2)//Position - 0x288D
+        private Vector3 func_16(Vector3 Param0, Vector3 Param1, float fParam2)
         {
-            return Param0 + Param1 - Param0 * new Vector3(fParam2, fParam2, fParam2);
+            return Param0 + ((Param1 - Param0) * new Vector3(fParam2));
         }
 
 
-        private float func_17(float fParam0, float fParam1, float fParam2)//Position - 0x28A7
+        internal float GetValueInRange(float fParam0, float fParam1, float fParam2)
         {
-            if (fParam0 > fParam2)
-                return fParam2;
-            else if (fParam0 < fParam1)
-                return fParam1;
-            return fParam0;
+            return fParam0 > fParam2 ? fParam2 : fParam0 < fParam1 ? fParam1 : fParam0;
         }
 
-
+        private string getDay(int day)
+        {
+            return day switch
+            {
+                0 => GetLabelText("CELL_920"),
+                1 => GetLabelText("CELL_921"),
+                2 => GetLabelText("CELL_922"),
+                3 => GetLabelText("CELL_923"),
+                4 => GetLabelText("CELL_924"),
+                5 => GetLabelText("CELL_925"),
+                6 => GetLabelText("CELL_926"),
+                _ => GetLabelText("CELL_206"),
+            };
+        }
 
     }
 }

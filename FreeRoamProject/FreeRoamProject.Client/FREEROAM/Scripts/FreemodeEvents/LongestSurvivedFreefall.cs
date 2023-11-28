@@ -64,11 +64,11 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
 
                 if (!IsStarted)
                 {
-                    Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_PREPARE").Replace("~a~", Name), 50);
+                    Notifications.ShowHelpNotification(Game.GetGXTEntry("AMCH_PREPARE").Replace("~a~", Name));
                 }
                 else
                 {
-                    Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_13"), 50);
+                    Notifications.ShowHelpNotification(Game.GetGXTEntry("AMCH_13"));
                     if (Cache.PlayerCache.MyClient.Ped.IsInFlyingVehicle || !Cache.PlayerCache.MyClient.Ped.Weapons.HasWeapon(WeaponHash.Parachute))
                         Cache.PlayerCache.MyClient.Ped.Weapons.Give(WeaponHash.Parachute, 1, true, true);
                     float x = 0f;

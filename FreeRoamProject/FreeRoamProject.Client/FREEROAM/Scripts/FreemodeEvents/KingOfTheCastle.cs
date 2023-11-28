@@ -66,19 +66,19 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
                 if (!IsActive) { return; }
 
                 if (!IsStarted)
-                    Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_PREPARE").Replace("~a~", Name), 50);
+                    Notifications.ShowHelpNotification(Game.GetGXTEntry("AMCH_PREPARE").Replace("~a~", Name));
                 else
                 {
                     if (!Cache.PlayerCache.MyClient.Position.IsInRangeOf(CurrentPlace, 50f))
                     {
-                        Screen.ShowSubtitle(Game.GetGXTEntry("KOTC_1STHELP"), 50);
+                        Notifications.ShowHelpNotification(Game.GetGXTEntry("KOTC_1STHELP"));
                         if (CurrentAttempt > 0) CurrentAttempt = 0;
                     }
                     else
                     {
                         if (PlayerCache.MyClient.Player.WantedLevel > 0)
                             Environment.EnableWanted(false);
-                        Screen.ShowSubtitle(Game.GetGXTEntry("KOTC_KINGOB1"), 1);
+                        Notifications.ShowHelpNotification(Game.GetGXTEntry("KOTC_KINGOB1"));
                         if (GetNetworkTime() - _timer > 1000)
                         {
                             _timer = GetNetworkTime();

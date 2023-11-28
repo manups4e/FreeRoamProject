@@ -39,10 +39,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
                 if (!IsActive) { return; }
 
                 if (!IsStarted)
-                    Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_PREPLAND").Replace("~a~", Name), 50);
+                    Notifications.ShowHelpNotification(Game.GetGXTEntry("AMCH_PREPLAND").Replace("~a~", Name));
                 else
                 {
-                    Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_BIG_8"), 50);
+                    Notifications.ShowHelpNotification(Game.GetGXTEntry("AMCH_BIG_8"));
                     int x = 0;
                     int p = 0;
                     API.StatGetInt(unchecked((uint)PlayerStats.NumberNearMisses), ref x, -1);

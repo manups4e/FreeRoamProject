@@ -29,10 +29,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
                 if (!IsActive) { return; }
 
                 if (!IsStarted)
-                    Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_PREPLAND").Replace("~a~", Name), 50);
+                    Notifications.ShowHelpNotification(Game.GetGXTEntry("AMCH_PREPLAND").Replace("~a~", Name));
                 else
                 {
-                    Screen.ShowSubtitle(Game.GetGXTEntry("AMCH_20"), 50);
+                    Notifications.ShowHelpNotification(Game.GetGXTEntry("AMCH_20"));
                     // add a check for only players to be killed? in gta:o should be peds too right?
                     if (VehicleChecker.IsInVehicle)
                     {

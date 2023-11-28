@@ -94,13 +94,46 @@ namespace FreeRoamProject.Shared.Core.Character
         public List<Message> Messages { get; set; } = new List<Message>();
         public List<Contact> Contacts = new List<Contact>()
         {
-            new Contact("Law Enforcements", "CHAR_CALL911", false, 0),
-            new Contact("Medic", "CHAR_CALL911", false, 0),
-            new Contact("Mechanic", "CHAR_LS_CUSTOMS", false, 0),
-            new Contact("Taxi", "CHAR_TAXI", false, 0),
-            new Contact("Car Dealer", "CHAR_CARSITE2", false, 0),
-            new Contact("Real Estate Agent", "CHAR_PEGASUS_DELIVERY", false, 0),
-            new Contact("Reporter", "CHAR_LIFEINVADER", false, 0),
+            new("CELL_165", "CELL_MP_329", false),
+            //new("Assistant", assistant, false), player needs to choose the assistant sex //       "CELL_P_ASSIST": "Assistant", "CELL_P_ASSISTF": "Assistant",
+            new("CELL_447", "CELL_MP_329", false),
+            new("CELL_BRYONY_N", "CELL_BRYONY_P", false),
+            new("CELL_YACHT", "CELL_YACHTPIC", false),
+            new("CELL_114", "CELL_314", false),
+            new("CELL_115", "CELL_315", false),
+            new("CELL_150", "CELL_350", false),
+            new("CELL_163", "CELL_394", false),
+            new("CELL_131", "CELL_331", false),
+            new("CELL_NCLUBE_N", "CELL_NCLUBE_PIC", false),
+            new("CELL_FRANKLIN_N", "CELL_FRANKLIN_P", false),
+            new("CELL_418", "CELL_318", false),
+            new("CELL_E_228", "CELL_MP_349", false),
+            new("CELL_IMANI_N", "CELL_IMANI_P", false),
+            new("CELL_117", "CELL_317", false),
+            new("CELL_112", "CELL_312", false),
+            new("CELL_128", "CELL_328", false),
+            new("CELL_NCLUBL_N", "CELL_NCLUBL_PIC", false),
+            new("CELL_111", "CELL_311", false), // lester
+            new("CELL_CH_BIK2", "CELL_BIK2_PIC", false),
+            new("CELL_CH_BIK1", "CELL_BIK1_PIC", false),
+            new("CELL_144", "CELL_344", false),
+            new("CELL_180", "CELL_E_309", false),
+            new("CELL_E_221", "CELL_MP_344", false),
+            new("CELL_E_275", "CELL_MP_348", false),
+            new("CELL_CAS_MAN_N", "CELL_CAS_MAN_P", false),
+            new("CELL_413", "CELL_313", false),
+            new("CELL_BBPAIGE_N", "CELL_BBPAIGE_P", false),
+            new("CELL_PAVEL_N", "CELL_PAVEL_P", false),
+            new("CELL_419", "CELL_319", false),
+            new("CELL_E_247", "CELL_E_347", false),
+            new("CELL_429", "CELL_329", false),
+            new("CELL_416", "CELL_316", false),
+            new("CELL_SES_N", "CELL_SES_P", false),
+            new("CELL_427", "CELL_327", false),
+            new("CELL_NCLUBT_N", "CELL_NCLUBT_PIC", false),
+            new("CELL_WENDY_N", "CELL_WENDY_P", false),
+            new("CELL_YOHAN_N", "CELL_YOHAN_P", false),
+            new("CELL_CELEB_N", "CELL_CELEB_P", false)
         };
 
         public PhoneData() { }
@@ -134,20 +167,17 @@ namespace FreeRoamProject.Shared.Core.Character
 
     public class Contact
     {
-        public int Player { get; set; }
         public string Name { get; set; }
         public string Icon { get; set; }
         public bool IsPlayer { get; set; }
-        public int PlayerIndex { get; set; }
+        public int ServerID { get; set; }
 
-
-        public Contact(string name, string icon, bool isPlayer, int playerIndex = 0, int player = 0)
+        public Contact(string name, string icon, bool isPlayer, int serverId = 0)
         {
             this.Name = name;
             this.Icon = icon;
             this.IsPlayer = isPlayer;
-            this.PlayerIndex = playerIndex;
-            this.Player = player;
+            this.ServerID = serverId;
         }
     }
 

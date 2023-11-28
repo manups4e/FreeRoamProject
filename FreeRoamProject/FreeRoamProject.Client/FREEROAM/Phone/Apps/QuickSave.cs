@@ -6,28 +6,22 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
 {
     class QuickSave : App
     {
-        public QuickSave(Phone phone) : base(Game.GetGXTEntry("CELL_32"), 43, phone)
+        public QuickSave(Phone phone) : base(Game.GetGXTEntry("CELL_32"), IconLabels.SAVE, phone, 0)
         {
 
         }
 
         private static bool FirstTick = true;
-        public override async Task Tick()
-        {
-            if (FirstTick)
-            {
-                FirstTick = false;
-                await BaseScript.Delay(100);
-                return;
-            }
-        }
+        public override async Task TickVisual() { }
+        public override async Task TickControls() { }
+
 
         public override async void Initialize(Phone phone)
         {
             Phone = phone;
             Screen.LoadingPrompt.Show(spinnerType: LoadingSpinnerType.SocialClubSaving);
             EventDispatcher.Send("tlg:Save_FreeRoamChar");
-            PhoneMainClient.StartApp("Main");
+            Phone.StartApp("MAINMENU");
             await BaseScript.Delay(3000);
             Screen.LoadingPrompt.Hide();
         }
