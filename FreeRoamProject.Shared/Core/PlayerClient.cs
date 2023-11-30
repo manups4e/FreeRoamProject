@@ -158,7 +158,7 @@ namespace FreeRoamProject.Shared
             {
                 Id = id;
                 Handle = Convert.ToInt32(owner.Handle);
-                User = Server.ServerMain.Instance.Clients.FirstOrDefault(x => x.Handle == Handle)?.User;
+                User = Server.ServerMain.Instance.Clients.Values.FirstOrDefault(x => x.Handle == Handle)?.User;
                 Status = new(Player);
                 //ClientStateBags = new(Player);
             }
@@ -170,7 +170,7 @@ namespace FreeRoamProject.Shared
         public PlayerClient(int handle)
         {
             Handle = handle;
-            User = Server.ServerMain.Instance.Clients.FirstOrDefault(x => x.Handle == Handle)?.User;
+            User = Server.ServerMain.Instance.Clients.Values.FirstOrDefault(x => x.Handle == Handle)?.User;
             Id = User != null ? User.PlayerID : Snowflake.Empty;
             Status = new(Player);
         }

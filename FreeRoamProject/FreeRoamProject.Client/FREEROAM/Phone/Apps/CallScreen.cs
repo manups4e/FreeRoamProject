@@ -6,11 +6,18 @@ using System.Threading.Tasks;
 
 namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
 {
+    public enum CallState
+    {
+        DIALING,
+        INCOMING_CALL,
+        CONNECTED,
+        BUSY
+    }
     internal class CallScreen : App
     {
         int Time;
         Contact contact;
-        internal int CallStatus = 0;
+        internal CallState CallStatus = 0;
         bool answered = false;
         internal int SoundId;
         bool callEnded = false;
@@ -49,7 +56,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             EndTextCommandScaleformString();
             switch (CallStatus)
             {
-                case 0:
+                case CallState.DIALING:
                     BeginTextCommandScaleformString("CELL_211");
                     EndTextCommandScaleformString();
                     if (Game.GameTime - Time > 1700 && Game.GameTime - Time < 1750)
@@ -61,28 +68,30 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                     {
                         if (contact.IsPlayer)
                         {
-                            CallStatus = 3;
+                            // check if player connected else status = BUSY
+                            CallStatus = CallState.BUSY;
                             Time = GetGameTimer();
                         }
                         else
                         {
+                            CallStatus = CallState.CONNECTED;
                             await CheckIfBotCanAnswerAndRespond();
                             Game.PlaySound("Hang_Up", "Phone_SoundSet_Default");
                             Phone.ClosePhone();
                         }
                     }
                     break;
-                case 1:
+                case CallState.INCOMING_CALL:
                     BeginTextCommandScaleformString("CELL_217");
                     EndTextCommandScaleformString();
                     //
                     break;
-                case 2:
+                case CallState.CONNECTED:
                     BeginTextCommandScaleformString("CELL_219");
                     EndTextCommandScaleformString();
                     //Remote_Engaged
                     break;
-                case 3:
+                case CallState.BUSY:
                     BeginTextCommandScaleformString("CELL_220");
                     EndTextCommandScaleformString();
                     if (GetGameTimer() - Time < 5)
@@ -96,12 +105,31 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
         }
         public override async Task TickControls()
         {
+            if (Input.IsControlJustPressed(Control.PhoneSelect))
+            {
+                if (CallStatus == CallState.INCOMING_CALL)
+                {
+                    if (CallStatus == CallState.INCOMING_CALL)
+                    {
+                        // accepted.
+                        if (IsPedRingtonePlaying(PlayerPedId()))
+                            StopPedRingtone(PlayerPedId());
+                        Phone.SetSoftKeys(1, SoftKeys.BLANK, false, SColor.White);
+                        Phone.SetSoftKeys(2, SoftKeys.BLANK, false, SColor.White);
+                        Phone.SetSoftKeys(3, SoftKeys.HANGUP, true, SColor.HUD_Red);
+                        CallStatus = CallState.CONNECTED;
+                    }
+                }
+            }
             if (Input.IsControlJustPressed(Control.PhoneCancel))
             {
+                if (IsPedRingtonePlaying(PlayerPedId()))
+                    StopPedRingtone(PlayerPedId());
                 Game.PlaySound("Hang_Up", "Phone_SoundSet_Default");
                 Kill();
                 Phone.ClosePhone();
             }
+            //TODO: in case of scripted call.. restart random timers for scripted chars to call the player
         }
 
         public void SetContact(Contact c)
@@ -114,9 +142,18 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             Phone = phone;
             ClientMain.Instance.AddTick(TickVisual);
             ClientMain.Instance.AddTick(TickControls);
-            Phone.SetSoftKeys(1, SoftKeys.BLANK, false, SColor.White);
-            Phone.SetSoftKeys(2, SoftKeys.BLANK, false, SColor.White);
-            Phone.SetSoftKeys(3, SoftKeys.BACK, true, SColor.HUD_Red);
+            if (CallStatus == CallState.INCOMING_CALL)
+            {
+                Phone.SetSoftKeys(1, SoftKeys.BLANK, false, SColor.White);
+                Phone.SetSoftKeys(2, SoftKeys.CALL, true, SColor.HUD_Green);
+                Phone.SetSoftKeys(3, SoftKeys.BLANK, false, SColor.White);
+            }
+            else if (CallStatus == CallState.CONNECTED)
+            {
+                Phone.SetSoftKeys(1, SoftKeys.BLANK, false, SColor.White);
+                Phone.SetSoftKeys(2, SoftKeys.BLANK, false, SColor.White);
+                Phone.SetSoftKeys(3, SoftKeys.HANGUP, true, SColor.HUD_Red);
+            }
             Time = GetGameTimer();
             TaskUseMobilePhone(PlayerPedId(), 1);
             callEnded = false;

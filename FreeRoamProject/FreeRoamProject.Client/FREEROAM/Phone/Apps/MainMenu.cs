@@ -1,6 +1,7 @@
 ﻿using FreeRoamProject.Client.FREEROAM.Phone.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
@@ -9,7 +10,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
     {
         public int SelectedItem { get; set; } = 4;
         public List<App> AllApps { get; set; }
-
+        int smsUnreadCount = 0;
         public MainMenu(Phone phone, List<App> allApps) : base("HOMEMENU", 0, phone, PhoneView.HOMEMENU, false)
         {
             AllApps = allApps;
@@ -22,27 +23,35 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             try
             {
                 if (Phone.Scaleform == null || AllApps == null) return;
-                if (SelectedItem < AllApps.Count && !String.IsNullOrEmpty(AllApps[SelectedItem].Name))
-                {
-                    Title = AllApps[SelectedItem].Name;
-                }
-
                 for (int i = 0; i < 9; i++)
                 {
-                    int thirdParam = 3;
+                    int icon = 3;
+                    int unread = 0;
+                    string name = "";
                     if (i < AllApps.Count)
                     {
                         if (AllApps[i].Icon != 0)
                         {
-                            thirdParam = (int)AllApps[i].Icon;
+                            icon = (int)AllApps[i].Icon;
                         }
+                        if (AllApps[i].Name == "CELL_1")
+                        {
+                            unread = AllApps[i].UnreadCount = Phone.getCurrentCharPhone().Messages.Count(x => x.Readed == Shared.Core.Character.MessageState.UNREAD_SMS);
+                        }
+                        name = AllApps[i].Name;
                     }
-                    Phone.Scaleform.CallFunction("SET_DATA_SLOT", (int)CurrentView, i, thirdParam);
+                    BeginScaleformMovieMethod(Phone.Scaleform.Handle, "SET_DATA_SLOT");
+                    ScaleformMovieMethodAddParamInt((int)CurrentView);
+                    ScaleformMovieMethodAddParamInt(i);
+                    ScaleformMovieMethodAddParamInt(icon);
+                    ScaleformMovieMethodAddParamInt(unread);
+                    BeginTextCommandScaleformString(name);
+                    EndTextCommandScaleformString();
+                    EndScaleformMovieMethod();
                 }
 
                 Phone.Scaleform.CallFunction("DISPLAY_VIEW", (int)CurrentView, SelectedItem);
                 // the error shouldn't happen if we have all the apps!!!! anyway..
-                Phone.Scaleform.CallFunction("SET_HEADER", SelectedItem >= AllApps.Count ? "" : AllApps[SelectedItem].Title);
             }
             catch (Exception e)
             {
@@ -94,7 +103,6 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
         public override void Initialize(Phone phone)
         {
             Phone = phone;
-            SetMobilePhoneRotation(-90.0f, 0.0f, 0.0f, 0);
             SetPhoneLean(false);
             Phone.SetSoftKeys(1, SoftKeys.BLANK, false, SColor.HUD_Freemode);
             Phone.SetSoftKeys(2, SoftKeys.SELECT, true, SColor.HUD_Freemode);

@@ -9,6 +9,12 @@ using System.Threading.Tasks;
 
 namespace FreeRoamProject.Client.Core.Utility
 {
+    internal enum ProfanityCheck
+    {
+        UNKNOWN = -1,
+        SAFE,
+        PROFANE
+    }
     internal enum PedTypes
     {
         Player0,  // michael  
@@ -750,6 +756,24 @@ namespace FreeRoamProject.Client.Core.Utility
         {
             AddTextEntry("FMtlg_KEY_TIP1", windowTitle);
             DisplayOnscreenKeyboard(1, "FMtlg_KEY_TIP1", null, defaultText, null, null, null, maxLength + 1);
+        }
+
+        public static async Task<ProfanityCheck> CheckStringHasProfanity(string input)
+        {
+            if (!string.IsNullOrWhiteSpace(input))
+            {
+                int token = 0;
+                if (ScProfanityCheckString(input, ref token))
+                {
+                    while (!ScProfanityGetCheckIsValid(token) || ScProfanityGetCheckIsPending(token) != 0) await BaseScript.Delay(0);
+                    if (ScProfanityGetCheckIsPending(token) == 0)
+                    {
+                        return (ProfanityCheck)ScProfanityGetStringStatus(token);
+                    }
+                }
+                return ProfanityCheck.UNKNOWN;
+            }
+            return ProfanityCheck.UNKNOWN;
         }
 
         public async static Task FadeEntityAsync(this Entity entity, bool fadeIn, bool fadeNormal = false, bool slow = true)

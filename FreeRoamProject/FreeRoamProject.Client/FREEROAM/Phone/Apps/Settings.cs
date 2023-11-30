@@ -1,5 +1,6 @@
 ﻿using FreeRoamProject.Client.FREEROAM.Phone.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
@@ -7,194 +8,276 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
     public class Settings : App
     {
         private int SelectedItem { get; set; } = 0;
+        private int LastSelection = 0;
 
         private SettingsSubMenu CurrentSubMenu = null;
-
         private static bool FirstTick = true;
         private static string numero;
 
+        // bg
+        // invite sound
+        // ringtone
+        // snapmatic 
+        // theme
+        // vibrate
 
         private static List<SettingsSubMenuItem> Themes = new List<SettingsSubMenuItem>
         {
-            new SettingsSubMenuItem(GetLabelText("CELL_820"), 1, 23),
-            new SettingsSubMenuItem(GetLabelText("CELL_821"), 2, 23),
-            new SettingsSubMenuItem(GetLabelText("CELL_822"), 3, 23),
-            new SettingsSubMenuItem(GetLabelText("CELL_823"), 4, 23),
-            new SettingsSubMenuItem(GetLabelText("CELL_824"), 5, 23),
-            new SettingsSubMenuItem(GetLabelText("CELL_825"), 6, 23),
-            new SettingsSubMenuItem(GetLabelText("CELL_826"), 7, 23),
+            new SettingsSubMenuItem("CELL_820", 1, IconLabels.SETTINGS_1),
+            new SettingsSubMenuItem("CELL_821", 2, IconLabels.SETTINGS_1),
+            new SettingsSubMenuItem("CELL_822", 3, IconLabels.SETTINGS_1),
+            new SettingsSubMenuItem("CELL_823", 4, IconLabels.SETTINGS_1),
+            new SettingsSubMenuItem("CELL_824", 5, IconLabels.SETTINGS_1),
+            new SettingsSubMenuItem("CELL_825", 6, IconLabels.SETTINGS_1),
+            new SettingsSubMenuItem("CELL_826", 7, IconLabels.SETTINGS_1),
         };
 
         private static List<SettingsSubMenuItem> Wallpapers = new List<SettingsSubMenuItem>
         {
-            new SettingsSubMenuItem(GetLabelText("CELL_844"), 4, 23),
-            new SettingsSubMenuItem(GetLabelText("CELL_845"), 5, 23),
-            new SettingsSubMenuItem(GetLabelText("CELL_846"), 6, 23),
-            new SettingsSubMenuItem(GetLabelText("CELL_847"), 7, 23),
-            new SettingsSubMenuItem(GetLabelText("CELL_848"), 8, 23),
-            new SettingsSubMenuItem(GetLabelText("CELL_849"), 9, 23),
-            new SettingsSubMenuItem(GetLabelText("CELL_850"), 10, 23),
-            new SettingsSubMenuItem(GetLabelText("CELL_851"), 11, 23),
-            new SettingsSubMenuItem(GetLabelText("CELL_852"), 12, 23),
-            new SettingsSubMenuItem(GetLabelText("CELL_853"), 13, 23),
-            new SettingsSubMenuItem(GetLabelText("CELL_854"), 14, 23),
-            new SettingsSubMenuItem(GetLabelText("CELL_855"), 15, 23),
-            new SettingsSubMenuItem(GetLabelText("CELL_856"), 16, 23),
-            new SettingsSubMenuItem(GetLabelText("CELL_857"), 17, 23)
+            new SettingsSubMenuItem("CELL_840", 0, IconLabels.SETTINGS_1),
+            new SettingsSubMenuItem("CELL_844", 4, IconLabels.SETTINGS_1),
+            new SettingsSubMenuItem("CELL_845", 5, IconLabels.SETTINGS_1),
+            new SettingsSubMenuItem("CELL_846", 6, IconLabels.SETTINGS_1),
+            new SettingsSubMenuItem("CELL_847", 7, IconLabels.SETTINGS_1),
+            new SettingsSubMenuItem("CELL_848", 8, IconLabels.SETTINGS_1),
+            new SettingsSubMenuItem("CELL_849", 9, IconLabels.SETTINGS_1),
+            new SettingsSubMenuItem("CELL_850", 10, IconLabels.SETTINGS_1),
+            new SettingsSubMenuItem("CELL_851", 11, IconLabels.SETTINGS_1),
+            new SettingsSubMenuItem("CELL_852", 12, IconLabels.SETTINGS_1),
+            new SettingsSubMenuItem("CELL_853", 13, IconLabels.SETTINGS_1),
+            new SettingsSubMenuItem("CELL_854", 14, IconLabels.SETTINGS_1),
+            new SettingsSubMenuItem("CELL_855", 15, IconLabels.SETTINGS_1),
+            new SettingsSubMenuItem("CELL_856", 16, IconLabels.SETTINGS_1),
+            new SettingsSubMenuItem("CELL_857", 17, IconLabels.SETTINGS_1)
         };
 
-        private static List<SettingsSubMenuItem> Standby = new List<SettingsSubMenuItem>
+        private static List<SettingsSubMenuItem> Profile = new List<SettingsSubMenuItem>
         {
-            new SettingsSubMenuItem(GetLabelText("CELL_800"), 1, 25),
-            new SettingsSubMenuItem(GetLabelText("CELL_801"), 2, 26)
+            new SettingsSubMenuItem("CELL_800", 0, IconLabels.PROFILE),
+            new SettingsSubMenuItem("CELL_801", 1, IconLabels.SLEEP_MODE),
+        };
+
+        private static List<SettingsSubMenuItem> InviteSound = new List<SettingsSubMenuItem>
+        {
+            new SettingsSubMenuItem("CELL_831", 1, IconLabels.VIBRATE_OFF),
+            new SettingsSubMenuItem("CELL_830", 2, IconLabels.VIBRATE_ON)
         };
 
         private static List<SettingsSubMenuItem> Ringtone = new List<SettingsSubMenuItem>
         {
-            new SettingsSubMenuItem(GetLabelText("CELL_810"), 1, 18),
-            new SettingsSubMenuItem(GetLabelText("CELL_811"), 2, 18),
-            new SettingsSubMenuItem(GetLabelText("CELL_812"), 3, 18),
-            new SettingsSubMenuItem(GetLabelText("CELL_813"), 4, 22),
+            new SettingsSubMenuItem("CELL_810", 1, IconLabels.RINGTONE), // PHONE_GENERIC_RING_01
+            new SettingsSubMenuItem("CELL_811", 2, IconLabels.RINGTONE), // PHONE_GENERIC_RING_02
+            new SettingsSubMenuItem("CELL_812", 3, IconLabels.RINGTONE), // PHONE_GENERIC_RING_03
+            new SettingsSubMenuItem("CELL_813", 4, IconLabels.SILENT), // Silent Ringtone Dummy (yeah.. that's the name itself)
         };
 
         private static List<SettingsSubMenuItem> Vibrate = new List<SettingsSubMenuItem>
         {
-            new SettingsSubMenuItem(GetLabelText("CELL_831"), 1, 21),
-            new SettingsSubMenuItem(GetLabelText("CELL_830"), 2, 20)
+            new SettingsSubMenuItem("CELL_831", 1, IconLabels.VIBRATE_OFF),
+            new SettingsSubMenuItem("CELL_830", 2, IconLabels.VIBRATE_ON)
         };
-
-        private static List<SettingsSubMenuItem> Personale = new List<SettingsSubMenuItem>
+        private static List<SettingsSubMenuItem> Snapmatic = new List<SettingsSubMenuItem>
         {
-            new SettingsSubMenuItem( "Numero di Telefono", 0, 21),
-            new SettingsSubMenuItem(numero, 1, 21),
-
-
+            new SettingsSubMenuItem("CELL_704", 1, IconLabels.TEXT_TONE),
+            new SettingsSubMenuItem("CELL_703", 2, IconLabels.TEXT_TONE)
         };
 
-        private List<SettingsSubMenu> SubMenus = new List<SettingsSubMenu>
+        private List<SettingsSubMenu> SettingsItems = new List<SettingsSubMenu>
         {
-            new SettingsSubMenu(GetLabelText("CELL_740"), 23, Wallpapers),
-            new SettingsSubMenu(GetLabelText("CELL_700"), 25, Standby),
-            new SettingsSubMenu(GetLabelText("CELL_710"), 18, Ringtone),
-            new SettingsSubMenu(GetLabelText("CELL_720"), 23, Themes),
-            new SettingsSubMenu(GetLabelText("CELL_730"), 20, Vibrate),
+            new SettingsSubMenu("CELL_740", IconLabels.SETTINGS_1, Wallpapers),
+            new SettingsSubMenu("CELL_700", IconLabels.PROFILE, Profile),
+            new SettingsSubMenu("CELL_705", IconLabels.RINGTONE, InviteSound),
+            new SettingsSubMenu("CELL_710", IconLabels.RINGTONE, Ringtone),
+            new SettingsSubMenu("CELL_701", IconLabels.TEXT_TONE, Snapmatic),
+            new SettingsSubMenu("CELL_720", IconLabels.SETTINGS_1, Themes),
+            new SettingsSubMenu("CELL_730", IconLabels.VIBRATE_OFF, Vibrate),
         };
 
-        public Settings(Phone phone) : base(GetLabelText("CELL_16"), IconLabels.SETTINGS_2, phone, PhoneView.SETTINGS)
+        public Settings(Phone phone) : base("CELL_16", IconLabels.SETTINGS_2, phone, PhoneView.SETTINGS)
         {
             numero = PlayerCache.MyPlayer.Name;
-
-            /*
-             settings order:
-
-            background
-            invite sound
-            ringtone
-            snapmatic
-            themevibrate
-             */
         }
 
         public override async Task TickVisual()
         {
             Phone.Scaleform.CallFunction("SET_DATA_SLOT_EMPTY", (int)CurrentView);
-
-            string appName = GetLabelText("CELL_16");
             if (CurrentSubMenu != null)
             {
                 foreach (SettingsSubMenuItem item in CurrentSubMenu.Items)
                 {
-                    Phone.Scaleform.CallFunction("SET_DATA_SLOT", (int)CurrentView, CurrentSubMenu.Items.IndexOf(item), item.Icon, item.Name);
-                }
-                if (SelectedItem < CurrentSubMenu.Items.Count)
-                {
-                    if (!string.IsNullOrEmpty(CurrentSubMenu.Name))
-                    {
-                        appName = CurrentSubMenu.Name;
-                    }
+                    BeginScaleformMovieMethod(Phone.Scaleform.Handle, "SET_DATA_SLOT");
+                    ScaleformMovieMethodAddParamInt((int)CurrentView);
+                    ScaleformMovieMethodAddParamInt(CurrentSubMenu.Items.IndexOf(item));
+                    ScaleformMovieMethodAddParamInt((int)item.Icon);
+                    BeginTextCommandScaleformString(item.Name);
+                    EndTextCommandScaleformString();
+                    EndScaleformMovieMethod();
                 }
             }
             else
             {
-                foreach (SettingsSubMenu subMenu in SubMenus)
+                foreach (SettingsSubMenu subMenu in SettingsItems)
                 {
-                    Phone.Scaleform.CallFunction("SET_DATA_SLOT", (int)CurrentView, SubMenus.IndexOf(subMenu), subMenu.Icon, subMenu.Name);
+                    BeginScaleformMovieMethod(Phone.Scaleform.Handle, "SET_DATA_SLOT");
+                    ScaleformMovieMethodAddParamInt((int)CurrentView);
+                    ScaleformMovieMethodAddParamInt(SettingsItems.IndexOf(subMenu));
+                    ScaleformMovieMethodAddParamInt((int)subMenu.Icon);
+                    BeginTextCommandScaleformString(subMenu.Name);
+                    EndTextCommandScaleformString();
+                    EndScaleformMovieMethod();
                 }
             }
 
-            Phone.Scaleform.CallFunction("SET_HEADER", appName);
-            Phone.Scaleform.CallFunction("DISPLAY_VIEW", (int)CurrentView, SelectedItem);
+            BeginScaleformMovieMethod(Phone.Scaleform.Handle, "SET_HEADER");
+            BeginTextCommandScaleformString(Name);
+            EndTextCommandScaleformString();
+            EndScaleformMovieMethod();
             await Task.FromResult(0);
         }
         public override async Task TickControls()
         {
             if (Input.IsControlJustPressed(Control.PhoneUp))
             {
-                MoveFinger(1);
-                if (SelectedItem > 0)
-                    SelectedItem -= 1;
-                else if (CurrentSubMenu != null)
-                    SelectedItem = CurrentSubMenu.Items.Count - 1;
-                else
-                    SelectedItem = SubMenus.Count - 1;
+                CellCamMoveFinger(1);
+                Phone.Scaleform.CallFunction("SET_INPUT_EVENT", 1);
+                SelectedItem = await Phone.Scaleform.CallFunctionReturnValueInt("GET_CURRENT_SELECTION");
                 Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
+                if (CurrentSubMenu != null)
+                {
+                    if (CurrentSubMenu.Name == "CELL_710")
+                    {
+                        StopPedRingtone(PlayerPedId());
+                        await BaseScript.Delay(100);
+                        string ringtone = CurrentSubMenu.Items[SelectedItem].Id switch
+                        {
+                            1 or 2 or 3 => "PHONE_GENERIC_RING_0" + (SelectedItem + 1),
+                            _ => "Silent Ringtone Dummy",
+                        };
+                        PlayPedRingtone(ringtone, PlayerPedId(), true);
+                    }
+                }
             }
             else if (Input.IsControlJustPressed(Control.PhoneDown))
             {
-                MoveFinger(2);
-                if (CurrentSubMenu == null)
-                {
-                    if (SelectedItem < SubMenus.Count - 1)
-                        SelectedItem += 1;
-                    else
-                        SelectedItem = 0;
-                }
-                else
-                {
-                    if (SelectedItem < CurrentSubMenu.Items.Count - 1)
-                        SelectedItem += 1;
-                    else
-                        SelectedItem = 0;
-                }
+                CellCamMoveFinger(2);
+                Phone.Scaleform.CallFunction("SET_INPUT_EVENT", 3);
+                SelectedItem = await Phone.Scaleform.CallFunctionReturnValueInt("GET_CURRENT_SELECTION");
                 Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
+                if (CurrentSubMenu != null)
+                {
+                    if (CurrentSubMenu.Name == "CELL_710")
+                    {
+                        StopPedRingtone(PlayerPedId());
+                        await BaseScript.Delay(100);
+                        string ringtone = CurrentSubMenu.Items[SelectedItem].Id switch
+                        {
+                            1 or 2 or 3 => "PHONE_GENERIC_RING_0" + (SelectedItem + 1),
+                            _ => "Silent Ringtone Dummy",
+                        };
+                        PlayPedRingtone(ringtone, PlayerPedId(), true);
+                    }
+                }
             }
             else if (Input.IsControlJustPressed(Control.FrontendAccept))
             {
-                MoveFinger(5);
+                CellCamMoveFinger(5);
                 if (CurrentSubMenu == null)
                 {
-                    CurrentSubMenu = SubMenus[SelectedItem];
+                    LastSelection = SelectedItem;
+                    CurrentSubMenu = SettingsItems[SelectedItem];
                     SelectedItem = 0;
+                    switch (LastSelection)
+                    {
+                        case 0:
+                            Name = Wallpapers.FirstOrDefault(x => x.Id == Phone.getCurrentCharPhone().Wallpaper).Name;//Wallpapers
+                            Wallpapers.ForEach(x => x.Icon = IconLabels.SETTINGS_1);
+                            Wallpapers.FirstOrDefault(x => x.Id == Phone.getCurrentCharPhone().Wallpaper).Icon = IconLabels.TICKED;
+                            break;
+                        case 1:
+                            Name = Profile.FirstOrDefault(x => x.Id == Phone.getCurrentCharPhone().SleepMode).Name;//Standby
+                            break;
+                        case 2:
+                            Name = InviteSound.FirstOrDefault(x => x.Id == Phone.getCurrentCharPhone().InviteSound).Name;//InviteSound
+                            break;
+                        case 3:
+                            Name = Ringtone.FirstOrDefault(x => x.Id == Phone.getCurrentCharPhone().Ringtone).Name;//Ringtone
+                            Ringtone[0].Icon = IconLabels.RINGTONE;
+                            Ringtone[1].Icon = IconLabels.RINGTONE;
+                            Ringtone[2].Icon = IconLabels.RINGTONE;
+                            Ringtone[3].Icon = IconLabels.SILENT;
+                            Ringtone.FirstOrDefault(x => x.Id == Phone.getCurrentCharPhone().Ringtone).Icon = IconLabels.TICKED;
+                            break;
+                        case 4:
+                            Name = Snapmatic.FirstOrDefault(x => x.Id == Phone.getCurrentCharPhone().QuickLaunch).Name;//Snapmatic
+                            Snapmatic.ForEach(x => x.Icon = IconLabels.TEXT_TONE);
+                            Snapmatic.FirstOrDefault(x => x.Id == Phone.getCurrentCharPhone().QuickLaunch).Icon = IconLabels.TICKED;
+                            break;
+                        case 5:
+                            Name = Themes.FirstOrDefault(x => x.Id == Phone.getCurrentCharPhone().Theme).Name;//Themes
+                            Themes.ForEach(x => x.Icon = IconLabels.SETTINGS_1);
+                            Themes.FirstOrDefault(x => x.Id == Phone.getCurrentCharPhone().Theme).Icon = IconLabels.TICKED;
+                            break;
+                        case 6:
+                            Name = Vibrate.FirstOrDefault(x => x.Id == Phone.getCurrentCharPhone().Vibration).Name;//Vibrate
+                            break;
+                    }
                 }
                 else
                 {
-                    if (CurrentSubMenu.Name == GetLabelText("CELL_720"))
-                        SetTheme(CurrentSubMenu.Items[SelectedItem].Id);
-                    else if (CurrentSubMenu.Name == GetLabelText("CELL_740"))
-                        SetWallpaper(CurrentSubMenu.Items[SelectedItem].Id);
-                    else if (CurrentSubMenu.Name == GetLabelText("CELL_700"))
-                        SetSleep(CurrentSubMenu.Items[SelectedItem].Id);
-                    else if (CurrentSubMenu.Name == GetLabelText("CELL_710"))
-                        SetRingtone(CurrentSubMenu.Items[SelectedItem].Id);
-                    else if (CurrentSubMenu.Name == GetLabelText("CELL_730"))
-                        SetVibration(CurrentSubMenu.Items[SelectedItem].Id);
+                    switch (LastSelection)
+                    {
+                        case 0:
+                            SetWallpaper(CurrentSubMenu.Items[SelectedItem].Id);
+                            Name = Wallpapers.FirstOrDefault(x => x.Id == Phone.getCurrentCharPhone().Wallpaper).Name;//Wallpapers
+                            break;
+                        case 1:
+                            SetSleep(CurrentSubMenu.Items[SelectedItem].Id);
+                            Name = Profile.FirstOrDefault(x => x.Id == Phone.getCurrentCharPhone().SleepMode).Name;//Standby
+                            break;
+                        case 2:
+                            // TODO: INVITE
+                            Name = InviteSound.FirstOrDefault(x => x.Id == Phone.getCurrentCharPhone().InviteSound).Name;//InviteSound
+                            SetInviteSound(CurrentSubMenu.Items[SelectedItem].Id);
+                            break;
+                        case 3:
+                            SetRingtone(CurrentSubMenu.Items[SelectedItem].Id);
+                            Name = Ringtone.FirstOrDefault(x => x.Id == Phone.getCurrentCharPhone().Ringtone).Name;//Ringtone
+                            break;
+                        case 4:
+                            // TODO: SNAPMATIC 
+                            Name = Snapmatic.FirstOrDefault(x => x.Id == Phone.getCurrentCharPhone().QuickLaunch).Name;//Snapmatic
+                            SetSnapmatic(CurrentSubMenu.Items[SelectedItem].Id);
+                            break;
+                        case 5:
+                            SetTheme(CurrentSubMenu.Items[SelectedItem].Id);
+                            Name = Themes.FirstOrDefault(x => x.Id == Phone.getCurrentCharPhone().Theme).Name;//Themes
+                            break;
+                        case 6:
+                            SetVibration(CurrentSubMenu.Items[SelectedItem].Id);
+                            Name = Vibrate.FirstOrDefault(x => x.Id == Phone.getCurrentCharPhone().Vibration).Name;//Vibrate
+                            break;
+                    }
                 }
                 Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
             }
             else if (Input.IsControlJustPressed(Control.FrontendCancel))
             {
-                MoveFinger(5);
+                CellCamMoveFinger(5);
                 if (CurrentSubMenu != null)
                 {
+                    if (IsPedRingtonePlaying(PlayerPedId()))
+                        StopPedRingtone(PlayerPedId());
                     CurrentSubMenu = null;
-                    SelectedItem = 0;
+                    SelectedItem = LastSelection;
+                    Name = "CELL_16";
                 }
                 else
                 {
                     Phone.StartApp("MAINMENU");
                 }
-                Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
+                Game.PlaySound("Menu_Back", "Phone_SoundSet_Default");
             }
+            Phone.Scaleform.CallFunction("DISPLAY_VIEW", (int)CurrentView, SelectedItem);
         }
 
         public override void Initialize(Phone phone)
@@ -216,44 +299,65 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
         public void SetTheme(int themeId)
         {
             Phone.getCurrentCharPhone().Theme = themeId;
-            BaseScript.TriggerServerEvent("tlg:phone:updatePhones", "Theme", themeId);
+            Themes.ForEach(x => x.Icon = IconLabels.SETTINGS_1);
+            Themes.FirstOrDefault(x => x.Id == Phone.getCurrentCharPhone().Theme).Icon = IconLabels.TICKED;
+            EventDispatcher.Send("tlg:phone:setSettings", "theme", themeId);
         }
 
         public void SetWallpaper(int wallpaperId)
         {
             Phone.getCurrentCharPhone().Wallpaper = wallpaperId;
-            BaseScript.TriggerServerEvent("tlg:phone:updatePhones", "wall", wallpaperId);
+            Wallpapers.ForEach(x => x.Icon = IconLabels.SETTINGS_1);
+            Wallpapers.FirstOrDefault(x => x.Id == wallpaperId).Icon = IconLabels.TICKED;
+            EventDispatcher.Send("tlg:phone:setSettings", "wall", wallpaperId);
+        }
+        public void SetInviteSound(int inviteId)
+        {
+            Phone.getCurrentCharPhone().InviteSound = inviteId;
+            EventDispatcher.Send("tlg:phone:setSettings", "invite", inviteId);
         }
 
         public void SetRingtone(int ringtoneId)
         {
             Phone.getCurrentCharPhone().Ringtone = ringtoneId;
-            BaseScript.TriggerServerEvent("tlg:phone:updatePhones", "ring", ringtoneId);
+            Ringtone[0].Icon = IconLabels.RINGTONE;
+            Ringtone[1].Icon = IconLabels.RINGTONE;
+            Ringtone[2].Icon = IconLabels.RINGTONE;
+            Ringtone[3].Icon = IconLabels.SILENT;
+            Ringtone.FirstOrDefault(x => x.Id == Phone.getCurrentCharPhone().Ringtone).Icon = IconLabels.TICKED;
+            EventDispatcher.Send("tlg:phone:setSettings", "ring", ringtoneId);
         }
+
         public void SetVibration(int Vibe)
         {
             if (Vibe == 2)
                 SetPadShake(0, 300, 200);
             Phone.getCurrentCharPhone().Vibration = Vibe;
-            BaseScript.TriggerServerEvent("tlg:phone:updatePhones", "vibe", Vibe);
+            EventDispatcher.Send("tlg:phone:setSettings", "vibe", Vibe);
+        }
+
+        public void SetSnapmatic(int snapmaticId)
+        {
+            Phone.getCurrentCharPhone().QuickLaunch = snapmaticId;
+            EventDispatcher.Send("tlg:phone:setSettings", "snapmatic", snapmaticId);
         }
 
         public void SetSleep(int toggle)
         {
             if (toggle == 2)
-                Notifications.ShowHelpNotification("Attenzione! Se attivi la modalità StandBy non riceverai chiamate da nessuno!~n~Potrai ricevere di nuovo chiamate quando riattiverai la modalità normale");
+                Notifications.ShowHelpNotification(Game.GetGXTEntry("CELL_7050"));
             Phone.getCurrentCharPhone().SleepMode = toggle;
-            BaseScript.TriggerServerEvent("tlg:phone:updatePhones", "sleep", toggle);
+            EventDispatcher.Send("tlg:phone:setSettings", "sleep", toggle);
         }
     }
 
     public class SettingsSubMenu
     {
         public string Name { get; private set; }
-        public int Icon { get; private set; }
+        public IconLabels Icon { get; private set; }
         public List<SettingsSubMenuItem> Items { get; set; }
 
-        public SettingsSubMenu(string label, int icon, List<SettingsSubMenuItem> items = null)
+        public SettingsSubMenu(string label, IconLabels icon, List<SettingsSubMenuItem> items = null)
         {
             Name = label;
             Icon = icon;
@@ -265,9 +369,9 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
     {
         public string Name { get; set; }
         public int Id { get; set; }
-        public int Icon { get; set; }
+        public IconLabels Icon { get; set; }
 
-        public SettingsSubMenuItem(string name, int id, int icon)
+        public SettingsSubMenuItem(string name, int id, IconLabels icon)
         {
             Name = name;
             Id = id;

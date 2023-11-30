@@ -91,7 +91,9 @@ namespace FreeRoamProject.Shared.Core.Character
         public int Ringtone { get; set; } = 0;
         public int SleepMode { get; set; } = 0;
         public int Vibration { get; set; } = 1;
-        public List<Message> Messages { get; set; } = new List<Message>();
+        public int InviteSound { get; set; } = 1;
+        public int QuickLaunch { get; set; } = 0;
+        public List<Message> Messages = new List<Message>();
         public List<Contact> Contacts = new List<Contact>()
         {
             new("CELL_165", "CELL_MP_329", false),
@@ -145,22 +147,45 @@ namespace FreeRoamProject.Shared.Core.Character
             Wallpaper = (int)result["WallPaper"].Value;
             // TODO: LOAD CONTACTS AND MESSAGES
         }
+
+        internal string GetPlayerRingtoneString()
+        {
+            return Ringtone switch
+            {
+                1 or 2 or 3 => "PHONE_GENERIC_RING_0" + Ringtone,
+                _ => "Silent Ringtone Dummy",
+            };
+        }
     }
 
-
+    public enum DeliveryType
+    {
+        Received = 0,
+        Sent
+    }
+    public enum MessageState
+    {
+        NONE = 0,
+        UNREAD_SMS = 33,
+        READ_SMS = 34
+    }
     public class Message
     {
         public string From { get; set; }
-        public string Title { get; set; }
         public string TxtMessage { get; set; }
-        public DateTime Data { get; set; }
+        public DateTime Date { get; set; }
+        public MessageState Readed { get; set; }
+        public DeliveryType DeliveryType { get; set; }
+        public string Mugshot { get; set; } = "CHAR_HUMANDEFAULT";
 
-        public Message(string _from, string _title, string _message, DateTime _data)
+        public Message() { }
+        public Message(string _from, string _message, DateTime _data, MessageState readed, DeliveryType state)
         {
             this.From = _from;
-            this.Title = _title;
             this.TxtMessage = _message;
-            this.Data = _data;
+            this.Date = _data;
+            Readed = readed;
+            DeliveryType = state;
         }
     }
 
@@ -171,7 +196,7 @@ namespace FreeRoamProject.Shared.Core.Character
         public string Icon { get; set; }
         public bool IsPlayer { get; set; }
         public int ServerID { get; set; }
-
+        public Contact() { }
         public Contact(string name, string icon, bool isPlayer, int serverId = 0)
         {
             this.Name = name;

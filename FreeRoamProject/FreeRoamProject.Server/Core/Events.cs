@@ -116,7 +116,7 @@ namespace FreeRoamProject.Server.Core
 
         public static async Task<BasePlayerShared> GetUserFromHandle(int handle)
         {
-            PlayerClient pla = ServerMain.Instance.Clients.FirstOrDefault(x => handle == x.Handle);
+            PlayerClient pla = ServerMain.Instance.Clients.Values.FirstOrDefault(x => handle == x.Handle);
             if (pla != null)
             {
                 return pla.User.basePlayer;

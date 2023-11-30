@@ -6,7 +6,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
 {
     class QuickSave : App
     {
-        public QuickSave(Phone phone) : base(Game.GetGXTEntry("CELL_32"), IconLabels.SAVE, phone, 0)
+        public QuickSave(Phone phone) : base("CELL_32", IconLabels.SAVE, phone, 0)
         {
 
         }

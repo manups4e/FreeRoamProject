@@ -7,13 +7,16 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
     {
         private int SelectedItem { get; set; } = 0;
 
-        public Emails(Phone phone) : base(Game.GetGXTEntry("CELL_5"), IconLabels.EMAIL, phone, PhoneView.EMAIL_LIST)
+        public Emails(Phone phone) : base("CELL_5", IconLabels.EMAIL, phone, PhoneView.EMAIL_LIST)
         {
         }
 
         public override async Task TickVisual()
         {
-            Phone.Scaleform.CallFunction("SET_HEADER", Title);
+            BeginScaleformMovieMethod(Phone.Scaleform.Handle, "SET_HEADER");
+            BeginTextCommandScaleformString(Title);
+            EndTextCommandScaleformString();
+            EndScaleformMovieMethod();
             Phone.Scaleform.CallFunction("SET_DATA_SLOT_EMPTY", (int)CurrentView);
             Phone.Scaleform.CallFunction("DISPLAY_VIEW", (int)CurrentView, SelectedItem);
 

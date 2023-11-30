@@ -22,9 +22,9 @@ namespace FreeRoamProject.Server.Core
                 await BaseScript.Delay(10000);
                 if (ServerMain.Instance.Clients.Count > 0)
                 {
-                    foreach (PlayerClient user in from user in ServerMain.Instance.Clients where user.User is not null where (user.Status is not null && user.Status.PlayerStates.Spawned) select user)
+                    foreach (System.Collections.Generic.KeyValuePair<int, PlayerClient> user in from user in ServerMain.Instance.Clients where user.Value.User is not null where (user.Value.Status is not null && user.Value.Status.PlayerStates.Spawned) select user)
                     {
-                        user.User.playTime += 10;
+                        user.Value.User.playTime += 10;
                     }
                 }
                 TimeSpan hour = DateTime.UtcNow - Now;

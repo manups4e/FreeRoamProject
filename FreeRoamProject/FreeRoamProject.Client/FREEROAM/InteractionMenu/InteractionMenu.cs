@@ -2060,7 +2060,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
         public static async Task Enable()
         {
-            if (MenuHandler.IsAnyMenuOpen) return;
+            if (MenuHandler.IsAnyMenuOpen || UpdateOnscreenKeyboard() == 0) return;
             if (!IsUsingKeyboard(2))
             {
                 if (Input.IsControlPressed(Control.InteractionMenu))

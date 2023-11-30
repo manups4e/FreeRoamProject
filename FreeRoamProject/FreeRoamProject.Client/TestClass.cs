@@ -20,37 +20,6 @@ namespace FreeRoamProject.Client
             //ClientMain.Logger.Debug(IplManager.Global.ToJson());
             if (Input.IsControlJustPressed(Control.Detonate, PadCheck.Keyboard, ControlModifier.Shift) && !MenuHandler.IsAnyMenuOpen)
             {
-
-                UIMenu test = new UIMenu("test", "test");
-                test.OnIndexChange += (menu, index) =>
-                {
-                    ShopPed.PedComponentData data = (ShopPed.PedComponentData)menu.MenuItems[index].ItemData;
-                    int name = GetHashNameForProp(PlayerPedId(), 0, data.Drawable, data.Texture);
-                    SetPedPropIndex(PlayerPedId(), 0, data.Drawable, data.Texture, false);
-                    ClientMain.Logger.Debug(data.ToJson());
-                };
-                for (int i = 0; i < GetNumberOfPedPropDrawableVariations(PlayerPedId(), 0); i++)
-                {
-                    for (int j = 0; j < GetNumberOfPedPropTextureVariations(PlayerPedId(), 0, i); j++)
-                    {
-                        int iVar1 = GetHashNameForProp(PlayerPedId(), 0, i, j);
-
-                        if (DoesShopPedApparelHaveRestrictionTag((uint)iVar1, Functions.HashUint("HELMET"), 1))
-                        {
-                            ShopPed.PedComponentData Var11 = ShopPed.GetShopPedProp((uint)iVar1);
-                            int iVar6 = GetShopPedApparelVariantPropCount((uint)iVar1);
-                            UIMenuItem item = new(Var11.Label);
-                            item.SetRightLabel("Drawable:" + Var11.Drawable);
-                            item.ItemData = Var11;
-                            test.AddItem(item);
-                            if (iVar6 > 0)
-                            {
-                                item.SetRightBadge(BadgeIcon.STAR);
-                            }
-                        }
-                    }
-                }
-                test.Visible = true;
                 //await PlayerCache.InitPlayer();
 
                 //PlayerCache.MyPlayer.Ped.Weapons.Give(WeaponHash.Pistol, 100, true, true);

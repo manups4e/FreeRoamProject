@@ -21,7 +21,7 @@ namespace FreeRoamProject.Server
         public static ServerConfiguration Settings { get; set; }
         public ExportDictionary GetExports => Exports;
         public PlayerList GetPlayers => Players;
-        public List<PlayerClient> Clients = new();
+        public Dictionary<int, PlayerClient> Clients = new();
         //public static Configurazione Impostazioni { get; set; }
         public static bool Debug { get; set; }
         public Request WebRequest { get; set; }

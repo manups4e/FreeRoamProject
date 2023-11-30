@@ -277,17 +277,17 @@ namespace FreeRoamProject.Server.Core
 
         public static List<PlayerClient> GetClosestClients(PlayerClient client, float radius)
         {
-            return ServerMain.Instance.Clients.Where(x => Vector3.Distance(x.Ped.Position, client.Ped.Position) <= radius).ToList();
+            return ServerMain.Instance.Clients.Values.Where(x => Vector3.Distance(x.Ped.Position, client.Ped.Position) <= radius).ToList();
         }
 
         public static List<PlayerClient> GetClosestClients(Ped client, float radius)
         {
-            return ServerMain.Instance.Clients.Where(x => Vector3.Distance(x.Ped.Position, client.Position) <= radius).ToList();
+            return ServerMain.Instance.Clients.Values.Where(x => Vector3.Distance(x.Ped.Position, client.Position) <= radius).ToList();
         }
 
         public static List<PlayerClient> GetClosestClients(Player client, float radius)
         {
-            return ServerMain.Instance.Clients.Where(x => Vector3.Distance(x.Ped.Position, client.Character.Position) <= radius).ToList();
+            return ServerMain.Instance.Clients.Values.Where(x => Vector3.Distance(x.Ped.Position, client.Character.Position) <= radius).ToList();
         }
 
         public static bool IsPlayerAndHasPermission(int player, UserGroup level)
@@ -325,18 +325,18 @@ namespace FreeRoamProject.Server.Core
         public static double DateTime2TimeStamp(DateTime dateTime) { return (TimeZoneInfo.ConvertTimeToUtc(dateTime) - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds; }
 
         public static User GetUserFromPlayerId(string id)
-            => ServerMain.Instance.Clients.SingleOrDefault(x => id == x.Handle.ToString())?.User;
+            => ServerMain.Instance.Clients.Values.SingleOrDefault(x => id == x.Handle.ToString())?.User;
 
         public static User GetUserFromPlayerId(int id)
-            => ServerMain.Instance.Clients.SingleOrDefault(x => id == x.Handle)?.User;
+            => ServerMain.Instance.Clients.Values.SingleOrDefault(x => id == x.Handle)?.User;
 
         public static PlayerClient GetClientFromPlayerId(int id)
-            => ServerMain.Instance.Clients.SingleOrDefault(x => id == x.Handle);
+            => ServerMain.Instance.Clients.Values.SingleOrDefault(x => id == x.Handle);
 
         public static PlayerClient GetClientFromPlayerId(string id)
-            => ServerMain.Instance.Clients.SingleOrDefault(x => id == x.Handle.ToString());
+            => ServerMain.Instance.Clients.Values.SingleOrDefault(x => id == x.Handle.ToString());
 
         public static User GetCurrentChar(this Player player)
-            => ServerMain.Instance.Clients.SingleOrDefault(x => player.Handle == x.Handle.ToString()).User;
+            => ServerMain.Instance.Clients.Values.SingleOrDefault(x => player.Handle == x.Handle.ToString()).User;
     }
 }

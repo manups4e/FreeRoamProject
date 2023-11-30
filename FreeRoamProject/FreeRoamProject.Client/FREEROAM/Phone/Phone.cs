@@ -7,6 +7,29 @@ using System.Threading.Tasks;
 
 namespace FreeRoamProject.Client.FREEROAM.Phone
 {
+    public enum MessageStyle
+    {
+        MESSAGE_TYPE_HEIST = 1,
+        MESSAGE_TYPE_ADVERSARY = 2,
+        LOW_FLOW = 3,
+        STYLE_G1 = 4,
+        STYLE_G2 = 5,
+        STYLE_G3 = 6,
+        STYLE_G4 = 7,
+        STYLE_G5 = 8,
+        STYLE_G6 = 9,
+        STYLE_G7 = 10,
+        STYLE_G8 = 11,
+        STYLE_G9 = 12,
+        STYLE_G10 = 13,
+        STYLE_G11 = 14,
+        STYLE_G12 = 15,
+        STYLE_G13 = 16,
+        STYLE_G14 = 17,
+        STYLE_G15 = 18,
+        STYLE_TECH_GREEN = 19
+    }
+
     public enum ModelPhone : int
     {
         Micheal = 0,
@@ -219,6 +242,29 @@ namespace FreeRoamProject.Client.FREEROAM.Phone
             await RotateAnimation(PhoneAnimation.OPEN);
         }
 
+        public async void OpenPhoneIncominCall(Contact contact)
+        {
+            ScriptIsMovingMobilePhoneOffscreen(false);
+            Scaleform = new ScaleformWideScreen("CELLPHONE_IFRUIT");
+            while (!Scaleform.IsLoaded) await BaseScript.Delay(0);
+            Game.PlaySound("Pull_Out", "Phone_SoundSet_Default");
+            CreateMobilePhone((int)ModelPhone.Micheal);
+            ClientMain.Instance.AddTick(Screen);
+            ((CallScreen)Callscreen).SetContact(contact);
+            StartApp("callscreen", true);
+            string ringtone = getCurrentCharPhone().GetPlayerRingtoneString();
+            PlayPedRingtone(ringtone, PlayerPedId(), true);
+            ((CallScreen)Callscreen).CallStatus = CallState.INCOMING_CALL;
+            PlayerCache.MyPed.SetConfigFlag(242, false);
+            PlayerCache.MyPed.SetConfigFlag(243, false);
+            PlayerCache.MyPed.SetConfigFlag(244, true);
+            Visible = true;
+            SetMobilePhonePosition(PositionHidden.X, PositionHidden.Y, PositionHidden.Z);
+            SetMobilePhoneRotation(RotationHidden.X, RotationHidden.Y, RotationHidden.Z, 0);
+            SetMobilePhoneScale(currentScale);
+            await RotateAnimation(PhoneAnimation.OPEN);
+        }
+
         public async void ClosePhone()
         {
             if (!PhoneMainClient.PhoneActive) return;
@@ -226,7 +272,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone
             await RotateAnimation(PhoneAnimation.CLOSE);
             Scaleform.CallFunction("SHUTDOWN_MOVIE");
             ClientMain.Instance.RemoveTick(Screen);
-            if (CurrentApp != null) CurrentApp.Kill();
+            CurrentApp?.Kill();
             apps.ForEach(app => app.Kill());
             Scaleform.Dispose();
             DestroyMobilePhone();
@@ -259,10 +305,10 @@ namespace FreeRoamProject.Client.FREEROAM.Phone
             HideHudComponentThisFrame(9);
 
             Scaleform.CallFunction("SET_TITLEBAR_TIME", World.CurrentDayTime.Hours, World.CurrentDayTime.Minutes, getDay(World.CurrentDayTime.Days));
-            Scaleform.CallFunction("SET_SLEEP_MODE", SleepMode);
-            Scaleform.CallFunction("SET_THEME", 1); // TODO: USE SAVED DATA
-            N_0x83a169eabcdb10a2(PlayerPedId(), 0); // theme -1
-            Scaleform.CallFunction("SET_BACKGROUND_IMAGE", 0); // TODO: USE SAVED DATA
+            Scaleform.CallFunction("SET_SLEEP_MODE", getCurrentCharPhone().SleepMode);
+            Scaleform.CallFunction("SET_THEME", getCurrentCharPhone().Theme); // TODO: USE SAVED DATA
+            N_0x83a169eabcdb10a2(PlayerPedId(), getCurrentCharPhone().Theme - 1); // theme -1
+            Scaleform.CallFunction("SET_BACKGROUND_IMAGE", getCurrentCharPhone().Wallpaper); // TODO: USE SAVED DATA
             Vector3 playerPos = PlayerCache.MyClient.Position.ToVector3;
             Scaleform.CallFunction("SET_SIGNAL_STRENGTH", GetZoneScumminess(GetZoneAtCoords(playerPos.X, playerPos.Y, playerPos.Z)));
 

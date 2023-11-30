@@ -8,9 +8,10 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Models
         public string Title { get; set; }
         public IconLabels Icon { get; set; }
         public PhoneView CurrentView { get; set; }
-        int SelectedItem;
+        internal int SelectedItem;
         public bool OverrideBack { get; set; }
         public Phone Phone { get; set; }
+        internal int UnreadCount;
 
         public App(string name, IconLabels icon, Phone phone, PhoneView view, bool overrideBack = true)
         {

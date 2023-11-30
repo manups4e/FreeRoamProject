@@ -61,22 +61,23 @@ namespace FreeRoamProject.Shared
             Finance = new();
             Gang = new();
             Skin = new();
-            PhoneData = new PhoneData();
+            PhoneData = new();
             Dressing = new();
-            Properties = new(); // to be added
-            Vehicles = new(); // to be added
-            Weapons = new();
+            Properties = []; // to be added
+            Vehicles = []; // to be added
+            Weapons = [];
             Statistics = new();
             Stats = new();
         }
 
-        public FreeRoamChar(ulong id, Finance finance, Gang gang, Skin skin, Dressing dressing, FreeRoamStats statistiche, GameStats savedStates)
+        public FreeRoamChar(ulong id, Finance finance, Gang gang, Skin skin, Dressing dressing, PhoneData phoneData, FreeRoamStats statistiche, GameStats savedStates)
         {
             CharID = id;
             Finance = finance;
             Gang = gang;
             Skin = skin;
             Dressing = dressing;
+            PhoneData = phoneData;
             Weapons = new List<Weapons>();
             Properties = new List<string?>();
             Vehicles = new List<OwnedVehicle>();

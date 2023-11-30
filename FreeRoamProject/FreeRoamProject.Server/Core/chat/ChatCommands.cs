@@ -38,7 +38,8 @@ namespace FreeRoamProject.Server.Core
                     if (ServerMain.Instance.GetPlayers.Count() > 0)
                     {
                         ServerMain.Logger.Info($"Total Players: {ServerMain.Instance.GetPlayers.Count()}.");
-                        foreach (PlayerClient player in ServerMain.Instance.Clients) ServerMain.Logger.Info($"ID:{player.Handle}, {player.Player.Name}, {player.Ped.Position}, License:{player.Player.Identifiers["license2"]}, Ping:{player.Player.Ping}, serverID:{GetPlayerRoutingBucket(player.Handle.ToString())}");
+                        foreach (KeyValuePair<int, PlayerClient> player in ServerMain.Instance.Clients)
+                            ServerMain.Logger.Info($"ID:{player.Key}, {player.Value.Player.Name}, {player.Value.Ped.Position}, License:{player.Value.Player.Identifiers["license2"]}, Ping:{player.Value.Player.Ping}, serverID:{GetPlayerRoutingBucket(player.Value.Handle.ToString())}");
                     }
                     else
                         ServerMain.Logger.Warning("No players in the server");
@@ -73,8 +74,8 @@ namespace FreeRoamProject.Server.Core
             string bytes = GetResourceKvpString($"freeroam:player_{sender.User.Identifiers.License}:char_model");
             DeleteResourceKvpNoSync($"freeroam:player_{sender.User.Identifiers.License}:char_model");
             */
-            string bytes = GetResourceKvpString($"freeroam:player_306134422434873346:char_model");
-            DeleteResourceKvpNoSync($"freeroam:player_306134422434873346:char_model");
+            string bytes = GetResourceKvpString($"freeroam:player_{sender.User.Identifiers.License}:char_model");
+            API.DeleteResourceKvpNoSync($"freeroam:player_{sender.User.Identifiers.License}:char_model");
             ServerMain.Logger.Warning($"{bytes.StringToBytes().Length} bytes deleted successfully");
         }
 
@@ -310,14 +311,14 @@ namespace FreeRoamProject.Server.Core
         {
             try
             {
-                foreach (PlayerClient player in ServerMain.Instance.Clients)
+                foreach (KeyValuePair<int, PlayerClient> player in ServerMain.Instance.Clients)
                 {
                     int freer = 0;
-                    if (player.Status.PlayerStates.Spawned)
+                    if (player.Value.Status.PlayerStates.Spawned)
                     {
-                        player.TriggerSubsystemEvent("tlg:freeroam:showLoading", 4, "Synchronization", 5000);
-                        FreeRoamEvents.SaveCharacter(player);
-                        ServerMain.Logger.Info($"Saved character freeroam owned by '{player.Player.Name}' - {player.User.Identifiers.License}");
+                        player.Value.TriggerSubsystemEvent("tlg:freeroam:showLoading", 4, "Synchronization", 5000);
+                        FreeRoamEvents.SaveCharacter(player.Value);
+                        ServerMain.Logger.Info($"Saved character freeroam owned by '{player.Value.Player.Name}' - {player.Value.User.Identifiers.License}");
                         freer++;
                     }
                     FlushResourceKvp();
