@@ -58,9 +58,9 @@ namespace FreeRoamProject.Server.Core.PlayerJoining
                 {
                     if (!ServerMain.Debug)
                     {
-                        if (ServerMain.Instance.Clients.Any(x => source.Identifiers["license"] == x.Identifiers.License))
+                        if (ServerMain.Instance.Clients.Values.Any(x => source.Identifiers["license"] == x.Identifiers.License))
                         {
-                            deferrals.done($"Last Galaxy Shield 2.0\nWe're sorry.. but it appears that you are using a license that is already in use among online players.\n" + $"You - Lic.: {source.Identifiers["license"].Replace(source.Identifiers["license "].Substring(20), "")}...,\n" + $"other player - Lic.: {ServerMain.Instance.Clients.FirstOrDefault(x => source.Identifiers["license"] == x.Identifiers.License).Identifiers.License.Replace(ServerMain.Instance.Clients.FirstOrDefault(x => source.Identifiers["license"] == x.Identifiers.License).Identifiers.License.Substring(20), "")}..., name: {ServerMain.Instance.Clients.FirstOrDefault(x => source.Identifiers["license"] == x.Identifiers.License).Player.Name}\n" + $"Do a screenshot of this message and contact the server administrators.\nThank you");
+                            deferrals.done($"Last Galaxy Shield 2.0\nWe're sorry.. but it appears that you are using a license that is already in use among online players.\n" + $"You - Lic.: {source.Identifiers["license"].Replace(source.Identifiers["license "].Substring(20), "")}...,\n" + $"other player - Lic.: {ServerMain.Instance.Clients.Values.FirstOrDefault(x => source.Identifiers["license"] == x.Identifiers.License).Identifiers.License.Replace(ServerMain.Instance.Clients.Values.FirstOrDefault(x => source.Identifiers["license"] == x.Identifiers.License).Identifiers.License.Substring(20), "")}..., name: {ServerMain.Instance.Clients.Values.FirstOrDefault(x => source.Identifiers["license"] == x.Identifiers.License).Player.Name}\n" + $"Do a screenshot of this message and contact the server administrators.\nThank you");
                             return;
                         }
                     }
@@ -106,6 +106,7 @@ namespace FreeRoamProject.Server.Core.PlayerJoining
                         }
                     }
                     */
+                    deferrals.done("I'm sorry the server is in development, i can't let you join in the current state :) but stay tuned at discord.gg/KKN7kRT2vM.\n thanks!");
                 }
             }
             catch (Exception e)
@@ -126,7 +127,7 @@ namespace FreeRoamProject.Server.Core.PlayerJoining
                 User user = new(source, basePlayerShared);
                 PlayerClient client = new(user);
                 client.Status.Clear();
-                ServerMain.Instance.Clients.Add(client);
+                ServerMain.Instance.Clients.Add(client.Handle, client);
             }
             catch (Exception e)
             {
@@ -147,7 +148,7 @@ namespace FreeRoamProject.Server.Core.PlayerJoining
                 text = reason;
             try
             {
-                PlayerClient client = ServerMain.Instance.Clients.FirstOrDefault(x => x.Handle.ToString() == player.Handle);
+                PlayerClient client = ServerMain.Instance.Clients.Values.FirstOrDefault(x => x.Handle.ToString() == player.Handle);
                 User ped = client?.User;
 
                 if (ped != null)
@@ -156,7 +157,7 @@ namespace FreeRoamProject.Server.Core.PlayerJoining
                     BucketsHandler.FreeRoam.RemovePlayer(client, reason);
                 }
 
-                ServerMain.Instance.Clients.RemoveAll(x => x.Handle.ToString() == player.Handle);
+                ServerMain.Instance.Clients.Remove(int.Parse(player.Handle));
             }
             catch (Exception e)
             {
