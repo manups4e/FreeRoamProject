@@ -11,7 +11,7 @@
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFramework>net452</TargetFramework>
-	  <LangVersion>latest</LangVersion>
+	  <LangVersion>preview</LangVersion>
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
