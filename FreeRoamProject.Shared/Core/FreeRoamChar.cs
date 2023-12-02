@@ -108,7 +108,7 @@ namespace FreeRoamProject.Shared
         //TODO: IDEA, TO ADD KILLER CONTRACTS LIKE GTA:O
     }
 
-    public class GameStats()
+    public class GameStats
     {
         public int CurrentHoodSetting { get; set; }
         public int IlluminatedClothing { get; set; }
