@@ -284,6 +284,7 @@ namespace FreeRoamProject.Client.Core.Utility
         public static bool IsAnyControlJustPressed() { return Enum.GetValues(typeof(Control)).Cast<Control>().ToList().Any(value => Input.IsControlJustPressed(value)); }
 
         public static bool IsAnyControlPressed() { return Enum.GetValues(typeof(Control)).Cast<Control>().ToList().Any(value => Input.IsControlPressed(value)); }
+        public static bool IsAnyControlJustReleased() { return Enum.GetValues(typeof(Control)).Cast<Control>().ToList().Any(value => Input.IsControlJustReleased(value)); }
 
         public static string GetEntityType(int entityHandle)
         {
@@ -1389,6 +1390,1799 @@ namespace FreeRoamProject.Client.Core.Utility
                 return Game.GetGXTEntry("WT_INVALID");
             }
         }
+
+        #region Vehicles Textures
+        public static KeyValuePair<string, string> GetVehicleTextureAndDict(Vehicle veh)
+        {
+            string txn = GetVehicleTexture(veh.Model.Hash, false);
+            string txd = "MPCarHUD";
+            if (txn == "LCC")
+            {
+                txd = "MPCarHUD2";
+            }
+            if (txn == "Grotti_2")
+            {
+                txd = "MPCarHUD2";
+            }
+            if (txn == "PROGEN")
+            {
+                txd = "MPCarHUD2";
+            }
+            if (txn == "RUNE")
+            {
+                txd = "MPCarHUD2";
+            }
+            if (txn == "VYSSER")
+            {
+                txd = "MPCarHUD3";
+            }
+            if (txn == "maxwell")
+            {
+                txd = "MPCarHUD4";
+            }
+            return new KeyValuePair<string, string>(txd, txn);
+        }
+        private static string GetVehicleTexture(int iParam0, bool bParam1)
+        {
+            if (IsThisModelABoat((uint)iParam0))
+            {
+                return GetBoatTexture(iParam0, bParam1);
+            }
+            if (IsThisModelAPlane((uint)iParam0) || IsThisModelAHeli((uint)iParam0))
+            {
+                return GetAircraftTexture(iParam0, bParam1);
+            }
+            switch (iParam0)
+            {
+                case > 0 when iParam0 == GetHashKey("khamelion"):
+                    return "HIJAK";
+
+                case > 0 when iParam0 == GetHashKey("issi2"):
+                case > 0 when iParam0 == GetHashKey("issi7"):
+                    return "WEENY";
+
+                case > 0 when iParam0 == GetHashKey("elegy2"):
+                case > 0 when iParam0 == GetHashKey("hellion"):
+                    return "ANNIS";
+
+                case > 0 when iParam0 == GetHashKey("romero"):
+                    return "CHARIOT";
+
+                case > 0 when iParam0 == GetHashKey("baller"):
+                case > 0 when iParam0 == GetHashKey("baller2"):
+                case > 0 when iParam0 == GetHashKey("baller3"):
+                case > 0 when iParam0 == GetHashKey("baller4"):
+                case > 0 when iParam0 == GetHashKey("baller5"):
+                case > 0 when iParam0 == GetHashKey("baller6"):
+                    if (bParam1)
+                    {
+                        return "GALLIVAN";
+                    }
+                    else
+                    {
+                        return "GALIVANTER";
+                    }
+
+                case > 0 when iParam0 == GetHashKey("surfer"):
+                case > 0 when iParam0 == GetHashKey("surfer2"):
+                case > 0 when iParam0 == GetHashKey("dune"):
+                case > 0 when iParam0 == GetHashKey("bfinjection"):
+                    return "BF";
+
+                case > 0 when iParam0 == GetHashKey("feltzer2"):
+                case > 0 when iParam0 == GetHashKey("dubsta"):
+                case > 0 when iParam0 == GetHashKey("surano"):
+                case > 0 when iParam0 == GetHashKey("schwarzer"):
+                case > 0 when iParam0 == GetHashKey("schafter2"):
+                case > 0 when iParam0 == GetHashKey("serrano"):
+                case > 0 when iParam0 == GetHashKey("dubsta2"):
+                case > 0 when iParam0 == GetHashKey("feltzer3"):
+                    if (bParam1)
+                    {
+                        return "BENEFAC";
+                    }
+                    else
+                    {
+                        return "BENEFACTOR";
+                    }
+
+                case > 0 when iParam0 == GetHashKey("sentinel"):
+                case > 0 when iParam0 == GetHashKey("sentinel2"):
+                case > 0 when iParam0 == GetHashKey("zion"):
+                case > 0 when iParam0 == GetHashKey("zion2"):
+                case > 0 when iParam0 == GetHashKey("zion3"):
+                case > 0 when iParam0 == GetHashKey("oracle"):
+                case > 0 when iParam0 == GetHashKey("oracle2"):
+                    if (bParam1)
+                    {
+                        return "UBERMACH";
+                    }
+                    else
+                    {
+                        return "UBERMACHT";
+                    }
+
+                case > 0 when iParam0 == GetHashKey("ztype"):
+                case > 0 when iParam0 == GetHashKey("adder"):
+                case > 0 when iParam0 == GetHashKey("thrax"):
+                    return "TRUFFADE";
+
+                case > 0 when iParam0 == GetHashKey("jb700"):
+                case > 0 when iParam0 == GetHashKey("rapidgt"):
+                case > 0 when iParam0 == GetHashKey("rapidgt2"):
+                case > 0 when iParam0 == GetHashKey("exemplar"):
+                case > 0 when iParam0 == GetHashKey("massacro"):
+                case > 0 when iParam0 == GetHashKey("massacro2"):
+                    if (bParam1)
+                    {
+                        return "DEWBAUCH";
+                    }
+                    else
+                    {
+                        return "DEWBAUCHEE";
+                    }
+
+                case > 0 when iParam0 == GetHashKey("tailgater"):
+                case > 0 when iParam0 == GetHashKey("ninef"):
+                case > 0 when iParam0 == GetHashKey("ninef2"):
+                case > 0 when iParam0 == GetHashKey("rocoto"):
+                case > 0 when iParam0 == GetHashKey("drafter"):
+                    return "OBEY";
+
+                case > 0 when iParam0 == GetHashKey("picador"):
+                case > 0 when iParam0 == GetHashKey("surge"):
+                case > 0 when iParam0 == GetHashKey("fugitive"):
+                case > 0 when iParam0 == GetHashKey("marshall"):
+                    return "CHEVAL";
+
+                case > 0 when iParam0 == GetHashKey("mower"):
+                    if (bParam1)
+                    {
+                        return "JACKSHP";
+                    }
+                    else
+                    {
+                        return "JACKSHEEPE";
+                    }
+
+                case > 0 when iParam0 == GetHashKey("tornado"):
+                case > 0 when iParam0 == GetHashKey("tornado2"):
+                case > 0 when iParam0 == GetHashKey("tornado3"):
+                case > 0 when iParam0 == GetHashKey("burrito"):
+                case > 0 when iParam0 == GetHashKey("burrito2"):
+                case > 0 when iParam0 == GetHashKey("premier"):
+                case > 0 when iParam0 == GetHashKey("voodoo2"):
+                case > 0 when iParam0 == GetHashKey("sabregt"):
+                case > 0 when iParam0 == GetHashKey("rancherxl"):
+                case > 0 when iParam0 == GetHashKey("vigero"):
+                case > 0 when iParam0 == GetHashKey("asea"):
+                case > 0 when iParam0 == GetHashKey("asea2"):
+                case > 0 when iParam0 == GetHashKey("granger"):
+                case > 0 when iParam0 == GetHashKey("pranger"):
+                case > 0 when iParam0 == GetHashKey("sheriff"):
+                case > 0 when iParam0 == GetHashKey("sheriff2"):
+                case > 0 when iParam0 == GetHashKey("gburrito"):
+                case > 0 when iParam0 == GetHashKey("gburrito2"):
+                case > 0 when iParam0 == GetHashKey("stalion"):
+                    return "DECLASSE";
+
+                case > 0 when iParam0 == GetHashKey("buccaneer"):
+                case > 0 when iParam0 == GetHashKey("cavalcade"):
+                case > 0 when iParam0 == GetHashKey("cavalcade2"):
+                case > 0 when iParam0 == GetHashKey("emperor"):
+                case > 0 when iParam0 == GetHashKey("emperor2"):
+                case > 0 when iParam0 == GetHashKey("manana"):
+                case > 0 when iParam0 == GetHashKey("primo"):
+                case > 0 when iParam0 == GetHashKey("washington"):
+                case > 0 when iParam0 == GetHashKey("virgo"):
+                    return "ALBANY";
+
+                case > 0 when iParam0 == GetHashKey("banshee"):
+                case > 0 when iParam0 == GetHashKey("bison"):
+                case > 0 when iParam0 == GetHashKey("gresley"):
+                case > 0 when iParam0 == GetHashKey("youga"):
+                case > 0 when iParam0 == GetHashKey("gauntlet"):
+                case > 0 when iParam0 == GetHashKey("buffalo"):
+                case > 0 when iParam0 == GetHashKey("buffalo2"):
+                case > 0 when iParam0 == GetHashKey("ratloader"):
+                case > 0 when iParam0 == GetHashKey("dloader"):
+                case > 0 when iParam0 == GetHashKey("ratloader2"):
+                case > 0 when iParam0 == GetHashKey("rumpo"):
+                case > 0 when iParam0 == GetHashKey("banshee2"):
+                case > 0 when iParam0 == GetHashKey("gauntlet3"):
+                    return "BRAVADO";
+
+                case > 0 when iParam0 == GetHashKey("stinger"):
+                case > 0 when iParam0 == GetHashKey("stingergt"):
+                case > 0 when iParam0 == GetHashKey("cheetah"):
+                case > 0 when iParam0 == GetHashKey("carbonizzare"):
+                    if (bParam1)
+                    {
+                        return "GROTTI";
+                    }
+                    else
+                    {
+                        return "Grotti_2";
+                    }
+
+                case > 0 when iParam0 == GetHashKey("coquette"):
+                case > 0 when iParam0 == GetHashKey("coquette3"):
+                    if (bParam1)
+                    {
+                        return "INVERTO";
+                    }
+                    else
+                    {
+                        return "Invetero";
+                    }
+
+                case > 0 when iParam0 == GetHashKey("radi"):
+                case > 0 when iParam0 == GetHashKey("sadler"):
+                case > 0 when iParam0 == GetHashKey("dominator"):
+                case > 0 when iParam0 == GetHashKey("sandking"):
+                case > 0 when iParam0 == GetHashKey("sandking2"):
+                case > 0 when iParam0 == GetHashKey("police"):
+                case > 0 when iParam0 == GetHashKey("police3"):
+                case > 0 when iParam0 == GetHashKey("policet"):
+                case > 0 when iParam0 == GetHashKey("benson"):
+                case > 0 when iParam0 == GetHashKey("bullet"):
+                case > 0 when iParam0 == GetHashKey("minivan"):
+                case > 0 when iParam0 == GetHashKey("speedo"):
+                case > 0 when iParam0 == GetHashKey("speedo2"):
+                case > 0 when iParam0 == GetHashKey("peyote"):
+                case > 0 when iParam0 == GetHashKey("towtruck"):
+                case > 0 when iParam0 == GetHashKey("towtruck2"):
+                case > 0 when iParam0 == GetHashKey("bobcatxl"):
+                case > 0 when iParam0 == GetHashKey("stanier"):
+                case > 0 when iParam0 == GetHashKey("hotknife"):
+                case > 0 when iParam0 == GetHashKey("slamvan"):
+                case > 0 when iParam0 == GetHashKey("guardian"):
+                case > 0 when iParam0 == GetHashKey("chino"):
+                case > 0 when iParam0 == GetHashKey("caracara2"):
+                    return "VAPID";
+
+                case > 0 when iParam0 == GetHashKey("tiptruck"):
+                case > 0 when iParam0 == GetHashKey("taco"):
+                case > 0 when iParam0 == GetHashKey("utillitruck"):
+                case > 0 when iParam0 == GetHashKey("utillitruck2"):
+                case > 0 when iParam0 == GetHashKey("utillitruck3"):
+                case > 0 when iParam0 == GetHashKey("camper"):
+                case > 0 when iParam0 == GetHashKey("riot"):
+                case > 0 when iParam0 == GetHashKey("tourbus"):
+                case > 0 when iParam0 == GetHashKey("ambulance"):
+                case > 0 when iParam0 == GetHashKey("stockade"):
+                case > 0 when iParam0 == GetHashKey("boxville"):
+                case > 0 when iParam0 == GetHashKey("pony"):
+                    return "BRUTE";
+
+                case > 0 when iParam0 == GetHashKey("prairie"):
+                    return "BOLLOKAN";
+
+                case > 0 when iParam0 == GetHashKey("jackal"):
+                case > 0 when iParam0 == GetHashKey("f620"):
+                case > 0 when iParam0 == GetHashKey("locust"):
+                    return "OCELOT";
+
+                case > 0 when iParam0 == GetHashKey("mesa"):
+                case > 0 when iParam0 == GetHashKey("mesa3"):
+                case > 0 when iParam0 == GetHashKey("bodhi2"):
+                case > 0 when iParam0 == GetHashKey("seminole"):
+                case > 0 when iParam0 == GetHashKey("crusader"):
+                    return "CANIS";
+
+                case > 0 when iParam0 == GetHashKey("entityxf"):
+                    return "OVERFLOD";
+
+                case > 0 when iParam0 == GetHashKey("monroe"):
+                case > 0 when iParam0 == GetHashKey("infernus"):
+                case > 0 when iParam0 == GetHashKey("bati"):
+                case > 0 when iParam0 == GetHashKey("bati2"):
+                case > 0 when iParam0 == GetHashKey("vacca"):
+                case > 0 when iParam0 == GetHashKey("ruffian"):
+                case > 0 when iParam0 == GetHashKey("faggio2"):
+                case > 0 when iParam0 == GetHashKey("osiris"):
+                case > 0 when iParam0 == GetHashKey("zorrusso"):
+                    return "PEGASSI";
+
+                case > 0 when iParam0 == GetHashKey("phoenix"):
+                case > 0 when iParam0 == GetHashKey("ruiner"):
+                case > 0 when iParam0 == GetHashKey("dukes"):
+                case > 0 when iParam0 == GetHashKey("dukes2"):
+                    return "IMPONTE";
+
+                case > 0 when iParam0 == GetHashKey("bjxl"):
+                case > 0 when iParam0 == GetHashKey("rebel"):
+                case > 0 when iParam0 == GetHashKey("rebel2"):
+                case > 0 when iParam0 == GetHashKey("asterope"):
+                case > 0 when iParam0 == GetHashKey("intruder"):
+                case > 0 when iParam0 == GetHashKey("futo"):
+                case > 0 when iParam0 == GetHashKey("sultan"):
+                case > 0 when iParam0 == GetHashKey("dilettante"):
+                case > 0 when iParam0 == GetHashKey("dilettante2"):
+                case > 0 when iParam0 == GetHashKey("kuruma"):
+                case > 0 when iParam0 == GetHashKey("kuruma2"):
+                case > 0 when iParam0 == GetHashKey("sultanrs"):
+                    return "KARIN";
+
+                case > 0 when iParam0 == GetHashKey("penumbra"):
+                case > 0 when iParam0 == GetHashKey("sanchez"):
+                case > 0 when iParam0 == GetHashKey("sanchez2"):
+                case > 0 when iParam0 == GetHashKey("mule"):
+                    return "MAIBATSU";
+
+                case > 0 when iParam0 == GetHashKey("blista"):
+                case > 0 when iParam0 == GetHashKey("blista2"):
+                case > 0 when iParam0 == GetHashKey("blista3"):
+                case > 0 when iParam0 == GetHashKey("double"):
+                case > 0 when iParam0 == GetHashKey("jester"):
+                case > 0 when iParam0 == GetHashKey("jester2"):
+                case > 0 when iParam0 == GetHashKey("enduro"):
+                case > 0 when iParam0 == GetHashKey("vindicator"):
+                case > 0 when iParam0 == GetHashKey("akuma"):
+                    return "DINKA";
+
+                case > 0 when iParam0 == GetHashKey("fq2"):
+                    return "FATHOM";
+
+                case > 0 when iParam0 == GetHashKey("voltic"):
+                case > 0 when iParam0 == GetHashKey("brawler"):
+                    return "COIL";
+            }
+            switch (iParam0)
+            {
+                case > 0 when iParam0 == GetHashKey("felon"):
+                case > 0 when iParam0 == GetHashKey("felon2"):
+                case > 0 when iParam0 == GetHashKey("casco"):
+                case > 0 when iParam0 == GetHashKey("novak"):
+                    if (bParam1)
+                    {
+                        return "LAMPADA";
+                    }
+                    else
+                    {
+                        return "LAMPADATI";
+                    }
+
+                case > 0 when iParam0 == GetHashKey("comet2"):
+                    return "PFISTER";
+
+                case > 0 when iParam0 == GetHashKey("fusilade"):
+                    return "SCHYSTER";
+
+                case > 0 when iParam0 == GetHashKey("stretch"):
+                case > 0 when iParam0 == GetHashKey("regina"):
+                case > 0 when iParam0 == GetHashKey("landstalker"):
+                    if (bParam1)
+                    {
+                        return "DUNDREAR";
+                    }
+                    else
+                    {
+                        return "DUNDREARY";
+                    }
+
+                case > 0 when iParam0 == GetHashKey("handler"):
+                case > 0 when iParam0 == GetHashKey("bulldozer"):
+                case > 0 when iParam0 == GetHashKey("docktug"):
+                case > 0 when iParam0 == GetHashKey("cutter"):
+                case > 0 when iParam0 == GetHashKey("mixer"):
+                case > 0 when iParam0 == GetHashKey("mixer2"):
+                case > 0 when iParam0 == GetHashKey("barracks"):
+                case > 0 when iParam0 == GetHashKey("barracks2"):
+                case > 0 when iParam0 == GetHashKey("biff"):
+                case > 0 when iParam0 == GetHashKey("forklift"):
+                case > 0 when iParam0 == GetHashKey("ripley"):
+                case > 0 when iParam0 == GetHashKey("airtug"):
+                case > 0 when iParam0 == GetHashKey("dump"):
+                case > 0 when iParam0 == GetHashKey("insurgent2"):
+                case > 0 when iParam0 == GetHashKey("insurgent"):
+                    return "HVY";
+
+                case > 0 when iParam0 == GetHashKey("packer"):
+                case > 0 when iParam0 == GetHashKey("flatbed"):
+                case > 0 when iParam0 == GetHashKey("tiptruck2"):
+                case > 0 when iParam0 == GetHashKey("pounder"):
+                case > 0 when iParam0 == GetHashKey("firetruk"):
+                    return "MTL";
+
+                case > 0 when iParam0 == GetHashKey("tractor"):
+                case > 0 when iParam0 == GetHashKey("tractor2"):
+                    return "STANLEY";
+
+                case > 0 when iParam0 == GetHashKey("hauler"):
+                case > 0 when iParam0 == GetHashKey("phantom"):
+                case > 0 when iParam0 == GetHashKey("trash"):
+                    return "JOBUILT";
+
+                case > 0 when iParam0 == GetHashKey("patriot"):
+                    return "MAMMOTH";
+
+                case > 0 when iParam0 == GetHashKey("journey"):
+                case > 0 when iParam0 == GetHashKey("stratum"):
+                    if (bParam1)
+                    {
+                        return "ZIRCONIU";
+                    }
+                    else
+                    {
+                        return "ZIRCONIUM";
+                    }
+
+                case > 0 when iParam0 == GetHashKey("vader"):
+                case > 0 when iParam0 == GetHashKey("pcj"):
+                    return "SHITZU";
+
+                case > 0 when iParam0 == GetHashKey("bagger"):
+                case > 0 when iParam0 == GetHashKey("daemon"):
+                case > 0 when iParam0 == GetHashKey("sovereign"):
+                    if (bParam1)
+                    {
+                        return "WESTERN";
+                    }
+                    else
+                    {
+                        return "WESTERNMOTORCYCLE";
+                    }
+
+                case > 0 when iParam0 == GetHashKey("blazer"):
+                case > 0 when iParam0 == GetHashKey("caddy"):
+                case > 0 when iParam0 == GetHashKey("carbonrs"):
+                case > 0 when iParam0 == GetHashKey("blazer3"):
+                case > 0 when iParam0 == GetHashKey("blazer2"):
+                    return "NAGASAKI";
+
+                case > 0 when iParam0 == GetHashKey("nemesis"):
+                case > 0 when iParam0 == GetHashKey("lectro"):
+                    if (bParam1)
+                    {
+                        return "PRINCIPL";
+                    }
+                    else
+                    {
+                        return "PRINCIPE";
+                    }
+
+                case > 0 when iParam0 == GetHashKey("hexer"):
+                    return "LCC";
+
+                case > 0 when iParam0 == GetHashKey("bmx"):
+                case > 0 when iParam0 == GetHashKey("cruiser"):
+                case > 0 when iParam0 == GetHashKey("scorcher"):
+                    if (!bParam1)
+                    {
+                        return "Ped";
+                    }
+                    return "";
+
+                case > 0 when iParam0 == GetHashKey("tribike"):
+                case > 0 when iParam0 == GetHashKey("tribike2"):
+                case > 0 when iParam0 == GetHashKey("tribike3"):
+                    if (!bParam1)
+                    {
+                        return "TriCycles";
+                    }
+                    return "";
+
+                case > 0 when iParam0 == GetHashKey("cogcabrio"):
+                case > 0 when iParam0 == GetHashKey("superd"):
+                case > 0 when iParam0 == GetHashKey("windsor"):
+                    return "ENUS";
+
+                case > 0 when iParam0 == GetHashKey("habanero"):
+                    if (bParam1)
+                    {
+                        return "EMPEROR";
+                    }
+                    else
+                    {
+                        return "EMPORER";
+                    }
+
+                case > 0 when iParam0 == GetHashKey("ingot"):
+                case > 0 when iParam0 == GetHashKey("nebula"):
+                    return "VULCAR";
+
+                case > 0 when iParam0 == GetHashKey("t20"):
+                    return "PROGEN";
+            }
+            if (iParam0 == GetHashKey("bifta"))
+            {
+                return "BF";
+            }
+            else if (iParam0 == GetHashKey("kalahari"))
+            {
+                return "CANIS";
+            }
+            else if (iParam0 == GetHashKey("paradise"))
+            {
+                return "BRAVADO";
+            }
+            if (iParam0 == GetHashKey("btype"))
+            {
+                return "ALBANY";
+            }
+            if (iParam0 == GetHashKey("zentorno"))
+            {
+                return "PEGASSI";
+            }
+            else if (iParam0 == GetHashKey("jester"))
+            {
+                return "DINKA";
+            }
+            else if (iParam0 == GetHashKey("massacro"))
+            {
+                if (bParam1)
+                {
+                    return "DEWBAUCH";
+                }
+                else
+                {
+                    return "DEWBAUCHEE";
+                }
+            }
+            else if (iParam0 == GetHashKey("turismor"))
+            {
+                if (bParam1)
+                {
+                    return "GROTTI";
+                }
+                else
+                {
+                    return "Grotti_2";
+                }
+            }
+            else if (iParam0 == GetHashKey("huntley"))
+            {
+                return "ENUS";
+            }
+            else if (iParam0 == GetHashKey("alpha"))
+            {
+                return "ALBANY";
+            }
+            else if (iParam0 == GetHashKey("thrust"))
+            {
+                return "DINKA";
+            }
+            else if (iParam0 == GetHashKey("sovereign"))
+            {
+                return "DINKA";
+            }
+            if (iParam0 == GetHashKey("thrust"))
+            {
+                return "DINKA";
+            }
+            if (iParam0 == GetHashKey("blade") || iParam0 == GetHashKey("monster"))
+            {
+                return "VAPID";
+            }
+            if (iParam0 == GetHashKey("warrener"))
+            {
+                return "VULCAR";
+            }
+            if ((iParam0 == GetHashKey("glendale") || iParam0 == GetHashKey("panto")) || iParam0 == GetHashKey("dubsta3"))
+            {
+                if (bParam1)
+                {
+                    return "BENEFAC";
+                }
+                else
+                {
+                    return "BENEFACTOR";
+                }
+            }
+            if (iParam0 == GetHashKey("rhapsody"))
+            {
+                return "DECLASSE";
+            }
+            if (iParam0 == GetHashKey("pigalle"))
+            {
+                if (bParam1)
+                {
+                    return "LAMPADA";
+                }
+                else
+                {
+                    return "LAMPADATI";
+                }
+            }
+            if (iParam0 == GetHashKey("coquette2"))
+            {
+                if (bParam1)
+                {
+                    return "INVERTO";
+                }
+                else
+                {
+                    return "Invetero";
+                }
+            }
+            if (iParam0 == GetHashKey("innovation"))
+            {
+                return "LCC";
+            }
+            if (iParam0 == GetHashKey("hakuchou"))
+            {
+                return "SHITZU";
+            }
+            if (iParam0 == GetHashKey("furoregt"))
+            {
+                if (bParam1)
+                {
+                    return "LAMPADA";
+                }
+                else
+                {
+                    return "LAMPADATI";
+                }
+            }
+            if (iParam0 == GetHashKey("ratloader2"))
+            {
+                return "BRAVADO";
+            }
+            else if (iParam0 == GetHashKey("slamvan"))
+            {
+                return "VAPID";
+            }
+            else if (iParam0 == GetHashKey("jester2"))
+            {
+                return "DINKA";
+            }
+            else if (iParam0 == GetHashKey("massacro2"))
+            {
+                if (bParam1)
+                {
+                    return "DEWBAUCH";
+                }
+                else
+                {
+                    return "DEWBAUCHEE";
+                }
+            }
+            if (iParam0 == GetHashKey("windsor"))
+            {
+                return "ENUS";
+            }
+            else if (iParam0 == GetHashKey("chino") || iParam0 == GetHashKey("chino2"))
+            {
+                return "VAPID";
+            }
+            else if (iParam0 == GetHashKey("vindicator"))
+            {
+                return "DINKA";
+            }
+            else if (iParam0 == GetHashKey("virgo"))
+            {
+                return "ALBANY";
+            }
+            else if (iParam0 == GetHashKey("swift2") || iParam0 == GetHashKey("luxor2"))
+            {
+                return "BUCKING";
+            }
+            else if (iParam0 == GetHashKey("feltzer3"))
+            {
+                if (bParam1)
+                {
+                    return "BENEFAC";
+                }
+                else
+                {
+                    return "BENEFACTOR";
+                }
+            }
+            else if (iParam0 == GetHashKey("t20"))
+            {
+                return "PROGEN";
+            }
+            else if (iParam0 == GetHashKey("osiris"))
+            {
+                return "PEGASSI";
+            }
+            else if (iParam0 == GetHashKey("coquette3"))
+            {
+                if (bParam1)
+                {
+                    return "INVERTO";
+                }
+                else
+                {
+                    return "Invetero";
+                }
+            }
+            else if (iParam0 == GetHashKey("toro"))
+            {
+                if (bParam1)
+                {
+                    return "LAMPADA";
+                }
+                else
+                {
+                    return "LAMPADATI";
+                }
+            }
+            else if (iParam0 == GetHashKey("brawler"))
+            {
+                return "COIL";
+            }
+            if (iParam0 == GetHashKey("primo2") || iParam0 == GetHashKey("buccaneer2"))
+            {
+                return "ALBANY";
+            }
+            else if (iParam0 == GetHashKey("faction") || iParam0 == GetHashKey("faction2"))
+            {
+                return "WILLARD";
+            }
+            else if ((iParam0 == GetHashKey("moonbeam2") || iParam0 == GetHashKey("voodoo")) || iParam0 == GetHashKey("moonbeam"))
+            {
+                return "DECLASSE";
+            }
+            else if (iParam0 == GetHashKey("chino2") || iParam0 == GetHashKey("dukes2"))
+            {
+                return "VAPID";
+            }
+            if (iParam0 == GetHashKey("faction3"))
+            {
+                return "WILLARD";
+            }
+            if ((iParam0 == GetHashKey("sabregt2") || iParam0 == GetHashKey("tornado5")) || iParam0 == GetHashKey("virgo"))
+            {
+                return "DECLASSE";
+            }
+            if (iParam0 == GetHashKey("virgo2") || iParam0 == GetHashKey("virgo3"))
+            {
+                if (bParam1)
+                {
+                    return "DUNDREAR";
+                }
+                else
+                {
+                    return "DUNDREARY";
+                }
+            }
+            if (iParam0 == GetHashKey("slamvan3") || iParam0 == GetHashKey("minivan2"))
+            {
+                return "VAPID";
+            }
+            if (iParam0 == GetHashKey("lurcher") || iParam0 == GetHashKey("btype2"))
+            {
+                return "ALBANY";
+            }
+            if (iParam0 == GetHashKey("mamba") || iParam0 == GetHashKey("tampa"))
+            {
+                return "DECLASSE";
+            }
+            if (((iParam0 == GetHashKey("cognoscenti") || iParam0 == GetHashKey("cog55")) || iParam0 == GetHashKey("cog552")) || iParam0 == GetHashKey("cognoscenti2"))
+            {
+                return "ENUS";
+            }
+            if (iParam0 == GetHashKey("verlierer2"))
+            {
+                return "BRAVADO";
+            }
+            if (((iParam0 == GetHashKey("schafter4") || iParam0 == GetHashKey("schafter3")) || iParam0 == GetHashKey("schafter5")) || iParam0 == GetHashKey("schafter6"))
+            {
+                if (bParam1)
+                {
+                    return "BENEFAC";
+                }
+                else
+                {
+                    return "BENEFACTOR";
+                }
+            }
+            if (((iParam0 == GetHashKey("baller3") || iParam0 == GetHashKey("baller4")) || iParam0 == GetHashKey("baller5")) || iParam0 == GetHashKey("baller6"))
+            {
+                if (bParam1)
+                {
+                    return "GALLIVAN";
+                }
+                else
+                {
+                    return "GALIVANTER";
+                }
+            }
+            if (iParam0 == GetHashKey("nightshade"))
+            {
+                return "IMPONTE";
+            }
+            if (iParam0 == GetHashKey("btype3"))
+            {
+                return "ALBANY";
+            }
+            if (iParam0 == GetHashKey("pfister811"))
+            {
+                return "PFISTER";
+            }
+            if (iParam0 == GetHashKey("seven70"))
+            {
+                if (bParam1)
+                {
+                    return "DEWBAUCH";
+                }
+                else
+                {
+                    return "DEWBAUCHEE";
+                }
+            }
+            if (iParam0 == GetHashKey("rumpo3"))
+            {
+                return "BRAVADO";
+            }
+            if (iParam0 == GetHashKey("bestiagts"))
+            {
+                if (bParam1)
+                {
+                    return "GROTTI";
+                }
+                else
+                {
+                    return "Grotti_2";
+                }
+            }
+            if (iParam0 == GetHashKey("prototipo"))
+            {
+                if (bParam1)
+                {
+                    return "GROTTI";
+                }
+                else
+                {
+                    return "Grotti_2";
+                }
+            }
+            if (iParam0 == GetHashKey("xls") || iParam0 == GetHashKey("xls2"))
+            {
+                if (bParam1)
+                {
+                    return "BENEFAC";
+                }
+                else
+                {
+                    return "BENEFACTOR";
+                }
+            }
+            if (iParam0 == GetHashKey("fmj"))
+            {
+                return "VAPID";
+            }
+            if (iParam0 == GetHashKey("windsor2"))
+            {
+                return "ENUS";
+            }
+            if (iParam0 == GetHashKey("reaper"))
+            {
+                return "PEGASSI";
+            }
+            if (((iParam0 == GetHashKey("contender") || iParam0 == GetHashKey("trophytruck")) || iParam0 == GetHashKey("trophytruck2")) || iParam0 == GetHashKey("dominator2"))
+            {
+                return "VAPID";
+            }
+            if (iParam0 == GetHashKey("bf400"))
+            {
+                return "NAGASAKI";
+            }
+            if (iParam0 == GetHashKey("cliffhanger") || iParam0 == GetHashKey("gargoyle"))
+            {
+                if (bParam1)
+                {
+                    return "WESTERN";
+                }
+                else
+                {
+                    return "WESTERNMOTORCYCLE";
+                }
+            }
+            if (iParam0 == GetHashKey("buffalo3") || iParam0 == GetHashKey("gauntlet2"))
+            {
+                return "BRAVADO";
+            }
+            if (iParam0 == GetHashKey("omnis"))
+            {
+                return "OBEY";
+            }
+            if (iParam0 == GetHashKey("le7b"))
+            {
+                return "ANNIS";
+            }
+            if (iParam0 == GetHashKey("tropos"))
+            {
+                if (bParam1)
+                {
+                    return "LAMPADA";
+                }
+                else
+                {
+                    return "LAMPADATI";
+                }
+            }
+            if (iParam0 == GetHashKey("tampa2") || iParam0 == GetHashKey("stalion2"))
+            {
+                return "DECLASSE";
+            }
+            if (iParam0 == GetHashKey("brioso"))
+            {
+                if (bParam1)
+                {
+                    return "GROTTI";
+                }
+                else
+                {
+                    return "Grotti_2";
+                }
+            }
+            if (iParam0 == GetHashKey("tyrus"))
+            {
+                return "PROGEN";
+            }
+            if (iParam0 == GetHashKey("lynx"))
+            {
+                return "OCELOT";
+            }
+            if (iParam0 == GetHashKey("sheava"))
+            {
+                if (bParam1)
+                {
+                    return "EMPEROR";
+                }
+                else
+                {
+                    return "EMPORER";
+                }
+            }
+            if (iParam0 == GetHashKey("rallytruck"))
+            {
+                return "MTL";
+            }
+            if (iParam0 == GetHashKey("tornado6"))
+            {
+                return "DECLASSE";
+            }
+            if (iParam0 == GetHashKey("avarus") || iParam0 == GetHashKey("sanctus"))
+            {
+                return "LCC";
+            }
+            if ((iParam0 == GetHashKey("chimera") || iParam0 == GetHashKey("shotaro")) || iParam0 == GetHashKey("blazer4"))
+            {
+                return "NAGASAKI";
+            }
+            if (iParam0 == GetHashKey("defiler") || iParam0 == GetHashKey("hakuchou2"))
+            {
+                return "SHITZU";
+            }
+            if (((((iParam0 == GetHashKey("nightblade") || iParam0 == GetHashKey("zombiea")) || iParam0 == GetHashKey("zombieb")) || iParam0 == GetHashKey("daemon2")) || iParam0 == GetHashKey("ratbike")) || iParam0 == GetHashKey("wolfsbane"))
+            {
+                if (bParam1)
+                {
+                    return "WESTERN";
+                }
+                else
+                {
+                    return "WESTERNMOTORCYCLE";
+                }
+            }
+            if (iParam0 == GetHashKey("youga2"))
+            {
+                return "BRAVADO";
+            }
+            if (((iParam0 == GetHashKey("esskey") || iParam0 == GetHashKey("vortex")) || iParam0 == GetHashKey("faggio3")) || iParam0 == GetHashKey("faggio"))
+            {
+                return "PEGASSI";
+            }
+            if (iParam0 == GetHashKey("raptor"))
+            {
+                return "BF";
+            }
+            if (iParam0 == GetHashKey("manchez"))
+            {
+                return "MAIBATSU";
+            }
+            if (iParam0 == GetHashKey("blazer5"))
+            {
+                return "NAGASAKI";
+            }
+            if (iParam0 == GetHashKey("comet3"))
+            {
+                return "PFISTER";
+            }
+            if (iParam0 == GetHashKey("diablous") || iParam0 == GetHashKey("diablous2"))
+            {
+                if (bParam1)
+                {
+                    return "PRINCIPL";
+                }
+                else
+                {
+                    return "PRINCIPE";
+                }
+            }
+            if ((iParam0 == GetHashKey("fcr") || iParam0 == GetHashKey("fcr2")) || iParam0 == GetHashKey("tempesta"))
+            {
+                return "PEGASSI";
+            }
+            if (iParam0 == GetHashKey("nero") || iParam0 == GetHashKey("nero2"))
+            {
+                return "TRUFFADE";
+            }
+            if (iParam0 == GetHashKey("penetrator"))
+            {
+                return "OCELOT";
+            }
+            if (iParam0 == GetHashKey("ruiner2"))
+            {
+                return "IMPONTE";
+            }
+            if (iParam0 == GetHashKey("technical2"))
+            {
+                return "KARIN";
+            }
+            if (iParam0 == GetHashKey("phantom2"))
+            {
+                return "JOBUILT";
+            }
+            if (iParam0 == GetHashKey("voltic2"))
+            {
+                return "COIL";
+            }
+            if (iParam0 == GetHashKey("wastelander"))
+            {
+                return "MTL";
+            }
+            if (iParam0 == GetHashKey("italigtb") || iParam0 == GetHashKey("italigtb2"))
+            {
+                return "PROGEN";
+            }
+            if (iParam0 == GetHashKey("dune5") || iParam0 == GetHashKey("dune4"))
+            {
+                return "BF";
+            }
+            if (iParam0 == GetHashKey("elegy") || iParam0 == GetHashKey("elegy2"))
+            {
+                return "ANNIS";
+            }
+            if (iParam0 == GetHashKey("specter") || iParam0 == GetHashKey("specter2"))
+            {
+                if (bParam1)
+                {
+                    return "DEWBAUCH";
+                }
+                else
+                {
+                    return "DEWBAUCHEE";
+                }
+            }
+            if (iParam0 == GetHashKey("gp1"))
+            {
+                return "PROGEN";
+            }
+            if (iParam0 == GetHashKey("infernus2"))
+            {
+                return "PEGASSI";
+            }
+            if (iParam0 == GetHashKey("ruston"))
+            {
+                return "HIJAK";
+            }
+            if (iParam0 == GetHashKey("turismo2"))
+            {
+                if (bParam1)
+                {
+                    return "GROTTI";
+                }
+                else
+                {
+                    return "Grotti_2";
+                }
+            }
+            if (iParam0 == GetHashKey("dukes2"))
+            {
+                return "IMPONTE";
+            }
+            if (iParam0 == GetHashKey("ardent") || iParam0 == GetHashKey("xa21"))
+            {
+                return "OCELOT";
+            }
+            if (iParam0 == GetHashKey("cheetah2"))
+            {
+                if (bParam1)
+                {
+                    return "GROTTI";
+                }
+                else
+                {
+                    return "Grotti_2";
+                }
+            }
+            if ((iParam0 == GetHashKey("insurgent3") || iParam0 == GetHashKey("nightshark")) || iParam0 == GetHashKey("apc"))
+            {
+                return "HVY";
+            }
+            if (iParam0 == GetHashKey("technical3"))
+            {
+                return "KARIN";
+            }
+            if (iParam0 == GetHashKey("halftrack") || iParam0 == GetHashKey("bison3"))
+            {
+                return "BRAVADO";
+            }
+            if (iParam0 == GetHashKey("torero") || iParam0 == GetHashKey("oppressor"))
+            {
+                return "PEGASSI";
+            }
+            if (iParam0 == GetHashKey("dune3"))
+            {
+                return "BF";
+            }
+            if (iParam0 == GetHashKey("tampa3"))
+            {
+                return "DECLASSE";
+            }
+            if (iParam0 == GetHashKey("vagner") || iParam0 == GetHashKey("rapidgt3"))
+            {
+                if (bParam1)
+                {
+                    return "DEWBAUCH";
+                }
+                else
+                {
+                    return "DEWBAUCHEE";
+                }
+            }
+            if (iParam0 == GetHashKey("cyclone"))
+            {
+                return "COIL";
+            }
+            if ((iParam0 == GetHashKey("retinue") || iParam0 == GetHashKey("hustler")) || iParam0 == GetHashKey("riata"))
+            {
+                return "VAPID";
+            }
+            if (iParam0 == GetHashKey("visione") || iParam0 == GetHashKey("vigilante"))
+            {
+                if (bParam1)
+                {
+                    return "GROTTI";
+                }
+                else
+                {
+                    return "Grotti_2";
+                }
+            }
+            if (iParam0 == GetHashKey("z190"))
+            {
+                return "KARIN";
+            }
+            if (iParam0 == GetHashKey("avenger") || iParam0 == GetHashKey("thruster"))
+            {
+                return "MAMMOTH";
+            }
+            if (iParam0 == GetHashKey("deluxo"))
+            {
+                return "IMPONTE";
+            }
+            if (iParam0 == GetHashKey("stromberg") || iParam0 == GetHashKey("pariah"))
+            {
+                return "OCELOT";
+            }
+            if (iParam0 == GetHashKey("hermes"))
+            {
+                return "ALBANY";
+            }
+            if ((iParam0 == GetHashKey("sentinel3") || iParam0 == GetHashKey("sc1")) || iParam0 == GetHashKey("revolter"))
+            {
+                if (bParam1)
+                {
+                    return "UBERMACH";
+                }
+                else
+                {
+                    return "UBERMACHT";
+                }
+            }
+            if (iParam0 == GetHashKey("savestra"))
+            {
+                return "ANNIS";
+            }
+            if (iParam0 == GetHashKey("yosemite"))
+            {
+                return "DECLASSE";
+            }
+            if (iParam0 == GetHashKey("raiden"))
+            {
+                return "COIL";
+            }
+            if ((iParam0 == GetHashKey("neon") || iParam0 == GetHashKey("comet4")) || iParam0 == GetHashKey("comet5"))
+            {
+                return "PFISTER";
+            }
+            if (iParam0 == GetHashKey("streiter"))
+            {
+                if (bParam1)
+                {
+                    return "BENEFAC";
+                }
+                else
+                {
+                    return "BENEFACTOR";
+                }
+            }
+            if (iParam0 == GetHashKey("kamacho"))
+            {
+                return "CANIS";
+            }
+            if (iParam0 == GetHashKey("gt500"))
+            {
+                if (bParam1)
+                {
+                    return "GROTTI";
+                }
+                else
+                {
+                    return "Grotti_2";
+                }
+            }
+            if (iParam0 == GetHashKey("viseris"))
+            {
+                if (bParam1)
+                {
+                    return "LAMPADA";
+                }
+                else
+                {
+                    return "LAMPADATI";
+                }
+            }
+            if (iParam0 == GetHashKey("barrage"))
+            {
+                return "HVY";
+            }
+            if ((iParam0 == GetHashKey("autarch") || iParam0 == GetHashKey("tyrant")) || iParam0 == GetHashKey("entity2"))
+            {
+                return "OVERFLOD";
+            }
+            if (iParam0 == GetHashKey("issi3"))
+            {
+                return "WEENY";
+            }
+            if ((((iParam0 == GetHashKey("gb200") || iParam0 == GetHashKey("ellie")) || iParam0 == GetHashKey("flashgt")) || iParam0 == GetHashKey("caracara")) || iParam0 == GetHashKey("dominator3"))
+            {
+                return "VAPID";
+            }
+            if (iParam0 == GetHashKey("fagaloa"))
+            {
+                return "VULCAR";
+            }
+            if (iParam0 == GetHashKey("michelli"))
+            {
+                if (bParam1)
+                {
+                    return "LAMPADA";
+                }
+                else
+                {
+                    return "LAMPADATI";
+                }
+            }
+            if (iParam0 == GetHashKey("hotring"))
+            {
+                return "DECLASSE";
+            }
+            if (iParam0 == GetHashKey("tezeract"))
+            {
+                return "PEGASSI";
+            }
+            if (iParam0 == GetHashKey("jester3"))
+            {
+                return "DINKA";
+            }
+            if (iParam0 == GetHashKey("taipan"))
+            {
+                return "CHEVAL";
+            }
+            if (iParam0 == GetHashKey("cheburek"))
+            {
+                return "RUNE";
+            }
+            if (iParam0 == GetHashKey("swinger"))
+            {
+                return "OCELOT";
+            }
+            if (iParam0 == GetHashKey("freecrawler"))
+            {
+                return "CANIS";
+            }
+            if (iParam0 == GetHashKey("mule4"))
+            {
+                return "MAIBATSU";
+            }
+            if (iParam0 == GetHashKey("pounder2"))
+            {
+                return "MTL";
+            }
+            if (iParam0 == GetHashKey("speedo4"))
+            {
+                return "VAPID";
+            }
+            if (iParam0 == GetHashKey("patriot2"))
+            {
+                return "MAMMOTH";
+            }
+            if (iParam0 == GetHashKey("oppressor2"))
+            {
+                return "PEGASSI";
+            }
+            if (iParam0 == GetHashKey("stafford"))
+            {
+                return "ENUS";
+            }
+            if (iParam0 == GetHashKey("menacer"))
+            {
+                return "HVY";
+            }
+            if (iParam0 == GetHashKey("scramjet"))
+            {
+                return "DECLASSE";
+            }
+            if ((iParam0 == GetHashKey("monster3") || iParam0 == GetHashKey("monster4")) || iParam0 == GetHashKey("monster5"))
+            {
+                return "BRAVADO";
+            }
+            if ((iParam0 == GetHashKey("scarab") || iParam0 == GetHashKey("scarab2")) || iParam0 == GetHashKey("scarab3"))
+            {
+                return "HVY";
+            }
+            if ((iParam0 == GetHashKey("issi4") || iParam0 == GetHashKey("issi5")) || iParam0 == GetHashKey("issi6"))
+            {
+                return "WEENY";
+            }
+            if (iParam0 == GetHashKey("toros"))
+            {
+                return "PEGASSI";
+            }
+            if ((((((((((iParam0 == GetHashKey("clique") || iParam0 == GetHashKey("imperator")) || iParam0 == GetHashKey("imperator2")) || iParam0 == GetHashKey("imperator3")) || iParam0 == GetHashKey("dominator4")) || iParam0 == GetHashKey("dominator5")) || iParam0 == GetHashKey("dominator6")) || iParam0 == GetHashKey("slamvan4")) || iParam0 == GetHashKey("slamvan5")) || iParam0 == GetHashKey("slamvan6")) || iParam0 == GetHashKey("slamvan2"))
+            {
+                return "VAPID";
+            }
+            if (iParam0 == GetHashKey("deveste"))
+            {
+                if (bParam1)
+                {
+                    return "PRINCIPL";
+                }
+                else
+                {
+                    return "PRINCIPE";
+                }
+            }
+            if ((((((((iParam0 == GetHashKey("impaler") || iParam0 == GetHashKey("impaler2")) || iParam0 == GetHashKey("impaler3")) || iParam0 == GetHashKey("impaler4")) || iParam0 == GetHashKey("vamos")) || iParam0 == GetHashKey("tulip")) || iParam0 == GetHashKey("brutus")) || iParam0 == GetHashKey("brutus2")) || iParam0 == GetHashKey("brutus3"))
+            {
+                return "DECLASSE";
+            }
+            if (iParam0 == GetHashKey("deviant"))
+            {
+                return "SCHYSTER";
+            }
+            if (iParam0 == GetHashKey("schlagen"))
+            {
+                if (bParam1)
+                {
+                    return "BENEFAC";
+                }
+                else
+                {
+                    return "BENEFACTOR";
+                }
+            }
+            if (iParam0 == GetHashKey("italigto"))
+            {
+                if (bParam1)
+                {
+                    return "GROTTI";
+                }
+                else
+                {
+                    return "Grotti_2";
+                }
+            }
+            if ((iParam0 == GetHashKey("cerberus") || iParam0 == GetHashKey("cerberus2")) || iParam0 == GetHashKey("cerberus3"))
+            {
+                return "MTL";
+            }
+            if ((iParam0 == GetHashKey("deathbike") || iParam0 == GetHashKey("deathbike2")) || iParam0 == GetHashKey("deathbike3"))
+            {
+                if (bParam1)
+                {
+                    return "WESTERN";
+                }
+                else
+                {
+                    return "WESTERNMOTORCYCLE";
+                }
+            }
+            if ((iParam0 == GetHashKey("bruiser") || iParam0 == GetHashKey("bruiser2")) || iParam0 == GetHashKey("bruiser3"))
+            {
+                if (bParam1)
+                {
+                    return "BENEFAC";
+                }
+                else
+                {
+                    return "BENEFACTOR";
+                }
+            }
+            if ((iParam0 == GetHashKey("zr380") || iParam0 == GetHashKey("zr3802")) || iParam0 == GetHashKey("zr3803"))
+            {
+                return "ANNIS";
+            }
+            if (iParam0 == GetHashKey("caracara2") || iParam0 == GetHashKey("peyote2"))
+            {
+                return "VAPID";
+            }
+            if (iParam0 == GetHashKey("drafter"))
+            {
+                return "OBEY";
+            }
+            if (iParam0 == GetHashKey("dynasty") || iParam0 == GetHashKey("issi7"))
+            {
+                return "WEENY";
+            }
+            if (iParam0 == GetHashKey("gauntlet3") || iParam0 == GetHashKey("gauntlet4"))
+            {
+                return "BRAVADO";
+            }
+            if (iParam0 == GetHashKey("hellion") || iParam0 == GetHashKey("s80"))
+            {
+                return "ANNIS";
+            }
+            if (iParam0 == GetHashKey("krieger"))
+            {
+                if (bParam1)
+                {
+                    return "BENEFAC";
+                }
+                else
+                {
+                    return "BENEFACTOR";
+                }
+            }
+            if (iParam0 == GetHashKey("locust") || iParam0 == GetHashKey("jugular"))
+            {
+                return "OCELOT";
+            }
+            if (iParam0 == GetHashKey("nebula"))
+            {
+                return "VULCAR";
+            }
+            if (iParam0 == GetHashKey("novak"))
+            {
+                if (bParam1)
+                {
+                    return "LAMPADA";
+                }
+                else
+                {
+                    return "LAMPADATI";
+                }
+            }
+            if (iParam0 == GetHashKey("paragon") || iParam0 == GetHashKey("paragon2"))
+            {
+                return "ENUS";
+            }
+            if (iParam0 == GetHashKey("thrax"))
+            {
+                return "TRUFFADE";
+            }
+            if (iParam0 == GetHashKey("zion3"))
+            {
+                if (bParam1)
+                {
+                    return "UBERMACH";
+                }
+                else
+                {
+                    return "UBERMACHT";
+                }
+            }
+            if (iParam0 == GetHashKey("emerus"))
+            {
+                return "PROGEN";
+            }
+            if (iParam0 == GetHashKey("neo"))
+            {
+                return "VYSSER";
+            }
+            if (iParam0 == GetHashKey("rrocket"))
+            {
+                if (bParam1)
+                {
+                    return "WESTERN";
+                }
+                else
+                {
+                    return "WESTERNMOTORCYCLE";
+                }
+            }
+            if (iParam0 == GetHashKey("burrito") || iParam0 == GetHashKey("burrito2"))
+            {
+                return "DECLASSE";
+            }
+            if (iParam0 == GetHashKey("formula"))
+            {
+                return "PROGEN";
+            }
+            if (iParam0 == GetHashKey("everon"))
+            {
+                return "KARIN";
+            }
+            if (iParam0 == GetHashKey("imorgon"))
+            {
+                return "OVERFLOD";
+            }
+            if (iParam0 == GetHashKey("kanjo"))
+            {
+                return "DINKA";
+            }
+            if (iParam0 == GetHashKey("komoda"))
+            {
+                if (bParam1)
+                {
+                    return "LAMPADA";
+                }
+                else
+                {
+                    return "LAMPADATI";
+                }
+            }
+            if (iParam0 == GetHashKey("rebla"))
+            {
+                if (bParam1)
+                {
+                    return "UBERMACH";
+                }
+                else
+                {
+                    return "UBERMACHT";
+                }
+            }
+            if (iParam0 == GetHashKey("sugoi"))
+            {
+                return "DINKA";
+            }
+            if (iParam0 == GetHashKey("sultan2"))
+            {
+                return "KARIN";
+            }
+            if (iParam0 == GetHashKey("vstr"))
+            {
+                return "ALBANY";
+            }
+            if (iParam0 == GetHashKey("zhaba"))
+            {
+                return "RUNE";
+            }
+            if (!bParam1)
+            {
+                if (GetMakeNameFromVehicleModel((uint)iParam0) == "GALLIVAN")
+                {
+                    return "GALIVANTER";
+                }
+                else if (GetMakeNameFromVehicleModel((uint)iParam0) == "BENEFAC")
+                {
+                    return "BENEFACTOR";
+                }
+                else if (GetMakeNameFromVehicleModel((uint)iParam0) == "UBERMACH")
+                {
+                    return "UBERMACHT";
+                }
+                else if (GetMakeNameFromVehicleModel((uint)iParam0) == "DEWBAUCH")
+                {
+                    return "DEWBAUCHEE";
+                }
+                else if (GetMakeNameFromVehicleModel((uint)iParam0) == "JACKSHP")
+                {
+                    return "JACKSHEEPE";
+                }
+                else if (GetMakeNameFromVehicleModel((uint)iParam0) == "GROTTI")
+                {
+                    return "Grotti_2";
+                }
+                else if (GetMakeNameFromVehicleModel((uint)iParam0) == "INVERTO")
+                {
+                    return "Invetero";
+                }
+                else if (GetMakeNameFromVehicleModel((uint)iParam0) == "LAMPADA")
+                {
+                    return "LAMPADATI";
+                }
+                else if (GetMakeNameFromVehicleModel((uint)iParam0) == "DUNDREAR")
+                {
+                    return "DUNDREARY";
+                }
+                else if (GetMakeNameFromVehicleModel((uint)iParam0) == "ZIRCONIU")
+                {
+                    return "ZIRCONIUM";
+                }
+                else if (GetMakeNameFromVehicleModel((uint)iParam0) == "WESTERN")
+                {
+                    return "WESTERNMOTORCYCLE";
+                }
+                else if (GetMakeNameFromVehicleModel((uint)iParam0) == "PRINCIPL")
+                {
+                    return "PRINCIPE";
+                }
+                else if (GetMakeNameFromVehicleModel((uint)iParam0) == "EMPEROR")
+                {
+                    return "EMPORER";
+                }
+                else
+                {
+                    return GetMakeNameFromVehicleModel((uint)iParam0);
+                }
+            }
+            else
+            {
+                return GetMakeNameFromVehicleModel((uint)iParam0);
+            }
+        }
+
+        private static string GetAircraftTexture(int iParam0, bool bParam1)
+        {
+            switch (iParam0)
+            {
+                case > 0 when iParam0 == GetHashKey("frogger"):
+                case > 0 when iParam0 == GetHashKey("frogger2"):
+                    return "MAIBATSU";
+
+                case > 0 when iParam0 == GetHashKey("maverick"):
+                case > 0 when iParam0 == GetHashKey("polmav"):
+                case > 0 when iParam0 == GetHashKey("luxor"):
+                case > 0 when iParam0 == GetHashKey("shamal"):
+                    if (bParam1)
+                    {
+                        return "BUCKING";
+                    }
+                    else
+                    {
+                        return "BUCKINGHAM";
+                    }
+
+                case > 0 when iParam0 == GetHashKey("cargobob"):
+                case > 0 when iParam0 == GetHashKey("annihilator"):
+                case > 0 when iParam0 == GetHashKey("cuban800"):
+                case > 0 when iParam0 == GetHashKey("duster"):
+                case > 0 when iParam0 == GetHashKey("stunt"):
+                    return "WESTERN";
+
+                case > 0 when iParam0 == GetHashKey("buzzard"):
+                case > 0 when iParam0 == GetHashKey("buzzard2"):
+                    return "NAGASAKI";
+
+                case > 0 when iParam0 == GetHashKey("mammatus"):
+                case > 0 when iParam0 == GetHashKey("velum"):
+                case > 0 when iParam0 == GetHashKey("velum2"):
+                case > 0 when iParam0 == GetHashKey("lazer"):
+                    return "JOBUILT";
+            }
+            if (iParam0 == GetHashKey("vestra"))
+            {
+                if (bParam1)
+                {
+                    return "BUCKING";
+                }
+                else
+                {
+                    return "BUCKINGHAM";
+                }
+            }
+            if (((((iParam0 == GetHashKey("miljet") || iParam0 == GetHashKey("swift")) || iParam0 == GetHashKey("swift2")) || iParam0 == GetHashKey("luxor2")) || iParam0 == GetHashKey("supervolito")) || iParam0 == GetHashKey("supervolito2"))
+            {
+                if (bParam1)
+                {
+                    return "BUCKING";
+                }
+                else
+                {
+                    return "BUCKINGHAM";
+                }
+            }
+            if (iParam0 == GetHashKey("besra"))
+            {
+                return "WESTERN";
+            }
+            if (iParam0 == GetHashKey("hydra") || iParam0 == GetHashKey("thruster"))
+            {
+                return "MAMMOTH";
+            }
+            if (iParam0 == GetHashKey("volatus") || iParam0 == GetHashKey("nimbus"))
+            {
+                if (bParam1)
+                {
+                    return "BUCKING";
+                }
+                else
+                {
+                    return "BUCKINGHAM";
+                }
+            }
+            return "";
+        }
+
+        private static string GetBoatTexture(int iParam0, bool bParam1)
+        {
+            switch (iParam0)
+            {
+                case > 0 when iParam0 == GetHashKey("squalo"):
+                case > 0 when iParam0 == GetHashKey("tropic"):
+                    if (bParam1)
+                    {
+                        return "BUCKING";
+                    }
+                    else
+                    {
+                        return "BUCKINGHAM";
+                    }
+
+                case > 0 when iParam0 == GetHashKey("jetmax"):
+                case > 0 when iParam0 == GetHashKey("suntrap"):
+                    return "OCELOT";
+
+                case > 0 when iParam0 == GetHashKey("dinghy"):
+                    if (!bParam1)
+                    {
+                        return "OCELOT";
+                    }
+                    return "";
+                case > 0 when iParam0 == GetHashKey("seashark2"):
+                    if (bParam1)
+                    {
+                        return "SPEEDOPH";
+                    }
+                    else
+                    {
+                        return "SPEEDOPHILE";
+                    }
+
+                case > 0 when iParam0 == GetHashKey("seashark3"):
+                    if (bParam1)
+                    {
+                        return "SPEEDOPH";
+                    }
+                    else
+                    {
+                        return "SPEEDOPHILE";
+                    }
+
+                case > 0 when iParam0 == GetHashKey("seashark"):
+                    if (bParam1)
+                    {
+                        return "SPEEDOPH";
+                    }
+                    else
+                    {
+                        return "SPEEDOPHILE";
+                    }
+
+                case > 0 when iParam0 == GetHashKey("toro"):
+                    if (bParam1)
+                    {
+                        return "LAMPADA";
+                    }
+                    else
+                    {
+                        return "LAMPADATI";
+                    }
+            }
+            if (iParam0 == GetHashKey("speeder") || iParam0 == GetHashKey("speeder2"))
+            {
+                if (bParam1)
+                {
+                    return "PEGASSI";
+                }
+                else
+                {
+                    return "PEGASSI";
+                }
+            }
+            return "";
+        }
+        #endregion
 
         public static string GetVehColorLabel(int color)
         {
