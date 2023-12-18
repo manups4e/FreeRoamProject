@@ -34,7 +34,45 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
 
         }
 
-        public override async Task TickVisual()
+        public async Task TickVisual()
+        {
+            switch (CallStatus)
+            {
+                case CallState.DIALING:
+                    if (Game.GameTime - Time > 1700 && Game.GameTime - Time < 1750)
+                    {
+                        ClientMain.Logger.Debug("IS_MOBILE_PHONE_CALL_ONGOING: " + IsMobilePhoneCallOngoing());
+                        //SoundId = Audio.PlaySoundFrontend("Remote_Ring", "Phone_SoundSet_Default");
+                    }
+                    else if (Game.GameTime - Time > 3400 && Game.GameTime - Time < 3425)
+                    {
+                        if (contact.IsPlayer)
+                        {
+                            // check if player connected else status = BUSY
+                            CallStatus = CallState.BUSY;
+                            Time = GetGameTimer();
+                            UpdateScreen();
+                        }
+                        else
+                        {
+                            CallStatus = CallState.CONNECTED;
+                            UpdateScreen();
+                            await CheckIfBotCanAnswerAndRespond();
+                            Game.PlaySound("Hang_Up", "Phone_SoundSet_Default");
+                            Phone.ClosePhone();
+                        }
+                    }
+                    break;
+                case CallState.INCOMING_CALL:
+                    break;
+                case CallState.CONNECTED:
+                    break;
+                case CallState.BUSY:
+                    break;
+            }
+        }
+
+        public void UpdateScreen()
         {
             Phone.Scaleform.CallFunction("SET_DATA_SLOT_EMPTY", (int)CurrentView);
             BeginScaleformMovieMethod(Phone.Scaleform.Handle, "SET_DATA_SLOT");
@@ -59,27 +97,6 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                 case CallState.DIALING:
                     BeginTextCommandScaleformString("CELL_211");
                     EndTextCommandScaleformString();
-                    if (Game.GameTime - Time > 1700 && Game.GameTime - Time < 1750)
-                    {
-                        ClientMain.Logger.Debug("IS_MOBILE_PHONE_CALL_ONGOING: " + IsMobilePhoneCallOngoing());
-                        //SoundId = Audio.PlaySoundFrontend("Remote_Ring", "Phone_SoundSet_Default");
-                    }
-                    else if (Game.GameTime - Time > 3400 && Game.GameTime - Time < 3425)
-                    {
-                        if (contact.IsPlayer)
-                        {
-                            // check if player connected else status = BUSY
-                            CallStatus = CallState.BUSY;
-                            Time = GetGameTimer();
-                        }
-                        else
-                        {
-                            CallStatus = CallState.CONNECTED;
-                            await CheckIfBotCanAnswerAndRespond();
-                            Game.PlaySound("Hang_Up", "Phone_SoundSet_Default");
-                            Phone.ClosePhone();
-                        }
-                    }
                     break;
                 case CallState.INCOMING_CALL:
                     BeginTextCommandScaleformString("CELL_217");
@@ -94,15 +111,13 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                 case CallState.BUSY:
                     BeginTextCommandScaleformString("CELL_220");
                     EndTextCommandScaleformString();
-                    if (GetGameTimer() - Time < 5)
-                        Game.PlaySound("Hang_Up", "Phone_SoundSet_Default");
-                    else if (GetGameTimer() - Time > 1700)
-                        Phone.ClosePhone();
                     break;
             }
             EndScaleformMovieMethod();
             Phone.Scaleform.CallFunction("DISPLAY_VIEW", (int)CurrentView);
         }
+
+
         public override async Task TickControls()
         {
             if (Input.IsControlJustPressed(Control.PhoneSelect))
@@ -157,6 +172,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             Time = GetGameTimer();
             TaskUseMobilePhone(PlayerPedId(), 1);
             callEnded = false;
+            UpdateScreen();
         }
         public override void Kill()
         {

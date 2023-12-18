@@ -43,7 +43,9 @@ namespace FreeRoamProject.Client.FREEROAM.Phone
         OPEN,
         OPEN_ROTATION,
         SET_HORIZONTAL,
-        SET_VERTICAL
+        SET_VERTICAL,
+        OPEN_CAMERA,
+        CLOSE_CAMERA
     }
 
     public enum SoftKeys
@@ -189,8 +191,6 @@ namespace FreeRoamProject.Client.FREEROAM.Phone
         internal Vector3 RotationVertical = Vector3.Zero;
         private bool firstOpen = true;
         internal int iLocal18;
-
-        Vector3 Global_20226 = new(-90, 0, 0);
         public Phone()
         {
             /*
@@ -202,8 +202,9 @@ namespace FreeRoamProject.Client.FREEROAM.Phone
             apps = new List<App>()
             {
                 new Emails(this), new Messages(this), new Contacts(this),
-                new QuickSave(this), new Apps.Settings(this),
-            };
+                new QuickJoin(this), new JobList(this), new Apps.Settings(this),
+                new Snapmatic(this), new Apps.WebBrowser(this), new Securoserv(this)
+        };
             MainMenu = new MainMenu(this, apps);
             Callscreen = new CallScreen(this);
             RotationHidden = new Vector3(-90f, -130f, 0f);
@@ -298,11 +299,11 @@ namespace FreeRoamProject.Client.FREEROAM.Phone
 
         private async Task Screen()
         {
-            Game.DisableControlThisFrame(0, Control.Sprint);
             HideHudComponentThisFrame(6);
             HideHudComponentThisFrame(7);
             HideHudComponentThisFrame(8);
             HideHudComponentThisFrame(9);
+            Game.DisableControlThisFrame(0, Control.Sprint);
 
             Scaleform.CallFunction("SET_TITLEBAR_TIME", World.CurrentDayTime.Hours, World.CurrentDayTime.Minutes, getDay(World.CurrentDayTime.Days));
             Scaleform.CallFunction("SET_SLEEP_MODE", getCurrentCharPhone().SleepMode);
@@ -312,9 +313,16 @@ namespace FreeRoamProject.Client.FREEROAM.Phone
             Vector3 playerPos = PlayerCache.MyClient.Position.ToVector3;
             Scaleform.CallFunction("SET_SIGNAL_STRENGTH", GetZoneScumminess(GetZoneAtCoords(playerPos.X, playerPos.Y, playerPos.Z)));
 
-            if (GetFollowPedCamViewMode() == 4)
+            if (GetFollowPedCamViewMode() == 4 || UpdateOnscreenKeyboard() == 0)
             {
                 SetMobilePhoneScale(0);
+            }
+            else
+            {
+                if (iLocal18 == 0)
+                {
+                    SetMobilePhoneScale(currentScale);
+                }
             }
 
             if (CurrentApp != null)
@@ -382,10 +390,11 @@ namespace FreeRoamProject.Client.FREEROAM.Phone
                     break;
                 case PhoneAnimation.OPEN_ROTATION:
                     {
-                        while (RotatePhone(PositionOpen, PositionOpen, RotationHidden, RotationVertical, 450f, false) < 1f)
+                        while (RotatePhone(PositionHidden, PositionOpen, RotationHidden, RotationVertical, 450f, false) < 1f)
                         {
                             await BaseScript.Delay(0);
                             SetMobilePhoneScale(500f);
+                            currentScale = 500f;
                         }
                         iLocal18 = 0;
                     }
@@ -398,6 +407,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone
                             await BaseScript.Delay(0);
                             val = RotatePhone(PositionOpen, PositionLean, RotationVertical, RotationHorizontal, 350f, false);
                             SetMobilePhoneScale(500f + (75f * val));
+                            currentScale = 500f + (75f * val);
                         }
                         iLocal18 = 0;
                     }
@@ -410,8 +420,25 @@ namespace FreeRoamProject.Client.FREEROAM.Phone
                             await BaseScript.Delay(0);
                             val = RotatePhone(PositionLean, PositionOpen, RotationHorizontal, RotationVertical, 350f, false);
                             SetMobilePhoneScale(500f + (75f * (1f - val)));
+                            currentScale = 500f + (75f * (1f - val));
                         }
                         iLocal18 = 0;
+                    }
+                    break;
+                case PhoneAnimation.OPEN_CAMERA:
+                    {
+                        while (RotatePhone(PositionOpen, new Vector3(1.5f, 0f, -17f), RotationVertical, new Vector3(-90.3f, 0f, 90f), 450f, false) < 1f)
+                        {
+                            await BaseScript.Delay(0);
+                        }
+                    }
+                    break;
+                case PhoneAnimation.CLOSE_CAMERA:
+                    {
+                        while (RotatePhone(new Vector3(1.5f, 0f, -17f), PositionOpen, new Vector3(-90.3f, 0f, 90f), RotationVertical, 450f, false) < 1f)
+                        {
+                            await BaseScript.Delay(0);
+                        }
                     }
                     break;
             }

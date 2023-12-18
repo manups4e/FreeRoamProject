@@ -23,7 +23,6 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Models
             OverrideBack = overrideBack;
         }
 
-        public abstract Task TickVisual();
         public abstract Task TickControls();
 
         public abstract void Initialize(Phone phone);

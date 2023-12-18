@@ -98,7 +98,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             numero = PlayerCache.MyPlayer.Name;
         }
 
-        public override async Task TickVisual()
+        public void UpdateVisual()
         {
             Phone.Scaleform.CallFunction("SET_DATA_SLOT_EMPTY", (int)CurrentView);
             if (CurrentSubMenu != null)
@@ -132,7 +132,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             BeginTextCommandScaleformString(Name);
             EndTextCommandScaleformString();
             EndScaleformMovieMethod();
-            await Task.FromResult(0);
+            Phone.Scaleform.CallFunction("DISPLAY_VIEW", (int)CurrentView, SelectedItem);
         }
         public override async Task TickControls()
         {
@@ -156,6 +156,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                         PlayPedRingtone(ringtone, PlayerPedId(), true);
                     }
                 }
+                Phone.Scaleform.CallFunction("DISPLAY_VIEW", (int)CurrentView, SelectedItem);
             }
             else if (Input.IsControlJustPressed(Control.PhoneDown))
             {
@@ -177,6 +178,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                         PlayPedRingtone(ringtone, PlayerPedId(), true);
                     }
                 }
+                Phone.Scaleform.CallFunction("DISPLAY_VIEW", (int)CurrentView, SelectedItem);
             }
             else if (Input.IsControlJustPressed(Control.FrontendAccept))
             {
@@ -258,6 +260,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                             break;
                     }
                 }
+                UpdateVisual();
                 Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
             }
             else if (Input.IsControlJustPressed(Control.FrontendCancel))
@@ -270,6 +273,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                     CurrentSubMenu = null;
                     SelectedItem = LastSelection;
                     Name = "CELL_16";
+                    UpdateVisual();
                 }
                 else
                 {
@@ -277,7 +281,6 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                 }
                 Game.PlaySound("Menu_Back", "Phone_SoundSet_Default");
             }
-            Phone.Scaleform.CallFunction("DISPLAY_VIEW", (int)CurrentView, SelectedItem);
         }
 
         public override void Initialize(Phone phone)
@@ -286,13 +289,12 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             CurrentSubMenu = null;
             FirstTick = true;
             SelectedItem = 0;
-            ClientMain.Instance.AddTick(TickVisual);
+            UpdateVisual();
             ClientMain.Instance.AddTick(TickControls);
         }
 
         public override void Kill()
         {
-            ClientMain.Instance.RemoveTick(TickVisual);
             ClientMain.Instance.RemoveTick(TickControls);
         }
 

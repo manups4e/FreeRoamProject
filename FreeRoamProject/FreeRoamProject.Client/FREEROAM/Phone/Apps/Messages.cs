@@ -10,19 +10,18 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
     {
         private int SelectedItem { get; set; } = 0;
         private static bool FirstTick = true;
-        private Phone phone;
         private int messageCount = 0;
         private bool TextOpened = false;
         private Message CurrentText;
         public Messages(Phone phone) : base("CELL_1", IconLabels.TEXT_MESSAGE, phone, PhoneView.TEXT_MESSAGE_LIST)   // 8
         {
             EventDispatcher.Mount("tlg:phone:receiveTextMessage", new Action<int, Message>(ReceiveText));
-            this.phone = phone;
         }
 
         private async void ReceiveText(int sender, Message msg)
         {
-            PlayerClient clSend = ClientMain.Instance.Clients[sender];
+            // do we want to set the face of the player? dunno..
+            //PlayerClient clSend = ClientMain.Instance.Clients[sender];
             PlayerCache.Character.PhoneData.Messages.Add(msg);
             Notifications.ShowAdvancedNotification(msg.From, "", msg.TxtMessage, NotificationChar.HumanDefault, NotificationChar.HumanDefault, type: NotificationType.Bubble);
             AddMessage(messageCount, msg, false);
@@ -36,11 +35,10 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                 ? Game.GetGXTEntry("CELL_TO_FIELD").Replace("~a~", "<C>" + msg.From + "</C>")
                 : Game.GetGXTEntry("CELL_FROM_FIELD").Replace("~a~", "<C>" + msg.From + "</C>");
             */
-            phone.Scaleform.CallFunction("SET_DATA_SLOT", (int)CurrentView, index, msg.Date.Hour, msg.Date.Minute, (int)msg.Readed, msg.From, msg.TxtMessage);
+            Phone.Scaleform.CallFunction("SET_DATA_SLOT", (int)CurrentView, index, msg.Date.Hour, msg.Date.Minute, (int)msg.Read, msg.From, msg.TxtMessage);
         }
 
-        int msgStyle = (int)MessageStyle.STYLE_TECH_GREEN;
-        public override async Task TickVisual()
+        public void UpdateVisual()
         {
             Phone.Scaleform.CallFunction("SET_DATA_SLOT_EMPTY", (int)CurrentView);
             BeginScaleformMovieMethod(Phone.Scaleform.Handle, "SET_HEADER");
@@ -62,35 +60,47 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                 Phone.Scaleform.CallFunction("SET_DATA_SLOT", (int)CurrentView, 0, CurrentText.From, CurrentText.TxtMessage, NotificationChar.HumanDefault);
                 Phone.Scaleform.CallFunction("DISPLAY_VIEW", (int)CurrentView, 0);
             }
+
         }
+
         public override async Task TickControls()
         {
             if (Input.IsControlJustPressed(Control.PhoneUp))
             {
-                MoveFinger(1);
-                if (SelectedItem > 0)
-                    SelectedItem -= 1;
+                if (Phone.getCurrentCharPhone().Messages.Count == 0) return;
+                CellCamMoveFinger(1);
+                Phone.Scaleform.CallFunction("SET_INPUT_EVENT", 1);
                 Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
+                SelectedItem = await Phone.Scaleform.CallFunctionReturnValueInt("GET_CURRENT_SELECTION");
+                if (!TextOpened)
+                    Phone.Scaleform.CallFunction("DISPLAY_VIEW", (int)CurrentView, SelectedItem);
+                else
+                    Phone.Scaleform.CallFunction("DISPLAY_VIEW", (int)CurrentView, 0);
             }
             else if (Input.IsControlJustPressed(Control.PhoneDown))
             {
-                MoveFinger(2);
-                if (SelectedItem < Phone.getCurrentCharPhone().Messages.Count - 1)
-                    SelectedItem += 1;
-                else
-                    SelectedItem = 0;
+                if (Phone.getCurrentCharPhone().Messages.Count == 0) return;
+                CellCamMoveFinger(2);
+                Phone.Scaleform.CallFunction("SET_INPUT_EVENT", 3);
                 Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
+                SelectedItem = await Phone.Scaleform.CallFunctionReturnValueInt("GET_CURRENT_SELECTION");
+                if (!TextOpened)
+                    Phone.Scaleform.CallFunction("DISPLAY_VIEW", (int)CurrentView, SelectedItem);
+                else
+                    Phone.Scaleform.CallFunction("DISPLAY_VIEW", (int)CurrentView, 0);
+
             }
             else if (Input.IsControlJustPressed(Control.PhoneSelect))
             {
+                if (Phone.getCurrentCharPhone().Messages.Count == 0) return;
                 if (!TextOpened)
                 {
                     MoveFinger(5);
                     Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
                     CurrentText = Phone.getCurrentCharPhone().Messages[SelectedItem];
-                    if (CurrentText.Readed == MessageState.UNREAD_SMS)
+                    if (CurrentText.Read == MessageState.UNREAD_SMS)
                     {
-                        CurrentText.Readed = MessageState.READ_SMS;
+                        CurrentText.Read = MessageState.READ_SMS;
                         EventDispatcher.Send("tlg:phone:setTextMessageRead", SelectedItem);
                     }
                     CurrentView = PhoneView.TEXT_MESSAGE_VIEW;
@@ -101,6 +111,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                         Phone.SetSoftKeys(1, SoftKeys.BLANK, false, SColor.HUD_Freemode);
                     Phone.SetSoftKeys(2, SoftKeys.BLANK, false, SColor.HUD_Freemode);
                     Phone.SetSoftKeys(3, SoftKeys.BACK, true, SColor.HUD_Red);
+                    UpdateVisual();
                 }
             }
             else if (Input.IsControlJustPressed(Control.PhoneCancel))
@@ -113,6 +124,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                     Phone.SetSoftKeys(1, SoftKeys.DELETE, true, SColor.HUD_Red);
                     Phone.SetSoftKeys(2, SoftKeys.SELECT, true, SColor.HUD_Freemode);
                     Phone.SetSoftKeys(3, SoftKeys.BACK, true, SColor.HUD_Red);
+                    UpdateVisual();
                 }
                 else
                 {
@@ -122,6 +134,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             }
             else if (Input.IsControlJustPressed(Control.PhoneExtraOption))
             {
+                if (Phone.getCurrentCharPhone().Messages.Count == 0) return;
                 if (TextOpened)
                 {
                     if (ClientMain.Instance.Clients[CurrentText.From] != null)
@@ -153,7 +166,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                 }
                 else
                 {
-                    phone.getCurrentCharPhone().Messages.RemoveAt(SelectedItem);
+                    Phone.getCurrentCharPhone().Messages.RemoveAt(SelectedItem);
                     EventDispatcher.Send("tlg:phone:deleteTextMessage", SelectedItem);
                     SelectedItem--;
                 }
@@ -164,9 +177,9 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             Phone = phone;
             FirstTick = true;
             SelectedItem = 0;
+            UpdateVisual();
             //await Phone.RotateAnimation(PhoneAnimation.SET_HORIZONTAL);
             //SetPhoneLean(true);
-            ClientMain.Instance.AddTick(TickVisual);
             ClientMain.Instance.AddTick(TickControls);
             Phone.SetSoftKeys(1, SoftKeys.DELETE, true, SColor.HUD_Red);
             Phone.SetSoftKeys(2, SoftKeys.SELECT, true, SColor.HUD_Freemode);
@@ -175,7 +188,6 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
 
         public override async void Kill()
         {
-            ClientMain.Instance.RemoveTick(TickVisual);
             ClientMain.Instance.RemoveTick(TickControls);
             /*
             Phone = phone;

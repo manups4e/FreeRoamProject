@@ -12,7 +12,6 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
         }
 
         private static bool FirstTick = true;
-        public override async Task TickVisual() { }
         public override async Task TickControls() { }
 
 

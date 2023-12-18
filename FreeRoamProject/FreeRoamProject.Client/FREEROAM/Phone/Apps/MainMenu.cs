@@ -1,5 +1,4 @@
 ﻿using FreeRoamProject.Client.FREEROAM.Phone.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,46 +17,45 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             ClientMain.Logger.Debug($"Apps totali {AllApps.Count}");
         }
 
-        public override async Task TickVisual()
+        public void ShowApps()
         {
-            try
+            if (Phone.Scaleform == null || AllApps == null) return;
+            for (int i = 0; i < 9; i++)
             {
-                if (Phone.Scaleform == null || AllApps == null) return;
-                for (int i = 0; i < 9; i++)
+                int icon = 3;
+                int unread = 0;
+                string name = "";
+                if (i < AllApps.Count)
                 {
-                    int icon = 3;
-                    int unread = 0;
-                    string name = "";
-                    if (i < AllApps.Count)
+                    if (AllApps[i].Icon != 0)
                     {
-                        if (AllApps[i].Icon != 0)
-                        {
-                            icon = (int)AllApps[i].Icon;
-                        }
-                        if (AllApps[i].Name == "CELL_1")
-                        {
-                            unread = AllApps[i].UnreadCount = Phone.getCurrentCharPhone().Messages.Count(x => x.Readed == Shared.Core.Character.MessageState.UNREAD_SMS);
-                        }
-                        name = AllApps[i].Name;
+                        icon = (int)AllApps[i].Icon;
                     }
-                    BeginScaleformMovieMethod(Phone.Scaleform.Handle, "SET_DATA_SLOT");
-                    ScaleformMovieMethodAddParamInt((int)CurrentView);
-                    ScaleformMovieMethodAddParamInt(i);
-                    ScaleformMovieMethodAddParamInt(icon);
-                    ScaleformMovieMethodAddParamInt(unread);
-                    BeginTextCommandScaleformString(name);
-                    EndTextCommandScaleformString();
-                    EndScaleformMovieMethod();
+                    switch (AllApps[i].Name)
+                    {
+                        case "CELL_1":
+                            unread = AllApps[i].UnreadCount = Phone.getCurrentCharPhone().Messages.Count(x => x.Read == Shared.Core.Character.MessageState.UNREAD_SMS);
+                            break;
+                        case "CELL_5":
+                            unread = AllApps[i].UnreadCount = Phone.getCurrentCharPhone().Emails.Count(x => x.Read == Shared.Core.Character.MessageState.UNREAD_EMAIL);
+                            break;
+                    }
+                    name = AllApps[i].Name;
                 }
+                BeginScaleformMovieMethod(Phone.Scaleform.Handle, "SET_DATA_SLOT");
+                ScaleformMovieMethodAddParamInt((int)CurrentView);
+                ScaleformMovieMethodAddParamInt(i);
+                ScaleformMovieMethodAddParamInt(icon);
+                ScaleformMovieMethodAddParamInt(unread); // adds the count to the unread count
+                BeginTextCommandScaleformString(name); // we don't need to set the header name via script.. scaleform does that for us 
+                EndTextCommandScaleformString();
+                EndScaleformMovieMethod();
+            }
 
-                Phone.Scaleform.CallFunction("DISPLAY_VIEW", (int)CurrentView, SelectedItem);
-                // the error shouldn't happen if we have all the apps!!!! anyway..
-            }
-            catch (Exception e)
-            {
-                ClientMain.Logger.Error($"{e}");
-            }
+            Phone.Scaleform.CallFunction("DISPLAY_VIEW", (int)CurrentView, SelectedItem);
+            // the error shouldn't happen if we have all the apps!!!! anyway..
         }
+
         public override async Task TickControls()
         {
             bool navigated = true;
@@ -67,6 +65,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                 Phone.Scaleform.CallFunction("SET_INPUT_EVENT", 1);
                 Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
                 SelectedItem = await Phone.Scaleform.CallFunctionReturnValueInt("GET_CURRENT_SELECTION");
+                Phone.Scaleform.CallFunction("DISPLAY_VIEW", (int)CurrentView, SelectedItem);
             }
             else if (Input.IsControlJustPressed(Control.PhoneDown))
             {
@@ -74,6 +73,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                 Phone.Scaleform.CallFunction("SET_INPUT_EVENT", 3);
                 Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
                 SelectedItem = await Phone.Scaleform.CallFunctionReturnValueInt("GET_CURRENT_SELECTION");
+                Phone.Scaleform.CallFunction("DISPLAY_VIEW", (int)CurrentView, SelectedItem);
             }
             else if (Input.IsControlJustPressed(Control.PhoneRight))
             {
@@ -81,6 +81,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                 Phone.Scaleform.CallFunction("SET_INPUT_EVENT", 2);
                 Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
                 SelectedItem = await Phone.Scaleform.CallFunctionReturnValueInt("GET_CURRENT_SELECTION");
+                Phone.Scaleform.CallFunction("DISPLAY_VIEW", (int)CurrentView, SelectedItem);
             }
             else if (Input.IsControlJustPressed(Control.PhoneLeft))
             {
@@ -88,6 +89,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                 Phone.Scaleform.CallFunction("SET_INPUT_EVENT", 4);
                 Game.PlaySound("Menu_Navigate", "Phone_SoundSet_Default");
                 SelectedItem = await Phone.Scaleform.CallFunctionReturnValueInt("GET_CURRENT_SELECTION");
+                Phone.Scaleform.CallFunction("DISPLAY_VIEW", (int)CurrentView, SelectedItem);
             }
             else if (Input.IsControlJustPressed(Control.PhoneSelect))
             {
@@ -100,20 +102,21 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                 Phone.ClosePhone();
             }
         }
-        public override void Initialize(Phone phone)
+        public override async void Initialize(Phone phone)
         {
             Phone = phone;
             SetPhoneLean(false);
+            ShowApps();
+            await BaseScript.Delay(100);
+            ShowApps();
             Phone.SetSoftKeys(1, SoftKeys.BLANK, false, SColor.HUD_Freemode);
             Phone.SetSoftKeys(2, SoftKeys.SELECT, true, SColor.HUD_Freemode);
             Phone.SetSoftKeys(3, SoftKeys.BACK, true, SColor.HUD_Red);
-            ClientMain.Instance.AddTick(TickVisual);
             ClientMain.Instance.AddTick(TickControls);
         }
 
         public override void Kill()
         {
-            ClientMain.Instance.RemoveTick(TickVisual);
             ClientMain.Instance.RemoveTick(TickControls);
         }
     }

@@ -102,7 +102,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             // same as playerContacts = playerContacts.Concat(Phone.getCurrentCharPhone().Contacts).ToList();
         }
 
-        public override async Task TickVisual()
+        public async Task TickVisual()
         {
             Phone.Scaleform.CallFunction("SET_DATA_SLOT_EMPTY", (int)CurrentView);
 
