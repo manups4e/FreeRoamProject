@@ -53,6 +53,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\StateBagHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\TimeWeather.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\WeaponData.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Tunables.cs" />
   </ItemGroup>
 </Project>

@@ -367,7 +367,6 @@ FodyWeavers.xsd
 /CompiledLibs/**/*.dll
 /CompiledLibs/**/*.pdb
 /CompiledLibs/**/*.json
-!/CompiledLibs/tunables.json
 !/CompiledLibs/fxmanifest.lua
 !/CompiledLibs/Client/pedComponentExtensions.lua
 /scripts/*.log

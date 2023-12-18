@@ -1,5 +1,4 @@
-﻿using FreeRoamProject.Client.GameMode.FREEROAM.Spawner;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -239,16 +238,6 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             TriggerMusicEvent("GLOBAL_KILL_MUSIC");
             playerPed.Position = new Vector3(262.687f, -875.486f, 29.153f);
             RenderScriptCams(false, false, 0, false, false);
-            FreeRoamCreator.Stop();
-            PlayerCache.MyClient.Status.Instance.RemoveInstance();
-            SwitchOutPlayer(PlayerCache.MyClient.Ped.Handle, 1, 1);
-            // wait until the camera has done the 3 steps.. only after we start
-            while (GetPlayerSwitchState() != 5) await BaseScript.Delay(0);
-
-            await BaseScript.Delay(2000);
-            await FreeRoamLogin.LoadPlayer();
-
-            /*
             playerPed.IsVisible = true;
             PlayerCache.MyClient.Status.Instance.RemoveInstance();
             playerPed.IsPositionFrozen = false;
@@ -263,7 +252,6 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             PlayerCache.MyClient.Status.PlayerStates.Spawned = true;
             PlayerCache.MyClient.Player.CanControlCharacter = true;
             FreeRoamCreator.Stop();
-            */
         }
 
         private static async Task Control()

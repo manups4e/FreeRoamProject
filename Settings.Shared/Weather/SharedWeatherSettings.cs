@@ -8,7 +8,7 @@ namespace Settings.Shared.Config.Generic
         public float Wind_speed_max { get; set; }
         public float Night_time_speed_mult { get; set; }
         public float Day_time_speed_mult { get; set; }
-        public bool Enable_dynamic_weather { get; set; } = true;
+        public bool Enable_dynamic_weather { get; set; }
         //public int Default_weather  { get; set; }
         public int Default_weather { get; set; }
         public int Weather_timer { get; set; }

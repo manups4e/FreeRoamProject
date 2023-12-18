@@ -19,8 +19,6 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Spawner
 
             Screen.LoadingPrompt.Show("Loading", LoadingSpinnerType.Clockwise1);
 
-            await Tunables.LoadTunables();
-
             uint model = PlayerCache.MyClient.User.Character.Skin.Model;
             while (!await PlayerCache.MyClient.Player.ChangeModel(new Model((PedHash)model))) await BaseScript.Delay(0);
 
@@ -39,9 +37,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Spawner
             EventDispatcher.Send("tlg:addPlayerToBucket");
             NetworkClearClockTimeOverride();
             await BaseScript.Delay(7000);
-            // TODO: FIND A BETTER SOLUTION TO SYNC WEATHER WHILE IN THE SKY
-            SharedWeather Weather = await EventDispatcher.Get<SharedWeather>("SyncWeatherForMe", true);
-            World.TransitionToWeather((Weather)Weather.CurrentWeather, 15f);
+            EventDispatcher.Send("SyncWeatherForMe", true);
             await BaseScript.Delay(2000);
             if (Screen.LoadingPrompt.IsActive)
                 Screen.LoadingPrompt.Hide();

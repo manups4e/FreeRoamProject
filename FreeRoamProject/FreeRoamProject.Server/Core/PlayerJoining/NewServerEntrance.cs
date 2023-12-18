@@ -54,7 +54,7 @@ namespace FreeRoamProject.Server.Core.PlayerJoining
                 //ServerMain.Logger.Warning(ServerMain.Impostazioni.ToJson());
                 //JoinResponse canJoin = await BotDiscordHandler.DoesPlayerHaveRole(source.GetLicense(Identifier.Discord), ServerMain.Impostazioni.Queue.Permissions, PlayerTokens);
 
-                if (source.Name.ToLower() == "manups4e"/*canJoin.allowed*/)
+                if (true/*canJoin.allowed*/)
                 {
                     if (!ServerMain.Debug)
                     {

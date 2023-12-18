@@ -10,21 +10,24 @@ namespace FreeRoamProject.Server.TimeWeather
     {
         //public static SharedWeather Weather;
         private static long _timer = 0;
-        private static bool isXmas = (DateTime.Now.Date.Month == 12 && DateTime.Now.Date.Day >= 8) || (DateTime.Now.Date.Month == 1 && DateTime.Now.Date.Day < 7);
+        private static DateTime xMasStart = new DateTime(DateTime.Now.Year, 12, 8);
+        private static DateTime xMasEnd = new DateTime(DateTime.Now.Year + 1, 1, 6);
         public static async void Init()
         {
             EventDispatcher.Mount("changeWeatherWithParams", new Action<PlayerClient, int, bool, bool>(ChangeWeatherWithParams));
             EventDispatcher.Mount("changeWeatherDynamic", new Action<PlayerClient, bool>(ChangeWeatherDynamic));
             EventDispatcher.Mount("changeWeather", new Action<int, bool>(ChangeWeather));
-            EventDispatcher.Mount("SyncWeatherForMe", new Func<PlayerClient, bool, Task<SharedWeather>>(SyncWeatherForMe));
+            EventDispatcher.Mount("SyncWeatherForMe", new Action<PlayerClient, bool>(SyncWeatherForMe));
 
             ServerMain.Instance.AddTick(Count);
         }
 
-        private static async Task<SharedWeather> SyncWeatherForMe([FromSource] PlayerClient p, bool startup)
+        private static void SyncWeatherForMe([FromSource] PlayerClient p, bool startup)
         {
             Shared.Core.Buckets.Bucket server = BucketsHandler.FreeRoam.GetPlayerBucket(p.Handle);
-            return server.Weather;
+            server.Weather.StartUp = startup;
+            EventDispatcher.Send(p, "tlg:getMeteo", server.Weather);
+            server.Weather.StartUp = false;
         }
 
         private static void ChangeWeatherWithParams([FromSource] PlayerClient p, int meteo, bool black, bool startup)
@@ -71,7 +74,7 @@ namespace FreeRoamProject.Server.TimeWeather
                     }
                     if (server.Value.Weather.DynamicWeather)
                     {
-                        if (!isXmas) // not xMas
+                        if (DateTime.Now.Date < xMasStart || DateTime.Now.Date > xMasEnd) // not xMas
                         {
                             if (server.Value.Weather.RainPossible)
                                 server.Value.Weather.RainTimer = -1;

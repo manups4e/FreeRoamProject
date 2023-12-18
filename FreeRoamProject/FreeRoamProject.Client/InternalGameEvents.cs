@@ -246,9 +246,6 @@ namespace FreeRoamProject.Client
                     break;
                 case "CEventNetworkPlayerCollectedAmbientPickup": // suuuuper useful
                     break;
-                case "CEventNetworkRemovedFromSessionDueToStall":
-                    // in case some network error appears? we better kick out the player to avoid session probles
-                    break;
             }
         }
     }

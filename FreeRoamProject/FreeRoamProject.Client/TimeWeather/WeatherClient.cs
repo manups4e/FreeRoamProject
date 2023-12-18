@@ -32,12 +32,10 @@ namespace FreeRoamProject.Client.TimeWeather
         {
             if (Weather != weather)
             {
-                OldWeather = Weather != null ? Weather.CurrentWeather : 0;
                 Weather = weather;
-                if (weather.CurrentWeather != OldWeather)
+                if (weather.CurrentWeather != (int)World.Weather)
                 {
                     World.TransitionToWeather((Weather)Weather.CurrentWeather, Weather.StartUp ? 1f : 45f);
-                    World.Weather = (Weather)Weather.CurrentWeather;
                     if (Weather.CurrentWeather == 10 || Weather.CurrentWeather == 11 || Weather.CurrentWeather == 12 || Weather.CurrentWeather == 13)
                     {
                         SetForceVehicleTrails(true);
