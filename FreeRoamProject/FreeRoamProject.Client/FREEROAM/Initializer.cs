@@ -32,13 +32,14 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM
             WeaponShops.Init();
             BankingClient.Init();
             PhoneMainClient.Init();
-            TickController.Init();
+            IdleChecker.Init();
             DialogueControllerClient.Init();
             // TODO: ADD STATISTICS HANDLING
             // TODO: ADD VEHICLES HANDLING
             // TODO: ADD APARTMENTS AND IPLS HANDLING
             // TODO: ADD BETTER DEATH HANDLING?
             SetAmbientPedsDropMoney(true);
+            TickController.Init();
             await Task.FromResult(0);
         }
 

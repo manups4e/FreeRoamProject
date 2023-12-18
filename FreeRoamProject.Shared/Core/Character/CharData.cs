@@ -94,6 +94,7 @@ namespace FreeRoamProject.Shared.Core.Character
         public int InviteSound { get; set; } = 1;
         public int QuickLaunch { get; set; } = 0;
         public List<Message> Messages = new List<Message>();
+        public List<Email> Emails = new List<Email>();
         public List<Contact> Contacts = new List<Contact>()
         {
             new("CELL_165", "CELL_MP_329", false),
@@ -140,14 +141,6 @@ namespace FreeRoamProject.Shared.Core.Character
 
         public PhoneData() { }
 
-
-        public PhoneData(dynamic result)
-        {
-            Theme = (int)result["Theme"].Value;
-            Wallpaper = (int)result["WallPaper"].Value;
-            // TODO: LOAD CONTACTS AND MESSAGES
-        }
-
         internal string GetPlayerRingtoneString()
         {
             return Ringtone switch
@@ -165,7 +158,10 @@ namespace FreeRoamProject.Shared.Core.Character
     }
     public enum MessageState
     {
-        NONE = 0,
+        NONE = -1,
+        UNREAD_EMAIL = 0,
+        READ_EMAIL = 1,
+        REPLIED_EMAIL = 2,
         UNREAD_SMS = 33,
         READ_SMS = 34
     }
@@ -174,18 +170,33 @@ namespace FreeRoamProject.Shared.Core.Character
         public string From { get; set; }
         public string TxtMessage { get; set; }
         public DateTime Date { get; set; }
-        public MessageState Readed { get; set; }
+        public MessageState Read { get; set; }
         public DeliveryType DeliveryType { get; set; }
         public string Mugshot { get; set; } = "CHAR_HUMANDEFAULT";
 
         public Message() { }
-        public Message(string _from, string _message, DateTime _data, MessageState readed, DeliveryType state)
+        public Message(string _from, string _message, DateTime _data, MessageState read, DeliveryType state)
         {
             this.From = _from;
             this.TxtMessage = _message;
             this.Date = _data;
-            Readed = readed;
+            Read = read;
             DeliveryType = state;
+        }
+    }
+
+    public class Email : Message
+    {
+        public string PictureTXD { get; set; }
+        public string PictureTXN { get; set; }
+        public string To { get; set; }
+        public Email() { }
+        public Email(string _from, string _to, string _message, DateTime _data, MessageState read, DeliveryType state, string pictureTXD = null, string pictureTXN = null)
+            : base(_from, _message, _data, read, state)
+        {
+            To = _to;
+            PictureTXD = pictureTXD;
+            PictureTXN = pictureTXN;
         }
     }
 

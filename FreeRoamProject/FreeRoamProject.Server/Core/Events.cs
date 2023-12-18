@@ -14,7 +14,7 @@ namespace FreeRoamProject.Server.Core
         public static void Init()
         {
             EventDispatcher.Mount("tlg:dropPlayer", new Action<PlayerClient, string>(Drop));
-            EventDispatcher.Mount("tlg:kickPlayerClient", new Action<string, string, int>(Kick));
+            EventDispatcher.Mount("tlg:kickPlayerClient", new Action<int, string>(Kick));
             EventDispatcher.Mount("tlg:CheckPing", new Action<PlayerClient>(Ping));
             EventDispatcher.Mount("tlg:checkAFK", new Action<PlayerClient>(AFK));
             EventDispatcher.Mount("tlg:banPlayer", new Action<string, string, bool, long, int>(BanPlayer));
@@ -178,13 +178,11 @@ namespace FreeRoamProject.Server.Core
             }
         }
 
-        private static void Kick(string target, string reason, int kicker)
+        private static void Kick(int target, string reason)
         {
             Player Target = Functions.GetPlayerFromId(target);
-            Player Kicker = Functions.GetPlayerFromId(kicker);
-            ServerMain.Logger.Warning($"Player {Kicker.Name} kicked {Target.Name} out of the server, Reason: {reason}");
-            BaseScript.TriggerEvent("tlg:serverLog", $"Player {Kicker.Name} kicked {Target.Name} out of the server, Reason: {reason}");
-            Target.Drop($"SHIELD 2.0 You have been kicked off the server:\nReason: {reason},\nKicked by: {Kicker.Name}");
+            ServerMain.Logger.Debug($"Target: {Target.Name}");
+            Target.Drop($"SHIELD 2.0 You have been kicked off the server:\nReason: {reason}");
         }
     }
 }

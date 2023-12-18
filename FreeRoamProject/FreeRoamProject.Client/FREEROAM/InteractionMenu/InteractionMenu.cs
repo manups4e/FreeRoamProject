@@ -2123,7 +2123,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             return val.ToString();
         }
 
-        static string GetAnimName(int iParam0, int chood)//Position - 0x23849A
+        public static string GetAnimName(int iParam0, int chood)//Position - 0x23849A
         {
             switch (iParam0)
             {
