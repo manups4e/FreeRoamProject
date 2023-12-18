@@ -672,7 +672,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model
         private static int Global_77389 = 0;
         public static List<int> Vehicles = new List<int>();
 
-        public static async void InitVehs(eWebsiteDynamic currentSite, Apps.WebBrowser parent)
+        public static void InitVehs(eWebsiteDynamic currentSite, Apps.WebBrowser parent)
         {
             switch (currentSite)
             {

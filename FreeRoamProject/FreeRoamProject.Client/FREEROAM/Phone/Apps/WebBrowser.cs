@@ -6,6 +6,7 @@ using FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model.Dynasty;
 using FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model.ForClosures;
 using FreeRoamProject.Client.Handlers;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
@@ -96,73 +97,79 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
 
             int currentSiteId = await GetSiteId();
             int currentPageId = await GetPageId();
+
             if (currentSiteId == -1 && currentPageId == -1) return;
+
 
             if (_currentSiteId != currentSiteId || _currentPageId != currentPageId)
             {
                 _currentSiteId = currentSiteId;
                 _currentPageId = currentPageId;
 
-                switch (currentSiteId)
+                if (CurrentSiteId != -1)
                 {
-                    case (int)eWebsiteDynamic.WWW_EYEFIND_INFO:
-                        if (currentPageId != 7 && currentPageId != 8)
-                        {
-                            SetDataSlotEmpty();
-                            EyeFind.SetupWebBrowserHeader(this, currentPageId);
-                        }
-                        break;
-                    case (int)eWebsiteDynamic.WWW_DYNASTY8REALESTATE_COM:
-                        {
-                            SetDataSlotEmpty();
-                            Dynasty8RealEstateHandler.LoadApartments(this);
-                            UpdateText();
-                        }
-                        break;
-                    case (int)eWebsiteDynamic.WWW_DYNASTY8EXECUTIVEREALTY_COM:
-                        {
-                            SetDataSlotEmpty();
-                            Dynasty8ExecutiveHandler.LoadOffices(this);
-                            UpdateText();
-                        }
-                        break;
-                    case (int)eWebsiteDynamic.FORECLOSURES_MAZE_D_BANK_COM: // func_7280
-                        {
-                            SetDataSlotEmpty();
-                            ForClosuresHandler.LoadProperties(this);
-                            UpdateText();
+                    switch (currentSiteId)
+                    {
+                        case (int)eWebsiteDynamic.WWW_EYEFIND_INFO:
+                            if (currentPageId != 7 && currentPageId != 8)
+                            {
+                                SetDataSlotEmpty();
+                                EyeFind.SetupWebBrowserHeader(this, currentPageId);
+                                UpdateText();
+                            }
                             break;
-                        }
+                        case (int)eWebsiteDynamic.WWW_DYNASTY8REALESTATE_COM:
+                            {
+                                SetDataSlotEmpty();
+                                Dynasty8RealEstateHandler.LoadApartments(this);
+                                UpdateText();
+                            }
+                            break;
+                        case (int)eWebsiteDynamic.WWW_DYNASTY8EXECUTIVEREALTY_COM:
+                            {
+                                SetDataSlotEmpty();
+                                Dynasty8ExecutiveHandler.LoadOffices(this);
+                                UpdateText();
+                            }
+                            break;
+                        case (int)eWebsiteDynamic.FORECLOSURES_MAZE_D_BANK_COM: // func_7280
+                            {
+                                SetDataSlotEmpty();
+                                ForClosuresHandler.LoadProperties(this);
+                                UpdateText();
+                                break;
+                            }
 
-                    case (int)eWebsiteDynamic.WWW_LEGENDARYMOTORSPORT_NET:
-                    case (int)eWebsiteDynamic.WWW_ELITASTRAVEL_COM:
-                    case (int)eWebsiteDynamic.WWW_WARSTOCK_D_CACHE_D_AND_D_CARRY_COM:
-                    case (int)eWebsiteDynamic.WWW_DOCKTEASE_COM:
-                    case (int)eWebsiteDynamic.WWW_PANDMCYCLES_COM:
-                    case (int)eWebsiteDynamic.WWW_SOUTHERNSANANDREASSUPERAUTOS_COM:
-                    case (int)eWebsiteDynamic.WWW_BENNYSORIGINALMOTORWORKS_COM:
-                    case (int)eWebsiteDynamic.WWW_ARENAWAR_TV:
-                        {
-                            SetDataSlotEmpty();
-                            VehicleSitesHandler.InitVehs((eWebsiteDynamic)currentSiteId, this);
-                            UpdateText();
-                        }
-                        //TODO: currentPageId IS THE ID OF THE VEHICLE
-                        // currentSelection for the color selection..
-                        // currentSelection can be also used for vehicle selection... ummmm
-                        break;
-                    case (int)eWebsiteDynamic.WWW_THEDIAMONDCASINOANDRESORT_COM:
-                        {
-                            SetDataSlotEmpty();
-                            DiamondCasinoHandler.LoadCasino(this);
-                            UpdateText();
-                        }
-                        break;
-                    case (int)eWebsiteDynamic.WWW_IWILLSURVIVEITALL_COM:
-                        {
+                        case (int)eWebsiteDynamic.WWW_LEGENDARYMOTORSPORT_NET:
+                        case (int)eWebsiteDynamic.WWW_ELITASTRAVEL_COM:
+                        case (int)eWebsiteDynamic.WWW_WARSTOCK_D_CACHE_D_AND_D_CARRY_COM:
+                        case (int)eWebsiteDynamic.WWW_DOCKTEASE_COM:
+                        case (int)eWebsiteDynamic.WWW_PANDMCYCLES_COM:
+                        case (int)eWebsiteDynamic.WWW_SOUTHERNSANANDREASSUPERAUTOS_COM:
+                        case (int)eWebsiteDynamic.WWW_BENNYSORIGINALMOTORWORKS_COM:
+                        case (int)eWebsiteDynamic.WWW_ARENAWAR_TV:
+                            {
+                                SetDataSlotEmpty();
+                                VehicleSitesHandler.InitVehs((eWebsiteDynamic)currentSiteId, this);
+                                UpdateText();
+                            }
+                            //TODO: currentPageId IS THE ID OF THE VEHICLE
+                            // currentSelection for the color selection..
+                            // currentSelection can be also used for vehicle selection... ummmm
+                            break;
+                        case (int)eWebsiteDynamic.WWW_THEDIAMONDCASINOANDRESORT_COM:
+                            {
+                                SetDataSlotEmpty();
+                                DiamondCasinoHandler.LoadCasino(this);
+                                UpdateText();
+                            }
+                            break;
+                        case (int)eWebsiteDynamic.WWW_IWILLSURVIVEITALL_COM:
+                            {
 
-                        }
-                        break;
+                            }
+                            break;
+                    }
                 }
                 if (currentPageId == 1 || currentPageId == 2)
                 {
@@ -470,76 +477,184 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                     Debug.WriteLine($"currentPage: " + CurrentPageId);
                     Debug.WriteLine($"currentSelection: " + CurrentSelection);
 
-
-                    switch (CurrentSiteId)
+                    if (CurrentSiteId != -1)
                     {
-                        case 2:
-                            if (CurrentSelection == 1)
-                            {
-                                int i = 10;
-                                while (i != 0)
+                        switch (CurrentSiteId)
+                        {
+                            case 2:
+                                if (CurrentSelection == 1)
                                 {
-                                    await BaseScript.Delay(0);
-                                    if (IsUsingKeyboard_2(2))
+                                    int i = 10;
+                                    while (i != 0)
                                     {
-                                        browser.CallFunction("SET_MOUSE_INPUT", Game.GetDisabledControlNormal(2, Control.CursorX), Game.GetDisabledControlNormal(2, Control.CursorY));
+                                        await BaseScript.Delay(0);
+                                        if (IsUsingKeyboard_2(2))
+                                        {
+                                            browser.CallFunction("SET_MOUSE_INPUT", Game.GetDisabledControlNormal(2, Control.CursorX), Game.GetDisabledControlNormal(2, Control.CursorY));
+                                        }
+                                        else
+                                        {
+                                            browser.CallFunction("SET_ANALOG_STICK_INPUT", 0f, 0f, 0f);
+                                            browserrollDistance = 0f;
+                                        }
+                                        i--;
                                     }
-                                    else
-                                    {
-                                        browser.CallFunction("SET_ANALOG_STICK_INPUT", 0f, 0f, 0f);
-                                        browserrollDistance = 0f;
-                                    }
-                                    i--;
                                 }
-                            }
-                            break;
-                        case 28:
-                            {
-                                if (CurrentPageId == 9)
+                                break;
+                            case 28:
+                                {
+                                    if (CurrentPageId == 9)
+                                    {
+                                        if (CurrentSelection == 7)
+                                        {
+                                            int bitwise = GetGlobalActionscriptFlag(13);
+                                            int idx = 0;
+                                            //ForClosuresHandler.GetPurchasedClubhouseData(bitwise, ref idx);
+                                        }
+                                    }
+                                    if (CurrentPageId == 36 && !ShowingVideo)
+                                    {
+                                        switch (CurrentSelection)
+                                        {
+                                            case 12:
+                                                DrawVideo("PL_WEB_LR1");
+                                                FrameCount = GetFrameCount() + 644;
+                                                break;
+
+                                            case 13:
+                                                DrawVideo("PL_WEB_LR2");
+                                                FrameCount = GetFrameCount() + 443;
+                                                break;
+
+                                            case 14:
+                                                DrawVideo("PL_WEB_LR3");
+                                                FrameCount = GetFrameCount() + 522;
+                                                break;
+
+                                            case 15:
+                                                DrawVideo("PL_WEB_LR4");
+                                                FrameCount = GetFrameCount() + 528;
+                                                break;
+                                        }
+                                    }
+
+                                    break;
+                                }
+
+                            case 30 when !ShowingVideo:
+                                if (CurrentPageId == 1 && CurrentSelection == 0)
+                                {
+                                    DrawVideo("PL_WEB_CAS");
+                                    FrameCount = GetFrameCount() + 2467 + 500;
+                                }
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        string website = await GetCurrentWebside();
+                        switch (website.ToLower())
+                        {
+                            case "www_fameorshame_net":
+                                if (!ShowingVideo)
+                                {
+                                    if (currentPageId == 2 && CurrentSelection == 6)
+                                    {
+                                        DrawVideo("PL_WEB_FOS");
+                                    }
+                                    else if (currentPageId == 1 && CurrentSelection == 8)
+                                    {
+                                        DrawVideo("PL_WEB_FOS");
+                                    }
+                                    else if (currentPageId == 4 && CurrentSelection == 8)
+                                    {
+                                        DrawVideo("PL_WEB_FOS");
+                                    }
+                                    else if (currentPageId == 4 && CurrentSelection == 8)
+                                    {
+                                        DrawVideo("PL_WEB_FOS");
+                                    }
+                                }
+                                break;
+                            case "www_jackhowitzer_com":
+                                if (!ShowingVideo)
                                 {
                                     if (CurrentSelection == 7)
                                     {
-                                        int bitwise = GetGlobalActionscriptFlag(13);
-                                        int idx = 0;
-                                        //ForClosuresHandler.GetPurchasedClubhouseData(bitwise, ref idx);
+                                        DrawVideo("PL_WEB_HOWITZER");
                                     }
                                 }
-                                if (CurrentPageId == 36 && !ShowingVideo)
+                                break;
+                            case "www_kungfurainbowlazerforce_com":
+                                if (!ShowingVideo)
+                                {
+                                    if (CurrentSelection == 6)
+                                    {
+                                        DrawVideo("PL_WEB_KFLF");
+                                    }
+                                }
+                                break;
+                            case "www_princessrobotbubblegum_com":
+                                if (IsDlcPresent(Functions.HashUint("patchday3ng")))
+                                {
+                                    if (!ShowingVideo)
+                                    {
+                                        if (CurrentSelection == 6)
+                                        {
+                                            DrawVideo("PL_WEB_PRB2");
+                                        }
+                                    }
+                                }
+                                break;
+                            case "www_republicanspacerangers_com":
+                                if (!ShowingVideo)
+                                {
+                                    if (CurrentSelection == 8)
+                                    {
+                                        DrawVideo("PL_WEB_RANGERS");
+                                    }
+                                }
+                                break;
+                            case "www_righteousslaughter7_com":
+                                if (!ShowingVideo)
+                                {
+                                    if (CurrentSelection == 3)
+                                    {
+                                        DrawVideo("PL_WEB_RS");
+                                    }
+                                }
+                                break;
+                            case "www_taco_d_bomb_com":
+                                if (currentPageId == 2)
                                 {
                                     switch (CurrentSelection)
                                     {
-                                        case 12:
-                                            DrawLightVideo("PL_WEB_LR1");
-                                            FrameCount = GetFrameCount() + 644;
+                                        case 0:
+                                            StartScriptedConversation(0);
                                             break;
-
-                                        case 13:
-                                            DrawLightVideo("PL_WEB_LR2");
-                                            FrameCount = GetFrameCount() + 443;
+                                        case 1:
+                                            StartScriptedConversation(1);
                                             break;
-
-                                        case 14:
-                                            DrawLightVideo("PL_WEB_LR3");
-                                            FrameCount = GetFrameCount() + 522;
+                                        case 2:
+                                            StartScriptedConversation(2);
                                             break;
-
-                                        case 15:
-                                            DrawLightVideo("PL_WEB_LR4");
-                                            FrameCount = GetFrameCount() + 528;
+                                        case 3:
+                                            StartScriptedConversation(3);
+                                            break;
+                                        case 4:
+                                            StartScriptedConversation(4);
+                                            break;
+                                        case 5:
+                                            StartScriptedConversation(5);
+                                            break;
+                                        case 6:
+                                            StartScriptedConversation(6);
                                             break;
                                     }
                                 }
-
                                 break;
-                            }
 
-                        case 30 when !ShowingVideo:
-                            if (CurrentPageId == 1 && CurrentSelection == 0)
-                            {
-                                DrawLightVideo("PL_WEB_CAS");
-                                FrameCount = GetFrameCount() + 2467 + 500;
-                            }
-                            break;
+                        }
                     }
                 }
             }
@@ -793,7 +908,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
 
         }
 
-        public void DrawLightVideo(string sParam0)//Position - 0x28464D
+        public void DrawVideo(string sParam0)//Position - 0x28464D
         {
             SetTvChannelPlaylist(0, sParam0, true);
             SetTvAudioFrontend(true);
@@ -810,6 +925,33 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             ShowingVideo = true;
         }
 
+        public async void StartScriptedConversation(int id)
+        {
+            switch (id)
+            {
+                case 0:
+                    await DialogueControllerClient.RunDialogue("PACOWAU", new Dictionary<int, string> { [1] = "PACO" }, "PACOW_TASTY");
+                    break;
+                case 1:
+                    await DialogueControllerClient.RunDialogue("PACOWAU", new Dictionary<int, string> { [1] = "PACO" }, "PACOW_COLON");
+                    break;
+                case 2:
+                    await DialogueControllerClient.RunDialogue("PACOWAU", new Dictionary<int, string> { [1] = "PACO" }, "PACOW_CSEC");
+                    break;
+                case 3:
+                    await DialogueControllerClient.RunDialogue("PACOWAU", new Dictionary<int, string> { [1] = "PACO" }, "PACOW_DOG");
+                    break;
+                case 4:
+                    await DialogueControllerClient.RunDialogue("PACOWAU", new Dictionary<int, string> { [1] = "PACO" }, "PACOW_VOMIT");
+                    break;
+                case 5:
+                    await DialogueControllerClient.RunDialogue("PACOWAU", new Dictionary<int, string> { [1] = "PACO" }, "PACOW_PAIN");
+                    break;
+                case 6:
+                    await DialogueControllerClient.RunDialogue("PACOWAU", new Dictionary<int, string> { [1] = "PACO" }, "PACOW_MELT");
+                    break;
+            }
+        }
         public void SetWidescreen(bool isWidescreen)
         {
             browser.CallFunction("SET_WIDESCREEN", isWidescreen);
