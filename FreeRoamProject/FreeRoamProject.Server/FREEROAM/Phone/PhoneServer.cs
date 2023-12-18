@@ -11,7 +11,10 @@ namespace FreeRoamProject.Server.FREEROAM.Phone
             EventDispatcher.Mount("tlg:phone:setSettings", new Action<PlayerClient, string, int>(SetSettings));
             EventDispatcher.Mount("tlg:phone:sendTextToPlayer", new Action<PlayerClient, int, string>(SendTextToPlayer));
             EventDispatcher.Mount("tlg:phone:deleteTextMessage", new Action<PlayerClient, int>(DeleteText));
-            EventDispatcher.Mount("tlg:phone:setTextMessageRead", new Action<PlayerClient, int>(SetAsRead));
+            EventDispatcher.Mount("tlg:phone:setTextMessageRead", new Action<PlayerClient, int>(SetTextAsRead));
+            EventDispatcher.Mount("tlg:phone:deleteEmail", new Action<PlayerClient, int>(DeleteEmail));
+            EventDispatcher.Mount("tlg:phone:setEmailRead", new Action<PlayerClient, int>(SetEmailAsRead));
+            EventDispatcher.Mount("tlg:phone:sendEmailToPlayer", new Action<PlayerClient, int, string>(SendEmailToPlayer));
         }
 
         public static void SetSettings([FromSource] PlayerClient player, string setting, int value)
@@ -55,9 +58,25 @@ namespace FreeRoamProject.Server.FREEROAM.Phone
             player.User.Character.PhoneData.Messages.RemoveAt(messageIndex);
             player.User.Character.PhoneData.Messages.OrderByDescending(x => x.Date);
         }
-        private static void SetAsRead([FromSource] PlayerClient player, int messageIndex)
+        private static void SetTextAsRead([FromSource] PlayerClient player, int messageIndex)
         {
-            player.User.Character.PhoneData.Messages[messageIndex].Readed = MessageState.READ_SMS;
+            player.User.Character.PhoneData.Messages[messageIndex].Read = MessageState.READ_SMS;
+        }
+        private static void DeleteEmail([FromSource] PlayerClient player, int messageIndex)
+        {
+            player.User.Character.PhoneData.Emails.RemoveAt(messageIndex);
+            player.User.Character.PhoneData.Emails.OrderByDescending(x => x.Date);
+        }
+        private static void SetEmailAsRead([FromSource] PlayerClient player, int messageIndex)
+        {
+            player.User.Character.PhoneData.Emails[messageIndex].Read = MessageState.READ_EMAIL;
+        }
+        private static void SendEmailToPlayer([FromSource] PlayerClient sender, int recevierHandle, string message)
+        {
+            PlayerClient receiver = ServerMain.Instance.Clients[recevierHandle];
+            Email msgToSend = new(sender.Player.Name, receiver.Player.Name, message, DateTime.Now, MessageState.UNREAD_EMAIL, DeliveryType.Received);
+            receiver.User.Character.PhoneData.Emails.Add(msgToSend);
+            receiver.TriggerSubsystemEvent("tlg:phone:receiveEmail", sender.Handle, msgToSend);
         }
     }
 }

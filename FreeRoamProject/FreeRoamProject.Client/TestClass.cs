@@ -11,7 +11,6 @@ namespace FreeRoamProject.Client
         public static async void Init()
         {
             ClientMain.Instance.AddTick(TestTick);
-
         }
         static bool pp = false;
         static MarkerEx dummyMarker = new(MarkerType.VerticalCylinder, WorldProbe.CrossairRaycastResult.HitPosition.ToPosition(), SColor.Blue);
