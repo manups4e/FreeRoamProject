@@ -237,13 +237,13 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
         {
             Ped playerPed = PlayerCache.MyClient.Ped;
             TriggerMusicEvent("GLOBAL_KILL_MUSIC");
+            SwitchOutPlayer(PlayerCache.MyClient.Ped.Handle, 1, 1);
+            // wait until the camera has done the 3 steps.. only after we start
+            while (GetPlayerSwitchState() != 5) await BaseScript.Delay(0);
             playerPed.Position = new Vector3(262.687f, -875.486f, 29.153f);
             RenderScriptCams(false, false, 0, false, false);
             FreeRoamCreator.Stop();
             PlayerCache.MyClient.Status.Instance.RemoveInstance();
-            SwitchOutPlayer(PlayerCache.MyClient.Ped.Handle, 1, 1);
-            // wait until the camera has done the 3 steps.. only after we start
-            while (GetPlayerSwitchState() != 5) await BaseScript.Delay(0);
 
             await BaseScript.Delay(2000);
             await FreeRoamLogin.LoadPlayer();
