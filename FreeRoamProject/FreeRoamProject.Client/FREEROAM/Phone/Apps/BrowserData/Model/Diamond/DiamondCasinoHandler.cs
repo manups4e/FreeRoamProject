@@ -1,10 +1,10 @@
 ﻿using FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model.Diamond;
-namespace FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model
+namespace FreeRoamProject.Client.FREEROAM.Phone.Apps.BrowserData.Model.Diamond
 {
     internal class DiamondCasinoHandler
     {
         public static DiamondCasino Casino = new();
-        public static void LoadCasino(Apps.WebBrowser parent) //func_7269
+        public static void LoadCasino(WebBrowser parent) //func_7269
         {
             #region bought casino?
             BeginScaleformMovieMethod(parent.browser.Handle, "SET_DATA_SLOT");

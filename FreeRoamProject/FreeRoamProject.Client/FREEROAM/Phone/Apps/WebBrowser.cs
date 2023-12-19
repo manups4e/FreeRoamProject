@@ -1,4 +1,6 @@
 ﻿using FreeRoamProject.Client.FREEROAM.Phone.Apps.BrowserData;
+using FreeRoamProject.Client.FREEROAM.Phone.Apps.BrowserData.Model.Diamond;
+using FreeRoamProject.Client.FREEROAM.Phone.Apps.BrowserData.Model.MazeBank;
 using FreeRoamProject.Client.FREEROAM.Phone.Models;
 using FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Data;
 using FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model;
@@ -129,6 +131,13 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                             {
                                 SetDataSlotEmpty();
                                 Dynasty8ExecutiveHandler.LoadOffices(this);
+                                UpdateText();
+                            }
+                            break;
+                        case (int)eWebsiteDynamic.WWW_MAZE_D_BANK_COM:
+                            {
+                                SetDataSlotEmpty();
+                                MazeBankHandler.LoadBank(this);
                                 UpdateText();
                             }
                             break;
@@ -501,6 +510,9 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                                     }
                                 }
                                 break;
+                            case 21:
+                                MazeBankHandler.HandleClick(this);
+                                break;
                             case 28:
                                 {
                                     if (CurrentPageId == 9)
@@ -509,7 +521,19 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                                         {
                                             int bitwise = GetGlobalActionscriptFlag(13);
                                             int idx = 0;
-                                            //ForClosuresHandler.GetPurchasedClubhouseData(bitwise, ref idx);
+                                            int wall = 0;
+                                            int hanging = 0;
+                                            int furniture = 0;
+                                            int mural = 0;
+                                            int font = 0;
+                                            int fontColour = 0;
+                                            int emblem = 0;
+                                            bool hideSignage = false;
+                                            string signage = "";
+                                            bool gunLocker = false;
+                                            bool bikeShop = false;
+
+                                            ForClosuresHandler.GetPurchasedClubhouseData(bitwise, ref idx, ref wall, ref hanging, ref furniture, ref mural, ref font, ref fontColour, ref emblem, ref hideSignage, ref signage, ref gunLocker, ref bikeShop);
                                         }
                                     }
                                     if (CurrentPageId == 36 && !ShowingVideo)
