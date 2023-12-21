@@ -17,7 +17,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Character\CharData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Character\DressingShared.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ClientList.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\Encryption.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\ContractResolvers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\Math.cs" />

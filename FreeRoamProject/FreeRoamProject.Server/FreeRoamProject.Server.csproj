@@ -23,16 +23,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CitizenFX.Core.Server" Version="1.0.7114" />
+    <PackageReference Include="CitizenFX.Core.Server" Version="1.0.7257" />
 	  <PackageReference Include="Confuser.MSBuild" Version="2.0.0-alpha-0191">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
-	  <PackageReference Include="Dapper" Version="2.1.21">
+	  <PackageReference Include="Dapper" Version="2.1.24">
 		  <GeneratePathProperty>False</GeneratePathProperty>
 	  </PackageReference>
-	  <PackageReference Include="FxEvents.Server" Version="2.5.4" />
-	  <PackageReference Include="MySqlConnector" Version="2.3.1" />
+	  <PackageReference Include="FxEvents.Server" Version="2.6.0" />
+	  <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+	  <PackageReference Include="MySqlConnector" Version="2.3.3" />
 	  <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
 

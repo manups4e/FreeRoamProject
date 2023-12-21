@@ -8,7 +8,7 @@ namespace FreeRoamProject.Shared
         public static async Task LoadTunables()
         {
             if (Global_262145 != null) return;
-            string json = LoadResourceFile(GetCurrentResourceName(), "tunables.json");
+            string json = LoadResourceFile(GetCurrentResourceName(), "files/tunables.json");
             Global_262145 = JObject.Parse(json);
         }
         public static JObject Global_262145 { get; set; }

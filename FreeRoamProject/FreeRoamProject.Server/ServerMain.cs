@@ -30,7 +30,6 @@ namespace FreeRoamProject.Server
 
         public ServerMain()
         {
-            EventDispatcher.Initalize("qIFBYn6qv7ZxbGLT7uzpFHa1wPCpmIHbDTWGJ8fy", "QNrAF12UC1qOvnhL6JEShdEdNiCyASUbbNpvyZPG", "Pi5V5nvCki0BcwppyczIfgy3ZZCJPqaYAeQsLZOs");
             Instance = this;
             Logger = new DebugLog();
 #if DEBUG
@@ -50,6 +49,10 @@ namespace FreeRoamProject.Server
 
         private async void StartServer()
         {
+            string encryptionKey = LoadResourceFile(GetCurrentResourceName(), "files/passkey.bin");
+            if (encryptionKey == "?")
+                Logger.Fatal("Error reading Encryption key");
+            EventDispatcher.Initalize("qIFBYn6qv7ZxbGLT7uzpFHa1wPCpmIHbDTWGJ8fy", "QNrAF12UC1qOvnhL6JEShdEdNiCyASUbbNpvyZPG", "Pi5V5nvCki0BcwppyczIfgy3ZZCJPqaYAeQsLZOs", encryptionKey);
             StateBagsHandler = new StateBagsHandler();
             WebRequest = new();
             await ClassCollector.Init();

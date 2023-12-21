@@ -39,14 +39,16 @@ namespace FreeRoamProject.Client
 
         public ClientMain()
         {
-            // we could add the events in a lua config file.. randomize the string at every restart.. 
-            EventDispatcher.Initalize("qIFBYn6qv7ZxbGLT7uzpFHa1wPCpmIHbDTWGJ8fy", "QNrAF12UC1qOvnhL6JEShdEdNiCyASUbbNpvyZPG", "Pi5V5nvCki0BcwppyczIfgy3ZZCJPqaYAeQsLZOs");
             Logger = new();
             SnowflakeGenerator.Create(new Random().NextShort(1, 199));
             Instance = this;
             Clients = new();
             NuiManager = new();
             Settings = new();
+            string encryptionKey = LoadResourceFile(GetCurrentResourceName(), "files/passkey.bin");
+            if (encryptionKey == "?")
+                Logger.Fatal("Error reading Encryption key");
+            EventDispatcher.Initalize("qIFBYn6qv7ZxbGLT7uzpFHa1wPCpmIHbDTWGJ8fy", "QNrAF12UC1qOvnhL6JEShdEdNiCyASUbbNpvyZPG", "Pi5V5nvCki0BcwppyczIfgy3ZZCJPqaYAeQsLZOs", encryptionKey);
             TestClass.Init(); // TO BE REMOVED
             InputHandler.Init();
             InternalGameEvents.Init();
