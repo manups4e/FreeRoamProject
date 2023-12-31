@@ -16,12 +16,9 @@ namespace FreeRoamProject.Client.Core.Debug
         private static float Height = 0;
         public static void Init()
         {
-            if (PlayerCache.MyClient.User.group_level >= UserGroup.Developer)
-            {
-                InputHandler.AddInput(noclip);
-                InputHandler.AddInput(teleport);
-                InputHandler.AddInput(camera);
-            }
+            InputHandler.AddInput(noclip);
+            InputHandler.AddInput(teleport);
+            InputHandler.AddInput(camera);
         }
 
         private static void Teleport(Ped p, object[] args)
