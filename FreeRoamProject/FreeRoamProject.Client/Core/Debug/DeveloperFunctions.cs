@@ -87,6 +87,7 @@ namespace FreeRoamProject.Client.Core.Debug
 
                 ClearAllHelpMessages();
                 NoClip = false;
+                ScaleformUI.Main.InstructionalButtons.ClearButtonList();
             }
         }
         public static bool NoClip = false;
@@ -246,6 +247,7 @@ namespace FreeRoamProject.Client.Core.Debug
 
                 ClearAllHelpMessages();
                 NoClip = false;
+                ScaleformUI.Main.InstructionalButtons.ClearButtonList();
             }
         }
 
