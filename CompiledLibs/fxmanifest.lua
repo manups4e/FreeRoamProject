@@ -7,8 +7,7 @@ clr_experimental_2021_12_31_use_sync_context 'on'
 
 files {
 	--"html/**/*",
-    'files/tunables.json',
-    'files/passkey.bin',
+    'files/**/*',
     'Client/Newtonsoft.Json.dll',
     'Client/ScaleformUI.dll',
     'Client/FxEvents.Client.dll',

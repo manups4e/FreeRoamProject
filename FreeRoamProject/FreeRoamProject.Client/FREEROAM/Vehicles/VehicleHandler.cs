@@ -1,13 +1,12 @@
 ﻿using FreeRoamProject.Shared.Core.Character;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace FreeRoamProject.Client.FREEROAM.Vehicles
 {
     public static class VehicleHandler
     {
-        public static async Task<VehProp> GetVehicleProperties(this Vehicle veh)
+        public static VehProp GetVehicleProperties(this Vehicle veh)
         {
             bool[] extras = new bool[13];
             for (int i = 0; i < 13; i++) extras[i] = veh.IsExtraOn(i);

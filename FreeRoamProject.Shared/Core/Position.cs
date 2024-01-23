@@ -10,9 +10,9 @@ namespace FreeRoamProject.Shared
         public float Y { get; set; }
         public float Z { get; set; }
         public float Heading { get => Roll; set => Roll = value; }
-        public float Yaw { get; set; }
-        public float Pitch { get; set; }
         public float Roll { get; set; }
+        public float Pitch { get; set; }
+        public float Yaw { get; set; }
 
         public static readonly Position Zero = new();
 
@@ -38,18 +38,18 @@ namespace FreeRoamProject.Shared
             X = x;
             Y = y;
             Z = z;
-            Roll = heading;
+            Yaw = heading;
         }
 
 
-        public Position(float x, float y, float z, float yaw, float pitch, float roll)
+        public Position(float x, float y, float z, float roll, float pitch, float yaw)
         {
             X = x;
             Y = y;
             Z = z;
-            Yaw = yaw;
-            Pitch = pitch;
             Roll = roll;
+            Pitch = pitch;
+            Yaw = yaw;
         }
 
         public Position(Vector3 value)
@@ -64,9 +64,9 @@ namespace FreeRoamProject.Shared
             X = pos.X;
             Y = pos.Y;
             Z = pos.Z;
-            Yaw = rot.X;
+            Roll = rot.X;
             Pitch = rot.Y;
-            Roll = rot.Z;
+            Yaw = rot.Z;
         }
 
         public Position(Vector3 value, float heading)
@@ -74,10 +74,10 @@ namespace FreeRoamProject.Shared
             X = value.X;
             Y = value.Y;
             Z = value.Z;
-            Roll = heading;
+            Yaw = heading;
         }
 
-        public Position(Vector3 pos, float yaw, float pitch, float roll)
+        public Position(Vector3 pos, float roll, float pitch, float yaw)
         {
             X = pos.X;
             Y = pos.Y;
@@ -92,9 +92,9 @@ namespace FreeRoamProject.Shared
             X = reader.ReadSingle();
             Y = reader.ReadSingle();
             Z = reader.ReadSingle();
-            Yaw = reader.ReadSingle();
-            Pitch = reader.ReadSingle();
             Roll = reader.ReadSingle();
+            Pitch = reader.ReadSingle();
+            Yaw = reader.ReadSingle();
         }
 
         public void PackSerializedBytes(BinaryWriter writer)
@@ -102,9 +102,9 @@ namespace FreeRoamProject.Shared
             writer.Write(X);
             writer.Write(Y);
             writer.Write(Z);
-            writer.Write(Yaw);
-            writer.Write(Pitch);
             writer.Write(Roll);
+            writer.Write(Pitch);
+            writer.Write(Yaw);
         }
 
         public Position Subtract(Position position)
@@ -141,6 +141,24 @@ namespace FreeRoamProject.Shared
 
             return this;
         }
+
+        public bool AreAlmostEqual(Vector3 v1, float fTolerance = 0.5f, bool bDisregardZ = false)
+        {
+            if (fTolerance < 0)
+                fTolerance = 0;
+            if (!bDisregardZ)
+            {
+                if (Math.Abs(X - v1.X) <= fTolerance && Math.Abs(Y - v1.Y) <= fTolerance && Math.Abs(Z - v1.Z) <= fTolerance)
+                    return true;
+            }
+            else
+            {
+                if (Math.Abs(X - v1.X) <= fTolerance && Math.Abs(Y - v1.Y) <= fTolerance)
+                    return true;
+            }
+            return false;
+        }
+
 
         public Position Clone() => new(X, Y, Z, Yaw, Pitch, Roll);
 
@@ -213,6 +231,22 @@ namespace FreeRoamProject.Shared
             return (float)Math.Sqrt((x * x) + (y * y) + (z * z));
         }
 
+        public static bool AreAlmostEqual(Position pos, Vector3 v1, float fTolerance = 0.5f, bool bDisregardZ = false)
+        {
+            if (fTolerance < 0)
+                fTolerance = 0;
+            if (!bDisregardZ)
+            {
+                if (Math.Abs(pos.X - v1.X) <= fTolerance && Math.Abs(pos.Y - v1.Y) <= fTolerance && Math.Abs(pos.Z - v1.Z) <= fTolerance)
+                    return true;
+            }
+            else
+            {
+                if (Math.Abs(pos.X - v1.X) <= fTolerance && Math.Abs(pos.Y - v1.Y) <= fTolerance)
+                    return true;
+            }
+            return false;
+        }
         public float LengthSquared()
         {
             return (X * X) + (Y * Y) + (Z * Z);

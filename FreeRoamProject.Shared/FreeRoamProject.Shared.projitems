@@ -11,12 +11,24 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Config\ConfigShared.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\AccessingEvents.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ApartmentsShared\ApartmentData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ApartmentsShared\Enums\BuildingsEnum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ApartmentsShared\Enums\BuzzerType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ApartmentsShared\Enums\ElementLockBlock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ApartmentsShared\Enums\EntranceType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ApartmentsShared\Enums\GarageSize.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ApartmentsShared\Enums\PropertiesEnum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ApartmentsShared\Enums\PropertyPropElements.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ApartmentsShared\Enums\PropertySizeType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ApartmentsShared\Enums\PropertyType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ApartmentsShared\Enums\SafeActs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\BankingTransactionHashes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\BaseEventsShared.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buckets\Bucket.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Character\CharData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Character\DressingShared.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ClientList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Doors\Doors.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\ContractResolvers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Extensions\Math.cs" />

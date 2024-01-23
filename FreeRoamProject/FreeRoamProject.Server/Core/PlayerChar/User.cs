@@ -224,7 +224,10 @@ namespace FreeRoamProject.Server.Core.PlayerChar
                     isPayment = false;
                     break;
             }
-            Bank += amount;
+            if (isPayment)
+                Bank -= amount;
+            else
+                Bank += amount;
             Character.Finance.Transactions.Add(new BankTransaction(isPayment, amount, transactionLabel, playerName));
         }
 

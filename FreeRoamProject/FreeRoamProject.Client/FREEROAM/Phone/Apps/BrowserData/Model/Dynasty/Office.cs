@@ -1,4 +1,6 @@
 ﻿using FreeRoamProject.Client.FREEROAM.Phone.Apps.BrowserData;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model.Dynasty
 {
@@ -1751,11 +1753,11 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model.Dynasty
                 58 => Tunables.Global_262145.Value<int>("f_4017") /* Tunable: PROPERTY_GARAGE_NEW_21_EXPENDITURE_MODIFIER */,
                 59 => Tunables.Global_262145.Value<int>("f_4018") /* Tunable: PROPERTY_GARAGE_NEW_22_EXPENDITURE_MODIFIER */,
                 60 => Tunables.Global_262145.Value<int>("f_4019") /* Tunable: PROPERTY_GARAGE_NEW_23_EXPENDITURE_MODIFIER */,
-                61 => Tunables.Global_262145.Value<int[]>("f_7146")[0],
-                62 => Tunables.Global_262145.Value<int[]>("f_7146")[1],
-                63 => Tunables.Global_262145.Value<int[]>("f_7146")[2],
-                64 => Tunables.Global_262145.Value<int[]>("f_7146")[3],
-                65 => Tunables.Global_262145.Value<int[]>("f_7146")[4],
+                61 => Tunables.Global_262145.Value<JArray>("f_7146").ToObject<List<int>>()[0],
+                62 => Tunables.Global_262145.Value<JArray>("f_7146").ToObject<List<int>>()[1],
+                63 => Tunables.Global_262145.Value<JArray>("f_7146").ToObject<List<int>>()[2],
+                64 => Tunables.Global_262145.Value<JArray>("f_7146").ToObject<List<int>>()[3],
+                65 => Tunables.Global_262145.Value<JArray>("f_7146").ToObject<List<int>>()[4],
                 66 => Tunables.Global_262145.Value<int>("f_8461") /* Tunable: PROPERTY_3_ACE_JONES_DR */,
                 67 => Tunables.Global_262145.Value<int>("f_8462") /* Tunable: PROPERTY_12_SUSTANCIA_RD */,
                 68 => Tunables.Global_262145.Value<int>("f_8463") /* Tunable: PROPERTY_4584_PROCOPIO_DR */,
@@ -3173,11 +3175,11 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model.Dynasty
                 58 => Tunables.Global_262145.Value<int>("f_4017") /* Tunable: PROPERTY_GARAGE_NEW_21_EXPENDITURE_MODIFIER */,
                 59 => Tunables.Global_262145.Value<int>("f_4018") /* Tunable: PROPERTY_GARAGE_NEW_22_EXPENDITURE_MODIFIER */,
                 60 => Tunables.Global_262145.Value<int>("f_4019") /* Tunable: PROPERTY_GARAGE_NEW_23_EXPENDITURE_MODIFIER */,
-                61 => Tunables.Global_262145.Value<int[]>("f_7146")[0],
-                62 => Tunables.Global_262145.Value<int[]>("f_7146")[1],
-                63 => Tunables.Global_262145.Value<int[]>("f_7146")[2],
-                64 => Tunables.Global_262145.Value<int[]>("f_7146")[3],
-                65 => Tunables.Global_262145.Value<int[]>("f_7146")[4],
+                61 => Tunables.Global_262145.Value<JArray>("f_7146").ToObject<List<int>>()[0],
+                62 => Tunables.Global_262145.Value<JArray>("f_7146").ToObject<List<int>>()[1],
+                63 => Tunables.Global_262145.Value<JArray>("f_7146").ToObject<List<int>>()[2],
+                64 => Tunables.Global_262145.Value<JArray>("f_7146").ToObject<List<int>>()[3],
+                65 => Tunables.Global_262145.Value<JArray>("f_7146").ToObject<List<int>>()[4],
                 66 => Tunables.Global_262145.Value<int>("f_8461") /* Tunable: PROPERTY_3_ACE_JONES_DR */,
                 67 => Tunables.Global_262145.Value<int>("f_8462") /* Tunable: PROPERTY_12_SUSTANCIA_RD */,
                 68 => Tunables.Global_262145.Value<int>("f_8463") /* Tunable: PROPERTY_4584_PROCOPIO_DR */,

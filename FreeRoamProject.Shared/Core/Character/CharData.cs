@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using FreeRoamProject.Shared.Properties.Enums;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -549,19 +550,6 @@ namespace FreeRoamProject.Shared.Core.Character
             VehData = data;
             Garage = garage;
         }
-        public OwnedVehicle(string targa, string veh_data, string garage, string stato)
-        {
-            Plate = targa;
-            VehData = veh_data.FromJson<VehicleData>(settings: JsonHelper.IgnoreJsonIgnoreAttributes);
-            Garage = garage.FromJson<VehGarage>(settings: JsonHelper.IgnoreJsonIgnoreAttributes);
-        }
-
-        public OwnedVehicle(dynamic data)
-        {
-            Plate = data.targa;
-            VehData = (data.vehicle_data as string).FromJson<VehicleData>(settings: JsonHelper.IgnoreJsonIgnoreAttributes);
-            Garage = (data.garage as string).FromJson<VehGarage>(settings: JsonHelper.IgnoreJsonIgnoreAttributes);
-        }
     }
 
 
@@ -658,5 +646,20 @@ namespace FreeRoamProject.Shared.Core.Character
             ModName = name;
             ModType = type;
         }
+    }
+
+    public class OwnedProperty
+    {
+        public int ID { get; set; }
+        public int InteriorOption { get; set; } = -1;
+        public int TintOption { get; set; } = -1;
+        public OwnedPropertyGarage Garage = new();
+    }
+
+    public class OwnedPropertyGarage
+    {
+        public GarageSize GarageSize { get; set; }
+        public int[] VehicleInSlot { get; set; }
+        public int[] VehicleStateSlot { get; set; }
     }
 }

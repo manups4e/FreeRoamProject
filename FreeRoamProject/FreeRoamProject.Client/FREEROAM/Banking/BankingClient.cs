@@ -106,10 +106,11 @@ namespace FreeRoamProject.FREEROAM.Banking
 
         private static List<ObjectHash> ATMs = new List<ObjectHash>() { ObjectHash.prop_atm_01, ObjectHash.prop_atm_02, ObjectHash.prop_atm_03, ObjectHash.prop_fleeca_atm };
         #endregion
+        private static bool showFixed;
 
         private static Prop ClosestATM;
         public static bool InterfaceOpen = false;
-        public static bool MoneyHUDShowing = false;
+        public static bool MoneyHUDShowing { get; set; } = false;
         private static int transactionMoney = 0;
         private static int currentAnimState = 0;
         private static int iLocal_505 = -1;
@@ -151,8 +152,11 @@ namespace FreeRoamProject.FREEROAM.Banking
             PlayerCache.Character.Finance.Money += mon;
             N_0xe67c6dfd386ea5e7(false); //_ALLOW_ADDITIONAL_INFO_FOR_MULTIPLAYER_HUD_CASH
             StatSetInt(Functions.HashUint("MP0_WALLET_BALANCE"), PlayerCache.Character.Finance.Money, true);
-            await BaseScript.Delay(5000);
-            MoneyHUDShowing = false;
+            if (!showFixed)
+            {
+                await BaseScript.Delay(5000);
+                MoneyHUDShowing = false;
+            }
         }
 
         private static async void UpdateBank(int mon)
@@ -161,20 +165,30 @@ namespace FreeRoamProject.FREEROAM.Banking
             PlayerCache.Character.Finance.Bank += mon;
             N_0xe67c6dfd386ea5e7(false); //_ALLOW_ADDITIONAL_INFO_FOR_MULTIPLAYER_HUD_CASH
             StatSetInt(Functions.HashUint("BANK_BALANCE"), PlayerCache.Character.Finance.Bank, true);
+            if (!showFixed)
+            {
+                await BaseScript.Delay(5000);
+                MoneyHUDShowing = false;
+            }
         }
 
-        public static async void ShowMoney()
+        public static async void ShowMoney(int time = 5000)
         {
             MoneyHUDShowing = true;
             N_0xe67c6dfd386ea5e7(false); //_ALLOW_ADDITIONAL_INFO_FOR_MULTIPLAYER_HUD_CASH
             SetMultiplayerWalletCash();
             SetMultiplayerBankCash();
-            await BaseScript.Delay(5000);
-            MoneyHUDShowing = false;
+            showFixed = time == -1;
+            if (!showFixed)
+            {
+                await BaseScript.Delay(time);
+                MoneyHUDShowing = false;
+            }
         }
 
         public static void HideMoney()
         {
+            if (showFixed) showFixed = false;
             RemoveMultiplayerWalletCash();
             RemoveMultiplayerBankCash();
             MoneyHUDShowing = false;

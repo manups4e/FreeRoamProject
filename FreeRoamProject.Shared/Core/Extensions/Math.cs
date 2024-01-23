@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 
 namespace FreeRoamProject.Shared
@@ -465,7 +466,7 @@ namespace FreeRoamProject.Shared
             return (Math.Pow(pointToCheckX - circleCenterPointX, 2) + Math.Pow(pointToCheckY - circleCenterPointY, 2)) < (Math.Pow(circleRadius, 2));
         }
 
-        public static bool PointIsWithinSphere(float sphereRadius, Vector3 SphereCenter, Vector3 PointToCheck)
+        public static bool PointIsWithinSphere(float sphereRadius, CitizenFX.Core.Vector3 SphereCenter, CitizenFX.Core.Vector3 PointToCheck)
         {
             return (Math.Pow(SphereCenter.X - PointToCheck.X, 2) + Math.Pow(SphereCenter.Y - PointToCheck.Y, 2) + Math.Pow(SphereCenter.Z - PointToCheck.Z, 2)) < Math.Pow(sphereRadius, 2);
         }
@@ -527,6 +528,25 @@ namespace FreeRoamProject.Shared
 
             return new Tuple<int, int>(mins, secs);
         }
+        public static BigInteger ToBigInteger(this byte[] bytes)
+        {
+            if (bytes == null)
+                throw new ArgumentNullException(nameof(bytes));
 
+            BigInteger result = 0;
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                result = (result << 8) | bytes[i];
+            }
+            return result;
+        }
+
+        public static byte[] FromBigInteger(this BigInteger bigInt)
+        {
+            if (bigInt == null)
+                throw new ArgumentNullException(nameof(bigInt));
+
+            return bigInt.ToByteArray();
+        }
     }
 }

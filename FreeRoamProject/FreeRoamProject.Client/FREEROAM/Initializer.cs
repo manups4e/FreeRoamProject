@@ -1,5 +1,6 @@
 ﻿using FreeRoamProject.Client.FREEROAM.Phone;
 using FreeRoamProject.Client.FREEROAM.PlayerList;
+using FreeRoamProject.Client.FREEROAM.Properties;
 using FreeRoamProject.Client.GameMode.FREEROAM.Managers;
 using FreeRoamProject.Client.GameMode.FREEROAM.Scripts.Negozi;
 using FreeRoamProject.Client.GameMode.FREEROAM.Scripts.PauseMenu;
@@ -33,6 +34,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM
             BankingClient.Init();
             PhoneMainClient.Init();
             IdleChecker.Init();
+            PropertiesExteriorsManager.Init();
             DialogueControllerClient.Init();
             // TODO: ADD STATISTICS HANDLING
             // TODO: ADD VEHICLES HANDLING

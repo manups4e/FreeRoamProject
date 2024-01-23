@@ -64,9 +64,8 @@ namespace FreeRoamProject.Client.Core.Utility
         {
             Screen.Fading.FadeOut(500);
             await BaseScript.Delay(1000);
-            StartPlayerTeleport(PlayerId(), pos.X, pos.Y, pos.Z, 0, true, true, true);
+            StartPlayerTeleport(PlayerId(), pos.X, pos.Y, pos.Z, pos.Heading, true, true, true);
             while (!HasPlayerTeleportFinished(PlayerId())) await BaseScript.Delay(0);
-            await BaseScript.Delay(2000);
             Screen.Fading.FadeIn(500);
             //Funzioni.Teleport(pos);
         }

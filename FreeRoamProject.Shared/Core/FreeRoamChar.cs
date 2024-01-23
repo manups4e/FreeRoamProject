@@ -43,7 +43,8 @@ namespace FreeRoamProject.Shared
         public Skin Skin { get; set; }
         public List<Weapons> Weapons { get; set; }
         //TODO: SAVE ALSO PROPERTY PREFERENCES, MAKE A CLASS FOR IT
-        public List<string?> Properties { get; set; }
+        public List<OwnedProperty> Properties { get; set; }
+        public List<OwnedProperty> Apartments { get; set; }
         public List<OwnedVehicle> Vehicles { get; set; }
         public PhoneData PhoneData { get; set; }
         public Dressing Dressing { get; set; }
@@ -78,9 +79,9 @@ namespace FreeRoamProject.Shared
             Skin = skin;
             Dressing = dressing;
             PhoneData = phoneData;
-            Weapons = new List<Weapons>();
-            Properties = new List<string?>();
-            Vehicles = new List<OwnedVehicle>();
+            Weapons = [];
+            Properties = [];
+            Vehicles = [];
             Statistics = statistiche;
             Stats = savedStates;
         }

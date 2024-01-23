@@ -1,0 +1,22 @@
+﻿namespace FreeRoamProject.Shared.Properties.Enums
+{
+    public enum ElementLockBlock
+    {
+        ELEMENT_LOC_BLOCK_BASE = 0,
+        ELEMENT_LOC_BLOCK_HI_APT = 1,
+        ELEMENT_LOC_BLOCK_EXTRA_1 = 2,
+        ELEMENT_LOC_BLOCK_EXTRA_2 = 3,
+        ELEMENT_LOC_BLOCK_EXTRA_3 = 4,
+        ELEMENT_LOC_BLOCK_EXTRA_4 = 5,
+        ELEMENT_LOC_BLOCK_EXTRA_5 = 6,
+        ELEMENT_LOC_BLOCK_EXTRA_6 = 7,
+        ELEMENT_LOC_BLOCK_EXTRA_7 = 8,
+        ELEMENT_LOC_BLOCK_EXTRA_8 = 9,
+        ELEMENT_LOC_BLOCK_EXTRA_9 = 10,
+        ELEMENT_LOC_BLOCK_EXTRA_10 = 11,
+        ELEMENT_LOC_BLOCK_EXTRA_11 = 12,
+        ELEMENT_LOC_BLOCK_EXTRA_12 = 13,
+        ELEMENT_LOC_BLOCK_EXTRA_13 = 14,
+        ELEMENT_LOC_BLOCK_EXTRA_14 = 15
+    }
+}

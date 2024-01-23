@@ -301,7 +301,7 @@ namespace FreeRoamProject.Client.Core.Utility
 
             return "UNK";
         }
-        public static async void Teleport(Vector3 coords)
+        public static async void Teleport(Vector3 coords, float heading)
         {
             Ped playerPed = PlayerCache.MyClient.Ped;
             ClearPedTasksImmediately(playerPed.Handle);
@@ -325,6 +325,7 @@ namespace FreeRoamProject.Client.Core.Utility
                 await BaseScript.Delay(0);
             }
             SetEntityCoords(playerPed.Handle, coords.X, coords.Y, coords.Z, false, false, false, false);
+            SetEntityHeading(playerPed.Handle, heading);
             tempTimer = GetNetworkTime();
             // Wait for the collision to be loaded around the entity in this new location.
             while (!HasCollisionLoadedAroundEntity(playerPed.Handle))
@@ -757,6 +758,254 @@ namespace FreeRoamProject.Client.Core.Utility
         {
             AddTextEntry("FMtlg_KEY_TIP1", windowTitle);
             DisplayOnscreenKeyboard(1, "FMtlg_KEY_TIP1", null, defaultText, null, null, null, maxLength + 1);
+        }
+
+        public static bool IsLocalPlayerEnteringOrExitingAVehicle()
+        {
+            return GetIsTaskActive(PlayerPedId(), 2) || IsPedInAnyVehicle(PlayerPedId(), true);
+        }
+
+        public static bool IsPlayerGettingInOrOutOfVehicle(int idx)
+        {
+            int ped = GetPlayerPed(idx);
+            if (GetIsTaskActive(ped, 2))
+            {
+                return true;
+            }
+            if (IsPedInAnyVehicle(ped, true))
+            {
+                if (!IsPedInAnyVehicle(ped, false))
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                if (DoesEntityExist(GetVehiclePedIsEntering(ped)))
+                {
+                    return true;
+                }
+            }
+            if (IsPedGettingIntoAVehicle(ped))
+            {
+                return true;
+            }
+            if (GetScriptTaskStatus(ped, HashUint("SCRIPT_TASK_ENTER_VEHICLE")) == 1 || GetScriptTaskStatus(ped, HashUint("SCRIPT_TASK_ENTER_VEHICLE")) == 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static bool IsHeadingAcceptableCorrected(float fHeading, float fIdealHeading, float fLeeway)
+        {
+            float fLowerH = fIdealHeading - fLeeway;
+
+            if (fLowerH < 0.0f)
+                fLowerH += 360.0f;
+
+            float fUpperH = fIdealHeading + fLeeway;
+            if (fUpperH >= 360.0f)
+                fUpperH -= 360.0f;
+
+            if (fUpperH < 0.0f)
+                fUpperH += 360.0f;
+
+            if (fUpperH > fLowerH)
+            {
+                if (fHeading < fUpperH && fHeading > fLowerH)
+                    return true;
+            }
+            else
+            {
+                if (fHeading < fUpperH || fHeading > fLowerH)
+                    return true;
+            }
+            return false;
+        }
+
+        public static bool IsNpcInVehicle()
+        {
+            if (IsPedInAnyVehicle(PlayerPedId(), false))
+            {
+                int theVeh = GetVehiclePedIsIn(PlayerPedId(), false);
+                if (IsVehicleDriveable(theVeh, false))
+                {
+                    int iSeat;
+                    for (iSeat = -1; iSeat < 9; iSeat++)
+                    {
+                        if (!IsVehicleSeatFree(theVeh, iSeat))
+                        {
+                            int pedIndex = GetPedInVehicleSeat(theVeh, iSeat);
+                            if (DoesEntityExist(pedIndex))
+                            {
+                                if (!IsPedAPlayer(pedIndex))
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        public static void Determine4TopVectorsOfModelBoxInWorldCoords(int entity, uint model, ref Vector3 FrontTopLeft, ref Vector3 FrontTopRight, ref Vector3 BackTopLeft, ref Vector3 BackTopRight)
+        {
+            //   *---*
+            //  /|  /|
+            // *-o-*-o
+            // |/  |/
+            // o---o
+
+            Vector3 modelMin = new(), modelMax = new();
+            GetModelDimensions(model, ref modelMin, ref modelMax);
+
+            Vector3 tempFrontTopLeft = new Vector3(modelMin.X, modelMax.Y, modelMax.Z);
+            Vector3 tempFrontTopRight = modelMax;
+            Vector3 tempBackTopLeft = new Vector3(modelMin.X, modelMin.Y, modelMax.Z);
+            Vector3 tempBackTopRight = new(modelMax.X, modelMin.Y, modelMax.Z);
+
+            FrontTopLeft = GetOffsetFromEntityInWorldCoords(entity, tempFrontTopLeft.X, tempFrontTopLeft.Y, tempFrontTopLeft.Z);
+            FrontTopRight = GetOffsetFromEntityInWorldCoords(entity, tempFrontTopRight.X, tempFrontTopRight.Y, tempFrontTopRight.Z);
+            BackTopLeft = GetOffsetFromEntityInWorldCoords(entity, tempBackTopLeft.X, tempBackTopLeft.Y, tempBackTopLeft.Z);
+            BackTopRight = GetOffsetFromEntityInWorldCoords(entity, tempBackTopRight.X, tempBackTopRight.Y, tempBackTopRight.Z);
+        }
+
+        public static void Determine4BottomVectorsOfModelBoxInWorldCoords(int entity, uint model, ref Vector3 FrontBottomLeft, ref Vector3 FrontBottomRight, ref Vector3 BackBottomLeft, ref Vector3 BackBottomRight)
+        {
+            //   o---o
+            //  /|  /|
+            // o-*-o-*
+            // |/  |/
+            // *---*
+
+            Vector3 modelMin = new Vector3(), modelMax = new Vector3();
+            GetModelDimensions(model, ref modelMin, ref modelMax);
+
+            Vector3 tempFrontBottomLeft = new(modelMin.X, modelMax.Y, modelMin.Z);
+            Vector3 tempFrontBottomRight = new(modelMax.X, modelMax.Y, modelMin.Z);
+            Vector3 tempBackBottomLeft = new(modelMin.X, modelMin.Y, modelMin.Z);
+            Vector3 tempBackBottomRight = new(modelMax.X, modelMin.Y, modelMin.Z);
+
+            FrontBottomLeft = GetOffsetFromEntityInWorldCoords(entity, tempFrontBottomLeft.X, tempFrontBottomLeft.Y, tempFrontBottomLeft.Z);
+            FrontBottomRight = GetOffsetFromEntityInWorldCoords(entity, tempFrontBottomRight.X, tempFrontBottomRight.Y, tempFrontBottomRight.Z);
+            BackBottomLeft = GetOffsetFromEntityInWorldCoords(entity, tempBackBottomLeft.X, tempBackBottomLeft.Y, tempBackBottomLeft.Z);
+            BackBottomRight = GetOffsetFromEntityInWorldCoords(entity, tempBackBottomRight.X, tempBackBottomRight.Y, tempBackBottomRight.Z);
+        }
+
+        public static bool IsBitSet(int address, int offset)
+        {
+            if (offset < 0 || offset > 31)
+                throw new Exception("IS_BIT_SET - bit must be between 0 to 31");
+            return (address & (1 << offset)) != 0;
+        }
+        public static void SetBit(ref int address, int offset)
+        {
+            if (offset < 0 || offset > 31)
+                throw new Exception("SET_BIT - bit must be between 0 to 31");
+            address |= (1 << offset);
+        }
+
+        public static bool IsVehicleRoughlyFacingThisDirection(int vehicle, float idealHeading, float acceptableRange = 30f)
+        {
+            float upperLimit = idealHeading + (acceptableRange / 2);
+            if (upperLimit > 360f)
+                upperLimit -= 360f;
+            float lowerLimit = idealHeading - (acceptableRange / 2);
+            if (lowerLimit < 0)
+                lowerLimit += 360f;
+            if (IsVehicleDriveable(vehicle, true))
+            {
+                if (upperLimit > lowerLimit)
+                {
+                    return GetEntityHeading(vehicle) < upperLimit && GetEntityHeading(vehicle) > lowerLimit;
+                }
+                else
+                {
+                    return GetEntityHeading(vehicle) < upperLimit || GetEntityHeading(vehicle) > lowerLimit;
+                }
+            }
+            return false;
+        }
+        public static void StartNetTimer(ref SCRIPT_TIMER MainTimer, bool bForceNonNetTimer = false, bool bUseMoreAccurateTimer = false)
+        {
+            if (!MainTimer.bInitialisedTimer)
+            {
+                if (!bForceNonNetTimer)
+                {
+                    if (!bUseMoreAccurateTimer)
+                        MainTimer.Timer = GetNetworkTime();
+                    else
+                        MainTimer.Timer = GetNetworkTimeAccurate();
+                }
+                else
+                {
+                    MainTimer.Timer = GetGameTimer();
+                }
+                MainTimer.bInitialisedTimer = true;
+            }
+        }
+
+        /// PURPOSE:
+        ///    Returns true when the timer has passed. Will always return true for this timer until RESET_SCRIPT_NET_TIMER has been called.
+        ///    Has to be called the whole time you're running the timer. 
+        ///    Doesn't call START_NET_TIMER. This is so Clients can check if a Sever timer has expired.
+        /// PARAMS:
+        ///    MainTimer - Timer struct
+        ///    TimeToExpire - The time you want it to pass in Milliseconds, -1 will return true.
+        /// RETURNS:
+        ///    
+        public static bool HasNetTimerExpiredReadOnly(SCRIPT_TIMER MainTimer, int TimeToExpire, bool bForceNonNetTimer = false)
+        {
+            if (TimeToExpire == -1)
+                return true;
+            if (!bForceNonNetTimer)
+            {
+                if (Absi(GetNetworkTime() - MainTimer.Timer) >= TimeToExpire)
+                    return true;
+            }
+            else
+            {
+                if (Absi(GetGameTimer() - MainTimer.Timer) >= TimeToExpire)
+                    return true;
+            }
+            return false;
+        }
+        public static bool HasNetTimerStarted(SCRIPT_TIMER MainTimer)
+        {
+            return MainTimer.bInitialisedTimer;
+        }
+        public static bool HasNetTimerExpired(ref SCRIPT_TIMER MainTimer, int TimeToExpire, bool bForceNonNetTimer = false)
+        {
+            if (TimeToExpire == -1)
+                return true;
+
+            StartNetTimer(ref MainTimer, bForceNonNetTimer);
+
+            if (!bForceNonNetTimer)
+            {
+                if (Absi(GetNetworkTime() - MainTimer.Timer) >= TimeToExpire)
+                    return true;
+            }
+            else
+            {
+                if (Absi(GetGameTimer() - MainTimer.Timer) >= TimeToExpire)
+                    return true;
+            }
+            return false;
+        }
+        public static void ReinintNetTimer(ref SCRIPT_TIMER MainTimer, bool bForceNonNetTimer = false, bool bUseMoreAccurateTimer = false)
+        {
+            if (NetworkIsGameInProgress() && !bForceNonNetTimer)
+                if (!bUseMoreAccurateTimer)
+                    MainTimer.Timer = GetNetworkTime();
+                else
+                    MainTimer.Timer = GetNetworkTimeAccurate();
+            else
+                MainTimer.Timer = GetGameTimer();
+            MainTimer.bInitialisedTimer = true;
         }
 
         public static async Task<ProfanityCheck> CheckStringHasProfanity(string input)
@@ -1389,6 +1638,33 @@ namespace FreeRoamProject.Client.Core.Utility
                 ClientMain.Logger.Error("Error retreiving hash /" + hash.ToString() + "/ for weapon/component. Maybe it was never added?");
                 return Game.GetGXTEntry("WT_INVALID");
             }
+        }
+
+        public static bool IsVehicleAttachedToAnyCargobob(Vehicle veh)
+        {
+            int eiAttached;
+            int viAttachedVehicle;
+            if (veh.IsAttached())
+            {
+                eiAttached = veh.GetEntityAttachedTo().Handle;
+                if (DoesEntityExist(eiAttached) && !IsEntityDead(eiAttached))
+                {
+                    viAttachedVehicle = GetVehicleIndexFromEntityIndex(eiAttached);
+                    if (IsEntityCargobob(viAttachedVehicle))
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool IsTaskOngoing(int ped, string thisTaskName)
+        {
+            return GetScriptTaskStatus(ped, HashUint(thisTaskName)) == 1 || GetScriptTaskStatus(ped, HashUint(thisTaskName)) == 0;
+        }
+        public static bool IsEntityCargobob(int entity)
+        {
+            uint mod = (uint)GetEntityModel(entity);
+            return mod == HashUint("CARGOBOB") || mod == HashUint("CARGOBOB2") || mod == HashUint("CARGOBOB3") || mod == HashUint("CARGOBOB4");
         }
 
         #region Vehicles Textures

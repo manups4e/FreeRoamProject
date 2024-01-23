@@ -1,4 +1,5 @@
-﻿using FreeRoamProject.Client.Handlers;
+﻿using FreeRoamProject.Client.FREEROAM.Properties.Loader;
+using FreeRoamProject.Client.Handlers;
 using FreeRoamProject.Shared.Core.Character;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -20,6 +21,8 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Spawner
             Screen.LoadingPrompt.Show("Loading", LoadingSpinnerType.Clockwise1);
 
             await Tunables.LoadTunables();
+
+            await ApartmentsLoader.LoadApartments();
 
             uint model = PlayerCache.MyClient.User.Character.Skin.Model;
             while (!await PlayerCache.MyClient.Player.ChangeModel(new Model((PedHash)model))) await BaseScript.Delay(0);

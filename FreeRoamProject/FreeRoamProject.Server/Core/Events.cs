@@ -1,4 +1,6 @@
 ﻿using FreeRoamProject.Server.Core.Buckets;
+using FreeRoamProject.Shared.Core;
+using FreeRoamProject.Shared.Core.Character;
 using FreeRoamProject.Shared.PlayerChar;
 using System;
 using System.Collections.Generic;
@@ -24,6 +26,7 @@ namespace FreeRoamProject.Server.Core
             EventDispatcher.Mount("tlg:getClients", new Func<PlayerClient, Task<List<PlayerClient>>>(GetAllClients));
             EventDispatcher.Mount("tlg:removeCharMoney", new Action<PlayerClient, int, int>(RemoveCharMoney));
             EventDispatcher.Mount("tlg:SetPlayerStat", new Action<PlayerClient, string, int, int>(SetSavedState));
+            EventDispatcher.Mount("tlg:BuyApartment", new Func<PlayerClient, int, int, int, int, Task<bool>>(BuyApartment));
 
             EventDispatcher.Mount("tlg:callPlayers", new Func<PlayerClient, Position, Task<List<PlayerClient>>>(async ([FromSource] a, b) =>
             {
@@ -183,6 +186,26 @@ namespace FreeRoamProject.Server.Core
             Player Target = Functions.GetPlayerFromId(target);
             ServerMain.Logger.Debug($"Target: {Target.Name}");
             Target.Drop($"SHIELD 2.0 You have been kicked off the server:\nReason: {reason}");
+        }
+
+        private static async Task<bool> BuyApartment([FromSource] PlayerClient player, int apartId, int cost, int interior, int tint)
+        {
+            try
+            {
+                player.User.PerformBankTransaction(cost, BankTransactionType.MoneySpent, BankingTransactionHash.MONEY_SPENT_PROPERTY_UTIL);
+                player.User.Character.Properties.Add(new OwnedProperty()
+                {
+                    ID = apartId, //apartId starts from 1 up to 129.. even tho ids from ~85 to 128 are unused and id 129 is a garage.
+                    InteriorOption = interior,
+                    TintOption = tint
+                });
+                return true;
+            }
+            catch (Exception e)
+            {
+                ServerMain.Logger.Error(e.ToString());
+                return false;
+            }
         }
     }
 }

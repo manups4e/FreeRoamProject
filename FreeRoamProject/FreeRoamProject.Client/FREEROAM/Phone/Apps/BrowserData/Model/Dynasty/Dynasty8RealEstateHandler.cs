@@ -1,27 +1,107 @@
-﻿using System.Collections.Generic;
+﻿using FreeRoamProject.Shared.Core.Character;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model.Dynasty
 {
     public class Dynasty8RealEstateHandler
     {
         public static List<Apartment> Apartments = [];
-        public static async void LoadApartments(Apps.WebBrowser parent) // func_7472
+        private static Apartment boughtApartment = null;
+        private static int currentInterior = -1;
+        private static int currentTint = -1;
+        public static void LoadApartments(Apps.WebBrowser parent) // func_7472
         {
             Apartments.Clear();
             int slot = 0;
             for (int i = 1; i <= 130; i++)
             {
+
                 if (func_7324(i) == 1 || i == 86 || func_244(i) == 1 || func_247(i, -1) == 1 || func_7561(i, false, false) == 1 || i == 115 || i == 116 || i == 117 || i == 118 || func_7481(i) == 1 || func_7480(i) == 1 || i == 125 || i == 126)
-                {
                     continue;
-                }
                 Apartment apart = new Apartment(slot, i);
+                if (PlayerCache.Character.Properties.Any(x => x.ID == apart.Id)) return;
                 if (string.IsNullOrEmpty(apart.Label(apart.Id)) && apart.Id != 129)
                     continue;
                 Debug.WriteLine($"slot:{apart.Slot}, id:{apart.Id}, name:{API.GetLabelText(apart.Label(apart.Id))}, price:{apart.BaseCost}");
                 apart.AddToScaleform(parent.browser);
+                Apartments.Add(apart);
                 slot++;
             }
+        }
+
+        public static async void HandleClick(Apps.WebBrowser parent)
+        {
+            if (parent.CurrentSelection == -1) return;
+            switch (parent.CurrentPageId)
+            {
+                case 2:
+                    boughtApartment = Apartments.SingleOrDefault(x => x.Slot == parent.CurrentSelection);
+                    break;
+                case 4:
+                    // this is the "transaction pending page" we contact the server asking if the money can be removed or not in case.. we do remove the money.
+                    if (PlayerCache.Character.Finance.Bank >= boughtApartment.BaseCost)
+                    {
+                        bool done = await EventDispatcher.Get<bool>("tlg:BuyApartment", boughtApartment.Id, boughtApartment.BaseCost, currentInterior, currentTint);
+                        if (done)
+                        {
+                            parent.GoToWebPage("WWW_DYNASTY8REALESTATE_COM_S_PURCHASE_D_SUCCESS");
+                            PlayerCache.Character.Properties.Add(new OwnedProperty()
+                            {
+                                ID = boughtApartment.Id, //apartId starts from 1 up to 129.. even tho ids from ~85 to 128 are unused and id 129 is a garage.
+                                InteriorOption = currentInterior,
+                                TintOption = currentTint
+                            });
+                            boughtApartment = null;
+                            currentInterior = -1;
+                            currentTint = -1;
+                        }
+                        else
+                        {
+                            parent.GoToWebPage("WWW_DYNASTY8REALESTATE_COM_S_PURCHASE_D_ERROR");
+                            boughtApartment = null;
+                            currentInterior = -1;
+                            currentTint = -1;
+                        }
+                    }
+                    else
+                    {
+                        parent.GoToWebPage("WWW_DYNASTY8REALESTATE_COM_S_PURCHASE_D_FAILED");
+                        boughtApartment = null;
+                        currentInterior = -1;
+                        currentTint = -1;
+                    }
+                    break;
+                case 5:
+                    Vector3 pos = boughtApartment.Position; //se waypoint
+                    SetNewWaypoint(pos.X, pos.Y);
+                    break;
+                case 27:
+                    if (parent.CurrentSelection > 10 && parent.CurrentSelection < 14)
+                        currentInterior = parent.CurrentSelection;
+                    else if (parent.CurrentSelection > 13 && parent.CurrentSelection < 26)
+                        currentTint = parent.CurrentSelection;
+                    break;
+                case 21:
+                    // this is the summary page of the property.. nothing to do with this page...
+                    break;
+                case 22:
+                    // this is the purchase failed page of the property.. nothing to do with this page...
+                    break;
+                case 23:
+                    // this is the purchase error page of the property.. nothing to do with this page...
+                    break;
+                case 24:
+                    // it seems i can't access this page whatsoever...
+                    break;
+                case 25:
+                    // this is the maintenance page...
+                    break;
+                case 26:
+                    // this is the purchase success page... we show it to the player.
+                    break;
+            }
+
         }
 
         static int func_7324(int iParam0)//Position - 0x266C6C

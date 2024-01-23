@@ -1,4 +1,6 @@
 ﻿using FreeRoamProject.Client.FREEROAM.Phone.Apps.BrowserData;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 namespace FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model.Dynasty
 {
     public class Apartment : PropertyBase
@@ -418,13 +420,9 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model.Dynasty
                 ScaleformMovieMethodAddParamFloat(Position.X);
                 ScaleformMovieMethodAddParamFloat(Position.Y);
                 if (iVar1 < 1 || func_5731(Id))
-                {
                     Tools.SetScaleformString("ITEM_FREE" /* GXT: FREE */);
-                }
                 else
-                {
                     ScaleformMovieMethodAddParamInt(BaseCost);
-                }
                 Tools.SetTextureDictionary("DYN_DLC_GARAGES");
                 Tools.SetScaleformString("MP_MSG_DES" /* GXT: Eating, sleeping, and washing? Oh please. Time to up your grindset. Forget about luxury apartments. All you need for a productive lifestyle is a 5-floor private garage with enough storage for up to fifty vehicles. #Simpleliving */);
                 ScaleformMovieMethodAddParamInt(12);
@@ -434,22 +432,15 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model.Dynasty
                 ScaleformMovieMethodAddParamInt(7);
                 Tools.SetScaleformString("");
                 if (bVar2)
-                {
                     ScaleformMovieMethodAddParamInt(iVar1);
-                }
                 else
-                {
                     ScaleformMovieMethodAddParamInt(0);
-                }
                 ScaleformMovieMethodAddParamBool(true);
                 if (VehicleSitesHandler.func_5728() && func_5727(Id) && func_5731(Id))
-                {
                     ScaleformMovieMethodAddParamBool(true);
-                }
                 else
-                {
                     ScaleformMovieMethodAddParamBool(false);
-                }
+                ScaleformMovieMethodAddParamBool(true);
                 EndScaleformMovieMethod();
                 return;
             }
@@ -509,25 +500,24 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model.Dynasty
                     break;
             }
             ScaleformMovieMethodAddParamBool(bVar8);
-            ScaleformMovieMethodAddParamInt(0);
+            int iVar10 = 0;
+            if (func_7474(Id, ref iVar10))
+            {
+                ScaleformMovieMethodAddParamInt(iVar10);
+                Debug.WriteLine("iVar10:" + iVar10);
+            }
+            else
+                ScaleformMovieMethodAddParamInt(0);
             Tools.SetScaleformString(Var0);
             if (bVar8)
-            {
                 ScaleformMovieMethodAddParamInt(Ceil(GetDefaultPrice(Id) * Tunables.Global_262145.Value<float>("f_78") /* Tunable: PROPERTY_MULTIPLIER */));
-            }
             else
-            {
                 ScaleformMovieMethodAddParamInt(0);
-            }
             ScaleformMovieMethodAddParamBool(bVar9);
             if (VehicleSitesHandler.func_5728() && func_5727(Id) && func_5731(Id))
-            {
                 ScaleformMovieMethodAddParamBool(true);
-            }
             else
-            {
                 ScaleformMovieMethodAddParamBool(false);
-            }
             EndScaleformMovieMethod();
         }
 
@@ -554,7 +544,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model.Dynasty
         {
             if (VehicleSitesHandler.func_5728())
             {
-                if (((iParam0 == 88 || iParam0 == 94) || iParam0 == 18) || iParam0 == 56)
+                if (iParam0 == 88 || iParam0 == 94 || iParam0 == 18 || iParam0 == 56)
                 {
                     return true;
                 }
@@ -1574,11 +1564,11 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model.Dynasty
                 58 => Tunables.Global_262145.Value<int>("f_4017") /* Tunable: PROPERTY_GARAGE_NEW_21_EXPENDITURE_MODIFIER */,
                 59 => Tunables.Global_262145.Value<int>("f_4018") /* Tunable: PROPERTY_GARAGE_NEW_22_EXPENDITURE_MODIFIER */,
                 60 => Tunables.Global_262145.Value<int>("f_4019") /* Tunable: PROPERTY_GARAGE_NEW_23_EXPENDITURE_MODIFIER */,
-                61 => Tunables.Global_262145.Value<int[]>("f_7146")[0],
-                62 => Tunables.Global_262145.Value<int[]>("f_7146")[1],
-                63 => Tunables.Global_262145.Value<int[]>("f_7146")[2],
-                64 => Tunables.Global_262145.Value<int[]>("f_7146")[3],
-                65 => Tunables.Global_262145.Value<int[]>("f_7146")[4],
+                61 => Tunables.Global_262145.Value<JArray>("f_7146").ToObject<List<int>>()[0],
+                62 => Tunables.Global_262145.Value<JArray>("f_7146").ToObject<List<int>>()[1],
+                63 => Tunables.Global_262145.Value<JArray>("f_7146").ToObject<List<int>>()[2],
+                64 => Tunables.Global_262145.Value<JArray>("f_7146").ToObject<List<int>>()[3],
+                65 => Tunables.Global_262145.Value<JArray>("f_7146").ToObject<List<int>>()[4],
                 66 => Tunables.Global_262145.Value<int>("f_8461") /* Tunable: PROPERTY_3_ACE_JONES_DR */,
                 67 => Tunables.Global_262145.Value<int>("f_8462") /* Tunable: PROPERTY_12_SUSTANCIA_RD */,
                 68 => Tunables.Global_262145.Value<int>("f_8463") /* Tunable: PROPERTY_4584_PROCOPIO_DR */,
@@ -1919,11 +1909,11 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model.Dynasty
                 58 => Tunables.Global_262145.Value<int>("f_4017") /* Tunable: PROPERTY_GARAGE_NEW_21_EXPENDITURE_MODIFIER */,
                 59 => Tunables.Global_262145.Value<int>("f_4018") /* Tunable: PROPERTY_GARAGE_NEW_22_EXPENDITURE_MODIFIER */,
                 60 => Tunables.Global_262145.Value<int>("f_4019") /* Tunable: PROPERTY_GARAGE_NEW_23_EXPENDITURE_MODIFIER */,
-                61 => Tunables.Global_262145.Value<int[]>("f_7146")[0],
-                62 => Tunables.Global_262145.Value<int[]>("f_7146")[1],
-                63 => Tunables.Global_262145.Value<int[]>("f_7146")[2],
-                64 => Tunables.Global_262145.Value<int[]>("f_7146")[3],
-                65 => Tunables.Global_262145.Value<int[]>("f_7146")[4],
+                61 => Tunables.Global_262145.Value<JArray>("f_7146").ToObject<List<int>>()[0],
+                62 => Tunables.Global_262145.Value<JArray>("f_7146").ToObject<List<int>>()[1],
+                63 => Tunables.Global_262145.Value<JArray>("f_7146").ToObject<List<int>>()[2],
+                64 => Tunables.Global_262145.Value<JArray>("f_7146").ToObject<List<int>>()[3],
+                65 => Tunables.Global_262145.Value<JArray>("f_7146").ToObject<List<int>>()[4],
                 66 => Tunables.Global_262145.Value<int>("f_8461") /* Tunable: PROPERTY_3_ACE_JONES_DR */,
                 67 => Tunables.Global_262145.Value<int>("f_8462") /* Tunable: PROPERTY_12_SUSTANCIA_RD */,
                 68 => Tunables.Global_262145.Value<int>("f_8463") /* Tunable: PROPERTY_4584_PROCOPIO_DR */,
@@ -3385,6 +3375,184 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model.Dynasty
                     position = new(373.8f, 428.4f, 145.7f);
                     break;
             }
+        }
+
+        int func_5591(int iParam0)//Position - 0x1CDAF5
+        {
+            return iParam0 switch
+            {
+                1 or 2 or 3 or 4 or 5 or 6 or 7 => 1,
+                8 or 9 or 10 or 11 or 12 or 13 or 14 or 15 or 16 or 69 or 68 or 66 or 67 => 8,
+                17 or 18 or 19 or 20 or 21 or 22 or 23 or 70 or 71 or 72 => 17,
+                61 or 62 or 63 or 64 or 65 => 61,
+                73 or 74 or 75 or 76 => 73,
+                77 or 78 or 79 or 80 or 81 or 82 => 77,
+                83 or 84 or 85 => 83,
+                86 => 86,
+                87 or 88 or 89 or 90 => 88,
+                91 or 92 or 93 or 94 or 95 or 96 => 91,
+                97 or 98 or 99 or 100 or 101 or 102 => 97,
+                103 or 106 or 109 or 112 or 104 or 107 or 110 or 113 or 105 or 108 or 111 or 114 => 109,
+                _ => -1,
+            };
+        }
+        int func_5594(int iParam0)//Position - 0x1CDD9C
+        {
+            return func_5591(iParam0) switch
+            {
+                83 => 8,
+                88 => 9,
+                91 or 97 => 9,
+                109 => 4,
+                _ => 0,
+            };
+        }
+
+        bool func_6659(int iParam0, int iParam1)//Position - 0x2117CF
+        {
+            if (func_5591(iParam1) == 83)
+            {
+                switch (iParam0)
+                {
+                    case 0:
+                        return Tunables.Global_262145.Value<int>("f_13303") == 1 /* Tunable: APT_DISABLE_INTERIOR1 */;
+
+                    case 1:
+                        return Tunables.Global_262145.Value<int>("f_13304") == 1 /* Tunable: APT_DISABLE_INTERIOR2 */;
+
+                    case 2:
+                        return Tunables.Global_262145.Value<int>("f_13305") == 1 /* Tunable: APT_DISABLE_INTERIOR3 */;
+
+                    case 3:
+                        return Tunables.Global_262145.Value<int>("f_13306") == 1 /* Tunable: APT_DISABLE_INTERIOR4 */;
+
+                    case 4:
+                        return Tunables.Global_262145.Value<int>("f_13307") == 1 /* Tunable: APT_DISABLE_INTERIOR5 */;
+
+                    case 5:
+                        return Tunables.Global_262145.Value<int>("f_13308") == 1 /* Tunable: APT_DISABLE_INTERIOR6 */;
+
+                    case 6:
+                        return Tunables.Global_262145.Value<int>("f_13309") == 1 /* Tunable: APT_DISABLE_INTERIOR7 */;
+
+                    case 7:
+                        return Tunables.Global_262145.Value<int>("f_13310") == 1 /* Tunable: APT_DISABLE_INTERIOR8 */;
+
+                }
+            }
+            else if (func_5591(iParam1) == 88)
+            {
+                switch (iParam0)
+                {
+                    case 0:
+                        return false;
+
+                    case 1:
+                        return false;
+
+                    case 2:
+                        return false;
+
+                    case 3:
+                        return false;
+
+                    case 4:
+                        return false;
+
+                    case 5:
+                        return false;
+
+                    case 6:
+                        return false;
+
+                    case 7:
+                        return false;
+
+                    case 8:
+                        return false;
+
+                }
+            }
+            else if (func_5591(iParam1) == 91 || func_5591(iParam1) == 97)
+            {
+                switch (iParam0)
+                {
+                    case 0:
+                        return false;
+
+                    case 1:
+                        return false;
+
+                    case 2:
+                        return false;
+
+                    case 3:
+                        return false;
+
+                    case 4:
+                        return false;
+
+                    case 5:
+                        return false;
+
+                    case 6:
+                        return false;
+
+                    case 7:
+                        return false;
+                }
+            }
+            else if (func_5591(iParam1) == 109)
+            {
+                switch (iParam0)
+                {
+                    case 0:
+                        return false;
+
+                    case 1:
+                        return false;
+
+                    case 2:
+                        return false;
+
+                    case 3:
+                        return false;
+                }
+            }
+            return false;
+        }
+        bool func_7474(int iParam0, ref int iParam1)//Position - 0x27D003
+        {
+            int iVar0;
+
+            if (func_5649(iParam0))
+            {
+                iParam1 = 0;
+                iVar0 = 0;
+                while (iVar0 < func_5594(iParam0))
+                {
+                    if (!func_6659(iVar0, iParam0))
+                    {
+                        iParam1 = iVar0;
+                    }
+                    else
+                    {
+                        iParam1 = 0;
+                    }
+                    iVar0++;
+                }
+                return true;
+            }
+            iParam1 = 0;
+            return false;
+        }
+        bool func_5649(int iParam0)//Position - 0x1CFB76
+        {
+            return iParam0 switch
+            {
+                83 or 84 or 85 or 87 or 88 or 89 or 90 or 91 or 92 or 93 or 94 or 95 or 96 or 97 or 98 or 99 or 100 or 101 or 102 or 103 or 104 or 105 or 106 or 107 or 108 or 109 or 110 or 111 or 112 or 113 or 114 => true,
+                _ => false,
+            };
         }
     }
 }

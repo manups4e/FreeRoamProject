@@ -11,23 +11,23 @@ namespace FreeRoamProject.Server.Core
     {
         public static void Init()
         {
-            ServerMain.Instance.AddCommand("giveweapon", new Action<PlayerClient, List<string>, string>(GiveWeapon), UserGroup.Moderator, new ChatSuggestion("Give a player a weapon", new SuggestionParam[3] { new("Player ID", "The player's Server ID"), new("Weapon", "The weapon to give to the player [e.g. weapon_pistol]"), new("Quantity", "Quantity of ammunition to give") }));
-            ServerMain.Instance.AddCommand("removeweapon", new Action<PlayerClient, List<string>, string>(RemoveWeapon), UserGroup.Moderator, new ChatSuggestion("Remove a weapon from a player", new SuggestionParam[2] { new("Player ID", "The player's Server ID"), new("Weapon", "The weapon to take away from the player [e.g. weapon_pistol]") }));
-            ServerMain.Instance.AddCommand("givemoney", new Action<PlayerClient, List<string>, string>(GiveMoney), UserGroup.Moderator, new ChatSuggestion("Give money in wallet to a player", new SuggestionParam[2] { new("Player ID", "The player's Server ID"), new("Amount", "How much money do you want to give him?") }));
-            ServerMain.Instance.AddCommand("givebank", new Action<PlayerClient, List<string>, string>(GiveBank), UserGroup.Moderator, new ChatSuggestion("Give money in the bank to a player", new SuggestionParam[2] { new("Player ID", "The player's Server ID"), new("Amount", "How much money do you want to give him?") }));
-            ServerMain.Instance.AddCommand("removemoney", new Action<PlayerClient, List<string>, string>(RemoveMoney), UserGroup.Moderator, new ChatSuggestion("Remove money from a player's wallet", new SuggestionParam[2] { new("Player ID", "The player's Server ID"), new("Amount", "How much money do you want to remove?") }));
-            ServerMain.Instance.AddCommand("removebank", new Action<PlayerClient, List<string>, string>(RemoveBank), UserGroup.Moderator, new ChatSuggestion("Remove money from a player's bank", new SuggestionParam[2] { new("Player ID", "The player's Server ID"), new("Amount", "How much money do you want to remove?") }));
-            ServerMain.Instance.AddCommand("setmoney", new Action<PlayerClient, List<string>, string>(SetFinances), UserGroup.Moderator, new ChatSuggestion("Permanently change a player's money account", new SuggestionParam[3] { new("Player ID", "The player's Server ID"), new("Account", "cash = money, bank = bank, dirty = dirty"), new("Quantity", "Be careful, if I have 10 and I put 1, the quantity becomes 1") }));
-            ServerMain.Instance.AddCommand("announcement", new Action<PlayerClient, List<string>, string>(Announcement), UserGroup.Moderator, new ChatSuggestion("Announcement to all players", new SuggestionParam[1] { new("Announcement", "Message for everyone to read") }));
-            ServerMain.Instance.AddCommand("revive", new Action<PlayerClient, List<string>, string>(Revive), UserGroup.Moderator, new ChatSuggestion("Revive a player", new SuggestionParam[1] { new("Player ID", "[Optional] The server ID of the player, if you do not enter anything you will revive yourself") }));
-            ServerMain.Instance.AddCommand("setgroup", new Action<PlayerClient, List<string>, string>(SetGroup), UserGroup.Admin, new ChatSuggestion("Change group to player", new SuggestionParam[2] { new("Player ID", "The player's Server ID"), new("Group Id", "0 = User, 1 = Helper, 2 = Moderator, 3 = Admin, 4 = Founder, 5 = Developer") }));
-            ServerMain.Instance.AddCommand("tp", new Action<PlayerClient, List<string>, string>(Teleport), UserGroup.Moderator, new ChatSuggestion("Teleport to coordinates", new SuggestionParam[3] { new("X", ""), new("Y", ""), new("Z", "") }));
+            ServerMain.Instance.AddCommand("giveweapon", new Action<PlayerClient, List<string>, string>(GiveWeapon), UserGroup.Moderator, new ChatSuggestion("Give a player a weapon", [new("Player ID", "The player's Server ID"), new("Weapon", "The weapon to give to the player [e.g. weapon_pistol]"), new("Quantity", "Quantity of ammunition to give")]));
+            ServerMain.Instance.AddCommand("removeweapon", new Action<PlayerClient, List<string>, string>(RemoveWeapon), UserGroup.Moderator, new ChatSuggestion("Remove a weapon from a player", [new("Player ID", "The player's Server ID"), new("Weapon", "The weapon to take away from the player [e.g. weapon_pistol]")]));
+            ServerMain.Instance.AddCommand("givemoney", new Action<PlayerClient, List<string>, string>(GiveMoney), UserGroup.Moderator, new ChatSuggestion("Give money in wallet to a player", [new("Player ID", "The player's Server ID"), new("Amount", "How much money do you want to give him?")]));
+            ServerMain.Instance.AddCommand("givebank", new Action<PlayerClient, List<string>, string>(GiveBank), UserGroup.Moderator, new ChatSuggestion("Give money in the bank to a player", [new("Player ID", "The player's Server ID"), new("Amount", "How much money do you want to give him?")]));
+            ServerMain.Instance.AddCommand("removemoney", new Action<PlayerClient, List<string>, string>(RemoveMoney), UserGroup.Moderator, new ChatSuggestion("Remove money from a player's wallet", [new("Player ID", "The player's Server ID"), new("Amount", "How much money do you want to remove?")]));
+            ServerMain.Instance.AddCommand("removebank", new Action<PlayerClient, List<string>, string>(RemoveBank), UserGroup.Moderator, new ChatSuggestion("Remove money from a player's bank", [new("Player ID", "The player's Server ID"), new("Amount", "How much money do you want to remove?")]));
+            ServerMain.Instance.AddCommand("setmoney", new Action<PlayerClient, List<string>, string>(SetFinances), UserGroup.Moderator, new ChatSuggestion("Permanently change a player's money account", [new("Player ID", "The player's Server ID"), new("Account", "cash = money, bank = bank, dirty = dirty"), new("Quantity", "Be careful, if I have 10 and I put 1, the quantity becomes 1")]));
+            ServerMain.Instance.AddCommand("announcement", new Action<PlayerClient, List<string>, string>(Announcement), UserGroup.Moderator, new ChatSuggestion("Announcement to all players", [new("Announcement", "Message for everyone to read")]));
+            ServerMain.Instance.AddCommand("revive", new Action<PlayerClient, List<string>, string>(Revive), UserGroup.Moderator, new ChatSuggestion("Revive a player", [new("Player ID", "[Optional] The server ID of the player, if you do not enter anything you will revive yourself")]));
+            ServerMain.Instance.AddCommand("setgroup", new Action<PlayerClient, List<string>, string>(SetGroup), UserGroup.Admin, new ChatSuggestion("Change group to player", [new("Player ID", "The player's Server ID"), new("Group Id", "0 = User, 1 = Helper, 2 = Moderator, 3 = Admin, 4 = Founder, 5 = Developer")]));
+            ServerMain.Instance.AddCommand("tp", new Action<PlayerClient, List<string>, string>(Teleport), UserGroup.Moderator, new ChatSuggestion("Teleport to coordinates", [new("X", ""), new("Y", ""), new("Z", ""), new("H", "")]));
             ServerMain.Instance.AddCommand("suicide", new Action<PlayerClient, List<string>, string>(Die), UserGroup.Moderator, new ChatSuggestion("Kill your character"));
-            ServerMain.Instance.AddCommand("car", new Action<PlayerClient, List<string>, string>(SpawnVehicle), UserGroup.Moderator, new ChatSuggestion("Spawns a car and takes you inside it", new SuggestionParam[1] { new("Model", "The vehicle model to spawn") }));
+            ServerMain.Instance.AddCommand("car", new Action<PlayerClient, List<string>, string>(SpawnVehicle), UserGroup.Moderator, new ChatSuggestion("Spawns a car and takes you inside it", [new("Model", "The vehicle model to spawn")]));
             ServerMain.Instance.AddCommand("dv", new Action<PlayerClient, List<string>, string>(Dv), UserGroup.Moderator, new ChatSuggestion("Delete the current vehicle or the one you are looking at"));
             ServerMain.Instance.AddCommand("saveall", new Action<PlayerClient, List<string>, string>(Saveall), UserGroup.Moderator, new ChatSuggestion("Save all players now"));
-            ServerMain.Instance.AddCommand("developer", new Action<PlayerClient, List<string>, string>(Developer), UserGroup.Developer, new ChatSuggestion("Enable developer functions", new SuggestionParam[1] { new("Power", "On/Off") }));
-            ServerMain.Instance.AddCommand("setgang", new Action<PlayerClient, List<string>, string>(SetGang), UserGroup.Moderator, new ChatSuggestion("Change a player's gang", new SuggestionParam[3] { new("Player ID", "The player's Server ID"), new("Gang", "The gang to set"), new("Rank", "The gang rank") }));
+            ServerMain.Instance.AddCommand("developer", new Action<PlayerClient, List<string>, string>(Developer), UserGroup.Developer, new ChatSuggestion("Enable developer functions", [new("Power", "On/Off")]));
+            ServerMain.Instance.AddCommand("setgang", new Action<PlayerClient, List<string>, string>(SetGang), UserGroup.Moderator, new ChatSuggestion("Change a player's gang", [new("Player ID", "The player's Server ID"), new("Gang", "The gang to set"), new("Rank", "The gang rank")]));
             //ServerMain.Instance.AddCommand("setmeteo", new Action<PlayerClient, List<string>, string>(Weather), UserGroup.Admin, new ChatSuggestion("Change the weather in game", new SuggestionParam[1] { new("Weather", "Enter the number") }));
             ServerMain.Instance.AddCommand("delchar", new Action<PlayerClient, List<string>, string>(delchar), UserGroup.Moderator);
             RegisterCommand("status", new Action<int, List<object>, string>(async (a, b, c) =>
@@ -281,8 +281,23 @@ namespace FreeRoamProject.Server.Core
 
         public static void Teleport(PlayerClient sender, List<string> args, string rawCommand)
         {
-            if (float.TryParse(args[0].Replace("f", "").Replace(",", ""), out float x) && float.TryParse(args[1].Replace("f", "").Replace(",", ""), out float y) && float.TryParse(args[2].Replace("f", ""), out float z))
-                sender.TriggerSubsystemEvent("tlg:teleportCoords", new Position(x, y, z));
+            if (float.TryParse(args[0].Replace("f", "").Replace(",", ""), out float x)
+                && float.TryParse(args[1].Replace("f", "").Replace(",", ""), out float y)
+                && float.TryParse(args[2].Replace("f", "").Replace(",", ""), out float z))
+            {
+                if (args.Count == 4)
+                {
+                    if (!string.IsNullOrWhiteSpace(args[3]))
+                    {
+                        if (float.TryParse(args[3].Replace("f", "").Replace(",", ""), out float h))
+                            sender.TriggerSubsystemEvent("tlg:teleportCoords", new Position(x, y, z, h));
+                    }
+                    else
+                        sender.TriggerSubsystemEvent("tlg:teleportCoords", new Position(x, y, z));
+                }
+                else
+                    sender.TriggerSubsystemEvent("tlg:teleportCoords", new Position(x, y, z));
+            }
             else
                 sender.Player.TriggerEvent("chat:addMessage", new { args = new[] { "[COMANDO tp] = ", "invalid coords.. retry!" }, color = new[] { 255, 0, 0 } });
         }

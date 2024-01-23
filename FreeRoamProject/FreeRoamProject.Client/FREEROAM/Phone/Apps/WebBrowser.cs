@@ -7,6 +7,7 @@ using FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model;
 using FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model.Dynasty;
 using FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model.ForClosures;
 using FreeRoamProject.Client.Handlers;
+using FreeRoamProject.FREEROAM.Banking;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -108,8 +109,10 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                 _currentSiteId = currentSiteId;
                 _currentPageId = currentPageId;
 
-                if (CurrentSiteId != -1)
+                if (CurrentSiteId != -1 && (currentPageId == 1 || currentPageId == 2))
                 {
+                    InitaliseWebsite();
+                    IsDynamic();
                     switch (currentSiteId)
                     {
                         case (int)eWebsiteDynamic.WWW_EYEFIND_INFO:
@@ -180,10 +183,14 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                             break;
                     }
                 }
-                if (currentPageId == 1 || currentPageId == 2)
+                else if (CurrentSiteId == -1 && CurrentPageId == 1)
                 {
-                    InitaliseWebsite();
-                    IsDynamic();
+                    await BaseScript.Delay(250);
+                    if (CurrentSiteId == -1 && CurrentPageId == 1)
+                    {
+                        InitaliseWebsite();
+                        IsDynamic();
+                    }
                 }
             }
 
@@ -191,6 +198,11 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             Notifications.DrawText(0.35f, 0.7f, $"currentSiteID: " + currentSiteId, color: SColor.HUD_Orange);
             Notifications.DrawText(0.35f, 0.725f, $"currentPageID: " + currentPageId, color: SColor.HUD_Orange);
             Notifications.DrawText(0.35f, 0.75f, $"currentSelection: " + _currentSelection, color: SColor.HUD_Orange);
+
+            for (int i = 0; i < 20; i++)
+            {
+                Notifications.DrawText(0.8f, 0.4f + (0.025f * i), $"GetGlobalActionscriptFlag({i}): {GetGlobalActionscriptFlag(i)}", color: SColor.HUD_Orange);
+            }
         }
 
         public override async Task TickControls()
@@ -288,13 +300,11 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                 }
                 if (browserrollDistance != 0f)
                 {
-                    Debug.WriteLine("browserrollDistance:" + browserrollDistance);
                     browserrollDistance *= 0.9f;
                     if (browserrollDistance < 5f && browserrollDistance > -5f)
                     {
                         browserrollDistance = 0f;
                     }
-                    Debug.WriteLine("browserrollDistance:" + browserrollDistance);
                     browser.CallFunction("SET_ANALOG_STICK_INPUT", 0, 0f, browserrollDistance, true);
                 }
                 if (Game.IsControlPressed(2, Control.FrontendLb) || Game.IsDisabledControlJustPressed(2, Control.FrontendLb))
@@ -513,7 +523,10 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                             case 21:
                                 MazeBankHandler.HandleClick(this);
                                 break;
-                            case 28:
+                            case 18:
+                                Dynasty8RealEstateHandler.HandleClick(this);
+                                break;
+                            case 28: // FORECLOSURES_MAZE_D_BANK_COM
                                 {
                                     if (CurrentPageId == 9)
                                     {
@@ -804,8 +817,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             ClientMain.Instance.AddTick(TickControls);
             browser.CallFunction("SET_WIDESCREEN", GetIsWidescreen());
             PlayerCache.MyPed.SetConfigFlag(185, true);
-            SetMultiplayerWalletCash();
-            SetMultiplayerBankCash();
+            BankingClient.ShowMoney(-1);
             SetMobilePhonePosition(Phone.PositionHidden.X, Phone.PositionHidden.Y, Phone.PositionHidden.Z);
             SetMultiplayer(true);
             SetSkin(BrowserSkin.IFRUIT3);//4 = multiplayer
@@ -823,8 +835,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
         {
             ShowBrowser = false;
             MinimapHandler.MinimapEnabled = true;
-            RemoveMultiplayerWalletCash();
-            RemoveMultiplayerBankCash();
+            BankingClient.HideMoney();
             PlayerCache.MyPed.SetConfigFlag(185, false);
             ClientMain.Instance.RemoveTick(VisualTick);
             ClientMain.Instance.RemoveTick(TickControls);
