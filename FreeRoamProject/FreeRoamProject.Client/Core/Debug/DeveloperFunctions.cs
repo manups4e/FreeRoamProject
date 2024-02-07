@@ -7,9 +7,9 @@ namespace FreeRoamProject.Client.Core.Debug
 {
     internal class DeveloperFunctions
     {
-        private static InputController noclip = new(Control.ReplayStartStopRecordingSecondary, PadCheck.Keyboard, action: new Action<Ped, object[]>(_NoClip));
-        private static InputController teleport = new(Control.SaveReplayClip, PadCheck.Keyboard, action: new Action<Ped, object[]>(Teleport));
-        private static InputController camera = new(Control.ReplayStartStopRecording, PadCheck.Keyboard, action: new Action<Ped, object[]>(Camera));
+        private static readonly InputController noclip = new(Control.ReplayStartStopRecordingSecondary, PadCheck.Keyboard, action: new Action<Ped, object[]>(_NoClip));
+        private static readonly InputController teleport = new(Control.SaveReplayClip, PadCheck.Keyboard, action: new Action<Ped, object[]>(Teleport));
+        private static readonly InputController camera = new(Control.ReplayStartStopRecording, PadCheck.Keyboard, action: new Action<Ped, object[]>(Camera));
         private static Camera noClipCamera;
         private static Vector3 cameraPosition;
         private static float zoom = 75f;
@@ -51,14 +51,14 @@ namespace FreeRoamProject.Client.Core.Debug
                 p.Rotation = new Vector3(0);
                 ClientMain.Instance.AddTick(noClip);
                 NoClip = true;
-                List<InstructionalButton> istr = new()
-                {
+                List<InstructionalButton> istr =
+                [
                     new InstructionalButton(Control.FrontendLt, Control.Cover, "Up"),
                     new InstructionalButton(Control.FrontendRt, Control.HUDSpecial, "Down"),
                     new InstructionalButton(Control.MoveLeftRight, "Rotate L/R"),
                     new InstructionalButton(Control.MoveUpDown, "Move Fw/Bw"),
                     new InstructionalButton(Control.FrontendX, "Change speed")
-                };
+                ];
                 ScaleformUI.Main.InstructionalButtons.SetInstructionalButtons(istr);
             }
             else
@@ -91,8 +91,8 @@ namespace FreeRoamProject.Client.Core.Debug
             }
         }
         public static bool NoClip = false;
-        private static string noclip_ANIM_A = "amb@world_human_stand_impatient@male@no_sign@base";
-        private static string noclip_ANIM_B = "base";
+        private static readonly string noclip_ANIM_A = "amb@world_human_stand_impatient@male@no_sign@base";
+        private static readonly string noclip_ANIM_B = "base";
         private static int travelSpeed = 0;
         private static Vector3 curLocation;
         private static Vector3 curRotation;
@@ -205,8 +205,8 @@ namespace FreeRoamProject.Client.Core.Debug
                 p.Rotation = new Vector3(0);
                 ClientMain.Instance.AddTick(NoClipCamera);
                 NoClip = true;
-                List<InstructionalButton> istr = new()
-                {
+                List<InstructionalButton> istr =
+                [
                     new InstructionalButton(Control.FrontendLt, "Up"),
                     new InstructionalButton(Control.FrontendRt, "Down"),
                     new InstructionalButton(Control.FrontendLb, "Zoom+"),
@@ -215,7 +215,7 @@ namespace FreeRoamProject.Client.Core.Debug
                     new InstructionalButton(Control.MoveUpDown, "Move Fw/Bw"),
                     new InstructionalButton(Control.FrontendX, "Change speed"),
                     new InstructionalButton(Control.NextCamera, "Save camera")
-                };
+                ];
                 ScaleformUI.Main.InstructionalButtons.SetInstructionalButtons(istr);
                 RenderScriptCams(true, true, 2000, true, false);
             }
@@ -428,7 +428,7 @@ namespace FreeRoamProject.Client.Core.Debug
 
                 // load needed map region and check height levels for ground existence
                 bool groundFound = false;
-                float[] groundCheckHeight = { 100.0f, 150.0f, 50.0f, 0.0f, 200.0f, 250.0f, 300.0f, 350.0f, 400.0f, 450.0f, 500.0f, 550.0f, 600.0f, 650.0f, 700.0f, 750.0f, 800.0f };
+                float[] groundCheckHeight = [100.0f, 150.0f, 50.0f, 0.0f, 200.0f, 250.0f, 300.0f, 350.0f, 400.0f, 450.0f, 500.0f, 550.0f, 600.0f, 650.0f, 700.0f, 750.0f, 800.0f];
                 float ground = 0;
 
                 for (int i = 0; i < groundCheckHeight.Length; i++)

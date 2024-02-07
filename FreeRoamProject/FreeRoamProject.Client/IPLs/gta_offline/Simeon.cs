@@ -6,10 +6,10 @@ namespace FreeRoamProject.Client.IPLs.gtav
     public class Simeon
     {
         private bool _enabled = false;
-        public List<string> ipl = new List<string>() { "shr_int" };
+        public List<string> ipl = ["shr_int"];
         public static int InteriorId = 7170;
-        public SimeonStyle Style = new SimeonStyle();
-        public SimeonShutter Shutter = new SimeonShutter();
+        public SimeonStyle Style = new();
+        public SimeonShutter Shutter = new();
         public bool Enabled
         {
             get { return _enabled; }

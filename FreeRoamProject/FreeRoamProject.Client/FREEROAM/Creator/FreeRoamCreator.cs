@@ -9,8 +9,8 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
 {
     internal static class FreeRoamCreator
     {
-        private static List<dynamic> momfaces = new List<dynamic>()
-        {
+        private static readonly List<dynamic> momfaces =
+        [
             Game.GetGXTEntry("FEMALE_0"),
             Game.GetGXTEntry("FEMALE_1"),
             Game.GetGXTEntry("FEMALE_2"),
@@ -33,9 +33,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             Game.GetGXTEntry("FEMALE_19"),
             Game.GetGXTEntry("FEMALE_20"),
             Game.GetGXTEntry("SPECIAL_FEMALE_0")
-        };
-        private static List<dynamic> dadfaces = new List<dynamic>()
-        {
+        ];
+        private static readonly List<dynamic> dadfaces =
+        [
             Game.GetGXTEntry("MALE_0"),
             Game.GetGXTEntry("MALE_1"),
             Game.GetGXTEntry("MALE_2"),
@@ -60,10 +60,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             Game.GetGXTEntry("SPECIAL_MALE_0"),
             Game.GetGXTEntry("SPECIAL_MALE_1"),
             Game.GetGXTEntry("SPECIAL_MALE_2"),
-        };
+        ];
 
-        private static List<dynamic> HairMale = new List<dynamic>()
-        {
+        private static readonly List<dynamic> HairMale =
+        [
             Game.GetGXTEntry("CC_M_HS_0"),
             Game.GetGXTEntry("CC_M_HS_1"),
             Game.GetGXTEntry("CC_M_HS_2"),
@@ -87,9 +87,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             Game.GetGXTEntry("CC_M_HS_20"),
             Game.GetGXTEntry("CC_M_HS_21"),
             Game.GetGXTEntry("CC_M_HS_22")
-        };
-        private static List<dynamic> HairFemale = new List<dynamic>()
-        {
+        ];
+        private static readonly List<dynamic> HairFemale =
+        [
             Game.GetGXTEntry("CC_F_HS_0"),
             Game.GetGXTEntry("CC_F_HS_1"),
             Game.GetGXTEntry("CC_F_HS_2"),
@@ -114,9 +114,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             Game.GetGXTEntry("CC_F_HS_21"),
             Game.GetGXTEntry("CC_F_HS_22"),
             Game.GetGXTEntry("CC_F_HS_23")
-        };
-        private static List<dynamic> Beards = new List<dynamic>()
-        {
+        ];
+        private static readonly List<dynamic> Beards =
+        [
             Game.GetGXTEntry("FACE_F_P_OFF"),
             Game.GetGXTEntry("CC_BEARD_0"),
             Game.GetGXTEntry("CC_BEARD_1"),
@@ -147,9 +147,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             Game.GetGXTEntry("CC_BEARD_26"),
             Game.GetGXTEntry("CC_BEARD_27"),
             Game.GetGXTEntry("CC_BEARD_28")
-        };
-        private static List<dynamic> eyebrow = new List<dynamic>()
-        {
+        ];
+        private static readonly List<dynamic> eyebrow =
+        [
             Game.GetGXTEntry("CC_EYEBRW_0"),
             Game.GetGXTEntry("CC_EYEBRW_1"),
             Game.GetGXTEntry("CC_EYEBRW_2"),
@@ -184,9 +184,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             Game.GetGXTEntry("CC_EYEBRW_31"),
             Game.GetGXTEntry("CC_EYEBRW_32"),
             Game.GetGXTEntry("CC_EYEBRW_33")
-        };
-        private static List<dynamic> Blemishes = new List<dynamic>()
-        {
+        ];
+        private static readonly List<dynamic> Blemishes =
+        [
             Game.GetGXTEntry("FACE_F_P_OFF"),
             Game.GetGXTEntry("CC_SKINBLEM_0"),
             Game.GetGXTEntry("CC_SKINBLEM_1"),
@@ -212,9 +212,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             Game.GetGXTEntry("CC_SKINBLEM_21"),
             Game.GetGXTEntry("CC_SKINBLEM_22"),
             Game.GetGXTEntry("CC_SKINBLEM_23")
-        };
-        private static List<dynamic> Ageing = new List<dynamic>()
-        {
+        ];
+        private static readonly List<dynamic> Ageing =
+        [
             Game.GetGXTEntry("FACE_F_P_OFF"),
             Game.GetGXTEntry("CC_SKINAGE_0"),
             Game.GetGXTEntry("CC_SKINAGE_2"),
@@ -230,9 +230,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             Game.GetGXTEntry("CC_SKINAGE_12"),
             Game.GetGXTEntry("CC_SKINAGE_13"),
             Game.GetGXTEntry("CC_SKINAGE_14")
-        };
-        private static List<dynamic> Complexions = new List<dynamic>()
-        {
+        ];
+        private static readonly List<dynamic> Complexions =
+        [
             Game.GetGXTEntry("FACE_F_P_OFF"),
             Game.GetGXTEntry("CC_SKINCOM_0"),
             Game.GetGXTEntry("CC_SKINCOM_1"),
@@ -246,9 +246,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             Game.GetGXTEntry("CC_SKINCOM_9"),
             Game.GetGXTEntry("CC_SKINCOM_10"),
             Game.GetGXTEntry("CC_SKINCOM_11")
-        };
-        private static List<dynamic> Skin_moles_and_leeks = new List<dynamic>()
-        {
+        ];
+        private static readonly List<dynamic> Skin_moles_and_leeks =
+        [
             Game.GetGXTEntry("FACE_F_P_OFF"),
             Game.GetGXTEntry("CC_MOLEFRECK_0"),
             Game.GetGXTEntry("CC_MOLEFRECK_1"),
@@ -268,9 +268,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             Game.GetGXTEntry("CC_MOLEFRECK_15"),
             Game.GetGXTEntry("CC_MOLEFRECK_16"),
             Game.GetGXTEntry("CC_MOLEFRECK_17")
-        };
-        private static List<dynamic> Skin_Damage = new List<dynamic>()
-        {
+        ];
+        private static readonly List<dynamic> Skin_Damage =
+        [
             Game.GetGXTEntry("FACE_F_P_OFF"),
             Game.GetGXTEntry("CC_SUND_0"),
             Game.GetGXTEntry("CC_SUND_1"),
@@ -283,9 +283,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             Game.GetGXTEntry("CC_SUND_8"),
             Game.GetGXTEntry("CC_SUND_9"),
             Game.GetGXTEntry("CC_SUND_10")
-        };
-        private static List<dynamic> EyesColor = new List<dynamic>()
-        {
+        ];
+        private static readonly List<dynamic> EyesColor =
+        [
             Game.GetGXTEntry("FACE_E_C_0"),
             Game.GetGXTEntry("FACE_E_C_1"),
             Game.GetGXTEntry("FACE_E_C_2"),
@@ -295,9 +295,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             Game.GetGXTEntry("FACE_E_C_6"),
             Game.GetGXTEntry("FACE_E_C_7"),
             Game.GetGXTEntry("FACE_E_C_8")
-        };
-        private static List<dynamic> EyesMakeup = new List<dynamic>()
-        {
+        ];
+        private static readonly List<dynamic> EyesMakeup =
+        [
             Game.GetGXTEntry("FACE_F_P_OFF"),
             Game.GetGXTEntry("CC_MKUP_0"),
             Game.GetGXTEntry("CC_MKUP_1"),
@@ -324,9 +324,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             Game.GetGXTEntry("CC_MKUP_39"),
             Game.GetGXTEntry("CC_MKUP_40"),
             Game.GetGXTEntry("CC_MKUP_41")
-        };
-        private static List<dynamic> BlusherFemale = new List<dynamic>()
-        {
+        ];
+        private static readonly List<dynamic> BlusherFemale =
+        [
             Game.GetGXTEntry("FACE_F_P_OFF"),
             Game.GetGXTEntry("CC_BLUSH_0"),
             Game.GetGXTEntry("CC_BLUSH_1"),
@@ -335,9 +335,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             Game.GetGXTEntry("CC_BLUSH_4"),
             Game.GetGXTEntry("CC_BLUSH_5"),
             Game.GetGXTEntry("CC_BLUSH_6")
-        };
-        private static List<dynamic> Lipstick = new List<dynamic>()
-        {
+        ];
+        private static readonly List<dynamic> Lipstick =
+        [
             Game.GetGXTEntry("FACE_F_P_OFF"),
             Game.GetGXTEntry("CC_LIPSTICK_0"),
             Game.GetGXTEntry("CC_LIPSTICK_1"),
@@ -349,10 +349,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             Game.GetGXTEntry("CC_LIPSTICK_7"),
             Game.GetGXTEntry("CC_LIPSTICK_8"),
             Game.GetGXTEntry("CC_LIPSTICK_9")
-        };
+        ];
 
-        private static List<ShopPed.PedComponentData> MaleHats = new List<ShopPed.PedComponentData>()
-        {
+        private static readonly List<ShopPed.PedComponentData> MaleHats =
+        [
             new (0,-1257185072,63,20,0,0,0,0,3,"CLO_BBM_H_0_0"),
             new (0,-75666008,63,20,1,0,0,0,3,"CLO_BBM_H_0_1"),
             new (0,-451657514,63,20,2,0,0,0,3,"CLO_BBM_H_0_2"),
@@ -404,9 +404,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             new (-1115780512,-726329981,64,55,0,1260,0,0,3,"CLO_S1M_PH_0_0"),
             new (-1115780512,-908656697,64,55,1,1265,0,0,3,"CLO_S1M_PH_0_1"),
             new (-1115780512,-1220060504,64,55,2,1270,0,0,3,"CLO_S1M_PH_0_2")
-        };
-        private static List<ShopPed.PedComponentData> FemaleHats = new List<ShopPed.PedComponentData>()
-            {
+        ];
+        private static readonly List<ShopPed.PedComponentData> FemaleHats =
+            [
                 new(0,1720281330,71,20,0,0,0,0,4,"CLO_BBF_P2_0"),
                 new(0,968593239,71,20,1,0,0,0,4,"CLO_BBF_P2_1"),
                 new(0,-479862111,71,20,2,0,0,0,4,"CLO_BBF_P2_2"),
@@ -458,10 +458,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 new(0,1832973467,62,29,1,9999,0,0,4,"CLO_HP_F_H_1_1"),
                 new(0,993136766,62,29,2,9999,0,0,4,"CLO_HP_F_H_1_2"),
                 new(0,1308866081,62,29,3,9999,0,0,4,"CLO_HP_F_H_1_3"),
-            };
+            ];
 
-        private static List<ShopPed.PedComponentData> MaleGlasses = new List<ShopPed.PedComponentData>()
-            {
+        private static readonly List<ShopPed.PedComponentData> MaleGlasses =
+            [
                 new(0,-729343262,81,16,0,0,1,0,3,"CLO_BBM_E_0_0"),
                 new(0,-489343106,81,16,1,0,1,0,3,"CLO_BBM_E_0_1"),
                 new(0,-820867051,81,16,2,0,1,0,3,"CLO_BBM_E_0_2"),
@@ -604,9 +604,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 new(2141921740,-1988237493,164,33,9,0,1,0,3,"CLO_H4M_PEY_3_9"),
                 new(2141921740,-308780352,164,33,10,0,1,0,3,"CLO_H4M_PEY_310"),
                 new(2141921740,-539048115,164,33,11,0,1,0,3,"CLO_H4M_PEY_311")
-            };
-        private static List<ShopPed.PedComponentData> FemaleGlasses = new List<ShopPed.PedComponentData>()
-        {
+            ];
+        private static readonly List<ShopPed.PedComponentData> FemaleGlasses =
+        [
             new(0,-723493963,84,16,0,0,1,0,4,"CLO_BBF_P0_0"),
             new(0,-500992453,84,16,1,0,1,0,4,"CLO_BBF_P0_1"),
             new(0,-1739758960,84,16,2,0,1,0,4,"CLO_BBF_P0_2"),
@@ -755,16 +755,16 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             new(2141921740,1529621088,164,35,9,0,1,0,4,"CLO_H4F_PEY_3_9"),
             new(2141921740,-488766247,164,35,10,0,1,0,4,"CLO_H4F_PEY_310"),
             new(2141921740,1676314352,164,35,11,0,1,0,4,"CLO_H4F_PEY_311"),
-        };
+        ];
 
         private static FreeRoamChar _dataMale;
         private static FreeRoamChar _dataFemale;
 
         private static string _selected = "";
-        private static readonly Camera cam2 = new Camera(CreateCam("DEFAULT_SCRIPTED_CAMERA", true));
+        private static readonly Camera cam2 = new(CreateCam("DEFAULT_SCRIPTED_CAMERA", true));
         private static Scaleform _boardScalep1 = new("mugshot_board_01");
         private static int _handle1;
-        private static string _d;
+        private static readonly string _d;
         private static FreeRoamChar _data;
         private static Camera _ncam;
         private static Ped _dummyPed;
@@ -804,10 +804,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             SetPlayerModel(PlayerCache.MyClient.Player.Handle, hash);
             int id = PlayerCache.MyClient.Ped.Handle;
             int[][] aa = GetCreatorSuit(_selected == "Male", 0);
-            ComponentDrawables comp = new ComponentDrawables(aa[0][0], aa[0][1], aa[0][2], aa[0][3], aa[0][4], aa[0][5], aa[0][6], aa[0][7], aa[0][8], aa[0][9], aa[0][10], aa[0][11]);
-            ComponentDrawables text = new ComponentDrawables(aa[1][0], aa[1][1], aa[1][2], aa[1][3], aa[1][4], aa[1][5], aa[1][6], aa[1][7], aa[1][8], aa[1][9], aa[1][10], aa[1][11]);
-            PropIndices _prop = new PropIndices(GetPedPropIndex(id, 0), GetPedPropIndex(id, 1), GetPedPropIndex(id, 2), GetPedPropIndex(id, 3), GetPedPropIndex(id, 4), GetPedPropIndex(id, 5), GetPedPropIndex(id, 6), GetPedPropIndex(id, 7), GetPedPropIndex(id, 8));
-            PropIndices _proptxt = new PropIndices(GetPedPropTextureIndex(id, 0), GetPedPropTextureIndex(id, 1), GetPedPropTextureIndex(id, 2), GetPedPropTextureIndex(id, 3), GetPedPropTextureIndex(id, 4), GetPedPropTextureIndex(id, 5), GetPedPropTextureIndex(id, 6), GetPedPropTextureIndex(id, 7), GetPedPropTextureIndex(id, 8));
+            ComponentDrawables comp = new(aa[0][0], aa[0][1], aa[0][2], aa[0][3], aa[0][4], aa[0][5], aa[0][6], aa[0][7], aa[0][8], aa[0][9], aa[0][10], aa[0][11]);
+            ComponentDrawables text = new(aa[1][0], aa[1][1], aa[1][2], aa[1][3], aa[1][4], aa[1][5], aa[1][6], aa[1][7], aa[1][8], aa[1][9], aa[1][10], aa[1][11]);
+            PropIndices _prop = new(GetPedPropIndex(id, 0), GetPedPropIndex(id, 1), GetPedPropIndex(id, 2), GetPedPropIndex(id, 3), GetPedPropIndex(id, 4), GetPedPropIndex(id, 5), GetPedPropIndex(id, 6), GetPedPropIndex(id, 7), GetPedPropIndex(id, 8));
+            PropIndices _proptxt = new(GetPedPropTextureIndex(id, 0), GetPedPropTextureIndex(id, 1), GetPedPropTextureIndex(id, 2), GetPedPropTextureIndex(id, 3), GetPedPropTextureIndex(id, 4), GetPedPropTextureIndex(id, 5), GetPedPropTextureIndex(id, 6), GetPedPropTextureIndex(id, 7), GetPedPropTextureIndex(id, 8));
             plpl.Dressing = new("", "", comp, text, _prop, _proptxt);
             UpdateFace(Cache.PlayerCache.MyClient.Ped.Handle, plpl.Skin);
             UpdateDress(Cache.PlayerCache.MyClient.Ped.Handle, plpl.Dressing);
@@ -836,8 +836,8 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 PlayerCache.MyClient.Player.CanControlCharacter = false;
                 Cache.PlayerCache.MyClient.Status.Instance.InstancePlayer(Cache.PlayerCache.MyClient.Handle, "CharCreation");
                 // TODO: CHANGE THE FINANCE ACCORDINGLY I THINK? 1000, 3000 SOUNDS SO EARLY ESX...
-                _dataMale = new FreeRoamChar(SnowflakeGenerator.Instance.Next().ToInt64(), new Finance(1000, 3000), new Gang("Uncensored", 0), new Skin("Male", (uint)PedHash.FreemodeMale01, 0.5f, 0.5f, new Face(0, 0, new float[20] { Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(1f, -1, 1) }), new A2(GetRandomIntInRange(0, Ageing.Count), GetRandomFloatInRange(0f, 1f)), new A2(255, 0f), new A2(GetRandomIntInRange(0, Blemishes.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Complexions.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_Damage.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_moles_and_leeks.Count), GetRandomFloatInRange(0f, 1f)), new A3(255, 0f, new int[2] { 0, 0 }), new A3(255, 0f, new int[2] { 0, 0 }), new Facial(new A3(GetRandomIntInRange(0, Beards.Count), GetRandomFloatInRange(0f, 1f), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) }), new A3(GetRandomIntInRange(0, eyebrow.Count), GetRandomFloatInRange(0f, 1f), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) })), new Hair(GetRandomIntInRange(0, HairMale.Count), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) }), new Eye(GetRandomIntInRange(0, EyesColor.Count)), new Ears(255, 0)), new Dressing("Iniziale", "Per cominciare", new ComponentDrawables(-1, 0, GetPedDrawableVariation(Cache.PlayerCache.MyClient.Ped.Handle, 2), 0, 0, -1, 15, 0, 15, 0, 0, 56), new ComponentDrawables(-1, 0, GetPedTextureVariation(Cache.PlayerCache.MyClient.Ped.Handle, 2), 0, 4, -1, 14, 0, 0, 0, 0, 0), new PropIndices(-1, GetPedPropIndex(Cache.PlayerCache.MyClient.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1), new PropIndices(-1, GetPedPropTextureIndex(Cache.PlayerCache.MyClient.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1)), new PhoneData(), new FreeRoamStats(), new GameStats());
-                _dataFemale = new FreeRoamChar(SnowflakeGenerator.Instance.Next().ToInt64(), new Finance(1000, 3000), new Gang("Uncensored", 0), new Skin("Female", (uint)PedHash.FreemodeFemale01, 0.5f, 0.5f, new Face(0, 0, new float[20] { Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1) }), new A2(GetRandomIntInRange(0, Ageing.Count), GetRandomFloatInRange(0f, 1f)), new A2(255, 0f), new A2(GetRandomIntInRange(0, Blemishes.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Complexions.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_Damage.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_moles_and_leeks.Count), GetRandomFloatInRange(0f, 1f)), new A3(255, 0f, new int[2] { 0, 0 }), new A3(255, 0f, new int[2] { 0, 0 }), new Facial(new A3(255, 0f, new int[2] { 0, 0 }), new A3(GetRandomIntInRange(0, eyebrow.Count), GetRandomFloatInRange(0f, 1f), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) })), new Hair(GetRandomIntInRange(0, HairMale.Count), new int[2] { GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63) }), new Eye(GetRandomIntInRange(0, EyesColor.Count)), new Ears(255, 0)), new Dressing("Iniziale", "Per cominciare", new ComponentDrawables(-1, 0, GetPedDrawableVariation(Cache.PlayerCache.MyClient.Ped.Handle, 2), 0, 0, -1, 15, 0, 15, 0, 0, 56), new ComponentDrawables(-1, 0, GetPedTextureVariation(Cache.PlayerCache.MyClient.Ped.Handle, 2), 0, 4, -1, 14, 0, 0, 0, 0, 0), new PropIndices(-1, GetPedPropIndex(Cache.PlayerCache.MyClient.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1), new PropIndices(-1, GetPedPropTextureIndex(Cache.PlayerCache.MyClient.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1)), new PhoneData(), new FreeRoamStats(), new GameStats());
+                _dataMale = new FreeRoamChar(SnowflakeGenerator.Instance.Next().ToInt64(), new Finance(1000, 3000), new Gang("Uncensored", 0), new Skin("Male", (uint)PedHash.FreemodeMale01, 0.5f, 0.5f, new Face(0, 0, [Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(1f, -1, 1)]), new A2(GetRandomIntInRange(0, Ageing.Count), GetRandomFloatInRange(0f, 1f)), new A2(255, 0f), new A2(GetRandomIntInRange(0, Blemishes.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Complexions.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_Damage.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_moles_and_leeks.Count), GetRandomFloatInRange(0f, 1f)), new A3(255, 0f, [0, 0]), new A3(255, 0f, [0, 0]), new Facial(new A3(GetRandomIntInRange(0, Beards.Count), GetRandomFloatInRange(0f, 1f), [GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63)]), new A3(GetRandomIntInRange(0, eyebrow.Count), GetRandomFloatInRange(0f, 1f), [GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63)])), new Hair(GetRandomIntInRange(0, HairMale.Count), [GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63)]), new Eye(GetRandomIntInRange(0, EyesColor.Count)), new Ears(255, 0)), new Dressing("Iniziale", "Per cominciare", new ComponentDrawables(-1, 0, GetPedDrawableVariation(Cache.PlayerCache.MyClient.Ped.Handle, 2), 0, 0, -1, 15, 0, 15, 0, 0, 56), new ComponentDrawables(-1, 0, GetPedTextureVariation(Cache.PlayerCache.MyClient.Ped.Handle, 2), 0, 4, -1, 14, 0, 0, 0, 0, 0), new PropIndices(-1, GetPedPropIndex(Cache.PlayerCache.MyClient.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1), new PropIndices(-1, GetPedPropTextureIndex(Cache.PlayerCache.MyClient.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1)), new PhoneData(), new FreeRoamStats(), new GameStats());
+                _dataFemale = new FreeRoamChar(SnowflakeGenerator.Instance.Next().ToInt64(), new Finance(1000, 3000), new Gang("Uncensored", 0), new Skin("Female", (uint)PedHash.FreemodeFemale01, 0.5f, 0.5f, new Face(0, 0, [Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1), Functions.Normalize(0f, -1, 1)]), new A2(GetRandomIntInRange(0, Ageing.Count), GetRandomFloatInRange(0f, 1f)), new A2(255, 0f), new A2(GetRandomIntInRange(0, Blemishes.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Complexions.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_Damage.Count), GetRandomFloatInRange(0f, 1f)), new A2(GetRandomIntInRange(0, Skin_moles_and_leeks.Count), GetRandomFloatInRange(0f, 1f)), new A3(255, 0f, [0, 0]), new A3(255, 0f, [0, 0]), new Facial(new A3(255, 0f, [0, 0]), new A3(GetRandomIntInRange(0, eyebrow.Count), GetRandomFloatInRange(0f, 1f), [GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63)])), new Hair(GetRandomIntInRange(0, HairMale.Count), [GetRandomIntInRange(0, 63), GetRandomIntInRange(0, 63)]), new Eye(GetRandomIntInRange(0, EyesColor.Count)), new Ears(255, 0)), new Dressing("Iniziale", "Per cominciare", new ComponentDrawables(-1, 0, GetPedDrawableVariation(Cache.PlayerCache.MyClient.Ped.Handle, 2), 0, 0, -1, 15, 0, 15, 0, 0, 56), new ComponentDrawables(-1, 0, GetPedTextureVariation(Cache.PlayerCache.MyClient.Ped.Handle, 2), 0, 4, -1, 14, 0, 0, 0, 0, 0), new PropIndices(-1, GetPedPropIndex(Cache.PlayerCache.MyClient.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1), new PropIndices(-1, GetPedPropTextureIndex(Cache.PlayerCache.MyClient.Ped.Handle, 2), -1, -1, -1, -1, -1, -1, -1)), new PhoneData(), new FreeRoamStats(), new GameStats());
                 _data = _selected.ToLower() == "male" ? _dataMale : _dataFemale;
                 UpdateModel(_data.ToJson());
                 await BaseScript.Delay(1000);
@@ -861,7 +861,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 N_0xe111a7c0d200cbc5(_ncam.Handle, 1f);
                 SetCamDofFnumberOfLens(_ncam.Handle, 1.2f);
                 SetCamDofMaxNearInFocusDistanceBlendLevel(_ncam.Handle, 1f);
-                Camera cam = new Camera(CreateCam("DEFAULT_SCRIPTED_CAMERA", true));
+                Camera cam = new(CreateCam("DEFAULT_SCRIPTED_CAMERA", true));
                 cam.Position = new Vector3(402.7391f, -1003.981f, -98.43439f);
                 cam.Rotation = new Vector3(-3.589798f, 0f, -0.276381f);
                 cam.FieldOfView = 36.95373f;
@@ -883,25 +883,25 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             }
         }
 
-        public static UIMenu Creation = new UIMenu("", "", true);
-        public static UIMenu Parents = new UIMenu("", "", false);
-        public static UIMenu Details = new UIMenu("", "", false);
-        public static UIMenu Appearances = new UIMenu("", "", false);
-        public static UIMenu Apparel = new UIMenu("", "", false);
-        public static UIMenu Statistics = new UIMenu("", "", false);
+        public static UIMenu Creation = new("", "", true);
+        public static UIMenu Parents = new("", "", false);
+        public static UIMenu Details = new("", "", false);
+        public static UIMenu Appearances = new("", "", false);
+        public static UIMenu Apparel = new("", "", false);
+        public static UIMenu Statistics = new("", "", false);
         public static UIMenuItem Save = new("", "");
 
-        private static UIMenuListItem _eyebArch = new UIMenuListItem(Game.GetGXTEntry("FACE_F_BROW"), new List<dynamic> { Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P3_0"), Game.GetGXTEntry("FACE_F_P3_1") }, 0);
-        private static UIMenuListItem _eyes = new UIMenuListItem(Game.GetGXTEntry("FACE_F_EYES"), new List<dynamic> { Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P6_0"), Game.GetGXTEntry("FACE_F_P6_1") }, 0);
-        private static UIMenuListItem _nose = new UIMenuListItem(Game.GetGXTEntry("FACE_F_NOSE"), new List<dynamic> { Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P4_0"), Game.GetGXTEntry("FACE_F_P4_1") }, 0);
-        private static UIMenuListItem _nosePro = new UIMenuListItem(Game.GetGXTEntry("FACE_F_NOSEP"), new List<dynamic>() { Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P1_0"), Game.GetGXTEntry("FACE_F_P1_1") }, 0);
-        private static UIMenuListItem _noseTip = new UIMenuListItem(Game.GetGXTEntry("FACE_F_NOSET"), new List<dynamic>() { Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P2_0"), Game.GetGXTEntry("FACE_F_P2_1") }, 0);
-        private static UIMenuListItem _cheekbone = new UIMenuListItem(Game.GetGXTEntry("FACE_F_CHEEK"), new List<dynamic>() { Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P7_0"), Game.GetGXTEntry("FACE_F_P7_1") }, 0);
-        private static UIMenuListItem _cheeks = new UIMenuListItem(Game.GetGXTEntry("FACE_F_CHEEKS"), new List<dynamic>() { Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P5_0"), Game.GetGXTEntry("FACE_F_P5_0") }, 0);
-        private static UIMenuListItem _lips = new UIMenuListItem(Game.GetGXTEntry("FACE_F_LIPS"), new List<dynamic>() { Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P9_0"), Game.GetGXTEntry("FACE_F_P9_1") }, 0);
-        private static UIMenuListItem _jaw = new UIMenuListItem(Game.GetGXTEntry("FACE_F_JAW"), new List<dynamic>() { Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P8_0"), Game.GetGXTEntry("FACE_F_P8_1") }, 0);
-        private static UIMenuListItem _jawPro = new UIMenuListItem(Game.GetGXTEntry("FACE_F_CHIN"), new List<dynamic>() { Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P0_0"), Game.GetGXTEntry("FACE_F_P0_1") }, 0);
-        private static UIMenuListItem _jawFor = new UIMenuListItem(Game.GetGXTEntry("FACE_F_CHINS"), new List<dynamic>() { Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P10_0"), Game.GetGXTEntry("FACE_F_P10_1") }, 0);
+        private static readonly UIMenuListItem _eyebArch = new(Game.GetGXTEntry("FACE_F_BROW"), [Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P3_0"), Game.GetGXTEntry("FACE_F_P3_1")], 0);
+        private static readonly UIMenuListItem _eyes = new(Game.GetGXTEntry("FACE_F_EYES"), [Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P6_0"), Game.GetGXTEntry("FACE_F_P6_1")], 0);
+        private static readonly UIMenuListItem _nose = new(Game.GetGXTEntry("FACE_F_NOSE"), [Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P4_0"), Game.GetGXTEntry("FACE_F_P4_1")], 0);
+        private static readonly UIMenuListItem _nosePro = new(Game.GetGXTEntry("FACE_F_NOSEP"), [Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P1_0"), Game.GetGXTEntry("FACE_F_P1_1")], 0);
+        private static readonly UIMenuListItem _noseTip = new(Game.GetGXTEntry("FACE_F_NOSET"), [Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P2_0"), Game.GetGXTEntry("FACE_F_P2_1")], 0);
+        private static readonly UIMenuListItem _cheekbone = new(Game.GetGXTEntry("FACE_F_CHEEK"), [Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P7_0"), Game.GetGXTEntry("FACE_F_P7_1")], 0);
+        private static readonly UIMenuListItem _cheeks = new(Game.GetGXTEntry("FACE_F_CHEEKS"), [Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P5_0"), Game.GetGXTEntry("FACE_F_P5_0")], 0);
+        private static readonly UIMenuListItem _lips = new(Game.GetGXTEntry("FACE_F_LIPS"), [Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P9_0"), Game.GetGXTEntry("FACE_F_P9_1")], 0);
+        private static readonly UIMenuListItem _jaw = new(Game.GetGXTEntry("FACE_F_JAW"), [Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P8_0"), Game.GetGXTEntry("FACE_F_P8_1")], 0);
+        private static readonly UIMenuListItem _jawPro = new(Game.GetGXTEntry("FACE_F_CHIN"), [Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P0_0"), Game.GetGXTEntry("FACE_F_P0_1")], 0);
+        private static readonly UIMenuListItem _jawFor = new(Game.GetGXTEntry("FACE_F_CHINS"), [Game.GetGXTEntry("FACE_F_P_ST"), Game.GetGXTEntry("FACE_F_P10_0"), Game.GetGXTEntry("FACE_F_P10_1")], 0);
         //private static UIMenuListItem _neck = new UIMenuListItem("Collo", new List<dynamic>() { Game.GetGXTEntry("FACE_F_P_ST"), "Tight", "Wide" }, 0);
 
         #endregion
@@ -917,24 +917,24 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 #region Main Menu
 
                 Screen.Fading.FadeIn(800);
-                Point offset = new Point(50, 50);
+                Point offset = new(50, 50);
                 Creation = new(Game.GetGXTEntry("FACE_TITLE"), Game.GetGXTEntry("FACE_MMT"), offset, "commonmenu", "interaction_bgd", false, false)
                 {
                     EnableAnimation = false,
                     BuildingAnimation = MenuBuildingAnimation.NONE,
                     MaxItemsOnScreen = 8
                 };
-                UIMenuListItem sex = new UIMenuListItem(Game.GetGXTEntry("FACE_SEX"), new List<dynamic>() { Game.GetGXTEntry("FACE_MALE"), Game.GetGXTEntry("FACE_FEMALE") }, _selected == "Male" ? 0 : 1, Game.GetGXTEntry("FACE_MM_H2"));
+                UIMenuListItem sex = new(Game.GetGXTEntry("FACE_SEX"), [Game.GetGXTEntry("FACE_MALE"), Game.GetGXTEntry("FACE_FEMALE")], _selected == "Male" ? 0 : 1, Game.GetGXTEntry("FACE_MM_H2"));
                 Creation.AddItem(sex);
-                UIMenuItem GenitoriItem = new UIMenuItem(Game.GetGXTEntry("FACE_HERI"), Game.GetGXTEntry("FACE_MM_H3"));
+                UIMenuItem GenitoriItem = new(Game.GetGXTEntry("FACE_HERI"), Game.GetGXTEntry("FACE_MM_H3"));
                 Parents = new(Game.GetGXTEntry("FACE_TITLE"), Game.GetGXTEntry("FACE_HERI"));
-                UIMenuItem DettagliItem = new UIMenuItem(Game.GetGXTEntry("FACE_FEAT"), Game.GetGXTEntry("FACE_MM_H4"));
+                UIMenuItem DettagliItem = new(Game.GetGXTEntry("FACE_FEAT"), Game.GetGXTEntry("FACE_MM_H4"));
                 Details = new(Game.GetGXTEntry("FACE_TITLE"), Game.GetGXTEntry("FACE_FEAT"));
-                UIMenuItem ApparenzeItem = new UIMenuItem(Game.GetGXTEntry("FACE_APP"), Game.GetGXTEntry("FACE_MM_H6"));
+                UIMenuItem ApparenzeItem = new(Game.GetGXTEntry("FACE_APP"), Game.GetGXTEntry("FACE_MM_H6"));
                 Appearances = new(Game.GetGXTEntry("FACE_TITLE"), Game.GetGXTEntry("FACE_APP"));
-                UIMenuItem ApparelItem = new UIMenuItem(Game.GetGXTEntry("FACE_APPA"), Game.GetGXTEntry("FACE_APPA_H"));
+                UIMenuItem ApparelItem = new(Game.GetGXTEntry("FACE_APPA"), Game.GetGXTEntry("FACE_APPA_H"));
                 Apparel = new(Game.GetGXTEntry("FACE_TITLE"), Game.GetGXTEntry("FACE_APPA"));
-                UIMenuItem StatisticheItem = new UIMenuItem(Game.GetGXTEntry("FACE_STATS"), Game.GetGXTEntry("FACE_MM_H5"));
+                UIMenuItem StatisticheItem = new(Game.GetGXTEntry("FACE_STATS"), Game.GetGXTEntry("FACE_MM_H5"));
                 Statistics = new(Game.GetGXTEntry("FACE_TITLE"), Game.GetGXTEntry("FACE_STATS"));
 
                 GenitoriItem.Activated += async (a, b) => await Creation.SwitchTo(Parents, 0, true);
@@ -949,10 +949,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 Creation.AddItem(ApparelItem);
                 Creation.AddItem(StatisticheItem);
 
-                InstructionalButton button2 = new InstructionalButton(Control.FrontendLb, Game.GetGXTEntry("FACES_TL"));
-                InstructionalButton button3 = new InstructionalButton(Control.FrontendRb, Game.GetGXTEntry("FACES_TR"));
-                InstructionalButton button4 = new InstructionalButton(InputGroup.INPUTGROUP_LOOK, Game.GetGXTEntry("FACE_COPAC"));
-                InstructionalButton button5 = new InstructionalButton(InputGroup.INPUTGROUP_LOOK, "Handle panels", ScaleformUI.Scaleforms.PadCheck.Keyboard);
+                InstructionalButton button2 = new(Control.FrontendLb, Game.GetGXTEntry("FACES_TL"));
+                InstructionalButton button3 = new(Control.FrontendRb, Game.GetGXTEntry("FACES_TR"));
+                InstructionalButton button4 = new(InputGroup.INPUTGROUP_LOOK, Game.GetGXTEntry("FACE_COPAC"));
+                InstructionalButton button5 = new(InputGroup.INPUTGROUP_LOOK, "Handle panels", ScaleformUI.Scaleforms.PadCheck.Keyboard);
                 Creation.InstructionalButtons.Add(button3);
                 Creation.InstructionalButtons.Add(button2);
                 Parents.InstructionalButtons.Add(button3);
@@ -968,14 +968,14 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
 
                 #region Parents
 
-                UIMenuHeritageWindow heritageWindow = new UIMenuHeritageWindow(_data.Skin.Face.Mom, _data.Skin.Face.Dad);
+                UIMenuHeritageWindow heritageWindow = new(_data.Skin.Face.Mom, _data.Skin.Face.Dad);
                 Parents.AddWindow(heritageWindow);
-                List<dynamic> lista = new List<dynamic>();
+                List<dynamic> lista = [];
                 for (int i = 0; i < 101; i++) lista.Add(i);
-                UIMenuListItem mom = new UIMenuListItem(Game.GetGXTEntry("FACE_MUMS"), momfaces, _data.Skin.Face.Mom, Game.GetGXTEntry("CHARC_H_30"));
-                UIMenuListItem dad = new UIMenuListItem(Game.GetGXTEntry("FACE_DADS"), dadfaces, _data.Skin.Face.Dad, Game.GetGXTEntry("CHARC_H_31"));
-                UIMenuSliderItem resemblance = new UIMenuSliderItem(Game.GetGXTEntry("FACE_H_DOM"), Game.GetGXTEntry("CHARC_H_9"), true) { Multiplier = 2, Value = (int)Math.Round(_data.Skin.Resemblance * 100) };
-                UIMenuSliderItem skinmix = new UIMenuSliderItem(Game.GetGXTEntry("FACE_H_STON"), Game.GetGXTEntry("FACE_HER_ST_H"), true) { Multiplier = 2, Value = (int)Math.Round(_data.Skin.Skinmix * 100) };
+                UIMenuListItem mom = new(Game.GetGXTEntry("FACE_MUMS"), momfaces, _data.Skin.Face.Mom, Game.GetGXTEntry("CHARC_H_30"));
+                UIMenuListItem dad = new(Game.GetGXTEntry("FACE_DADS"), dadfaces, _data.Skin.Face.Dad, Game.GetGXTEntry("CHARC_H_31"));
+                UIMenuSliderItem resemblance = new(Game.GetGXTEntry("FACE_H_DOM"), Game.GetGXTEntry("CHARC_H_9"), true) { Multiplier = 2, Value = (int)Math.Round(_data.Skin.Resemblance * 100) };
+                UIMenuSliderItem skinmix = new(Game.GetGXTEntry("FACE_H_STON"), Game.GetGXTEntry("FACE_HER_ST_H"), true) { Multiplier = 2, Value = (int)Math.Round(_data.Skin.Skinmix * 100) };
                 Parents.AddItem(mom);
                 Parents.AddItem(dad);
                 Parents.AddItem(resemblance);
@@ -1068,10 +1068,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 blusher.AddPanel(blushCol1);
                 blusher.AddPanel(blushCol2);
                 blusher.AddPanel(blushOpac);
-                UIMenuListItem lipStick = new UIMenuListItem(Game.GetGXTEntry("FACE_F_LIPST"), Lipstick, _data.Skin.Lipstick.Style, "Change your appearance, use the ~INPUTGROUP_CURSOR~ to interact with the panels.");
-                UIMenuColorPanel lipCol1 = new UIMenuColorPanel("Main Color", ColorPanelType.Makeup);
-                UIMenuColorPanel lipCol2 = new UIMenuColorPanel("Secondary Color", ColorPanelType.Makeup);
-                UIMenuPercentagePanel lipOp = new UIMenuPercentagePanel("Opacity", "0%", "100%");
+                UIMenuListItem lipStick = new(Game.GetGXTEntry("FACE_F_LIPST"), Lipstick, _data.Skin.Lipstick.Style, "Change your appearance, use the ~INPUTGROUP_CURSOR~ to interact with the panels.");
+                UIMenuColorPanel lipCol1 = new("Main Color", ColorPanelType.Makeup);
+                UIMenuColorPanel lipCol2 = new("Secondary Color", ColorPanelType.Makeup);
+                UIMenuPercentagePanel lipOp = new("Opacity", "0%", "100%");
                 lipStick.AddPanel(lipCol1);
                 lipStick.AddPanel(lipCol2);
                 lipStick.AddPanel(lipOp);
@@ -1094,15 +1094,15 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 #endregion
 
                 #region Apparel
-                List<dynamic> styleList = new List<dynamic>();
+                List<dynamic> styleList = [];
                 for (int i = 0; i < 8; i++) styleList.Add(Game.GetGXTEntry("FACE_A_STY_" + i));
 
-                List<dynamic> outfitList = new List<dynamic>();
+                List<dynamic> outfitList = [];
                 for (int i = 0; i < 8; i++) outfitList.Add(Game.GetGXTEntry(getOutfit(i, _selected == "Male")));
 
-                List<dynamic> hatList = new() { Game.GetGXTEntry("FACE_OFF") };
+                List<dynamic> hatList = [Game.GetGXTEntry("FACE_OFF")];
 
-                List<dynamic> glassesList = new List<dynamic>() { Game.GetGXTEntry("FACE_OFF") };
+                List<dynamic> glassesList = [Game.GetGXTEntry("FACE_OFF")];
 
                 if (_selected == "Male")
                 {
@@ -1132,25 +1132,25 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                 #region Stats
                 int StatMax = 100;
 
-                UIMenuStatsItem stamina = new UIMenuStatsItem(Game.GetGXTEntry("FACE_STAM"), Game.GetGXTEntry("FACE_H_STA"), 0, SColor.HUD_Freemode);
+                UIMenuStatsItem stamina = new(Game.GetGXTEntry("FACE_STAM"), Game.GetGXTEntry("FACE_H_STA"), 0, SColor.HUD_Freemode);
                 UIMenuPercentagePanel maxstat = new("Remaining points", "0", "100", StatMax);
                 stamina.AddPanel(maxstat);
-                UIMenuStatsItem shooting = new UIMenuStatsItem(Game.GetGXTEntry("FACE_SHOOT"), Game.GetGXTEntry("FACE_H_SHO"), 0, SColor.HUD_Freemode);
+                UIMenuStatsItem shooting = new(Game.GetGXTEntry("FACE_SHOOT"), Game.GetGXTEntry("FACE_H_SHO"), 0, SColor.HUD_Freemode);
                 UIMenuPercentagePanel maxstat1 = new("Remaining points", "0", "100", StatMax);
                 shooting.AddPanel(maxstat1);
-                UIMenuStatsItem strength = new UIMenuStatsItem(Game.GetGXTEntry("FACE_STR"), Game.GetGXTEntry("FACE_H_STR"), 0, SColor.HUD_Freemode);
+                UIMenuStatsItem strength = new(Game.GetGXTEntry("FACE_STR"), Game.GetGXTEntry("FACE_H_STR"), 0, SColor.HUD_Freemode);
                 UIMenuPercentagePanel maxstat2 = new("Remaining points", "0", "100", StatMax);
                 strength.AddPanel(maxstat2);
-                UIMenuStatsItem stealth = new UIMenuStatsItem(Game.GetGXTEntry("FACE_STEALTH"), Game.GetGXTEntry("FACE_H_STE"), 0, SColor.HUD_Freemode);
+                UIMenuStatsItem stealth = new(Game.GetGXTEntry("FACE_STEALTH"), Game.GetGXTEntry("FACE_H_STE"), 0, SColor.HUD_Freemode);
                 UIMenuPercentagePanel maxstat3 = new("Remaining points", "0", "100", StatMax);
                 stealth.AddPanel(maxstat3);
-                UIMenuStatsItem flying = new UIMenuStatsItem(Game.GetGXTEntry("FACE_FLY"), Game.GetGXTEntry("FACE_H_FLY"), 0, SColor.HUD_Freemode);
+                UIMenuStatsItem flying = new(Game.GetGXTEntry("FACE_FLY"), Game.GetGXTEntry("FACE_H_FLY"), 0, SColor.HUD_Freemode);
                 UIMenuPercentagePanel maxstat4 = new("Remaining points", "0", "100", StatMax);
                 flying.AddPanel(maxstat4);
-                UIMenuStatsItem driving = new UIMenuStatsItem(Game.GetGXTEntry("FACE_DRIV"), Game.GetGXTEntry("FACE_H_DRI"), 0, SColor.HUD_Freemode);
+                UIMenuStatsItem driving = new(Game.GetGXTEntry("FACE_DRIV"), Game.GetGXTEntry("FACE_H_DRI"), 0, SColor.HUD_Freemode);
                 UIMenuPercentagePanel maxstat5 = new("Remaining points", "0", "100", StatMax);
                 driving.AddPanel(maxstat5);
-                UIMenuStatsItem lungs = new UIMenuStatsItem(Game.GetGXTEntry("FACE_LUNG"), Game.GetGXTEntry("FACE_H_LCP"), 0, SColor.HUD_Freemode);
+                UIMenuStatsItem lungs = new(Game.GetGXTEntry("FACE_LUNG"), Game.GetGXTEntry("FACE_H_LCP"), 0, SColor.HUD_Freemode);
                 UIMenuPercentagePanel maxstat6 = new("Remaining points", "0", "100", StatMax);
                 lungs.AddPanel(maxstat6);
 
@@ -1749,7 +1749,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                     int handle = PlayerCache.MyClient.Ped.Handle;
                     if (item == style)
                     {
-                        List<dynamic> list = new();
+                        List<dynamic> list = [];
                         for (int i = 0; i < 8; i++)
                         {
                             if (i == 0) first = index * 8;
@@ -1757,19 +1757,19 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                         }
                         outfit.ChangeList(list, 0);
                         int[][] aa = GetCreatorSuit(_selected == "Male", first);
-                        ComponentDrawables comp = new ComponentDrawables(aa[0][0], aa[0][1], aa[0][2], aa[0][3], aa[0][4], aa[0][5], aa[0][6], aa[0][7], aa[0][8], aa[0][9], aa[0][10], aa[0][11]);
-                        ComponentDrawables text = new ComponentDrawables(aa[1][0], aa[1][1], aa[1][2], aa[1][3], aa[1][4], aa[1][5], aa[1][6], aa[1][7], aa[1][8], aa[1][9], aa[1][10], aa[1][11]);
-                        PropIndices _prop = new PropIndices(GetPedPropIndex(handle, 0), GetPedPropIndex(handle, 1), GetPedPropIndex(handle, 2), GetPedPropIndex(handle, 3), GetPedPropIndex(handle, 4), GetPedPropIndex(handle, 5), GetPedPropIndex(handle, 6), GetPedPropIndex(handle, 7), GetPedPropIndex(handle, 8));
-                        PropIndices _proptxt = new PropIndices(GetPedPropTextureIndex(handle, 0), GetPedPropTextureIndex(handle, 1), GetPedPropTextureIndex(handle, 2), GetPedPropTextureIndex(handle, 3), GetPedPropTextureIndex(handle, 4), GetPedPropTextureIndex(handle, 5), GetPedPropTextureIndex(handle, 6), GetPedPropTextureIndex(handle, 7), GetPedPropTextureIndex(handle, 8));
+                        ComponentDrawables comp = new(aa[0][0], aa[0][1], aa[0][2], aa[0][3], aa[0][4], aa[0][5], aa[0][6], aa[0][7], aa[0][8], aa[0][9], aa[0][10], aa[0][11]);
+                        ComponentDrawables text = new(aa[1][0], aa[1][1], aa[1][2], aa[1][3], aa[1][4], aa[1][5], aa[1][6], aa[1][7], aa[1][8], aa[1][9], aa[1][10], aa[1][11]);
+                        PropIndices _prop = new(GetPedPropIndex(handle, 0), GetPedPropIndex(handle, 1), GetPedPropIndex(handle, 2), GetPedPropIndex(handle, 3), GetPedPropIndex(handle, 4), GetPedPropIndex(handle, 5), GetPedPropIndex(handle, 6), GetPedPropIndex(handle, 7), GetPedPropIndex(handle, 8));
+                        PropIndices _proptxt = new(GetPedPropTextureIndex(handle, 0), GetPedPropTextureIndex(handle, 1), GetPedPropTextureIndex(handle, 2), GetPedPropTextureIndex(handle, 3), GetPedPropTextureIndex(handle, 4), GetPedPropTextureIndex(handle, 5), GetPedPropTextureIndex(handle, 6), GetPedPropTextureIndex(handle, 7), GetPedPropTextureIndex(handle, 8));
                         _data.Dressing = new("", "", comp, text, _prop, _proptxt);
                     }
                     else if (item == outfit)
                     {
                         int[][] aa = GetCreatorSuit(_selected == "Male", (index + first));
-                        ComponentDrawables comp = new ComponentDrawables(aa[0][0], aa[0][1], aa[0][2], aa[0][3], aa[0][4], aa[0][5], aa[0][6], aa[0][7], aa[0][8], aa[0][9], aa[0][10], aa[0][11]);
-                        ComponentDrawables text = new ComponentDrawables(aa[1][0], aa[1][1], aa[1][2], aa[1][3], aa[1][4], aa[1][5], aa[1][6], aa[1][7], aa[1][8], aa[1][9], aa[1][10], aa[1][11]);
-                        PropIndices _prop = new PropIndices(GetPedPropIndex(handle, 0), GetPedPropIndex(handle, 1), GetPedPropIndex(handle, 2), GetPedPropIndex(handle, 3), GetPedPropIndex(handle, 4), GetPedPropIndex(handle, 5), GetPedPropIndex(handle, 6), GetPedPropIndex(handle, 7), GetPedPropIndex(handle, 8));
-                        PropIndices _proptxt = new PropIndices(GetPedPropTextureIndex(handle, 0), GetPedPropTextureIndex(handle, 1), GetPedPropTextureIndex(handle, 2), GetPedPropTextureIndex(handle, 3), GetPedPropTextureIndex(handle, 4), GetPedPropTextureIndex(handle, 5), GetPedPropTextureIndex(handle, 6), GetPedPropTextureIndex(handle, 7), GetPedPropTextureIndex(handle, 8));
+                        ComponentDrawables comp = new(aa[0][0], aa[0][1], aa[0][2], aa[0][3], aa[0][4], aa[0][5], aa[0][6], aa[0][7], aa[0][8], aa[0][9], aa[0][10], aa[0][11]);
+                        ComponentDrawables text = new(aa[1][0], aa[1][1], aa[1][2], aa[1][3], aa[1][4], aa[1][5], aa[1][6], aa[1][7], aa[1][8], aa[1][9], aa[1][10], aa[1][11]);
+                        PropIndices _prop = new(GetPedPropIndex(handle, 0), GetPedPropIndex(handle, 1), GetPedPropIndex(handle, 2), GetPedPropIndex(handle, 3), GetPedPropIndex(handle, 4), GetPedPropIndex(handle, 5), GetPedPropIndex(handle, 6), GetPedPropIndex(handle, 7), GetPedPropIndex(handle, 8));
+                        PropIndices _proptxt = new(GetPedPropTextureIndex(handle, 0), GetPedPropTextureIndex(handle, 1), GetPedPropTextureIndex(handle, 2), GetPedPropTextureIndex(handle, 3), GetPedPropTextureIndex(handle, 4), GetPedPropTextureIndex(handle, 5), GetPedPropTextureIndex(handle, 6), GetPedPropTextureIndex(handle, 7), GetPedPropTextureIndex(handle, 8));
                         _data.Dressing = new("", "", comp, text, _prop, _proptxt);
                     }
 
@@ -1779,10 +1779,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                         if (index == 0)
                         {
                             ClearPedProp(handle, 0);
-                            ComponentDrawables comp = new ComponentDrawables(GetPedDrawableVariation(handle, 0), GetPedDrawableVariation(handle, 1), GetPedDrawableVariation(handle, 2), GetPedDrawableVariation(handle, 3), GetPedDrawableVariation(handle, 4), GetPedDrawableVariation(handle, 5), GetPedDrawableVariation(handle, 6), GetPedDrawableVariation(handle, 7), GetPedDrawableVariation(handle, 8), GetPedDrawableVariation(handle, 9), GetPedDrawableVariation(handle, 10), GetPedDrawableVariation(handle, 11));
-                            ComponentDrawables text = new ComponentDrawables(GetPedTextureVariation(handle, 0), GetPedTextureVariation(handle, 1), GetPedTextureVariation(handle, 2), GetPedTextureVariation(handle, 3), GetPedTextureVariation(handle, 4), GetPedTextureVariation(handle, 5), GetPedTextureVariation(handle, 6), GetPedTextureVariation(handle, 7), GetPedTextureVariation(handle, 8), GetPedTextureVariation(handle, 9), GetPedTextureVariation(handle, 10), GetPedTextureVariation(handle, 11));
-                            PropIndices _prop = new PropIndices(GetPedPropIndex(handle, 0), GetPedPropIndex(handle, 1), GetPedPropIndex(handle, 2), GetPedPropIndex(handle, 3), GetPedPropIndex(handle, 4), GetPedPropIndex(handle, 5), GetPedPropIndex(handle, 6), GetPedPropIndex(handle, 7), GetPedPropIndex(handle, 8));
-                            PropIndices _proptxt = new PropIndices(GetPedPropTextureIndex(handle, 0), GetPedPropTextureIndex(handle, 1), GetPedPropTextureIndex(handle, 2), GetPedPropTextureIndex(handle, 3), GetPedPropTextureIndex(handle, 4), GetPedPropTextureIndex(handle, 5), GetPedPropTextureIndex(handle, 6), GetPedPropTextureIndex(handle, 7), GetPedPropTextureIndex(handle, 8));
+                            ComponentDrawables comp = new(GetPedDrawableVariation(handle, 0), GetPedDrawableVariation(handle, 1), GetPedDrawableVariation(handle, 2), GetPedDrawableVariation(handle, 3), GetPedDrawableVariation(handle, 4), GetPedDrawableVariation(handle, 5), GetPedDrawableVariation(handle, 6), GetPedDrawableVariation(handle, 7), GetPedDrawableVariation(handle, 8), GetPedDrawableVariation(handle, 9), GetPedDrawableVariation(handle, 10), GetPedDrawableVariation(handle, 11));
+                            ComponentDrawables text = new(GetPedTextureVariation(handle, 0), GetPedTextureVariation(handle, 1), GetPedTextureVariation(handle, 2), GetPedTextureVariation(handle, 3), GetPedTextureVariation(handle, 4), GetPedTextureVariation(handle, 5), GetPedTextureVariation(handle, 6), GetPedTextureVariation(handle, 7), GetPedTextureVariation(handle, 8), GetPedTextureVariation(handle, 9), GetPedTextureVariation(handle, 10), GetPedTextureVariation(handle, 11));
+                            PropIndices _prop = new(GetPedPropIndex(handle, 0), GetPedPropIndex(handle, 1), GetPedPropIndex(handle, 2), GetPedPropIndex(handle, 3), GetPedPropIndex(handle, 4), GetPedPropIndex(handle, 5), GetPedPropIndex(handle, 6), GetPedPropIndex(handle, 7), GetPedPropIndex(handle, 8));
+                            PropIndices _proptxt = new(GetPedPropTextureIndex(handle, 0), GetPedPropTextureIndex(handle, 1), GetPedPropTextureIndex(handle, 2), GetPedPropTextureIndex(handle, 3), GetPedPropTextureIndex(handle, 4), GetPedPropTextureIndex(handle, 5), GetPedPropTextureIndex(handle, 6), GetPedPropTextureIndex(handle, 7), GetPedPropTextureIndex(handle, 8));
                             _data.Dressing = new("", "", comp, text, _prop, _proptxt);
                         }
                         else
@@ -1792,10 +1792,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                                 prop = MaleHats[index - 1];
                             else
                                 prop = FemaleHats[index - 1];
-                            ComponentDrawables comp = new ComponentDrawables(GetPedDrawableVariation(handle, 0), GetPedDrawableVariation(handle, 1), GetPedDrawableVariation(handle, 2), GetPedDrawableVariation(handle, 3), GetPedDrawableVariation(handle, 4), GetPedDrawableVariation(handle, 5), GetPedDrawableVariation(handle, 6), GetPedDrawableVariation(handle, 7), GetPedDrawableVariation(handle, 8), GetPedDrawableVariation(handle, 9), GetPedDrawableVariation(handle, 10), GetPedDrawableVariation(handle, 11));
-                            ComponentDrawables text = new ComponentDrawables(GetPedTextureVariation(handle, 0), GetPedTextureVariation(handle, 1), GetPedTextureVariation(handle, 2), GetPedTextureVariation(handle, 3), GetPedTextureVariation(handle, 4), GetPedTextureVariation(handle, 5), GetPedTextureVariation(handle, 6), GetPedTextureVariation(handle, 7), GetPedTextureVariation(handle, 8), GetPedTextureVariation(handle, 9), GetPedTextureVariation(handle, 10), GetPedTextureVariation(handle, 11));
-                            PropIndices _prop = new PropIndices(prop.Drawable, GetPedPropIndex(handle, 1), GetPedPropIndex(handle, 2), GetPedPropIndex(handle, 3), GetPedPropIndex(handle, 4), GetPedPropIndex(handle, 5), GetPedPropIndex(handle, 6), GetPedPropIndex(handle, 7), GetPedPropIndex(handle, 8));
-                            PropIndices _proptxt = new PropIndices(prop.Texture, GetPedPropTextureIndex(handle, 1), GetPedPropTextureIndex(handle, 2), GetPedPropTextureIndex(handle, 3), GetPedPropTextureIndex(handle, 4), GetPedPropTextureIndex(handle, 5), GetPedPropTextureIndex(handle, 6), GetPedPropTextureIndex(handle, 7), GetPedPropTextureIndex(handle, 8));
+                            ComponentDrawables comp = new(GetPedDrawableVariation(handle, 0), GetPedDrawableVariation(handle, 1), GetPedDrawableVariation(handle, 2), GetPedDrawableVariation(handle, 3), GetPedDrawableVariation(handle, 4), GetPedDrawableVariation(handle, 5), GetPedDrawableVariation(handle, 6), GetPedDrawableVariation(handle, 7), GetPedDrawableVariation(handle, 8), GetPedDrawableVariation(handle, 9), GetPedDrawableVariation(handle, 10), GetPedDrawableVariation(handle, 11));
+                            ComponentDrawables text = new(GetPedTextureVariation(handle, 0), GetPedTextureVariation(handle, 1), GetPedTextureVariation(handle, 2), GetPedTextureVariation(handle, 3), GetPedTextureVariation(handle, 4), GetPedTextureVariation(handle, 5), GetPedTextureVariation(handle, 6), GetPedTextureVariation(handle, 7), GetPedTextureVariation(handle, 8), GetPedTextureVariation(handle, 9), GetPedTextureVariation(handle, 10), GetPedTextureVariation(handle, 11));
+                            PropIndices _prop = new(prop.Drawable, GetPedPropIndex(handle, 1), GetPedPropIndex(handle, 2), GetPedPropIndex(handle, 3), GetPedPropIndex(handle, 4), GetPedPropIndex(handle, 5), GetPedPropIndex(handle, 6), GetPedPropIndex(handle, 7), GetPedPropIndex(handle, 8));
+                            PropIndices _proptxt = new(prop.Texture, GetPedPropTextureIndex(handle, 1), GetPedPropTextureIndex(handle, 2), GetPedPropTextureIndex(handle, 3), GetPedPropTextureIndex(handle, 4), GetPedPropTextureIndex(handle, 5), GetPedPropTextureIndex(handle, 6), GetPedPropTextureIndex(handle, 7), GetPedPropTextureIndex(handle, 8));
                             _data.Dressing = new("", "", comp, text, _prop, _proptxt);
                         }
                     }
@@ -1804,10 +1804,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                         if (index == 0)
                         {
                             ClearPedProp(handle, 1);
-                            ComponentDrawables comp = new ComponentDrawables(GetPedDrawableVariation(handle, 0), GetPedDrawableVariation(handle, 1), GetPedDrawableVariation(handle, 2), GetPedDrawableVariation(handle, 3), GetPedDrawableVariation(handle, 4), GetPedDrawableVariation(handle, 5), GetPedDrawableVariation(handle, 6), GetPedDrawableVariation(handle, 7), GetPedDrawableVariation(handle, 8), GetPedDrawableVariation(handle, 9), GetPedDrawableVariation(handle, 10), GetPedDrawableVariation(handle, 11));
-                            ComponentDrawables text = new ComponentDrawables(GetPedTextureVariation(handle, 0), GetPedTextureVariation(handle, 1), GetPedTextureVariation(handle, 2), GetPedTextureVariation(handle, 3), GetPedTextureVariation(handle, 4), GetPedTextureVariation(handle, 5), GetPedTextureVariation(handle, 6), GetPedTextureVariation(handle, 7), GetPedTextureVariation(handle, 8), GetPedTextureVariation(handle, 9), GetPedTextureVariation(handle, 10), GetPedTextureVariation(handle, 11));
-                            PropIndices _prop = new PropIndices(GetPedPropIndex(handle, 0), GetPedPropIndex(handle, 1), GetPedPropIndex(handle, 2), GetPedPropIndex(handle, 3), GetPedPropIndex(handle, 4), GetPedPropIndex(handle, 5), GetPedPropIndex(handle, 6), GetPedPropIndex(handle, 7), GetPedPropIndex(handle, 8));
-                            PropIndices _proptxt = new PropIndices(GetPedPropTextureIndex(handle, 0), GetPedPropTextureIndex(handle, 1), GetPedPropTextureIndex(handle, 2), GetPedPropTextureIndex(handle, 3), GetPedPropTextureIndex(handle, 4), GetPedPropTextureIndex(handle, 5), GetPedPropTextureIndex(handle, 6), GetPedPropTextureIndex(handle, 7), GetPedPropTextureIndex(handle, 8));
+                            ComponentDrawables comp = new(GetPedDrawableVariation(handle, 0), GetPedDrawableVariation(handle, 1), GetPedDrawableVariation(handle, 2), GetPedDrawableVariation(handle, 3), GetPedDrawableVariation(handle, 4), GetPedDrawableVariation(handle, 5), GetPedDrawableVariation(handle, 6), GetPedDrawableVariation(handle, 7), GetPedDrawableVariation(handle, 8), GetPedDrawableVariation(handle, 9), GetPedDrawableVariation(handle, 10), GetPedDrawableVariation(handle, 11));
+                            ComponentDrawables text = new(GetPedTextureVariation(handle, 0), GetPedTextureVariation(handle, 1), GetPedTextureVariation(handle, 2), GetPedTextureVariation(handle, 3), GetPedTextureVariation(handle, 4), GetPedTextureVariation(handle, 5), GetPedTextureVariation(handle, 6), GetPedTextureVariation(handle, 7), GetPedTextureVariation(handle, 8), GetPedTextureVariation(handle, 9), GetPedTextureVariation(handle, 10), GetPedTextureVariation(handle, 11));
+                            PropIndices _prop = new(GetPedPropIndex(handle, 0), GetPedPropIndex(handle, 1), GetPedPropIndex(handle, 2), GetPedPropIndex(handle, 3), GetPedPropIndex(handle, 4), GetPedPropIndex(handle, 5), GetPedPropIndex(handle, 6), GetPedPropIndex(handle, 7), GetPedPropIndex(handle, 8));
+                            PropIndices _proptxt = new(GetPedPropTextureIndex(handle, 0), GetPedPropTextureIndex(handle, 1), GetPedPropTextureIndex(handle, 2), GetPedPropTextureIndex(handle, 3), GetPedPropTextureIndex(handle, 4), GetPedPropTextureIndex(handle, 5), GetPedPropTextureIndex(handle, 6), GetPedPropTextureIndex(handle, 7), GetPedPropTextureIndex(handle, 8));
                             _data.Dressing = new("", "", comp, text, _prop, _proptxt);
                         }
                         else
@@ -1820,10 +1820,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                                 prop = FemaleGlasses[index - 1];
                             }
 
-                            ComponentDrawables comp = new ComponentDrawables(GetPedDrawableVariation(handle, 0), GetPedDrawableVariation(handle, 1), GetPedDrawableVariation(handle, 2), GetPedDrawableVariation(handle, 3), GetPedDrawableVariation(handle, 4), GetPedDrawableVariation(handle, 5), GetPedDrawableVariation(handle, 6), GetPedDrawableVariation(handle, 7), GetPedDrawableVariation(handle, 8), GetPedDrawableVariation(handle, 9), GetPedDrawableVariation(handle, 10), GetPedDrawableVariation(handle, 11));
-                            ComponentDrawables text = new ComponentDrawables(GetPedTextureVariation(handle, 0), GetPedTextureVariation(handle, 1), GetPedTextureVariation(handle, 2), GetPedTextureVariation(handle, 3), GetPedTextureVariation(handle, 4), GetPedTextureVariation(handle, 5), GetPedTextureVariation(handle, 6), GetPedTextureVariation(handle, 7), GetPedTextureVariation(handle, 8), GetPedTextureVariation(handle, 9), GetPedTextureVariation(handle, 10), GetPedTextureVariation(handle, 11));
-                            PropIndices _prop = new PropIndices(GetPedPropIndex(handle, 0), prop.Drawable, GetPedPropIndex(handle, 2), GetPedPropIndex(handle, 3), GetPedPropIndex(handle, 4), GetPedPropIndex(handle, 5), GetPedPropIndex(handle, 6), GetPedPropIndex(handle, 7), GetPedPropIndex(handle, 8));
-                            PropIndices _proptxt = new PropIndices(GetPedPropTextureIndex(handle, 0), prop.Texture, GetPedPropTextureIndex(handle, 2), GetPedPropTextureIndex(handle, 3), GetPedPropTextureIndex(handle, 4), GetPedPropTextureIndex(handle, 5), GetPedPropTextureIndex(handle, 6), GetPedPropTextureIndex(handle, 7), GetPedPropTextureIndex(handle, 8));
+                            ComponentDrawables comp = new(GetPedDrawableVariation(handle, 0), GetPedDrawableVariation(handle, 1), GetPedDrawableVariation(handle, 2), GetPedDrawableVariation(handle, 3), GetPedDrawableVariation(handle, 4), GetPedDrawableVariation(handle, 5), GetPedDrawableVariation(handle, 6), GetPedDrawableVariation(handle, 7), GetPedDrawableVariation(handle, 8), GetPedDrawableVariation(handle, 9), GetPedDrawableVariation(handle, 10), GetPedDrawableVariation(handle, 11));
+                            ComponentDrawables text = new(GetPedTextureVariation(handle, 0), GetPedTextureVariation(handle, 1), GetPedTextureVariation(handle, 2), GetPedTextureVariation(handle, 3), GetPedTextureVariation(handle, 4), GetPedTextureVariation(handle, 5), GetPedTextureVariation(handle, 6), GetPedTextureVariation(handle, 7), GetPedTextureVariation(handle, 8), GetPedTextureVariation(handle, 9), GetPedTextureVariation(handle, 10), GetPedTextureVariation(handle, 11));
+                            PropIndices _prop = new(GetPedPropIndex(handle, 0), prop.Drawable, GetPedPropIndex(handle, 2), GetPedPropIndex(handle, 3), GetPedPropIndex(handle, 4), GetPedPropIndex(handle, 5), GetPedPropIndex(handle, 6), GetPedPropIndex(handle, 7), GetPedPropIndex(handle, 8));
+                            PropIndices _proptxt = new(GetPedPropTextureIndex(handle, 0), prop.Texture, GetPedPropTextureIndex(handle, 2), GetPedPropTextureIndex(handle, 3), GetPedPropTextureIndex(handle, 4), GetPedPropTextureIndex(handle, 5), GetPedPropTextureIndex(handle, 6), GetPedPropTextureIndex(handle, 7), GetPedPropTextureIndex(handle, 8));
                             _data.Dressing = new("", "", comp, text, _prop, _proptxt);
                         }
                     }
@@ -1932,8 +1932,8 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                         Appearances.AddItem(eyeColor);
                         Appearances.AddItem(eyeMakup);
                         Appearances.AddItem(lipStick);
-                        UIMenuColorPanel CapelCol1 = new UIMenuColorPanel("Main color", ColorPanelType.Hair);
-                        UIMenuColorPanel CapelCol2 = new UIMenuColorPanel("Secondary color", ColorPanelType.Hair);
+                        UIMenuColorPanel CapelCol1 = new("Main color", ColorPanelType.Hair);
+                        UIMenuColorPanel CapelCol2 = new("Secondary color", ColorPanelType.Hair);
                         hair.AddPanel(CapelCol1);
                         hair.AddPanel(CapelCol2);
                         CapelCol1.CurrentSelection = _data.Skin.Hair.Color[0];
@@ -1968,8 +1968,8 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                         Appearances.AddItem(eyeMakup);
                         Appearances.AddItem(blusher);
                         Appearances.AddItem(lipStick);
-                        UIMenuColorPanel CapelCol1 = new UIMenuColorPanel("Main color", ColorPanelType.Hair);
-                        UIMenuColorPanel CapelCol2 = new UIMenuColorPanel("Secondary color", ColorPanelType.Hair);
+                        UIMenuColorPanel CapelCol1 = new("Main color", ColorPanelType.Hair);
+                        UIMenuColorPanel CapelCol2 = new("Secondary color", ColorPanelType.Hair);
                         hair.AddPanel(CapelCol1);
                         hair.AddPanel(CapelCol2);
                         CapelCol1.CurrentSelection = _data.Skin.Hair.Color[0];
@@ -2588,7 +2588,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
 
         #endregion
 
-        private static Camera ncamm = new Camera(CreateCam("DEFAULT_SCRIPTED_CAMERA", false));
+        private static Camera ncamm = new(CreateCam("DEFAULT_SCRIPTED_CAMERA", false));
 
         static void func_1711(int uParam0, float fParam1, float fParam2, float fParam3, float fParam4)
         {
@@ -2628,7 +2628,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             await Task.FromResult(0);
         }
 
-        private static Camera ncamm2 = new Camera(CreateCam("DEFAULT_SCRIPTED_CAMERA", false));
+        private static Camera ncamm2 = new(CreateCam("DEFAULT_SCRIPTED_CAMERA", false));
 
         public static async void ZoomCam(bool toggle)
         {
@@ -2659,9 +2659,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
 
         public static async void Pol_Board2(FreeRoamChar data)
         {
-            Model bd1 = new Model("prop_police_id_board");
+            Model bd1 = new("prop_police_id_board");
             bd1.Request();
-            Model overlay1 = new Model("prop_police_id_text");
+            Model overlay1 = new("prop_police_id_text");
             overlay1.Request();
             while (!bd1.IsLoaded) await BaseScript.Delay(0);
             while (!overlay1.IsLoaded) await BaseScript.Delay(0);
@@ -2709,11 +2709,11 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             if (Creation.Visible && Creation.HasControlJustBeenPressed(UIMenu.MenuControls.Back))
             {
                 MenuHandler.CloseAndClearHistory();
-                ScaleformUI.Main.Warning.ShowWarningWithButtons("Char creation cancelation", "Do you want to cancel your char creation?", "You'll be brought back to Lobby.", new List<InstructionalButton>
-                {
+                ScaleformUI.Main.Warning.ShowWarningWithButtons("Char creation cancelation", "Do you want to cancel your char creation?", "You'll be brought back to Lobby.",
+                [
                     new InstructionalButton(Control.FrontendCancel, Game.GetGXTEntry("FE_HLP31")),
                     new InstructionalButton(Control.FrontendAccept, Game.GetGXTEntry("FE_HLP29")),
-                });
+                ]);
                 ScaleformUI.Main.Warning.OnButtonPressed += async (a) =>
                 {
                     if (a.GamepadButton == Control.FrontendCancel)
@@ -3042,7 +3042,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
         public static async Task TaskWalkInToRoom(Ped p, string an)
         {
             int sequence = 0;
-            Vector3 pos = new Vector3(404.834f, -997.838f, -97.841f);
+            Vector3 pos = new(404.834f, -997.838f, -97.841f);
             OpenSequenceTask(ref sequence);
             TaskPlayAnimAdvanced(0, an, "Intro", pos.X, pos.Y, pos.Z - 1f, 0.0f, 0.0f, -40.0f, 8.0f, -8.0f, -1, 4608, 0f, 2, 0);
             TaskPlayAnim(0, an, "Loop", 8f, -4f, -1, 513, 0, false, false, false);
@@ -6523,7 +6523,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
                     }
                     break;
             }
-            return new int[][] { new int[12] { components[0], components[1], components[2], components[3], components[4], components[5], components[6], components[7], components[8], components[9], components[10], components[11] }, new int[12] { textures[0], textures[1], textures[2], textures[3], textures[4], textures[5], textures[6], textures[7], textures[8], textures[9], textures[10], textures[11] } };
+            return [[components[0], components[1], components[2], components[3], components[4], components[5], components[6], components[7], components[8], components[9], components[10], components[11]], [textures[0], textures[1], textures[2], textures[3], textures[4], textures[5], textures[6], textures[7], textures[8], textures[9], textures[10], textures[11]]];
         }
 
 

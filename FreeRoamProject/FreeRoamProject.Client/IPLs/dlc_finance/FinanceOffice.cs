@@ -46,7 +46,7 @@ namespace FreeRoamProject.Client.IPLs.dlc_finance
 
     public class OfficeFinanceStyle
     {
-        public static List<Theme> ThemeInternal = new();
+        public static List<Theme> ThemeInternal = [];
         public Theme Warm { get; set; }
         public Theme Classical { get; set; }
         public Theme Vintage { get; set; }
@@ -158,7 +158,7 @@ namespace FreeRoamProject.Client.IPLs.dlc_finance
 
     public class OfficeSwag
     {
-        public static List<Swagging> SwagInternal = new();
+        public static List<Swagging> SwagInternal = [];
         public Cashing CashPiles = new();
         public Swagging BoozeCigs = new("swag_booze_cigs", "swag_booze_cigs2", "swag_booze_cigs3");
         public Swagging Counterfeit = new("swag_counterfeit", "swag_counterfeit2", "swag_counterfeit3");
@@ -187,8 +187,8 @@ namespace FreeRoamProject.Client.IPLs.dlc_finance
         public string K = "cash_set_11"; public string L = "cash_set_12"; public string M = "cash_set_13"; public string N = "cash_set_14"; public string O = "cash_set_15";
         public string P = "cash_set_16"; public string Q = "cash_set_17"; public string R = "cash_set_18"; public string S = "cash_set_19"; public string T = "cash_set_20";
         public string U = "cash_set_21"; public string V = "cash_set_22"; public string W = "cash_set_23"; public string X = "cash_set_24";
-        public List<string> All = new()
-        {
+        public List<string> All =
+        [
             "cash_set_01",
             "cash_set_02",
             "cash_set_03",
@@ -213,7 +213,7 @@ namespace FreeRoamProject.Client.IPLs.dlc_finance
             "cash_set_22",
             "cash_set_23",
             "cash_set_24",
-        };
+        ];
     }
     public class Swagging
     {

@@ -101,7 +101,7 @@ namespace Settings.Client.FreeRoam
         public ConfigGarage MidEnd6 { get; set; }
         public ConfigGarage HighEnd { get; set; }
         public Dictionary<string, Garages> Garages { get; set; }
-        // aggiungere uffici
+        // add offices
     }
 
     public class ConfigGarage

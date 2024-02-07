@@ -84,7 +84,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Spawner
 
         public static void RestoreWeapons()
         {
-            Dictionary<int, bool> ammoTypes = new();
+            Dictionary<int, bool> ammoTypes = [];
 
             if (PlayerCache.MyClient.User.Character.Weapons.Count > 0)
             {

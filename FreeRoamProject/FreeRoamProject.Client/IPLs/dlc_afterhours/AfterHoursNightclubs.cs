@@ -135,18 +135,14 @@ namespace FreeRoamProject.Client.IPLs.dlc_afterhours
                     }
                     public void Clear(bool refresh)
                     {
-                        List<string> list = new List<string>();
-                        list.Add(Colore1);
-                        list.Add(Colore2);
-                        list.Add(Colore3);
-                        list.Add(Colore4);
+                        List<string> list = [Colore1, Colore2, Colore3, Colore4];
                         IplManager.SetIplPropState(InteriorId, list, false, refresh);
                     }
                 }
-                public Luce Droplets = new Luce("DJ_01_Lights_01", "DJ_02_Lights_01", "DJ_03_Lights_01", "DJ_04_Lights_01");
-                public Luce Neons = new Luce("DJ_01_Lights_02", "DJ_02_Lights_02", "DJ_03_Lights_02", "DJ_04_Lights_02");
-                public Luce Bands = new Luce("DJ_01_Lights_03", "DJ_02_Lights_03", "DJ_03_Lights_03", "DJ_04_Lights_03");
-                public Luce Lasers = new Luce("DJ_01_Lights_04", "DJ_02_Lights_04", "DJ_03_Lights_04", "DJ_04_Lights_04");
+                public Luce Droplets = new("DJ_01_Lights_01", "DJ_02_Lights_01", "DJ_03_Lights_01", "DJ_04_Lights_01");
+                public Luce Neons = new("DJ_01_Lights_02", "DJ_02_Lights_02", "DJ_03_Lights_02", "DJ_04_Lights_02");
+                public Luce Bands = new("DJ_01_Lights_03", "DJ_02_Lights_03", "DJ_03_Lights_03", "DJ_04_Lights_03");
+                public Luce Lasers = new("DJ_01_Lights_04", "DJ_02_Lights_04", "DJ_03_Lights_04", "DJ_04_Lights_04");
 
                 public void Clear()
                 {
@@ -194,13 +190,13 @@ namespace FreeRoamProject.Client.IPLs.dlc_afterhours
             public class GhiaccioSecco
             {
                 public float Scale = 5.0f;
-                List<Tuple<Vector3, Vector3>> Emitters = new List<Tuple<Vector3, Vector3>>()
-                {
+                readonly List<Tuple<Vector3, Vector3>> Emitters =
+                [
                     new Tuple<Vector3, Vector3>(new Vector3(-1602.932f, -3019.1f, -79.99f), new Vector3(0.0f, -10.0f, 66.0f)),
                     new Tuple<Vector3, Vector3>(new Vector3(-1593.238f, -3017.05f, -79.99f), new Vector3(0.0f, -10.0f, 110.0f)),
                     new Tuple<Vector3, Vector3>(new Vector3(-1597.134f, -3008.2f, -79.99f), new Vector3(0.0f, -10.0f, -122.53f)),
                     new Tuple<Vector3, Vector3>(new Vector3(-1589.966f, -3008.518f, -79.99f), new Vector3(0.0f, -10.0f, -166.97f)),
-                };
+                ];
 
                 public async void Enable(bool state)
                 {
@@ -251,18 +247,18 @@ namespace FreeRoamProject.Client.IPLs.dlc_afterhours
                 }
             }
 
-            public Names Name = new Names();
-            public Styles Style = new Styles();
-            public Podiums Podium = new Podiums();
-            public Speaker Speakers = new Speaker();
-            public Securitys Security = new Securitys();
-            public TurnTable TurnTables = new TurnTable();
-            public Light Lights = new Light();
-            public Bars Bar = new Bars();
-            public Boozes Booze = new Boozes();
-            public Trofei Trophy = new Trofei();
-            public GhiaccioSecco DryIce = new GhiaccioSecco();
-            public AHDetails Details = new AHDetails();
+            public Names Name = new();
+            public Styles Style = new();
+            public Podiums Podium = new();
+            public Speaker Speakers = new();
+            public Securitys Security = new();
+            public TurnTable TurnTables = new();
+            public Light Lights = new();
+            public Bars Bar = new();
+            public Boozes Booze = new();
+            public Trofei Trophy = new();
+            public GhiaccioSecco DryIce = new();
+            public AHDetails Details = new();
         }
 
         public class AHInfo
@@ -287,8 +283,8 @@ namespace FreeRoamProject.Client.IPLs.dlc_afterhours
                     Posters.Clear(Id);
                 }
             }
-            public Barriera Barriere = new Barriera();
-            public aPoster Poster = new aPoster();
+            public Barriera Barriere = new();
+            public aPoster Poster = new();
         }
 
         public class AHBarrier
@@ -323,19 +319,19 @@ namespace FreeRoamProject.Client.IPLs.dlc_afterhours
             }
         }
 
-        public static NightInterior Interior = new NightInterior();
-        public static AHBarrier Barrier = new AHBarrier();
-        public static AHPosters Posters = new AHPosters();
-        public static AHInfo Mesa = new AHInfo(0);
-        public static AHInfo MissionRow = new AHInfo(1);
-        public static AHInfo Strawberry = new AHInfo(2);
-        public static AHInfo VinewoodWest = new AHInfo(3);
-        public static AHInfo Cypress = new AHInfo(4);
-        public static AHInfo DelPerro = new AHInfo(5);
-        public static AHInfo Airport = new AHInfo(6);
-        public static AHInfo Elysian = new AHInfo(7);
-        public static AHInfo Vinewood = new AHInfo(8);
-        public static AHInfo Vespucci = new AHInfo(9);
+        public static NightInterior Interior = new();
+        public static AHBarrier Barrier = new();
+        public static AHPosters Posters = new();
+        public static AHInfo Mesa = new(0);
+        public static AHInfo MissionRow = new(1);
+        public static AHInfo Strawberry = new(2);
+        public static AHInfo VinewoodWest = new(3);
+        public static AHInfo Cypress = new(4);
+        public static AHInfo DelPerro = new(5);
+        public static AHInfo Airport = new(6);
+        public static AHInfo Elysian = new(7);
+        public static AHInfo Vinewood = new(8);
+        public static AHInfo Vespucci = new(9);
 
         public void LoadDefault()
         {

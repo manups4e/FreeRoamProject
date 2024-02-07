@@ -14,7 +14,7 @@
             }
         }
 
-        public static ZGates Gates = new ZGates();
+        public static ZGates Gates = new();
 
         public static void LoadDefault()
         {

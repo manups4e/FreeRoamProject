@@ -19,7 +19,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model.Dynasty
 
                 if (func_7324(i) == 1 || i == 86 || func_244(i) == 1 || func_247(i, -1) == 1 || func_7561(i, false, false) == 1 || i == 115 || i == 116 || i == 117 || i == 118 || func_7481(i) == 1 || func_7480(i) == 1 || i == 125 || i == 126)
                     continue;
-                Apartment apart = new Apartment(slot, i);
+                Apartment apart = new(slot, i);
                 if (PlayerCache.Character.Properties.Any(x => x.ID == apart.Id)) return;
                 if (string.IsNullOrEmpty(apart.Label(apart.Id)) && apart.Id != 129)
                     continue;

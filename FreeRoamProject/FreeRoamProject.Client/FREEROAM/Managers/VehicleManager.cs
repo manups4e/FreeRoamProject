@@ -8,8 +8,8 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 {
     static class VehicleManager
     {
-        private static List<Blip> ActiveBlips = new List<Blip>();
-        private static List<int> ActiveVehicles = new List<int>();
+        private static readonly List<Blip> ActiveBlips = [];
+        private static readonly List<int> ActiveVehicles = [];
         private static bool justDestroyed = false;
         private static int start = 0;
 
@@ -42,7 +42,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 
                 if (NetworkIsHost())
                 {
-                    List<int> temp = new List<int>();
+                    List<int> temp = [];
 
                     foreach (int activeVehicle in ActiveVehicles)
                     {
@@ -52,7 +52,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 
                     foreach (KeyValuePair<Vector4, VehicleHash> vehicle in spawnLocations)
                     {
-                        Vector3 vehPos = new Vector3(vehicle.Key.X, vehicle.Key.Y, vehicle.Key.Z);
+                        Vector3 vehPos = new(vehicle.Key.X, vehicle.Key.Y, vehicle.Key.Z);
                         bool playerInArea = false;
                         for (int i = 0; i < 64; i++)
                         {
@@ -147,7 +147,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
             {
                 if (DoesEntityExist(activeVehicle))
                 {
-                    Vehicle veh = new Vehicle(activeVehicle);
+                    Vehicle veh = new(activeVehicle);
                     veh.Delete();
                 }
             }

@@ -4,8 +4,8 @@ namespace FreeRoamProject.Client.IPLs.gtav
 {
     public class Ammunations
     {
-        public List<AmmunationIPL> AmmunationsList = new()
-        {
+        public List<AmmunationIPL> AmmunationsList =
+        [
             new(140289, "GunStoreHooks"),  // 249.8, -47.1, 70.0
             new(153857, "GunStoreHooks"),  // 844.0, -1031.5, 28.2
             new(168193, "GunStoreHooks"),  // -664.0, -939.2, 21.8
@@ -15,12 +15,12 @@ namespace FreeRoamProject.Client.IPLs.gtav
             new(200961, "GunStoreHooks"),  // 1695.2, 3756.0, 34.7
             new(180481, "GunStoreHooks"),  // -328.7, 6079.0, 31.5
             new(178689, "GunStoreHooks")   // 2569.8, 297.8, 108.7
-        };
-        public List<AmmunationIPL> GunClubsId = new()
-        {
+        ];
+        public List<AmmunationIPL> GunClubsId =
+        [
             new(137729, "GunClubWallHooks"),  // 19.1, -1110.0, 29.8
             new(248065, "GunClubWallHooks")   // 811.0, -2152.0, 29.6
-        };
+        ];
 
     }
 
@@ -53,7 +53,7 @@ namespace FreeRoamProject.Client.IPLs.gtav
 
     public class AmmunationsDetails
     {
-        private int interior;
+        private readonly int interior;
         public string Hooks = ""; // ganci per mostrare le armi
         public void Enable(string details, bool state, bool refresh)
         {

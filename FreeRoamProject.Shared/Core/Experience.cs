@@ -5,7 +5,7 @@ namespace FreeRoamProject.Shared
 {
     public static class Experience
     {
-        public static Dictionary<int, int> RankRequirement = new Dictionary<int, int>
+        public static Dictionary<int, int> RankRequirement = new()
         {
             // Level, Total XP
             {1, 80},

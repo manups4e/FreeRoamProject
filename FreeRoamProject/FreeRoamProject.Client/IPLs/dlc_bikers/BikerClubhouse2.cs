@@ -197,8 +197,8 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
         {
             public string None = "";
             public string Stage1 = "meth_small";
-            public List<string> Stage2 = new List<string>() { "meth_small", "meth_medium" };
-            public List<string> Stage3 = new List<string>() { "meth_small", "meth_medium", "meth_large" };
+            public List<string> Stage2 = ["meth_small", "meth_medium"];
+            public List<string> Stage3 = ["meth_small", "meth_medium", "meth_large"];
 
             public void Set(string stage, bool refresh = true)
             {
@@ -229,8 +229,8 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
         {
             public string None = "";
             public string Stage1 = "cash_small";
-            public List<string> Stage2 = new List<string>() { "cash_small", "cash_medium" };
-            public List<string> Stage3 = new List<string>() { "cash_small", "cash_medium", "cash_large" };
+            public List<string> Stage2 = ["cash_small", "cash_medium"];
+            public List<string> Stage3 = ["cash_small", "cash_medium", "cash_large"];
 
             public void Set(string stage, bool refresh = true)
             {
@@ -261,8 +261,8 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
         {
             public string None = "";
             public string Stage1 = "weed_small";
-            public List<string> Stage2 = new List<string>() { "weed_small", "weed_medium" };
-            public List<string> Stage3 = new List<string>() { "weed_small", "weed_medium", "weed_large" };
+            public List<string> Stage2 = ["weed_small", "weed_medium"];
+            public List<string> Stage3 = ["weed_small", "weed_medium", "weed_large"];
 
             public void Set(string stage, bool refresh = true)
             {
@@ -293,8 +293,8 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
         {
             public string None = "";
             public string Stage1 = "coke_small";
-            public List<string> Stage2 = new List<string>() { "coke_small", "coke_medium" };
-            public List<string> Stage3 = new List<string>() { "coke_small", "coke_medium", "coke_large" };
+            public List<string> Stage2 = ["coke_small", "coke_medium"];
+            public List<string> Stage3 = ["coke_small", "coke_medium", "coke_large"];
 
             public void Set(string stage, bool refresh = true)
             {
@@ -325,8 +325,8 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
         {
             public string None = "";
             public string Stage1 = "counterfeit_small";
-            public List<string> Stage2 = new List<string>() { "counterfeit_small", "counterfeit_medium" };
-            public List<string> Stage3 = new List<string>() { "counterfeit_small", "counterfeit_medium", "counterfeit_large" };
+            public List<string> Stage2 = ["counterfeit_small", "counterfeit_medium"];
+            public List<string> Stage3 = ["counterfeit_small", "counterfeit_medium", "counterfeit_large"];
 
             public void Set(string stage, bool refresh = true)
             {
@@ -357,8 +357,8 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
         {
             public string None = "";
             public string Stage1 = "id_small";
-            public List<string> Stage2 = new List<string>() { "id_small", "id_medium" };
-            public List<string> Stage3 = new List<string>() { "id_small", "id_medium", "id_large" };
+            public List<string> Stage2 = ["id_small", "id_medium"];
+            public List<string> Stage3 = ["id_small", "id_medium", "id_large"];
 
             public void Set(string stage, bool refresh = true)
             {
@@ -386,19 +386,19 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
         }
 
         public static int InteriorId = 246529;
-        public static BikerWalls Walls = new BikerWalls();
-        public static BikerLowerWalls LowerWalls = new BikerLowerWalls();
-        public static BikerFurnitures Fornitures = new BikerFurnitures();
-        public static BikerDecorations Decorations = new BikerDecorations();
-        public static BikerMurals Murals = new BikerMurals();
-        public static BikerGunLocker GunLocker = new BikerGunLocker();
-        public static BikerModBooth ModBooth = new BikerModBooth();
-        public static BikerMeth Meth = new BikerMeth();
-        public static BikerCash Cash = new BikerCash();
-        public static BikerWeed Weed = new BikerWeed();
-        public static BikerCoke Coke = new BikerCoke();
-        public static BikerCounterfeit Counterfeit = new BikerCounterfeit();
-        public static BikerDocuments Documents = new BikerDocuments();
+        public static BikerWalls Walls = new();
+        public static BikerLowerWalls LowerWalls = new();
+        public static BikerFurnitures Fornitures = new();
+        public static BikerDecorations Decorations = new();
+        public static BikerMurals Murals = new();
+        public static BikerGunLocker GunLocker = new();
+        public static BikerModBooth ModBooth = new();
+        public static BikerMeth Meth = new();
+        public static BikerCash Cash = new();
+        public static BikerWeed Weed = new();
+        public static BikerCoke Coke = new();
+        public static BikerCounterfeit Counterfeit = new();
+        public static BikerDocuments Documents = new();
 
         public static void LoadDefault()
         {

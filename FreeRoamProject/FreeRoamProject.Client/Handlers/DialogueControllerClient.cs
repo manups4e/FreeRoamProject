@@ -42,7 +42,7 @@ namespace FreeRoamProject.Client.Handlers
                 string gxt = split[0];
                 string line = split[1];
                 bool forceRadio = false;
-                Dictionary<int, string> speakers = new Dictionary<int, string>();
+                Dictionary<int, string> speakers = [];
                 Dictionary<int, int> peds = null;
                 for (int i = 2; i < split.Length; i += 1)
                 {
@@ -57,7 +57,7 @@ namespace FreeRoamProject.Client.Handlers
                     if (speaker.Length == 3)
                     {
                         //we are probably being given a ped handle aswell
-                        peds ??= new Dictionary<int, int>();
+                        peds ??= [];
                         peds.Add(ConvertCharToNum(char.Parse(speaker[0])), int.Parse(speaker[2]));
                     }
                 }
@@ -192,7 +192,7 @@ namespace FreeRoamProject.Client.Handlers
             }
             ClientMain.Logger.Debug("Voiceline confirmed loaded and valid.");
             // find valid lines
-            List<string> lines = new List<string>();
+            List<string> lines = [];
             for (int i = 1; i < 100; i++)
             {
                 string l = $"{line}_{i}A";
@@ -205,7 +205,7 @@ namespace FreeRoamProject.Client.Handlers
             bool pedsAreTemp = peds == null || peds.Count == 0;
             if (pedsAreTemp)
             {
-                peds = new Dictionary<int, int>();
+                peds = [];
                 foreach (KeyValuePair<int, string> i in speakers)
                 {
                     Ped ped = await Functions.CreatePedLocally(Game.PlayerPed.Model, Game.PlayerPed.Position, 0f);
@@ -229,10 +229,10 @@ namespace FreeRoamProject.Client.Handlers
             }
             string speakerList = GetLabelText($"{line}SL");
             string lineFlags = GetLabelText($"{line}LF");
-            List<int> speakList = new List<int>();
-            List<int> listenerList = new List<int>();
+            List<int> speakList = [];
+            List<int> listenerList = [];
 
-            List<string> speakerListParts = new List<string>();
+            List<string> speakerListParts = [];
             for (int i = 0; i < speakerList.Length; i += 3)
                 speakerListParts.Add(GetTextSubstring(speakerList, i, Math.Min(3, speakerList.Length - i)));
 

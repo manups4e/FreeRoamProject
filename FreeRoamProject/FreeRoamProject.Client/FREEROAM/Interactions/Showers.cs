@@ -30,15 +30,15 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
         private static bool NearShower = false;
         private static Prop ShowerDoor;
         private static bool InShower = false;
-        private static string sLocal_448 = "dlc_EXEC1/MP_APARTMENT_SHOWER_01";
+        private static readonly string sLocal_448 = "dlc_EXEC1/MP_APARTMENT_SHOWER_01";
         private static int Scene1;
         private static int uLocal_433;
         private static int uLocal_434;
 
-        private static ShowerCoords actual = new ShowerCoords(new Vector3(0), new Vector3(0), new Vector3(0), new Vector3(0), new Vector3(0), new Vector3(0));
+        private static ShowerCoords actual = new(new Vector3(0), new Vector3(0), new Vector3(0), new Vector3(0), new Vector3(0), new Vector3(0));
 
-        private static List<ShowerCoords> Coords = new List<ShowerCoords>()
-        {
+        private static readonly List<ShowerCoords> Coords =
+        [
             new ShowerCoords(new Vector3(254.847f, -1000.64f, -99.768f), new Vector3(0f, 0f, -180f), new Vector3(254.5308f, -1000.291f, -97.67236f), new Vector3(-45f, 0f, 0f), new Vector3(254.5308f, -1000.291f, -97.67236f), new Vector3(-45f, 0f, 0f)),
             new ShowerCoords(new Vector3(347.3f, -994.85f, -99.966f), new Vector3(0f, 0f, -90f), new Vector3(346.9f, -995.1795f, -97.85f), new Vector3(-45f, 0f, 0f), new Vector3(346.9f, -995.1795f, -97.85f), new Vector3(-45f, 0f, 0f)),
             new ShowerCoords(new Vector3(-788.3300f, 330.6500f, 200.6120f), new Vector3(0.0000f, 0.0000f, -90.0000f), new Vector3(-788.7310f, 330.0000f, 202.7750f), new Vector3(-45.0000f, 0.0000f, 0.0000f), new Vector3(-787.9000f, 329.6000f, 202.5000f), new Vector3(315.0000f, 0.0000f, 270.0000f)),
@@ -99,9 +99,9 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
             new ShowerCoords(new Vector3(-219.241867f, 256.858643f, 286.612f), new Vector3(0.0f, 0.0f, -116.16f), new Vector3(-219.888382f, 256.452026f, 288.775f), new Vector3(-45.0f, 0.0f, -26.1600037f), new Vector3(-219.3188f, 255.726563f, 288.5f), new Vector3(315.0f, 0.0f, -116.16f)),
             new ShowerCoords(new Vector3(-1149.80664f, -959.772339f, 286.612f), new Vector3(0.0f, 0.0f, -26.1600037f), new Vector3(-1149.3999f, -960.4188f, 288.775f), new Vector3(-45.0f, 0.0f, 63.8399963f), new Vector3(-1148.67444f, -959.8493f, 288.5f), new Vector3(315.0f, 0.0f, -26.1600037f)),
             new ShowerCoords(new Vector3(999.511841f, -678.230957f, 286.612f), new Vector3(0.0f, 0.0f, 153.84f), new Vector3(999.1052f, -677.5845f, 288.775f), new Vector3(-45.0f, 0.0f, -116.16f), new Vector3(998.379761f, -678.154053f, 288.5f), new Vector3(315.0f, 0.0f, 153.84f))
-        };
+        ];
 
-        private static List<int> ShowerList = new List<int>() { 1924030334, 1358716892, 879181614, -553740697 };
+        private static readonly List<int> ShowerList = [1924030334, 1358716892, 879181614, -553740697];
 
         public static void Init()
         {
@@ -311,12 +311,12 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
 
     internal class ShowerCoords
     {
-        public Vector3 anim = new Vector3(0);
-        public Vector3 rot = new Vector3(0);
-        public Vector3 FxShowerCoord = new Vector3(0);
-        public Vector3 FxShowerRot = new Vector3(0);
-        public Vector3 FxSteamCoord = new Vector3(0);
-        public Vector3 FxSteamRot = new Vector3(0);
+        public Vector3 anim = new(0);
+        public Vector3 rot = new(0);
+        public Vector3 FxShowerCoord = new(0);
+        public Vector3 FxShowerRot = new(0);
+        public Vector3 FxSteamCoord = new(0);
+        public Vector3 FxSteamRot = new(0);
         public ShowerCoords() { }
 
         public ShowerCoords(Vector3 anima, Vector3 rotaz, Vector3 fxshower, Vector3 fxshowerrot, Vector3 fxvapore, Vector3 fxvaporerot)

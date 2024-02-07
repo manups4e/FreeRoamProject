@@ -14,26 +14,26 @@ namespace FreeRoamProject.Client.Core.Utility.HUD
             EventDispatcher.Mount("tlg:triggerProximityDisplay", new Action<int, string, string>(TriggerProximtyDisplay));
         }
 
-        private static Dictionary<int, List<ProxMess>> Messages = new Dictionary<int, List<ProxMess>>();
+        private static readonly Dictionary<int, List<ProxMess>> Messages = [];
 
         public static void TriggerProximtyDisplay(int player, string title, string text)
         {
-            Player target = new Player(API.GetPlayerFromServerId(player));
+            Player target = new(API.GetPlayerFromServerId(player));
             if (Messages.ContainsKey(player))
                 Messages[player].Add(new ProxMess(title + " " + text, SColor.WhiteSmoke, target.Character.Bones[Bone.SKEL_Head].Position));
             else
-                Messages.Add(player, new List<ProxMess>() { new ProxMess(title + " " + text, SColor.WhiteSmoke, target.Character.Bones[Bone.SKEL_Head].Position) });
+                Messages.Add(player, [new ProxMess(title + " " + text, SColor.WhiteSmoke, target.Character.Bones[Bone.SKEL_Head].Position)]);
         }
 
         public static async Task Proximity()
         {
             bool canDraw;
-            Ped myPed = new Ped(API.PlayerPedId());
+            Ped myPed = new(API.PlayerPedId());
 
             if (Messages.Count > 0)
                 foreach (KeyValuePair<int, List<ProxMess>> p in Messages)
                 {
-                    Player player = new Player(API.GetPlayerFromServerId(p.Key));
+                    Player player = new(API.GetPlayerFromServerId(p.Key));
                     Ped ped = player.Character;
 
                     if (!myPed.IsInRangeOf(ped.Position, 19f)) continue;
@@ -84,7 +84,7 @@ namespace FreeRoamProject.Client.Core.Utility.HUD
         public string Message;
         public SColor Color;
         public Vector3 Position;
-        public TimeSpan Time = new TimeSpan(0, 0, 5); // cambiare con 5 secondi
+        public TimeSpan Time = new(0, 0, 5); // cambiare con 5 secondi
         public int Timer = 0;
 
         public ProxMess(string mess, SColor color, Vector3 pos)

@@ -106,9 +106,9 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
             E = e;
             F = f;
         }
-        public WStage Stage = new WStage(A, B, C);
-        public WLight Light = new WLight(D, E);
-        public WHose Hose = new WHose(F);
+        public WStage Stage = new(A, B, C);
+        public WLight Light = new(D, E);
+        public WHose Hose = new(F);
 
         public void Set(string stage, string upgrade, bool refresh = true)
         {
@@ -141,10 +141,7 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
         }
         public void Clear(bool refresh)
         {
-            List<string> Lista = new List<string>();
-            Lista.Add(Small);
-            Lista.Add(Medium);
-            Lista.Add(Full);
+            List<string> Lista = [Small, Medium, Full];
             IplManager.SetIplPropState(BikerWeedFarm.InteriorId, Lista, false, refresh);
         }
     }
@@ -164,9 +161,7 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
         }
         public void Clear(bool refresh)
         {
-            List<string> Lista = new List<string>();
-            Lista.Add(Basic);
-            Lista.Add(Upgrade);
+            List<string> Lista = [Basic, Upgrade];
             IplManager.SetIplPropState(BikerWeedFarm.InteriorId, Lista, false, refresh);
         }
     }

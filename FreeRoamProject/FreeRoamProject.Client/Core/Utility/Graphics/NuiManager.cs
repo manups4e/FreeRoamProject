@@ -11,12 +11,12 @@ namespace FreeRoamProject.Client.Core.Utility.HUD
     {
         private bool _hasFocus;
         /// <summary>
-        /// true se NUI è attivo.
+        /// true if NUI is active.
         /// </summary>
         public bool IsNuiFocusOn => _hasFocus;
 
         /// <summary>
-        /// Restituisce la posizione del cursore nello schermo
+        /// Returns the position of the cursor in the screen
         /// </summary>
         public Point NuiCursorPosition
         {
@@ -30,10 +30,10 @@ namespace FreeRoamProject.Client.Core.Utility.HUD
         }
 
         /// <summary>
-        /// Attiva o disattiva l'interfaccia html del gioco
+        /// Activates or deactivates the html interface of the game
         /// </summary>
-        /// <param name="hasFocus">per attivare / disattivare il focus del gioco</param>
-        /// <param name="showCursor">per mostrare o no il cursore del mouse</param>
+        /// <param name="hasFocus">To turn on/off the focus of the game</param>
+        /// <param name="showCursor">To show or not to show the mouse cursor</param>
         public void SetFocus(bool hasFocus, bool showCursor = true)
         {
             SetNuiFocus(hasFocus, showCursor);
@@ -41,9 +41,9 @@ namespace FreeRoamProject.Client.Core.Utility.HUD
         }
 
         /// <summary>
-        /// Attiva o disattiva l'interfaccia html del gioco mantenendo l'input nel gioco
+        /// Activates or deactivates the html interface of the game while keeping the input in the game
         /// </summary>
-        /// <param name="keepInput">se attivato l'input della tastiera rimane al gioco</param>
+        /// <param name="keepInput">If activated keyboard input remains at the game</param>
         public void SetFocusKeepInput(bool keepInput)
         {
             SetNuiFocusKeepInput(keepInput);
@@ -51,9 +51,9 @@ namespace FreeRoamProject.Client.Core.Utility.HUD
         }
 
         /// <summary>
-        /// Invia un messaggio all'interfaccia NUI contenente dei dati
+        /// Sends a message to the NUI interface containing data
         /// </summary>
-        /// <param name="data">un oggetto da serializzare</param>
+        /// <param name="data">An object to be serialized</param>
         public void SendMessage(object data)
         {
             SendNuiMessage(data.ToJson());
@@ -69,9 +69,9 @@ namespace FreeRoamProject.Client.Core.Utility.HUD
         }
 
         /// <summary>
-        /// Invia un messaggio all'interfaccia NUI contenente dei dati
+        /// Sends a message to the NUI interface containing data
         /// </summary>
-        /// <param name="data">un oggetto serializzato</param>
+        /// <param name="data">A serialized object</param>
         public void SendMessage(string data)
         {
             SendNuiMessage(data);

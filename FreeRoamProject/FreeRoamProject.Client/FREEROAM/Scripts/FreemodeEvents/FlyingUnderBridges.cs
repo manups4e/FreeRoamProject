@@ -10,7 +10,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
 {
     public class FlyingUnderBridges : IWorldEvent
     {
-        private static Dictionary<Vector3, bool> UnderBridgeLocations = new Dictionary<Vector3, bool>
+        private static readonly Dictionary<Vector3, bool> UnderBridgeLocations = new()
         {
             {new Vector3(1083.0f, -231.0f, 60.0f), false},
             {new Vector3(1024.0f, -325.0f, 60.0f), false},
@@ -84,7 +84,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
             {new Vector3(1208.0f, -1173.0f, 38.0f), false}
         };
 
-        public new Dictionary<Vector4, VehicleHash> VehicleSpawnLocations = new Dictionary<Vector4, VehicleHash>
+        public new Dictionary<Vector4, VehicleHash> VehicleSpawnLocations = new()
         {
             {new Vector4(-1158.893f, -1738.877f, 4.055f,215.483f), VehicleHash.Buzzard2 },
             {new Vector4(-1168.874f, -1746.419f, 3.998f,124.725f), VehicleHash.Buzzard2},
@@ -117,7 +117,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
             { new Vector4(1732.836f, 3305.026f, 41.224f,195.137f), VehicleHash.Stunt},
         };
 
-        private static List<Blip> ActiveBlips = new List<Blip>();
+        private static readonly List<Blip> ActiveBlips = [];
 
         public FlyingUnderBridges(int id, string name, double countdownTime, double seconds) : base(id, name, countdownTime, seconds, false, "AMCH_BRBL2", PlayerStats.FlyUnderBridges)
         {

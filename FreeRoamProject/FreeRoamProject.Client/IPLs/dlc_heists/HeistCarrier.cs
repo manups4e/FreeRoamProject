@@ -5,8 +5,8 @@ namespace FreeRoamProject.Client.IPLs.dlc_heists
     public class HeistCarrier
     {
         private bool _enabled = false;
-        public List<string> ipl = new List<string>()
-        {
+        public List<string> ipl =
+        [
             "hei_carrier",
             "hei_carrier_int1",
             "hei_carrier_int1_lod",
@@ -22,7 +22,7 @@ namespace FreeRoamProject.Client.IPLs.dlc_heists
             "hei_carrier_int6_lod",
             "hei_carrier_lod",
             "hei_carrier_slod"
-        };
+        ];
         public bool Enabled
         {
             get { return _enabled; }

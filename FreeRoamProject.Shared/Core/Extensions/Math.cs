@@ -8,8 +8,8 @@ namespace FreeRoamProject.Shared
 {
     public static class SharedMath
     {
-        private static Log Logger = new();
-        private static Random random = new Random();
+        private static readonly Log Logger = new();
+        private static readonly Random random = new();
 
         /// <summary>
         /// Returns a random floating-point number that is greater than or equal to minValue, and less than maxValue.
@@ -495,7 +495,7 @@ namespace FreeRoamProject.Shared
 
         public static string GetRandomString(int size, bool lowerCase = false)
         {
-            StringBuilder builder = new StringBuilder(size);
+            StringBuilder builder = new(size);
             // Unicode/ASCII Letters are divided into two blocks
             // (Letters 65�90 / 97�122):
             // The first group containing the uppercase letters and

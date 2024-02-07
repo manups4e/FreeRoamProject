@@ -9,12 +9,12 @@ namespace FreeRoamProject.Client.IPLs.gtav
         public static int InteriorId = 171777;
         public FloydStyle Style = new()
         {
-            Normal = new List<string>() { "swap_clean_apt", "layer_debra_pic", "layer_whiskey", "swap_sofa_A" },
-            MessedUp = new List<string>() { "layer_mess_A", "layer_mess_B", "layer_mess_C", "layer_sextoys_a", "swap_sofa_B", "swap_wade_sofa_A", "layer_wade_shit", "layer_torture" },
+            Normal = ["swap_clean_apt", "layer_debra_pic", "layer_whiskey", "swap_sofa_A"],
+            MessedUp = ["layer_mess_A", "layer_mess_B", "layer_mess_C", "layer_sextoys_a", "swap_sofa_B", "swap_wade_sofa_A", "layer_wade_shit", "layer_torture"],
         };
         public FloydStyle MrJam = new()
         {
-            Normal = new List<string>() { "swap_mrJam_A" },
+            Normal = ["swap_mrJam_A"],
             Jammed = "swap_mrJam_B",
             JammedOnTable = "swap_mrJam_C"
         };
@@ -37,8 +37,8 @@ namespace FreeRoamProject.Client.IPLs.gtav
     }
     public class FloydStyle
     {
-        public List<string> Normal = new();
-        public List<string> MessedUp = new();
+        public List<string> Normal = [];
+        public List<string> MessedUp = [];
         public string Jammed;
         public string JammedOnTable;
         public void Set(List<string> style, bool refresh = true)

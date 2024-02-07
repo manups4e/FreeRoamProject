@@ -21,8 +21,8 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
         // theme
         // vibrate
 
-        private static List<SettingsSubMenuItem> Themes = new List<SettingsSubMenuItem>
-        {
+        private static readonly List<SettingsSubMenuItem> Themes =
+        [
             new SettingsSubMenuItem("CELL_820", 1, IconLabels.SETTINGS_1),
             new SettingsSubMenuItem("CELL_821", 2, IconLabels.SETTINGS_1),
             new SettingsSubMenuItem("CELL_822", 3, IconLabels.SETTINGS_1),
@@ -30,10 +30,10 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             new SettingsSubMenuItem("CELL_824", 5, IconLabels.SETTINGS_1),
             new SettingsSubMenuItem("CELL_825", 6, IconLabels.SETTINGS_1),
             new SettingsSubMenuItem("CELL_826", 7, IconLabels.SETTINGS_1),
-        };
+        ];
 
-        private static List<SettingsSubMenuItem> Wallpapers = new List<SettingsSubMenuItem>
-        {
+        private static readonly List<SettingsSubMenuItem> Wallpapers =
+        [
             new SettingsSubMenuItem("CELL_840", 0, IconLabels.SETTINGS_1),
             new SettingsSubMenuItem("CELL_844", 4, IconLabels.SETTINGS_1),
             new SettingsSubMenuItem("CELL_845", 5, IconLabels.SETTINGS_1),
@@ -49,41 +49,41 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             new SettingsSubMenuItem("CELL_855", 15, IconLabels.SETTINGS_1),
             new SettingsSubMenuItem("CELL_856", 16, IconLabels.SETTINGS_1),
             new SettingsSubMenuItem("CELL_857", 17, IconLabels.SETTINGS_1)
-        };
+        ];
 
-        private static List<SettingsSubMenuItem> Profile = new List<SettingsSubMenuItem>
-        {
+        private static readonly List<SettingsSubMenuItem> Profile =
+        [
             new SettingsSubMenuItem("CELL_800", 0, IconLabels.PROFILE),
             new SettingsSubMenuItem("CELL_801", 1, IconLabels.SLEEP_MODE),
-        };
+        ];
 
-        private static List<SettingsSubMenuItem> InviteSound = new List<SettingsSubMenuItem>
-        {
+        private static readonly List<SettingsSubMenuItem> InviteSound =
+        [
             new SettingsSubMenuItem("CELL_831", 1, IconLabels.VIBRATE_OFF),
             new SettingsSubMenuItem("CELL_830", 2, IconLabels.VIBRATE_ON)
-        };
+        ];
 
-        private static List<SettingsSubMenuItem> Ringtone = new List<SettingsSubMenuItem>
-        {
+        private static readonly List<SettingsSubMenuItem> Ringtone =
+        [
             new SettingsSubMenuItem("CELL_810", 1, IconLabels.RINGTONE), // PHONE_GENERIC_RING_01
             new SettingsSubMenuItem("CELL_811", 2, IconLabels.RINGTONE), // PHONE_GENERIC_RING_02
             new SettingsSubMenuItem("CELL_812", 3, IconLabels.RINGTONE), // PHONE_GENERIC_RING_03
             new SettingsSubMenuItem("CELL_813", 4, IconLabels.SILENT), // Silent Ringtone Dummy (yeah.. that's the name itself)
-        };
+        ];
 
-        private static List<SettingsSubMenuItem> Vibrate = new List<SettingsSubMenuItem>
-        {
+        private static readonly List<SettingsSubMenuItem> Vibrate =
+        [
             new SettingsSubMenuItem("CELL_831", 1, IconLabels.VIBRATE_OFF),
             new SettingsSubMenuItem("CELL_830", 2, IconLabels.VIBRATE_ON)
-        };
-        private static List<SettingsSubMenuItem> Snapmatic = new List<SettingsSubMenuItem>
-        {
+        ];
+        private static readonly List<SettingsSubMenuItem> Snapmatic =
+        [
             new SettingsSubMenuItem("CELL_704", 1, IconLabels.TEXT_TONE),
             new SettingsSubMenuItem("CELL_703", 2, IconLabels.TEXT_TONE)
-        };
+        ];
 
-        private List<SettingsSubMenu> SettingsItems = new List<SettingsSubMenu>
-        {
+        private readonly List<SettingsSubMenu> SettingsItems =
+        [
             new SettingsSubMenu("CELL_740", IconLabels.SETTINGS_1, Wallpapers),
             new SettingsSubMenu("CELL_700", IconLabels.PROFILE, Profile),
             new SettingsSubMenu("CELL_705", IconLabels.RINGTONE, InviteSound),
@@ -91,7 +91,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             new SettingsSubMenu("CELL_701", IconLabels.TEXT_TONE, Snapmatic),
             new SettingsSubMenu("CELL_720", IconLabels.SETTINGS_1, Themes),
             new SettingsSubMenu("CELL_730", IconLabels.VIBRATE_OFF, Vibrate),
-        };
+        ];
 
         public Settings(Phone phone) : base("CELL_16", IconLabels.SETTINGS_2, phone, PhoneView.SETTINGS)
         {

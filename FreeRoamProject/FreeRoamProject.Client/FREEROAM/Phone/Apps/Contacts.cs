@@ -32,7 +32,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
              */
         }
 
-        private List<ContactsSubMenuItem> ContactsMenu =
+        private readonly List<ContactsSubMenuItem> ContactsMenu =
         [
             new ContactsSubMenuItem("CELL_MP_1000", 0, 5), // call
             /*
@@ -46,13 +46,13 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
 
         public Dictionary<string, string> pedHeadshots = [];
         private bool rimosso = false;
-        private string nome = "Nome";
-        private string numero = "Numero";
-        private static bool FirstTick = true;
+        private readonly string nome = "Nome";
+        private readonly string numero = "Numero";
+        private static readonly bool FirstTick = true;
         private Contact CurrentSubMenu = null;
         public int contactAmount = 0;
-        private int currentPage = 0;
-        private int currentRow = 0;
+        private readonly int currentPage = 0;
+        private readonly int currentRow = 0;
         int min = 0;
         int max = 4;
         bool isCalling = false;
@@ -77,7 +77,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                 }
             }
         }
-        internal List<Contact> PhoneContacts = new List<Contact>();
+        internal List<Contact> PhoneContacts = [];
         private int selectedItem = 0;
 
         private async Task countPlayers()

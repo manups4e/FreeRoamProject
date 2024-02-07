@@ -31,7 +31,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
 
         public virtual Dictionary<Vector4, VehicleHash> VehicleSpawnLocations { get; set; }
 
-        public List<TimerBarBase> TimerBars = new List<TimerBarBase>();
+        public List<TimerBarBase> TimerBars = [];
 
         public float CurrentAttempt = 0;
         public float BestAttempt = 0;

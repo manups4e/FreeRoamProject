@@ -15,7 +15,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
             AccessingEvents.OnFreeRoamLeave += FreeRoamLogin_OnPlayerLeft;
         }
 
-        private static TimerBarPool _timerBarPool = new();
+        private static readonly TimerBarPool _timerBarPool = new();
         private static ProgressTimerBar _respawnTimerBar;
 
         private static async Task DrawRespawnTimer()

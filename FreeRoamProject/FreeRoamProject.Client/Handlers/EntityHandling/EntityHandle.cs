@@ -134,8 +134,8 @@ namespace FreeRoamProject.Client.Handlers.EntityHandling
     public class PropHandle : EntityHandle
     {
         public Prop Prop { get; set; }
-        private bool _placeOnGround;
-        private bool _dynamic;
+        private readonly bool _placeOnGround;
+        private readonly bool _dynamic;
 
         public PropHandle()
         {

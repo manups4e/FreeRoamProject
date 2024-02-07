@@ -18,9 +18,9 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
             }
         }
 
-        public MethStyle Style = new MethStyle();
-        public MethSecurity Security = new MethSecurity();
-        public MethDetails Details = new MethDetails();
+        public MethStyle Style = new();
+        public MethSecurity Security = new();
+        public MethDetails Details = new();
 
         public void LoadDefault()
         {
@@ -37,8 +37,8 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
     {
         public string None = "";
         public string Empty = "meth_lab_empty";
-        public List<string> Basic = new List<string>() { "meth_lab_basic", "meth_lab_setup" };
-        public List<string> Upgrade = new List<string>() { "meth_lab_upgrade", "meth_lab_setup" };
+        public List<string> Basic = ["meth_lab_basic", "meth_lab_setup"];
+        public List<string> Upgrade = ["meth_lab_upgrade", "meth_lab_setup"];
         public void Set(string style, bool refresh = true)
         {
             Clear(false);

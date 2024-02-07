@@ -6,7 +6,7 @@ namespace FreeRoamProject.Client.IPLs
 {
     public static class IplManager
     {
-        public static GlobalIPLEnablers Global = new GlobalIPLEnablers();
+        public static GlobalIPLEnablers Global = new();
 
         public static void EnableInterior(int interior, bool enabled)
         {

@@ -9,7 +9,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
     {
         public int SelectedItem { get; set; } = 4;
         public List<App> AllApps { get; set; }
-        int smsUnreadCount = 0;
+        readonly int smsUnreadCount = 0;
         public MainMenu(Phone phone, List<App> allApps) : base("HOMEMENU", 0, phone, PhoneView.HOMEMENU, false)
         {
             AllApps = allApps;

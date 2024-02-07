@@ -23,7 +23,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
         internal static int[] playersArray = new int[64];
 
         #region TO BE LOADED BY PLAYER LOGIN AND SAVED
-        public static InteractionAnimation Anim = new InteractionAnimation();
+        public static InteractionAnimation Anim = new();
         #endregion
 
         public static void Init()
@@ -434,8 +434,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                   else
                       Client.Instance.RemoveTick(CinematicMode);
   */
-        private static List<HudComponent> hideComponents = new List<HudComponent>()
-        {
+        private static readonly List<HudComponent> hideComponents =
+        [
             HudComponent.WantedStars,
             HudComponent.WeaponIcon,
             HudComponent.Cash,
@@ -456,7 +456,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             HudComponent.GamingStreamUnusde,
 			//HudComponent.WeaponWheel, // forse per questo non potevo cambiare arma???
 			HudComponent.WeaponWheelStats
-        };
+        ];
         /*
         public static async Task CinematicMode()
         {
@@ -904,8 +904,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     }
                     else if (veh.Model.IsBike)
                     {
-                        List<uint> sportBikes = new List<uint>()
-                        {
+                        List<uint> sportBikes =
+                        [
                             (uint)GetHashKey("AKUMA"),
                             (uint)GetHashKey("BATI"),
                             (uint)GetHashKey("BATI2"),
@@ -926,32 +926,32 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                             (uint)GetHashKey("SHOTARO"),
                             (uint)GetHashKey("VADER"),
                             (uint)GetHashKey("VORTEX"),
-                        };
-                        List<uint> chopperBikes = new List<uint>()
-                        {
+                        ];
+                        List<uint> chopperBikes =
+                        [
                             (uint)GetHashKey("SANCTUS"),
                             (uint)GetHashKey("ZOMBIEA"),
                             (uint)GetHashKey("ZOMBIEB"),
-                        };
-                        List<uint> dirtBikes = new List<uint>()
-                        {
+                        ];
+                        List<uint> dirtBikes =
+                        [
                             (uint)GetHashKey("BF400"),
                             (uint)GetHashKey("ENDURO"),
                             (uint)GetHashKey("MANCHEZ"),
                             (uint)GetHashKey("SANCHEZ"),
                             (uint)GetHashKey("SANCHEZ2"),
                             (uint)GetHashKey("ESSKEY"),
-                        };
-                        List<uint> scooters = new List<uint>()
-                        {
+                        ];
+                        List<uint> scooters =
+                        [
                             (uint)GetHashKey("FAGGIO"),
                             (uint)GetHashKey("FAGGIO2"),
                             (uint)GetHashKey("FAGGIO3"),
                             (uint)GetHashKey("CLIFFHANGER"),
                             (uint)GetHashKey("BAGGER"),
-                        };
-                        List<uint> policeb = new List<uint>()
-                        {
+                        ];
+                        List<uint> policeb =
+                        [
                             (uint)GetHashKey("AVARUS"),
                             (uint)GetHashKey("CHIMERA"),
                             (uint)GetHashKey("POLICEB"),
@@ -967,7 +967,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                             (uint)GetHashKey("THRUST"),
                             (uint)GetHashKey("VINDICATOR"),
                             (uint)GetHashKey("WOLFSBANE"),
-                        };
+                        ];
 
                         if (policeb.Contains((uint)veh.Model.Hash))
                         {
@@ -1060,7 +1060,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 @rds = rear driver seat
                 @rps = rear passenger seat
              */
-            InteractionAnimation anim = new InteractionAnimation();
+            InteractionAnimation anim = new();
             switch (iParam0)
             {
                 case 0:
