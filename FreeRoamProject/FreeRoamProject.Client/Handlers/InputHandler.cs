@@ -78,7 +78,7 @@ namespace FreeRoamProject.Client.Handlers
                     {
                         if (input.Position != Position.Zero || input.Marker != null || input.InputMessage != null)
                         {
-                            if (p.IsInRangeOf(input.Position.ToVector3, 100f)) // big range personalizzato sennò default 50f
+                            if (p.IsInRangeOf(input.Position.ToVector3, 100f)) // custom big range otherwise default 50f
                             {
                                 if (input.Marker is null)
                                 {
@@ -87,7 +87,7 @@ namespace FreeRoamProject.Client.Handlers
                                 }
 
                                 input.Marker.Draw();
-                                if (input.Marker.IsInMarker && !MenuHandler.IsAnyMenuOpen) // radius personalizzato sennò default 1.375f
+                                if (input.Marker.IsInMarker && !MenuHandler.IsAnyMenuOpen) // custom radius if not default 1.375f
                                 {
                                     if (!string.IsNullOrWhiteSpace(input.InputMessage)) Notifications.ShowHelpNotification(input.InputMessage);
 

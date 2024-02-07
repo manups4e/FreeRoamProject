@@ -1,4 +1,4 @@
-﻿using FreeRoamProject.Client;
+using FreeRoamProject.Client;
 using FreeRoamProject.Client.Handlers;
 using FreeRoamProject.Shared.Core.Character;
 using System;
@@ -656,7 +656,7 @@ namespace FreeRoamProject.FREEROAM.Banking
                                 break;
                         }
                         break;
-                    case 4: // Esci
+                    case 4: // Leave
                         {
                             Game.PlaySound("PIN_BUTTON", "ATM_SOUNDS");
                             ClientMain.Instance.RemoveTick(AtmDraw);
@@ -679,7 +679,7 @@ namespace FreeRoamProject.FREEROAM.Banking
                             RemoveAnimDict(Var7);
                         }
                         break;
-                    case 5: // ritiro
+                    case 5: // Withdrawal
                         switch (_currentSelection)
                         {
                             case 1:

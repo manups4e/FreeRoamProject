@@ -49,9 +49,9 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
             //Cache.PlayerCache.MyPlayer.Ped.Weapons.RemoveAll();
             //Cache.MyPlayer.Ped.Weapons.Give(WeaponHash.Parachute, 1, true, true);
 
-            //HUD.ShowAdvancedNotification($"Ti è stato dato un paracadute per la sfida ~b~{Name}~w~", "Paracadute consegnato", "", "CHAR_AMMUNATION", "CHAR_AMMUNATION", HudColor.HUD_COLOUR_REDDARK, default(System.Drawing.Color), false, NotificationType.Bubble);
+            //HUD.ShowAdvancedNotification($"You were given a parachute for the ~b~{Name}~w~ challenge.", "Parachute delivered", "", "CHAR_AMMUNATION", "CHAR_AMMUNATION", HudColor.HUD_COLOUR_REDDARK, default(System.Drawing.Color), false, NotificationType.Bubble);
             //await VehicleManager.SpawnEventVehicles(VehicleSpawnLocations);
-            //HUD.ShowAdvancedNotification("Velivoli di ogni genere avvistati in tutta Los Santos! Molti pronti per il decollo sono all'AILS.", "Fly By Intel", "From: Josef", "CHAR_JOSEF", "CHAR_JOSEF", HudColor.HUD_COLOUR_REDDARK, Color.FromArgb(255, 255, 255, 255), true, NotificationType.Mail);
+            //HUD.ShowAdvancedNotification("Aircraft of all kinds spotted all over Los Santos! Many ready for takeoff are at AILS.", "Fly By Intel", "From: Josef", "CHAR_JOSEF", "CHAR_JOSEF", HudColor.HUD_COLOUR_REDDARK, Color.FromArgb(255, 255, 255, 255), true, NotificationType.Mail);
 
             ClientMain.Instance.AddTick(OnTick);
             base.OnEventActivated();

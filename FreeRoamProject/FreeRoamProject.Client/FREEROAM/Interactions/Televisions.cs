@@ -225,7 +225,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
             else if (TV.On && SittingAnimations.sitting)
             {
                 //				HUD.ShowHelp("~INPUTGROUP_FRONTEND_DPAD_LR~ per cambiare ~y~canale~w~.\n~INPUTGROUP_FRONTEND_DPAD_UD~ per cambiare il ~b~volume~w~.\n~INPUT_VEH_EXIT~ per spegnere la TV");
-                if (Input.IsDisabledControlJustPressed(Control.MoveLeftOnly)) // canale-
+                if (Input.IsDisabledControlJustPressed(Control.MoveLeftOnly)) // channel-
                 {
                     --TV.Channel;
                     if (TV.Channel < 0) TV.Channel = TVChannels.Count - 1;
@@ -234,7 +234,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
                     Game.PlaySound("SAFEHOUSE_MICHAEL_SIT_SOFA", "MICHAEL_SOFA_TV_CHANGE_CHANNEL_MASTER");
                 }
 
-                if (Input.IsDisabledControlJustPressed(Control.MoveRightOnly)) // canale+ 
+                if (Input.IsDisabledControlJustPressed(Control.MoveRightOnly)) // channel+ 
                 {
                     ++TV.Channel;
                     if (TV.Channel > 18) TV.Channel = 0;
@@ -243,7 +243,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
                     Game.PlaySound("SAFEHOUSE_MICHAEL_SIT_SOFA", "MICHAEL_SOFA_TV_CHANGE_CHANNEL_MASTER");
                 }
 
-                if (Input.IsDisabledControlPressed(Control.MoveUpOnly)) // volume su
+                if (Input.IsDisabledControlPressed(Control.MoveUpOnly)) // volume up
                 {
                     TV.Volume += 0.5f;
                     if (TV.Volume > 0) TV.Volume = 0;
@@ -251,7 +251,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
                     if (TV.Volume > -36 && TV.Volume < 0) Game.PlaySound("SAFEHOUSE_MICHAEL_SIT_SOFA", "MICHAEL_SOFA_REMOTE_CLICK_VOLUME_MASTER");
                 }
 
-                if (Input.IsDisabledControlPressed(Control.MoveDownOnly)) // volume giu
+                if (Input.IsDisabledControlPressed(Control.MoveDownOnly)) // volume down
                 {
                     TV.Volume -= 0.5f;
                     if (TV.Volume < -36) TV.Volume = -36;

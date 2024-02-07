@@ -17,14 +17,14 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
         public static void Init()
         {
             //ClientMain.Instance.AddTick(OnHudTick);
-            //ClientMain.Instance.AddEventHandler("onClientResourceStart", new Action<string>(OnClientResourceStart)); trovare nuovo nome evento
+            //ClientMain.Instance.AddEventHandler("onClientResourceStart", new Action<string>(OnClientResourceStart)); find new event name
             EventDispatcher.Mount("worldeventsManage.Client:GetLevelXp", new Action<int, int>(OnGetLevelXp));
         }
 
         public static void Stop()
         {
             //ClientMain.Instance.RemoveTick(OnHudTick);
-            //ClientMain.Instance.AddEventHandler("onClientResourceStart", new Action<string>(OnClientResourceStart)); trovare nuovo nome evento
+            //ClientMain.Instance.AddEventHandler("onClientResourceStart", new Action<string>(OnClientResourceStart)); find new event name
             EventDispatcher.Unmount("worldeventsManage.Client:GetLevelXp");
         }
 
@@ -67,7 +67,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
             PlayerCache.MyClient.User.Character.Level = level;
             PlayerCache.MyClient.User.Character.TotalXp = xp;
             ClientMain.Logger.Info($"OnGetLevelXp | Level [{level}] | XP [{xp}]");
-            BaseScript.TriggerEvent("worldeventsManage.Client:UpdatedLevel", level, false); // da aggiornare perché non esiste nel codice
+            BaseScript.TriggerEvent("worldeventsManage.Client:UpdatedLevel", level, false); // to update because it does not exist in the code
         }
 
         private static void DrawVehicleHud()

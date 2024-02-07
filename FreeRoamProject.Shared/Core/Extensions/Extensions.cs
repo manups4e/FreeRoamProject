@@ -160,7 +160,7 @@ namespace FreeRoamProject.Shared
         }
 
         /// <summary>
-        /// Carica la zona dove la telecamera � stata creata (anche se il ped � lontano). Si resetta con ClearFocus().
+        /// Loads the area where the camera was created (even if the ped is far away). It is reset with ClearFocus().
         /// </summary>
         /// <param name="pos"></param>
         public static void SetFocus(this Vector3 pos)
@@ -169,7 +169,7 @@ namespace FreeRoamProject.Shared
         }
 
         /// <summary>
-        /// Carica la zona dove la telecamera � stata creata (anche se il ped � lontano). Si resetta con ClearFocus().
+        /// Loads the area where the camera was created (even if the ped is far away). It is reset with ClearFocus().
         /// </summary>
         /// <param name="pos"></param>
         public static void SetFocus(this Vector4 pos)
@@ -178,7 +178,7 @@ namespace FreeRoamProject.Shared
         }
 
         /// <summary>
-        /// Carica la zona dove la telecamera � stata creata (anche se il ped � lontano). Si resetta con ClearFocus().
+        /// Loads the area where the camera was created (even if the ped is far away). It is reset with ClearFocus().
         /// </summary>
         /// <param name="pos"></param>
         public static void SetFocus(this Position pos)

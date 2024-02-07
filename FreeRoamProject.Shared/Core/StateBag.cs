@@ -218,7 +218,7 @@ namespace FreeRoamProject.Shared
         public string? Instance { get; set; }
 
         /// <summary>
-        /// Istanza generica
+        /// Generic instance
         /// </summary>
         public void InstancePlayer()
         {
@@ -235,7 +235,7 @@ namespace FreeRoamProject.Shared
         }
 
         /// <summary>
-        /// Istanza generica specificando quale Istanza
+        /// Generic Instance specifying which Instance
         /// </summary>
         public void InstancePlayer(string instance)
         {
@@ -252,7 +252,7 @@ namespace FreeRoamProject.Shared
         }
 
         /// <summary>
-        /// Istanza specifica
+        /// Specific instance
         /// </summary>
         public void InstancePlayer(int ServerId, string instance)
         {
@@ -265,7 +265,7 @@ namespace FreeRoamProject.Shared
         }
 
         /// <summary>
-        /// Rimuovi da istanza
+        /// Remove from instance
         /// </summary>
         public void RemoveInstance()
         {
@@ -278,9 +278,9 @@ namespace FreeRoamProject.Shared
         }
 
         /// <summary>
-        /// Cambia Istanza con una nuova (es. casa e garage)
+        /// Change Instance to a new one (e.g., house and garage)
         /// </summary>
-        /// <param name="instance">Specifica quale istanza</param>
+        /// <param name="instance">Specifies which instance</param>
         public void CambiaIstanza(string instance)
         {
             if (Instanced)
@@ -295,9 +295,9 @@ namespace FreeRoamProject.Shared
         }
 
         /// <summary>
-        /// Cambia Proprietario dell'istanza
+        /// Change Instance Owner
         /// </summary>
-        /// <param name="netId">networkId del proprietario</param>
+        /// <param name="netId">networkId of the owner</param>
         public void CambiaIstanza(int netId)
         {
             if (Instanced)
