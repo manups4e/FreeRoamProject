@@ -30,7 +30,7 @@ namespace FreeRoamProject.Client
         public static DebugLog Logger;
         public static ClientMain Instance { get; protected set; }
         public ExportDictionary GetExports => Exports;
-        public static Configuration Settings = new Configuration();
+        public static Configuration Settings = new();
         public CitizenFX.Core.PlayerList GetPlayers => Players;
         // public static Configuration Settings = new Configuration();
         public ClientList Clients { get; set; }

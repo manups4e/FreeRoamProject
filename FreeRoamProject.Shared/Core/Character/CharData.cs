@@ -55,7 +55,7 @@ namespace FreeRoamProject.Shared.Core.Character
     {
         public int Money { get; set; } = 1000;
         public int Bank { get; set; } = 3000;
-        public List<BankTransaction> Transactions = new();
+        public List<BankTransaction> Transactions = [];
 
         public Finance() { }
 
@@ -94,10 +94,10 @@ namespace FreeRoamProject.Shared.Core.Character
         public int Vibration { get; set; } = 1;
         public int InviteSound { get; set; } = 1;
         public int QuickLaunch { get; set; } = 0;
-        public List<Message> Messages = new List<Message>();
-        public List<Email> Emails = new List<Email>();
-        public List<Contact> Contacts = new List<Contact>()
-        {
+        public List<Message> Messages = [];
+        public List<Email> Emails = [];
+        public List<Contact> Contacts =
+        [
             new("CELL_165", "CELL_MP_329", false),
             //new("Assistant", assistant, false), player needs to choose the assistant sex //       "CELL_P_ASSIST": "Assistant", "CELL_P_ASSISTF": "Assistant",
             new("CELL_447", "CELL_MP_329", false),
@@ -138,7 +138,7 @@ namespace FreeRoamProject.Shared.Core.Character
             new("CELL_WENDY_N", "CELL_WENDY_P", false),
             new("CELL_YOHAN_N", "CELL_YOHAN_P", false),
             new("CELL_CELEB_N", "CELL_CELEB_P", false)
-        };
+        ];
 
         public PhoneData() { }
 
@@ -223,7 +223,7 @@ namespace FreeRoamProject.Shared.Core.Character
         public string Name { get; set; }
         public int Ammo { get; set; }
         public int Tint { get; set; }
-        public List<Components> Components = new();
+        public List<Components> Components = [];
         public Weapons() { }
         public Weapons(string _name, int _ammo, dynamic data, int _tint)
         {
@@ -433,7 +433,7 @@ namespace FreeRoamProject.Shared.Core.Character
     {
         public int Mom { get; set; } = 0;
         public int Dad { get; set; } = 0;
-        public float[] Traits { get; set; } = new float[20] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        public float[] Traits { get; set; } = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
         public Face() { }
         public Face(int mom, int dad, float[] tratti)
@@ -477,7 +477,7 @@ namespace FreeRoamProject.Shared.Core.Character
     {
         public int Style { get; set; } = 0;
         public float Opacity { get; set; } = 0f;
-        public int[] Color { get; set; } = new int[2] { 0, 0 };
+        public int[] Color { get; set; } = [0, 0];
 
         public A3() { }
         public A3(int style, float opacity, int[] color)
@@ -492,7 +492,7 @@ namespace FreeRoamProject.Shared.Core.Character
     public class Hair
     {
         public int Style { get; set; } = 0;
-        public int[] Color { get; set; } = new int[2] { 0, 0 };
+        public int[] Color { get; set; } = [0, 0];
         public Hair() { }
         public Hair(int style, int[] color)
         {

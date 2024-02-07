@@ -4,11 +4,11 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model
 {
     internal static class VehicleLoader
     {
-        private static int Global_75777 = GetHashKey("apa_mp_apa_yacht");
-        private static int Global_75778 = -994826917;
-        private static int Global_75779 = 886151985;
-        private static int Global_75780 = -1242692076;
-        private static int Global_75781 = -451225720;
+        private static readonly int Global_75777 = GetHashKey("apa_mp_apa_yacht");
+        private static readonly int Global_75778 = -994826917;
+        private static readonly int Global_75779 = 886151985;
+        private static readonly int Global_75780 = -1242692076;
+        private static readonly int Global_75781 = -451225720;
 
         internal static bool func_7071(ref VehiclePriceData iParam0, int vehicleModel, bool bParam2, int iParam3)//Position - 0x23A5A6
         {

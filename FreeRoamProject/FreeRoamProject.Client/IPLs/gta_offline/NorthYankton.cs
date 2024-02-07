@@ -5,8 +5,8 @@ namespace FreeRoamProject.Client.IPLs.gtav
     public class NorthYankton
     {
         private bool _enabled = false;
-        public List<string> ipl = new List<string>()
-        {
+        public List<string> ipl =
+        [
             "prologue01",
             "prologue01c",
             "prologue01d",
@@ -33,7 +33,7 @@ namespace FreeRoamProject.Client.IPLs.gtav
             "prologue_DistantLights",
             "prologue_LODLights",
             "prologue_m2_door"
-        };
+        ];
 
         public bool Enabled
         {

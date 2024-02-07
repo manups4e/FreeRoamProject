@@ -57,7 +57,7 @@ namespace FreeRoamProject.Client.Handlers
             await Task.FromResult(0);
         }
 
-        private static readonly List<int> JetHashes = new() { 970385471, -1281684762, 1824333165 };
+        private static readonly List<int> JetHashes = [970385471, -1281684762, 1824333165];
 
         private static void OnPlayerJoined(PlayerClient client)
         {

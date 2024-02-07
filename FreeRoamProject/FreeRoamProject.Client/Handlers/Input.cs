@@ -24,7 +24,7 @@ namespace FreeRoamProject.Client
         // da far diventare costanti
         const int defaultControlGroup = 0;
         const int controllerControlGroup = 2;
-        public static Dictionary<ControlModifier, int> ModifierFlagToKeyCode = new Dictionary<ControlModifier, int>() { [ControlModifier.Ctrl] = 36, [ControlModifier.Alt] = 19, [ControlModifier.Shift] = 21 };
+        public static Dictionary<ControlModifier, int> ModifierFlagToKeyCode = new() { [ControlModifier.Ctrl] = 36, [ControlModifier.Alt] = 19, [ControlModifier.Shift] = 21 };
 
         /// <summary>
         /// True if the controller pressed

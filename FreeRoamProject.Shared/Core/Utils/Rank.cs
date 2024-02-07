@@ -11,8 +11,8 @@ namespace FreeRoamProject.Shared
         private readonly int _c = -1023150;
         private readonly int _x = (int)Math.Floor(-23575 / 50f);
         // each rank is 800 units.. a better solution to check for level upgrading is to simply check "value % 800 == 0"
-        private List<int> Ranks = new List<int>()
-        {
+        private readonly List<int> Ranks =
+        [
             0,
             800,
             2100,
@@ -113,7 +113,7 @@ namespace FreeRoamProject.Shared
             1527300,
             1555800,
             1584350, // 100
-		};
+		];
         public int CalculateRank(int exp)
         {
             if (exp == 0)

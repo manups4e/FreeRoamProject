@@ -8,7 +8,7 @@ namespace FreeRoamProject.Shared.Core.ApartmentsShared
         public float f_3 { get; set; }
         public Vector3 f_4 { get; set; }
         public float f_7 { get; set; }
-        public Vector3 f_8 = new Vector3();
+        public Vector3 f_8 = new();
         public float f_11 = 0;
         public Vector3 f_12 { get; set; }
     }
@@ -261,10 +261,10 @@ namespace FreeRoamProject.Shared.Core.ApartmentsShared
         public int NumberOfWindows { get; set; }
         public SomeWeirdCoordMetadata[] window = [new SomeWeirdCoordMetadata(), new SomeWeirdCoordMetadata()];
         public InteriorData House = new();
-        public GarageData Garage = new GarageData();
+        public GarageData Garage = new();
         public BuildingRelated Building = new(); //building_properties
         public CCTV[] cctv = [new CCTV(), new CCTV(), new CCTV()];
-        bool bIsTruck = false;
+        readonly bool bIsTruck = false;
     }
 
     public class BuildingRelated

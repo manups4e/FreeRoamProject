@@ -5,7 +5,7 @@ namespace FreeRoamProject.Client.IPLs.gtav
     public class LesterFactory
     {
         public static int InteriorId = 92674;
-        public LesterDetails Details = new LesterDetails();
+        public LesterDetails Details = new();
         private bool enabled;
         public bool Enabled
         {

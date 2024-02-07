@@ -12,8 +12,8 @@ namespace FreeRoamProject.Client
         {
             ClientMain.Instance.AddTick(TestTick);
         }
-        static bool pp = false;
-        static MarkerEx dummyMarker = new(MarkerType.VerticalCylinder, WorldProbe.CrossairRaycastResult.HitPosition.ToPosition(), SColor.Blue);
+        static readonly bool pp = false;
+        static readonly MarkerEx dummyMarker = new(MarkerType.VerticalCylinder, WorldProbe.CrossairRaycastResult.HitPosition.ToPosition(), SColor.Blue);
         private static async Task TestTick()
         {
             //ClientMain.Logger.Debug(IplManager.Global.ToJson());
@@ -45,11 +45,11 @@ namespace FreeRoamProject.Client
             ClientMain.Instance.RemoveTick(TestTick);
         }
 
-        static UIMenu menu = new("Menu Test", "Test");
+        static readonly UIMenu menu = new("Menu Test", "Test");
 
         private static void TestMenu()
         {
-            UIMenu menu = new UIMenu("🐌", "test", new PointF(50, 50), "thelastgalaxy", "bannerbackground", false, true);
+            UIMenu menu = new("🐌", "test", new PointF(50, 50), "thelastgalaxy", "bannerbackground", false, true);
             UIMenuItem item = new("😐", "~BLIP_INFO_ICON~ Potrai in ogni mento riaprire questo menu di pausa premendo i tasti ~INPUT_SPRINT~ + ~INPUT_DROP_WEAPON~ oppure con il comando /help.");
             menu.AddItem(item);
             menu.Visible = true;

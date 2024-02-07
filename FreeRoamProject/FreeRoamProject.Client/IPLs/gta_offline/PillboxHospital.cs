@@ -5,7 +5,7 @@ namespace FreeRoamProject.Client.IPLs.gtav
     public class PillboxHospital
     {
         private bool _enabled = false;
-        public List<string> ipl = new List<string>() { "rc12b_default" };
+        public List<string> ipl = ["rc12b_default"];
         public bool Enabled
         {
             get { return _enabled; }

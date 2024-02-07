@@ -17,23 +17,23 @@ namespace FreeRoamProject.Client.Core.Utility
         [StructLayout(LayoutKind.Explicit, Size = 0x88)]
         private unsafe struct UnsafePedComponentData
         {
-            [FieldOffset(0x00)] private int lockHash;
+            [FieldOffset(0x00)] private readonly int lockHash;
 
-            [FieldOffset(0x08)] private int hash; // componentHash
+            [FieldOffset(0x08)] private readonly int hash; // componentHash
 
-            [FieldOffset(0x10)] private int locate;
+            [FieldOffset(0x10)] private readonly int locate;
 
-            [FieldOffset(0x18)] private int drawable;
+            [FieldOffset(0x18)] private readonly int drawable;
 
-            [FieldOffset(0x20)] private int texture;
+            [FieldOffset(0x20)] private readonly int texture;
 
-            [FieldOffset(0x28)] private int f_5; // price
+            [FieldOffset(0x28)] private readonly int f_5; // price
 
-            [FieldOffset(0x30)] private int componentType;
+            [FieldOffset(0x30)] private readonly int componentType;
 
-            [FieldOffset(0x38)] private int f_7;
+            [FieldOffset(0x38)] private readonly int f_7;
 
-            [FieldOffset(0x40)] private int f_8;
+            [FieldOffset(0x40)] private readonly int f_8;
 
             [FieldOffset(0x48)] private unsafe fixed sbyte gxt[0x40];
 
@@ -64,19 +64,19 @@ namespace FreeRoamProject.Client.Core.Utility
         [StructLayout(LayoutKind.Explicit, Size = 0x78)]
         private unsafe struct UnsafePedOutfitData
         {
-            [FieldOffset(0x00)] private int lockHash;
+            [FieldOffset(0x00)] private readonly int lockHash;
 
-            [FieldOffset(0x08)] private int hash; // componentHash
+            [FieldOffset(0x08)] private readonly int hash; // componentHash
 
-            [FieldOffset(0x10)] private int price;
+            [FieldOffset(0x10)] private readonly int price;
 
-            [FieldOffset(0x18)] private int unk1;
+            [FieldOffset(0x18)] private readonly int unk1;
 
-            [FieldOffset(0x20)] private int totalItems;
+            [FieldOffset(0x20)] private readonly int totalItems;
 
-            [FieldOffset(0x28)] private int unk2; // price
+            [FieldOffset(0x28)] private readonly int unk2; // price
 
-            [FieldOffset(0x30)] private int unk3;
+            [FieldOffset(0x30)] private readonly int unk3;
 
             [FieldOffset(0x38)] private unsafe fixed sbyte gxt[0x40];
 
@@ -323,7 +323,7 @@ namespace FreeRoamProject.Client.Core.Utility
         public static PedComponentData[] GetShopPedQueryComponents(int componentType, ShopCharacterType characterType, int locate = -1)
         {
             //return _GetShopPedQueryComponents(componentType, (int)characterType, locate);
-            List<PedComponentData> comps = new();
+            List<PedComponentData> comps = [];
             dynamic obj = ClientMain.Instance.GetExports["frp"].GetShopPedQueryComponents(componentType, (int)characterType, locate);
             foreach (dynamic o in obj) comps.Add(new(o));
             return comps.ToArray();
@@ -420,7 +420,7 @@ namespace FreeRoamProject.Client.Core.Utility
         public static PedComponentData[] GetShopPedQueryProps(ShopCharacterType characterType, int prop)
         {
             //return _GetShopPedQueryProps((int)characterType);
-            List<PedComponentData> comps = new();
+            List<PedComponentData> comps = [];
             dynamic obj = ClientMain.Instance.GetExports["frp"].GetShopPedQueryProps((int)characterType, prop);
             foreach (dynamic o in obj) comps.Add(new(o));
             return comps.ToArray();
@@ -510,11 +510,11 @@ namespace FreeRoamProject.Client.Core.Utility
         [StructLayout(LayoutKind.Explicit, Size = 0x10)]
         private unsafe struct UnsafePedOutfitComponentVariantData
         {
-            [FieldOffset(0x00)] private int hash;
+            [FieldOffset(0x00)] private readonly int hash;
 
-            [FieldOffset(0x08)] private int enumValue;
+            [FieldOffset(0x08)] private readonly int enumValue;
 
-            [FieldOffset(0x10)] private int componentType;
+            [FieldOffset(0x10)] private readonly int componentType;
 
             public PedOutfitComponentVariantData GetData()
             {

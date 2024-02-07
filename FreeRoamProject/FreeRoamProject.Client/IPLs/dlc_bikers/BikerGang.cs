@@ -5,9 +5,9 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
 {
     public class BikerGang
     {
-        public BikerName Name = new BikerName();
-        public BikerEmblem Emblem = new BikerEmblem();
-        public static BikerClubHouse ClubHouse = new BikerClubHouse();
+        public BikerName Name = new();
+        public BikerEmblem Emblem = new();
+        public static BikerClubHouse ClubHouse = new();
 
         public BikerGang()
         {
@@ -281,10 +281,10 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
     {
         public int InteriorId1 = 246273;
         public int InteriorId2 = 246529;
-        public BEmblem Emblem = new BEmblem();
-        public BMembers Members = new BMembers();
-        public BClubName ClubName = new BClubName();
-        public BMissionWalls MissionWall = new BMissionWalls();
+        public BEmblem Emblem = new();
+        public BMembers Members = new();
+        public BClubName ClubName = new();
+        public BMissionWalls MissionWall = new();
         public void ClearAll()
         {
             ClubName.Clear();
@@ -309,11 +309,11 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
     }
     public class BMembers
     {
-        public Member President = new Member("memorial_wall_president", "bkr_prop_rt_memorial_president");
-        public Member VicePresident = new Member("memorial_wall_vice_president", "bkr_prop_rt_memorial_vice_pres");
-        public Member RoadCaptain = new Member("memorial_wall_active_01", "bkr_prop_rt_memorial_active_01");
-        public Member Enforcer = new Member("memorial_wall_active_02", "bkr_prop_rt_memorial_active_02");
-        public Member SergeantAtArms = new Member("memorial_wall_active_03", "bkr_prop_rt_memorial_active_03");
+        public Member President = new("memorial_wall_president", "bkr_prop_rt_memorial_president");
+        public Member VicePresident = new("memorial_wall_vice_president", "bkr_prop_rt_memorial_vice_pres");
+        public Member RoadCaptain = new("memorial_wall_active_01", "bkr_prop_rt_memorial_active_01");
+        public Member Enforcer = new("memorial_wall_active_02", "bkr_prop_rt_memorial_active_02");
+        public Member SergeantAtArms = new("memorial_wall_active_03", "bkr_prop_rt_memorial_active_03");
 
         public async void Set(Member member, Ped ped)
         {
@@ -508,9 +508,9 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
     }
     public class Missions
     {
-        public BTitles Titles = new BTitles();
-        public BPictures Pictures = new BPictures();
-        public BDescriptions Descriptions = new BDescriptions();
+        public BTitles Titles = new();
+        public BPictures Pictures = new();
+        public BDescriptions Descriptions = new();
     }
     public class BTitles
     {

@@ -33,7 +33,7 @@ namespace FreeRoamProject.Shared
 
     public class PlayerStateBag<T>
     {
-        private Player _player;
+        private readonly Player _player;
 
         public string Name { get; set; }
         public bool Replicated { get; set; } = true;
@@ -230,7 +230,7 @@ namespace FreeRoamProject.Shared
 #endif
             IsOwner = true;
             Instance = string.Empty;
-            InstanceBag bag = new InstanceBag(Instanced, ServerIdOwner, IsOwner, Instance);
+            InstanceBag bag = new(Instanced, ServerIdOwner, IsOwner, Instance);
             _instanceBag.State = bag;
         }
 
@@ -247,7 +247,7 @@ namespace FreeRoamProject.Shared
 #endif
             IsOwner = true;
             this.Instance = instance;
-            InstanceBag bag = new InstanceBag(Instanced, ServerIdOwner, IsOwner, Instance);
+            InstanceBag bag = new(Instanced, ServerIdOwner, IsOwner, Instance);
             _instanceBag.State = bag;
         }
 
@@ -260,7 +260,7 @@ namespace FreeRoamProject.Shared
             ServerIdOwner = ServerId;
             IsOwner = true;
             this.Instance = instance;
-            InstanceBag bag = new InstanceBag(Instanced, ServerIdOwner, IsOwner, Instance);
+            InstanceBag bag = new(Instanced, ServerIdOwner, IsOwner, Instance);
             _instanceBag.State = bag;
         }
 
@@ -273,7 +273,7 @@ namespace FreeRoamProject.Shared
             ServerIdOwner = 0;
             IsOwner = false;
             Instance = string.Empty;
-            InstanceBag bag = new InstanceBag(Instanced, ServerIdOwner, IsOwner, Instance);
+            InstanceBag bag = new(Instanced, ServerIdOwner, IsOwner, Instance);
             _instanceBag.State = bag;
         }
 
@@ -288,7 +288,7 @@ namespace FreeRoamProject.Shared
                 if (Instance != instance)
                 {
                     Instance = instance;
-                    InstanceBag bag = new InstanceBag(Instanced, ServerIdOwner, IsOwner, Instance);
+                    InstanceBag bag = new(Instanced, ServerIdOwner, IsOwner, Instance);
                     _instanceBag.State = bag;
                 }
             }
@@ -304,7 +304,7 @@ namespace FreeRoamProject.Shared
             {
                 if (ServerIdOwner != netId)
                 {
-                    ServerIdOwner = netId; InstanceBag bag = new InstanceBag(Instanced, ServerIdOwner, IsOwner, Instance);
+                    ServerIdOwner = netId; InstanceBag bag = new(Instanced, ServerIdOwner, IsOwner, Instance);
                     _instanceBag.State = bag;
                 }
             }

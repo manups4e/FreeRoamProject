@@ -36,12 +36,12 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Managers
 
     public class STRUCT_DriveIn
     {
-        public SceneTool_Pan[] mPans = new SceneTool_Pan[(int)DriveInPans.DriveIn_PAN_MAX] { new() };
-        public SceneTool_Cut[] mCuts = new SceneTool_Cut[(int)DriveInCuts.DriveIn_CUT_MAX] { new() };
-        public SceneTool_Marker[] mMarkers = new SceneTool_Marker[(int)DriveInMarkers.DriveIn_MARKER_MAX] { new(), new(), new() };
-        public SceneTool_Placer[] mPlacers = new SceneTool_Placer[(int)DriveInPlacers.DriveIn_PLACER_MAX] { new() };
-        public SceneTool_AngArea[] mAngAreas = new SceneTool_AngArea[(int)DriveInAngArea.DriveIn_ANGAREA_MAX] { new() };
-        public bool[] bEnablePans = new bool[(int)DriveInPans.DriveIn_PAN_MAX] { new() };
+        public SceneTool_Pan[] mPans = [new()];
+        public SceneTool_Cut[] mCuts = [new()];
+        public SceneTool_Marker[] mMarkers = [new(), new(), new()];
+        public SceneTool_Placer[] mPlacers = [new()];
+        public SceneTool_AngArea[] mAngAreas = [new()];
+        public bool[] bEnablePans = [new()];
         public float fExitDelay { get; set; }
     }
 

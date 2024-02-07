@@ -24,16 +24,16 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
     }
     public class WebBrowser : App
     {
-        private int CELEBRATION_SCREEN = 10;
-        private int YACHT = 11;
-        private int OFFICE = 12;
-        private int CLUBHOUSE = 13;
-        private int GARAGE_1 = 14;
-        private int GARAGE_2 = 15;
-        private int VEHICLE_SALE = 16;
-        private int TRUCK = 17;
-        private int CHOPPER = 18;
-        private int ARENA_GARAGE = 19;
+        private readonly int CELEBRATION_SCREEN = 10;
+        private readonly int YACHT = 11;
+        private readonly int OFFICE = 12;
+        private readonly int CLUBHOUSE = 13;
+        private readonly int GARAGE_1 = 14;
+        private readonly int GARAGE_2 = 15;
+        private readonly int VEHICLE_SALE = 16;
+        private readonly int TRUCK = 17;
+        private readonly int CHOPPER = 18;
+        private readonly int ARENA_GARAGE = 19;
         private int FrameCount = 0;
         private bool ShowingVideo = false;
         private float browserrollDistance = 0;
@@ -45,7 +45,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
         private int iLocal_253;
         private int iLocal_254;
         private int iLocal_255;
-        private bool bLocal_1016 = false;
+        private readonly bool bLocal_1016 = false;
         private float fLocal_256 = 0;
         private float fLocal_257 = 0;
         private float fLocal_258 = 0;
@@ -61,13 +61,13 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
         private int iLocal_243;
         private int iLocal_247;
 
-        private float posXLast = 0;
-        private float posYLast = 0;
-        private bool isWatchingVideo = false;
+        private readonly float posXLast = 0;
+        private readonly float posYLast = 0;
+        private readonly bool isWatchingVideo = false;
         private ScaleformWideScreen fontLib;
         internal ScaleformWideScreen browser;
         private bool _isDynamic = false;
-        private bool _showingBrowser = false;
+        private readonly bool _showingBrowser = false;
         private readonly Random random = new(GetGameTimer());
 
         private int _currentSiteId = -1;

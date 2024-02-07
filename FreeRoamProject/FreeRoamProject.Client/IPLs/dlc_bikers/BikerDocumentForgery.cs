@@ -19,10 +19,10 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
             }
         }
 
-        public DocumentStyle Style = new DocumentStyle();
-        public DocumentEquipment Equipment = new DocumentEquipment();
-        public DocumentSecurity Security = new DocumentSecurity();
-        public DocumentDetails Details = new DocumentDetails();
+        public DocumentStyle Style = new();
+        public DocumentEquipment Equipment = new();
+        public DocumentSecurity Security = new();
+        public DocumentDetails Details = new();
 
         public void LoadDefault()
         {
@@ -90,8 +90,8 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
     }
     public class DocumentDetails
     {
-        public List<string> Chairs = new List<string>()
-            {
+        public List<string> Chairs =
+            [
                 "chair01",
                 "chair02",
                 "chair03",
@@ -99,7 +99,7 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
                 "chair05",
                 "chair06",
                 "chair07",
-            };
+            ];
         public string Production = "production";
         public string Fornitures = "set_up";
         public string Clutter = "clutter";

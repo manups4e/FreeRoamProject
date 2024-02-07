@@ -7,14 +7,14 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
 {
     internal static class FreeRoamCamerasFirstTime
     {
-        private static Scaleform Credits = new Scaleform("OPENING_CREDITS");
-        private static List<Vector4> SpawnPoints = new List<Vector4>
-        {
+        private static readonly Scaleform Credits = new("OPENING_CREDITS");
+        private static readonly List<Vector4> SpawnPoints =
+        [
             new Vector4(232.412f, -878.302f, 29.492f, 312.905f),
             new Vector4(216.779f, -1040.771f, 29.140f, 60.056f),
             new Vector4(766.765f, -1024.438f, 24.924f, 323.522f),
             new Vector4(-952.488f, -414.614f, 37.807f, 186.983f)
-        };
+        ];
 
         public static void Init()
         {
@@ -33,11 +33,11 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
         public static async void FirstTimeTransition()
         {
             PlayerCache.MyClient.Ped.Detach();
-            ScaleformUI.Main.Warning.ShowWarningWithButtons("Would you like to skip the Intro video?", "Select yes to be directly sent into the game.", "", new List<InstructionalButton>
-            {
+            ScaleformUI.Main.Warning.ShowWarningWithButtons("Would you like to skip the Intro video?", "Select yes to be directly sent into the game.", "",
+            [
                 new InstructionalButton(CitizenFX.Core.Control.FrontendCancel, Game.GetGXTEntry("FE_HLP31")),
                 new InstructionalButton(CitizenFX.Core.Control.FrontendAccept, Game.GetGXTEntry("FE_HLP29")),
-            });
+            ]);
             await BaseScript.Delay(100);
             Screen.Fading.FadeIn(0);
             ScaleformUI.Main.Warning.OnButtonPressed += async (a) =>
@@ -65,11 +65,11 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             playerPed.IsVisible = false;
             PlayerCache.MyClient.Status.Instance.InstancePlayer("PlayerEntrance_FR");
             playerPed.Position = new Vector3(745.877f, 1215.591f, 359.405f);
-            Camera Cam1 = new Camera(CreateCam("DEFAULT_SCRIPTED_CAMERA", true)) { FieldOfView = 60f, Position = new Vector3(745.877f, 1215.591f, 359.405f) };
+            Camera Cam1 = new(CreateCam("DEFAULT_SCRIPTED_CAMERA", true)) { FieldOfView = 60f, Position = new Vector3(745.877f, 1215.591f, 359.405f) };
             Cam1.IsActive = true;
             Cam1.PointAt(new Vector3(657.620f, 906.617f, 276.418f));
             while (!HasCollisionLoadedAroundEntity(playerPed.Handle)) await BaseScript.Delay(1000);
-            Camera Cam2 = new Camera(CreateCam("DEFAULT_SCRIPTED_CAMERA", true)) { FieldOfView = 60f, Position = new Vector3(738.474f, 1188.959f, 347.068f) };
+            Camera Cam2 = new(CreateCam("DEFAULT_SCRIPTED_CAMERA", true)) { FieldOfView = 60f, Position = new Vector3(738.474f, 1188.959f, 347.068f) };
             Cam2.PointAt(new Vector3(657.620f, 906.617f, 276.418f));
             Cam1.InterpTo(Cam2, 10000, 0, 0);
             Screen.Fading.FadeIn(800);
@@ -89,10 +89,10 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             Cam2.IsActive = false;
             Cam1.Delete();
             Cam2.Delete();
-            Camera Cam3 = new Camera(CreateCam("DEFAULT_SCRIPTED_CAMERA", true)) { FieldOfView = 60f, Position = new Vector3(-264.303f, -567.568f, 148.302f) };
+            Camera Cam3 = new(CreateCam("DEFAULT_SCRIPTED_CAMERA", true)) { FieldOfView = 60f, Position = new Vector3(-264.303f, -567.568f, 148.302f) };
             Cam3.IsActive = true;
             Cam3.PointAt(new Vector3(-165.131f, -704.744f, 196.705f));
-            Camera Cam4 = new Camera(CreateCam("DEFAULT_SCRIPTED_CAMERA", true)) { FieldOfView = 60f, Position = new Vector3(-264.563f, -599.100f, 148.302f) };
+            Camera Cam4 = new(CreateCam("DEFAULT_SCRIPTED_CAMERA", true)) { FieldOfView = 60f, Position = new Vector3(-264.563f, -599.100f, 148.302f) };
             Cam4.PointAt(new Vector3(-165.131f, -704.744f, 196.705f));
             Screen.Fading.FadeIn(800);
             Cam3.InterpTo(Cam4, 7000, 0, 1);
@@ -110,11 +110,11 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             Cam4.Delete();
             playerPed.Position = new Vector3(-1604.552f, -1048.718f, 17.027f);
             while (!HasCollisionLoadedAroundEntity(playerPed.Handle)) await BaseScript.Delay(1000);
-            Camera Cam5 = new Camera(CreateCam("DEFAULT_SCRIPTED_CAMERA", true)) { FieldOfView = 60f, Position = new Vector3(-1593.578f, -1042.522f, 12.527f) };
+            Camera Cam5 = new(CreateCam("DEFAULT_SCRIPTED_CAMERA", true)) { FieldOfView = 60f, Position = new Vector3(-1593.578f, -1042.522f, 12.527f) };
             Cam5.PointAt(new Vector3(-1604.552f, -1048.718f, 17.027f));
             Cam5.IsActive = true;
             Screen.Fading.FadeIn(800);
-            Camera Cam6 = new Camera(CreateCam("DEFAULT_SCRIPTED_CAMERA", true)) { FieldOfView = 60f, Position = new Vector3(-1604.543f, -1037.229f, 12.527f) };
+            Camera Cam6 = new(CreateCam("DEFAULT_SCRIPTED_CAMERA", true)) { FieldOfView = 60f, Position = new Vector3(-1604.543f, -1037.229f, 12.527f) };
             Cam6.PointAt(new Vector3(-1604.552f, -1048.718f, 17.027f));
             Cam5.InterpTo(Cam6, 7000, 0, 1);
             await BaseScript.Delay(2000);
@@ -131,11 +131,11 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             while (!HasCollisionLoadedAroundEntity(playerPed.Handle)) await BaseScript.Delay(1000);
             Cam5.Delete();
             Cam6.Delete();
-            Camera Cam7 = new Camera(CreateCam("DEFAULT_SCRIPTED_CAMERA", true)) { FieldOfView = 60f, Position = new Vector3(-552.468f, -513.632f, 30.427f) };
+            Camera Cam7 = new(CreateCam("DEFAULT_SCRIPTED_CAMERA", true)) { FieldOfView = 60f, Position = new Vector3(-552.468f, -513.632f, 30.427f) };
             Cam7.PointAt(new Vector3(-133.448f, -512.632f, 30.427f));
             Cam7.IsActive = true;
             Screen.Fading.FadeIn(800);
-            Camera Cam8 = new Camera(CreateCam("DEFAULT_SCRIPTED_CAMERA", true)) { FieldOfView = 60f, Position = new Vector3(-552.468f, -513.632f, 150.427f) };
+            Camera Cam8 = new(CreateCam("DEFAULT_SCRIPTED_CAMERA", true)) { FieldOfView = 60f, Position = new Vector3(-552.468f, -513.632f, 150.427f) };
             Cam8.PointAt(new Vector3(-133.448f, -512.632f, 30.427f));
             Cam7.InterpTo(Cam8, 10000, 0, 1);
             await BaseScript.Delay(3000);
@@ -153,7 +153,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             Ped playerPed = PlayerCache.MyClient.Ped;
             ClientMain.Instance.AddTick(Control);
             ClientMain.Instance.AddTick(ShowCredits);
-            Camera Cam9 = new Camera(CreateCam("DEFAULT_SCRIPTED_CAMERA", true)) { FieldOfView = 60f };
+            Camera Cam9 = new(CreateCam("DEFAULT_SCRIPTED_CAMERA", true)) { FieldOfView = 60f };
             Model tassista = new(PedHash.Stlat01AMY);
             tassista.Request();
             while (!tassista.IsLoaded) await tassista.Request(1);
@@ -216,7 +216,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.CharCreation
             await BaseScript.Delay(4000);
             sub_11f01("scrlead", 0.16f);
             ClientMain.Instance.RemoveTick(ShowCredits);
-            Camera cam10 = new Camera(CreateCam("DEFAULT_SCRIPTED_CAMERA", true)) { FieldOfView = 60f, Position = new Vector3(Cam9.Position.X, Cam9.Position.Y, Cam9.Position.Z + 50) };
+            Camera cam10 = new(CreateCam("DEFAULT_SCRIPTED_CAMERA", true)) { FieldOfView = 60f, Position = new Vector3(Cam9.Position.X, Cam9.Position.Y, Cam9.Position.Z + 50) };
             cam10.PointAt(taxi);
             Cam9.InterpTo(cam10, 5000, 1, 1);
             await BaseScript.Delay(7000);

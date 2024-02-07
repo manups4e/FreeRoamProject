@@ -63,8 +63,8 @@ namespace FreeRoamProject.Client.IPLs.dlc_gunrunning
     public class BExterior
     {
         private bool _enabled = false;
-        public List<string> ipl = new List<string>()
-            {
+        public List<string> ipl =
+            [
                 "gr_case0_bunkerclosed",	// Desert: 848.6175, 2996.567, 45.81612
                 "gr_case1_bunkerclosed",	// SmokeTree: 2126.785, 3335.04, 48.21422
                 "gr_case2_bunkerclosed",	// Scrapyard: 2493.654, 3140.399, 51.28789
@@ -76,7 +76,7 @@ namespace FreeRoamProject.Client.IPLs.dlc_gunrunning
                 "gr_case9_bunkerclosed",	// Route68: 24.43542, 2959.705, 58.35517
                 "gr_case10_bunkerclosed",	// Zancudo: -3058.714, 3329.19, 12.5844
                 "gr_case11_bunkerclosed"	// Great Ocean Highway: -3180.466, 1374.192, 19.9597
-            };
+            ];
         public bool Enabled
         {
             get { return _enabled; }

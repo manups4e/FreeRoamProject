@@ -18,9 +18,9 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
             }
         }
 
-        public CocaineStyle Style = new CocaineStyle();
-        public CocaineSecurity Security = new CocaineSecurity();
-        public CocaineDetails Details = new CocaineDetails();
+        public CocaineStyle Style = new();
+        public CocaineSecurity Security = new();
+        public CocaineDetails Details = new();
 
         public void LoadDefault()
         {
@@ -34,9 +34,9 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
 
     public class CocaineStyle
     {
-        public List<string> None = new List<string>() { "" };
-        public List<string> Basic = new List<string>() { "set_up", "equipment_basic", "coke_press_basic", "production_basic", "table_equipment" };
-        public List<string> Upgrade = new List<string>() { "set_up", "equipment_upgrade", "coke_press_upgrade", "production_upgrade", "table_equipment_upgrade" };
+        public List<string> None = [""];
+        public List<string> Basic = ["set_up", "equipment_basic", "coke_press_basic", "production_basic", "table_equipment"];
+        public List<string> Upgrade = ["set_up", "equipment_upgrade", "coke_press_upgrade", "production_upgrade", "table_equipment_upgrade"];
         public void Set(List<string> style, bool refresh = true)
         {
             Clear(false);

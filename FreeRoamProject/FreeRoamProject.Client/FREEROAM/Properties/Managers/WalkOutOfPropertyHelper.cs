@@ -597,7 +597,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Managers
             bool bWarpWhenBlocked = false;
             int[] iPositionIndex = new int[2];
             float fDistance = 0.3f;
-            MPPropertyNonAxis entranceArea = new MPPropertyNonAxis();
+            MPPropertyNonAxis entranceArea = new();
             PropertyData apart = PropertiesExteriorsManager.Properties[iCurrentProperty];
             switch (iWalkOutStage)
             {

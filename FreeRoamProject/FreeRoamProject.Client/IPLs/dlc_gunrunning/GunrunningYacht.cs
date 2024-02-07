@@ -6,8 +6,8 @@ namespace FreeRoamProject.Client.IPLs.dlc_gunrunning
     public class GunrunningYacht
     {
         private bool _enabled = false;
-        public List<string> ipl = new List<string>()
-        {
+        public List<string> ipl =
+        [
             "gr_heist_yacht2",
             "gr_heist_yacht2_bar",
             "gr_heist_yacht2_bar_lod",
@@ -21,7 +21,7 @@ namespace FreeRoamProject.Client.IPLs.dlc_gunrunning
             "gr_heist_yacht2_lounge",
             "gr_heist_yacht2_lounge_lod",
             "gr_heist_yacht2_slod",
-        };
+        ];
         public bool Enabled
         {
             get { return _enabled; }
@@ -31,7 +31,7 @@ namespace FreeRoamProject.Client.IPLs.dlc_gunrunning
                 IplManager.EnableIpl(ipl, _enabled);
             }
         }
-        public YacthWater Water = new YacthWater(new Vector4(-1369.0f, 6736.0f, 5.40f, 5.0f));
+        public YacthWater Water = new(new Vector4(-1369.0f, 6736.0f, 5.40f, 5.0f));
 
         public void LoadDefault()
         {

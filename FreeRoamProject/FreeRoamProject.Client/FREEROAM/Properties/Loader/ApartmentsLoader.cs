@@ -30,7 +30,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Loader
             while (i < 131)
             {
                 await BaseScript.Delay(10);
-                PropertyData property = new PropertyData();
+                PropertyData property = new();
                 GetPropertyData(ref property, (PropertiesEnum)i);
                 ClientMain.Logger.Debug($"index: {i}, {property.ToJson()}");
                 PropertiesExteriorsManager.Properties.Add(property);

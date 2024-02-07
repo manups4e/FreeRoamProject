@@ -6,7 +6,7 @@ namespace FreeRoamProject.Shared.Core.FREEROAM
     {
         // TODO: USE LABELS FOR DEATH REASONS (if we wanna know them)
         #region DeathReasons
-        public static Dictionary<uint, string> DeathReasonsDict = new Dictionary<uint, string>()
+        public static Dictionary<uint, string> DeathReasonsDict = new()
         {
             [2460120199] = "Antique Cavalry Dagger",
             [2508868239] = "Baseball Bat",

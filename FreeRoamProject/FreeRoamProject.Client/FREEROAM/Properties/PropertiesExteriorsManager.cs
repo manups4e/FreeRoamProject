@@ -185,12 +185,12 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
     internal static class PropertiesExteriorsManager
     {
         private static bool Initialized = false;
-        public static List<PropertyData> Properties = new();
+        public static List<PropertyData> Properties = [];
         public static PropertiesEnum CurrentPropertyID { get; set; }
         public static int iEntrancePlayerIsUsing { get; set; }
-        private static List<MarkerEx> EntranceMarkers = new();
-        private static CutsceneData entryCutData = new CutsceneData();
-        private static MPPropertyNonAxis[] EntranceArea = new MPPropertyNonAxis[3] { new(), new(), new() };
+        private static readonly List<MarkerEx> EntranceMarkers = [];
+        private static CutsceneData entryCutData = new();
+        private static readonly MPPropertyNonAxis[] EntranceArea = [new(), new(), new()];
         private static int fakeBuilding6GarageObj;
         private static GARAGE_PED_ENTER_CUTSCENE_STAGE garagePedEnterCutStage;
         private static GARAGE_CAR_ENTER_CUTSCENE_STAGE garageCarEnterCutStage;
@@ -198,43 +198,43 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
         private static int iApartmentBuzzerSoundStage = 0;
         private static Vehicle vehFakeGarageEnter = null;
         private static int vehCrateGarageEnter = 0;
-        private static int[] pedFakeGarageEnter = new int[9];
+        private static readonly int[] pedFakeGarageEnter = new int[9];
         private static MPFakeGarageDriveStruct fakeGarageDriveData = new();
         private static bool bLeavingEntranceArea = false;
         private static int iMenuInputDelay = 0;
         public static MainStage iLocalStage;
-        private static MPRealityWarpIn warpInControl = new();
+        private static readonly MPRealityWarpIn warpInControl = new();
         private static PropForSale forSaleDetails = new();
         private static Prop forSaleSign = null;
         private static Prop entryBlockingObj = null;
         private static Prop garageBlockingObj = null;
         private static Prop revolvingDoor = null;
-        private static int[] mapHoleProtectors = new int[3];
-        private static int[] createdBuzzers = new int[3];
-        private static int[] iDoorSetBS = new int[3];
-        private static SCRIPT_TIMER[] serverDoorStateTimeout = [new(), new(), new()];
-        private static int[] doorPlanks = new int[2];
-        private static bool[] bPropertyDoorGarage = new bool[3];
+        private static readonly int[] mapHoleProtectors = new int[3];
+        private static readonly int[] createdBuzzers = new int[3];
+        private static readonly int[] iDoorSetBS = new int[3];
+        private static readonly SCRIPT_TIMER[] serverDoorStateTimeout = [new(), new(), new()];
+        private static readonly int[] doorPlanks = new int[2];
+        private static readonly bool[] bPropertyDoorGarage = new bool[3];
         private static Position tempPropOffset;
         private static WalkInStage iWalkInStage;
         private static int propertyCam0, propertyCam1;
         private static int camGarageCutscene0, camGarageCutscene1;
-        private static MpDoorDetails[] propertyDoors = [new MpDoorDetails(), new MpDoorDetails(), new MpDoorDetails()];
+        private static readonly MpDoorDetails[] propertyDoors = [new MpDoorDetails(), new MpDoorDetails(), new MpDoorDetails()];
         private static SCRIPT_TIMER iWalkInTimer = new();
         private static SCRIPT_TIMER iCameraTimer = new();
-        private static SCRIPT_TIMER pauseMenuDelay = new();
-        private static SCRIPT_TIMER menuInputDelay = new();
-        private static int[] officeGarageDoors = new int[2];
+        private static readonly SCRIPT_TIMER pauseMenuDelay = new();
+        private static readonly SCRIPT_TIMER menuInputDelay = new();
+        private static readonly int[] officeGarageDoors = new int[2];
         private static Prop officeGarageExternalDoor = null;
         private static MPCamOffset tempCamOffset = new();
-        private static List<Blip> PropertiesBlips = new();
-        private static int warpInWithDriverID = -1;
+        private static readonly List<Blip> PropertiesBlips = [];
+        private static readonly int warpInWithDriverID = -1;
         private static int iLocalBS;
         private static int iLocalBS2;
         private static bool bLoadedElevatorSounds;
-        private static bool bIsAnotherPlayerPersonalVehicle;
+        private static readonly bool bIsAnotherPlayerPersonalVehicle;
         private static bool bCleanupFakeGarageEnter;
-        private static int NUM_VEHICLE_SEATS = 9;
+        private static readonly int NUM_VEHICLE_SEATS = 9;
         private static FAKE_GARAGE_CAR_ENTER_CUTSCENE_STAGE fakeGarageCarEnterCutsceneStage;
         private static FAKE_GARAGE_CAR_ENTER_CUTSCENE_STAGE iRunCarEntryFadeStage;
         private static int iGarageCutTimer;
@@ -242,8 +242,8 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
         private static int iPedsInCar = 0;
         private static int iGarageCutsceneBitset;
         private static bool bStartedGarageDoorSound = false;
-        private static float fDoorSlideOpenSpeed = 3f;
-        private static float fDoorSlideCloseSpeed = 1.5f;
+        private static readonly float fDoorSlideOpenSpeed = 3f;
+        private static readonly float fDoorSlideCloseSpeed = 1.5f;
         private static int iGarageDoorSound;
         private static int iGarageSound;
         private static float fFakeVehicleOffset;
@@ -252,9 +252,9 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
         private static bool bGrabbedOfficeGarageDoorInterior = false;
         private static bool bInteriorPinned = false;
 
-        private static int GARAGE_CUT_SKIP_TIME_SHORT = 5000;
-        private static int GARAGE_CUT_SKIP_TIME_LONG = 10000;
-        private static int GARAGE_CUT_SKIP_TIME_BEAT = 0666;
+        private static readonly int GARAGE_CUT_SKIP_TIME_SHORT = 5000;
+        private static readonly int GARAGE_CUT_SKIP_TIME_LONG = 10000;
+        private static readonly int GARAGE_CUT_SKIP_TIME_BEAT = 0666;
 
 
         public static void Init()
@@ -494,7 +494,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
                 {
                     Blip p = World.CreateBlip(tempVector);
                     p.Sprite = BlipSprite.ChatBubble;
-                    BuildingRelated buildingProperties = new BuildingRelated();
+                    BuildingRelated buildingProperties = new();
                     PropertyFunctions.GetBuildingProperties(ref buildingProperties, (BuildingsEnum)i);
                     p.Name = GetLabelText(Properties[(int)buildingProperties.PropertiesInBuilding[0]].Label);
                 }
@@ -538,10 +538,12 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
                     ModelName = PropertyFunctions.GetOfficeGarageExternalDoorModel();
 
                     RequestLoadModel(ModelName);
-                    officeGarageExternalDoor = new Prop(CreateObjectNoOffset(ModelName, vPosition.X, vPosition.Y, vPosition.Z, false, false, true));
-                    officeGarageExternalDoor.IsPositionFrozen = true;
-                    officeGarageExternalDoor.Rotation = vRotation;
-                    officeGarageExternalDoor.IsInvincible = true;
+                    officeGarageExternalDoor = new Prop(CreateObjectNoOffset(ModelName, vPosition.X, vPosition.Y, vPosition.Z, false, false, true))
+                    {
+                        IsPositionFrozen = true,
+                        Rotation = vRotation,
+                        IsInvincible = true
+                    };
                     SetEntityDynamic(officeGarageExternalDoor.Handle, false);
                     SetEntityProofs(officeGarageExternalDoor.Handle, true, true, true, true, true, true, true, true);
                 }
@@ -595,7 +597,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
 
         private static void InitCurrentBuildingDetails()
         {
-            BuildingRelated buildingProperties = new BuildingRelated();
+            BuildingRelated buildingProperties = new();
             float distance = 5000;
             Position pos = PlayerCache.MyClient.Position;
             BuildingsEnum building = 0;
@@ -1343,11 +1345,11 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
                     }
                     else
                     {
-                        Main.Warning.ShowWarningWithButtons(GetLabelText("CUST_GAR_FULL"), GetLabelText("CUST_GAR_REP"), "", new List<InstructionalButton>()
-                        {
+                        Main.Warning.ShowWarningWithButtons(GetLabelText("CUST_GAR_FULL"), GetLabelText("CUST_GAR_REP"), "",
+                        [
                             new InstructionalButton(Control.FrontendCancel, GetLabelText("IB_CANCEL")),
                             new InstructionalButton(Control.FrontendAccept, GetLabelText("IB_OK"))
-                        });
+                        ]);
                         Main.Warning.OnButtonPressed += (button) =>
                         {
                             if (button.Text == GetLabelText("IB_OK"))
@@ -1571,7 +1573,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
         }
         private static bool WalkIntoPropertyCutscene(bool resetCoords)
         {
-            STRUCT_WalkIn scene = new STRUCT_WalkIn();
+            STRUCT_WalkIn scene = new();
             if (!WalkIntoPropertyHelper.Get_WalkIn(PropertyFunctions.GetPropertyBuilding(CurrentPropertyID), ref scene, iEntrancePlayerIsUsing))
             {
                 iWalkInStage = WalkInStage.WIS_INIT;
@@ -2491,11 +2493,13 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
                         if (CanRegisterMissionEntities(0, 0, 1, 0))
                         {
                             ClearAreaOfObjects(-935.1886f, -378.4521f, 38.8713f, 3f, 0);
-                            entryBlockingObj = new Prop(CreateObjectNoOffset(model, -935.1886f, -378.4521f, 38.8713f, false, false, true));
-                            entryBlockingObj.Rotation = new Vector3(0, 0, 26);
-                            entryBlockingObj.IsPositionFrozen = true;
-                            entryBlockingObj.IsVisible = false;
-                            entryBlockingObj.IsInvincible = true;
+                            entryBlockingObj = new Prop(CreateObjectNoOffset(model, -935.1886f, -378.4521f, 38.8713f, false, false, true))
+                            {
+                                Rotation = new Vector3(0, 0, 26),
+                                IsPositionFrozen = true,
+                                IsVisible = false,
+                                IsInvincible = true
+                            };
                             SetEntityProofs(entryBlockingObj.Handle, true, true, true, true, true, true, true, true);
                             SetEntityDynamic(entryBlockingObj.Handle, false);
                             SetCanClimbOnEntity(entryBlockingObj.Handle, false);
@@ -2510,11 +2514,13 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
                         if (CanRegisterMissionEntities(0, 0, 1, 0))
                         {
                             ClearAreaOfObjects(-935.1886f, -378.4521f, 39.8713f, 3f, 0);
-                            garageBlockingObj = new Prop(CreateObjectNoOffset(model, -935.1886f, -378.4521f, 39.8713f, false, false, true));
-                            garageBlockingObj.Rotation = new Vector3(0, 0, 26);
-                            garageBlockingObj.IsPositionFrozen = true;
-                            garageBlockingObj.IsVisible = false;
-                            garageBlockingObj.IsInvincible = true;
+                            garageBlockingObj = new Prop(CreateObjectNoOffset(model, -935.1886f, -378.4521f, 39.8713f, false, false, true))
+                            {
+                                Rotation = new Vector3(0, 0, 26),
+                                IsPositionFrozen = true,
+                                IsVisible = false,
+                                IsInvincible = true
+                            };
                             SetEntityProofs(garageBlockingObj.Handle, true, true, true, true, true, true, true, true);
                             SetEntityDynamic(garageBlockingObj.Handle, false);
                             SetCanClimbOnEntity(garageBlockingObj.Handle, false);
@@ -5785,7 +5791,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
         }
         private static Vector3 GET_OFFICE_GARAGE_FAKE_DRIVE_DATA_AS_OFFSET(BuildingsEnum iBuilding, int i, bool bRotation)
         {
-            Position[] tempStruct = new Position[3] { new(), new(), new() };
+            Position[] tempStruct = [new(), new(), new()];
             // Base for offset - OFFICE 1
             tempStruct[0] = new(-1535.10f, -581.22f, 24.71f, 0.0f, 0.0f, -146.31f);
             switch (iBuilding)

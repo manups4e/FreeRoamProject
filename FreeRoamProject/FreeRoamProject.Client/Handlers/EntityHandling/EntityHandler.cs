@@ -5,7 +5,7 @@ namespace FreeRoamProject.Client.Handlers.EntityHandling
 {
     static class EntityHandler
     {
-        public static List<EntityHandle> Entità = new List<EntityHandle>();
+        public static List<EntityHandle> Entità = [];
         public static void Init()
         {
 

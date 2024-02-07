@@ -9,9 +9,9 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
     public static class Prostitutes
     {
         private static Ped _hooker;
-        private static float ProstDistance = 10f;
+        private static readonly float ProstDistance = 10f;
         private static bool prosOnVeh = false;
-        private static List<string> Scenarios = new List<string> { };
+        private static readonly List<string> Scenarios = [];
         private static bool havingSex = false;
         private static int currentSexType = -1;
         public static void Init()
@@ -155,13 +155,13 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
                                                     AddRelationshipGroup("ProstituteInPlay", ref prosHash);
                                                     SetRelationshipBetweenGroups(1, prosHash, Functions.HashUint("player"));
                                                     SetPedRelationshipGroupHash(playerPed.Handle, prosHash);
-                                                    UIMenu pronsMenu = new UIMenu("", Game.GetGXTEntry("PROS_OPTS"), new PointF(0, 0), "", "");
+                                                    UIMenu pronsMenu = new("", Game.GetGXTEntry("PROS_OPTS"), new PointF(0, 0), "", "");
                                                     pronsMenu.EnableAnimation = false;
                                                     pronsMenu.BuildingAnimation = MenuBuildingAnimation.NONE;
-                                                    UIMenuItem firstopt = new UIMenuItem(Game.GetGXTEntry("PROS_DOLLAR").Replace("~1~", "50"));
-                                                    UIMenuItem secondopt = new UIMenuItem(Game.GetGXTEntry("PROS_DOLLAR").Replace("~1~", "70"));
-                                                    UIMenuItem thirdopt = new UIMenuItem(Game.GetGXTEntry("PROS_DOLLAR").Replace("~1~", "100"));
-                                                    UIMenuItem fourthopt = new UIMenuItem(Game.GetGXTEntry("PROS_QUIT"));
+                                                    UIMenuItem firstopt = new(Game.GetGXTEntry("PROS_DOLLAR").Replace("~1~", "50"));
+                                                    UIMenuItem secondopt = new(Game.GetGXTEntry("PROS_DOLLAR").Replace("~1~", "70"));
+                                                    UIMenuItem thirdopt = new(Game.GetGXTEntry("PROS_DOLLAR").Replace("~1~", "100"));
+                                                    UIMenuItem fourthopt = new(Game.GetGXTEntry("PROS_QUIT"));
                                                     if (Cache.PlayerCache.MyClient.User.Money < 70)
                                                     {
                                                         secondopt.Enabled = false;

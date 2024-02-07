@@ -15,13 +15,13 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
     internal static class Televisions
     {
         private static Prop FakeTV;
-        private static Prop Remote;
-        public static Television TV = new Television();
+        private static readonly Prop Remote;
+        public static Television TV = new();
         private static int RenderTarget;
-        private static TvCoord actualTV = new TvCoord();
+        private static readonly TvCoord actualTV = new();
         private static bool Scaleform = false;
-        private static List<ObjectHash> TVHashes = new List<ObjectHash>()
-        {
+        private static readonly List<ObjectHash> TVHashes =
+        [
             ObjectHash.prop_tv_flat_01,
             ObjectHash.prop_tv_flat_02,
             ObjectHash.prop_tv_flat_02b,
@@ -44,18 +44,18 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
             (ObjectHash)(-240931727),
             (ObjectHash)(-897601557),
             (ObjectHash)777010715
-        };
+        ];
 
-        private static List<TvCoord> localTVs = new List<TvCoord>()
-        {
+        private static readonly List<TvCoord> localTVs =
+        [
             new TvCoord(new Vector3(1120.1711f, -3144.5613f, -35.8581f), new Vector3(0.0000f, 0.0000f, 90.0000f)),
             new TvCoord(new Vector3(1010.6960f, -3164.1321f, -34.1590f), new Vector3(0.0000f, 0.0000f, -63.9800f)),
             new TvCoord(new Vector3(364.0089f, 4838.958f, -58.8157f), new Vector3(0f, 0f, 163f)),
             new TvCoord(new Vector3(228.8359f, -974.6591f, -98.3713f), new Vector3(0))
-        };
+        ];
 
-        private static List<string> TVChannels = new List<string>
-        {
+        private static readonly List<string> TVChannels =
+        [
             "PL_STD_CNT",
             "PL_STD_WZL",
             "PL_LO_CNT",
@@ -75,10 +75,10 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
             "PL_CINEMA_MULTIPLAYER",
             "PL_WEB_HOWITZER",
             "PL_WEB_RANGERS"
-        };
+        ];
 
-        private static List<string> internetChannels = new List<string>
-        {
+        private static readonly List<string> internetChannels =
+        [
             "PL_CINEMA_ACTION",
             "PL_CINEMA_ARTHOUSE",
             "PL_CINEMA_MULTIPLAYER",
@@ -87,7 +87,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
             "PL_WEB_PRB2",
             "PL_WEB_KFLF",
             "PL_WEB_RS"
-        };
+        ];
 
         public static async void TurnOnTV()
         {
@@ -114,7 +114,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
 
         private static Tuple<Vector3, Vector3> GetCoords(int iParam1)
         {
-            Prop tv = new Prop(GetClosestObjectOfType(Cache.PlayerCache.MyClient.Position.ToVector3.X, Cache.PlayerCache.MyClient.Position.ToVector3.Y, Cache.PlayerCache.MyClient.Position.ToVector3.Z, 10f, (uint)World.GetAllProps().Select(o => new Prop(o.Handle)).Where(o => TVHashes.Contains((ObjectHash)(uint)o.Model.Hash)).First(o => Vector3.Distance(Cache.PlayerCache.MyClient.Position.ToVector3, o.Position) < 5f).Model.Hash, false, false, true));
+            Prop tv = new(GetClosestObjectOfType(Cache.PlayerCache.MyClient.Position.ToVector3.X, Cache.PlayerCache.MyClient.Position.ToVector3.Y, Cache.PlayerCache.MyClient.Position.ToVector3.Z, 10f, (uint)World.GetAllProps().Select(o => new Prop(o.Handle)).Where(o => TVHashes.Contains((ObjectHash)(uint)o.Model.Hash)).First(o => Vector3.Distance(Cache.PlayerCache.MyClient.Position.ToVector3, o.Position) < 5f).Model.Hash, false, false, true));
 
             switch (iParam1)
             {
@@ -197,14 +197,14 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
 
         public static async Task TVControls()
         {
-            List<InstructionalButton> buttons = new List<InstructionalButton>()
-            {
+            List<InstructionalButton> buttons =
+            [
                 new InstructionalButton((Control)202, (Control)177, GetLabelText("HUD_INPUT3")),
                 new InstructionalButton((Control)222, (Control)51, TV.On? GetLabelText("HUD_INPUT82") : GetLabelText("HUD_INPUT81")),
                 new InstructionalButton((Control)218, GetLabelText("HUD_INPUT75")),
                 new InstructionalButton((Control)219, GetLabelText("HUD_INPUT77")),
                 new InstructionalButton((Control)236, GetLabelText("HUD_INPUT87")),
-            };
+            ];
             ScaleformUI.Main.InstructionalButtons.SetInstructionalButtons(buttons);
             Game.DisableControlThisFrame(0, Control.MoveLeftOnly);
             Game.DisableControlThisFrame(0, Control.MoveRightOnly);
@@ -306,8 +306,8 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
 
     internal class TvCoord
     {
-        public Vector3 Coord = new Vector3();
-        public Vector3 Rot = new Vector3();
+        public Vector3 Coord = new();
+        public Vector3 Rot = new();
 
         public TvCoord() { }
 

@@ -29,7 +29,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 
     static class PlayerTags
     {
-        public static Dictionary<int, GamerTag> GamerTags = new Dictionary<int, GamerTag>();
+        public static Dictionary<int, GamerTag> GamerTags = [];
         public static void Init()
         {
             AccessingEvents.OnFreeRoamSpawn += (client) => ClientMain.Instance.AddTick(GamerTagsHandler);

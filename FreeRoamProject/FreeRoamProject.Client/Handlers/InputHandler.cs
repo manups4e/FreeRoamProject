@@ -15,7 +15,7 @@ namespace FreeRoamProject.Client.Handlers
 
     internal static class InputHandler
     {
-        private static List<InputController> _listaInput = new();
+        private static readonly List<InputController> _listaInput = [];
         public static List<InputController> ToList => _listaInput.ToList();
 
         public static void AddInput(InputController input)

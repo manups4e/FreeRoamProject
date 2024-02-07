@@ -6,7 +6,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
 {
     public class LongestSurvivedFreefall : IWorldEvent
     {
-        public new Dictionary<Vector4, VehicleHash> VehicleSpawnLocations = new Dictionary<Vector4, VehicleHash>
+        public new Dictionary<Vector4, VehicleHash> VehicleSpawnLocations = new()
         {
             { new Vector4(-1158.893f, -1738.877f, 4.055f,215.483f), VehicleHash.Buzzard2 },
             { new Vector4(-1168.874f, -1746.419f, 3.998f,124.725f), VehicleHash.Buzzard2 },

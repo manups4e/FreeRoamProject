@@ -82,9 +82,9 @@ namespace FreeRoamProject.Client.IPLs.dlc_import_export
     public class GarageNumbering
     {
         public string None = "";
-        public Level Level1 = new Level("numbering_style01_n1", "numbering_style02_n1", "numbering_style03_n1", "numbering_style04_n1", "numbering_style05_n1", "numbering_style06_n1", "numbering_style07_n1", "numbering_style08_n1", "numbering_style09_n1");
-        public Level Level2 = new Level("numbering_style01_n2", "numbering_style02_n2", "numbering_style03_n2", "numbering_style04_n2", "numbering_style05_n2", "numbering_style06_n2", "numbering_style07_n2", "numbering_style08_n2", "numbering_style09_n2");
-        public Level Level3 = new Level("numbering_style01_n3", "numbering_style02_n3", "numbering_style03_n3", "numbering_style04_n3", "numbering_style05_n3", "numbering_style06_n3", "numbering_style07_n3", "numbering_style08_n3", "numbering_style09_n3");
+        public Level Level1 = new("numbering_style01_n1", "numbering_style02_n1", "numbering_style03_n1", "numbering_style04_n1", "numbering_style05_n1", "numbering_style06_n1", "numbering_style07_n1", "numbering_style08_n1", "numbering_style09_n1");
+        public Level Level2 = new("numbering_style01_n2", "numbering_style02_n2", "numbering_style03_n2", "numbering_style04_n2", "numbering_style05_n2", "numbering_style06_n2", "numbering_style07_n2", "numbering_style08_n2", "numbering_style09_n2");
+        public Level Level3 = new("numbering_style01_n3", "numbering_style02_n3", "numbering_style03_n3", "numbering_style04_n3", "numbering_style05_n3", "numbering_style06_n3", "numbering_style07_n3", "numbering_style08_n3", "numbering_style09_n3");
 
         public void Set(Garage part, string num, bool refresh = true)
         {

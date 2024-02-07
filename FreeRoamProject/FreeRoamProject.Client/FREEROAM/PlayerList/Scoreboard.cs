@@ -8,7 +8,7 @@ namespace FreeRoamProject.Client.FREEROAM.PlayerList
 {
     internal static class Scoreboard
     {
-        static int maxPlayers = 0;
+        static readonly int maxPlayers = 0;
         public static void Init()
         {
             ClientMain.Instance.AddTick(DisplayController);
@@ -31,7 +31,7 @@ namespace FreeRoamProject.Client.FREEROAM.PlayerList
                     Ped ped = p.ServerId == PlayerCache.MyClient.Handle ? PlayerCache.MyClient.Ped : Functions.GetPlayerClientFromServerId(p.ServerId)?.Ped;
                     System.Tuple<int, string> mug = await Functions.GetPedMugshotAsync(ped);
                     if (Main.PlayerListInstance.PlayerRows.Any(x => x.ServerId == p.ServerId)) continue;
-                    PlayerRow row = new PlayerRow()
+                    PlayerRow row = new()
                     {
                         Color = p.Color,
                         CrewLabelText = p.CrewLabelText,

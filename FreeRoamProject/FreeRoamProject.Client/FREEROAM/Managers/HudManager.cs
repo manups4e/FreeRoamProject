@@ -12,7 +12,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
         public static bool HudEnabled = false;
         public static bool ShowPlayerBlips = true;
 
-        private static List<int> PlayerBlips = new List<int>();
+        private static readonly List<int> PlayerBlips = [];
 
         public static void Init()
         {
@@ -123,7 +123,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
                     int blipSprite = GetBlipSprite(blip);
                     if (playerVeh != 0)
                     {
-                        Vehicle currentVehicle = new Vehicle(playerVeh);
+                        Vehicle currentVehicle = new(playerVeh);
                         switch (currentVehicle.ClassType)
                         {
                             case VehicleClass.Helicopters:

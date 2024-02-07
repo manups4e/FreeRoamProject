@@ -23,23 +23,23 @@ namespace FreeRoamProject.Shared.Core.Character
             public string Description { get; set; }
             public int Model { get; set; }
             public int Price { get; set; }
-            public List<int> Text { get; set; } = new List<int>();
+            public List<int> Text { get; set; } = [];
         }
 
 
         public class Accessories
         {
-            public List<Single> Bags { get; set; } = new List<Single>();
+            public List<Single> Bags { get; set; } = [];
             public Head Head { get; set; } = new Head();
-            public List<Single> Watches { get; set; } = new List<Single>();
-            public List<Single> Bracelets { get; set; } = new List<Single>();
+            public List<Single> Watches { get; set; } = [];
+            public List<Single> Bracelets { get; set; } = [];
         }
 
         public class Head
         {
-            public List<Single> Earpieces { get; set; } = new List<Single>();
-            public List<Single> Earphones { get; set; } = new List<Single>();
-            public List<Single> Hats { get; set; } = new List<Single>();
+            public List<Single> Earpieces { get; set; } = [];
+            public List<Single> Earphones { get; set; } = [];
+            public List<Single> Hats { get; set; } = [];
         }
     }
 }

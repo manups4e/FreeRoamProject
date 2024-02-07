@@ -10,7 +10,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Managers
 {
     static class WorldEventsManager
     {
-        private static readonly List<IWorldEvent> WorldEvents = new();
+        private static readonly List<IWorldEvent> WorldEvents = [];
 
         public static IWorldEvent ActiveWorldEvent;
         public static IWorldEvent NextWorldEvent;

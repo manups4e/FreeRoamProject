@@ -21,8 +21,8 @@ namespace FreeRoamProject.Shared.Core.Buckets
     {
         public int ID;
         public string Name;
-        public List<PlayerClient> Players = new();
-        public List<Entity> Entities = new();
+        public List<PlayerClient> Players = [];
+        public List<Entity> Entities = [];
         public SharedWeather Weather { get; set; }
 
         public int TotalPlayers => Players.Count;

@@ -6,7 +6,7 @@ namespace FreeRoamProject.Client.Handlers
     internal class IdleChecker
     {
         internal static TimeSpan IdleTime;
-        private static int totalMilliseconds = 900000; // 15mins
+        private static readonly int totalMilliseconds = 900000; // 15mins
         private static bool Global_2726600 = false;
         private static SharedTimeChecker secTimer;
         private static int switchController = 0;

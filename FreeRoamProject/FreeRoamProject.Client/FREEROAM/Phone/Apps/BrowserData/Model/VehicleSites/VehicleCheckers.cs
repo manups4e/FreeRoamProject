@@ -2,11 +2,11 @@
 {
     internal static class VehicleCheckers
     {
-        private static int Global_75777 = 1338692320; // GetHashKey("apa_mp_apa_yacht");
-        private static int Global_75778 = -994826917;
-        private static int Global_75779 = 886151985;
-        private static int Global_75780 = -1242692076;
-        private static int Global_75781 = -451225720;
+        private static readonly int Global_75777 = 1338692320; // GetHashKey("apa_mp_apa_yacht");
+        private static readonly int Global_75778 = -994826917;
+        private static readonly int Global_75779 = 886151985;
+        private static readonly int Global_75780 = -1242692076;
+        private static readonly int Global_75781 = -451225720;
 
         internal static int func_7102(int iParam0)//Position - 0x247BB2
         {

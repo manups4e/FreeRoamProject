@@ -12,8 +12,8 @@ namespace FreeRoamProject.FREEROAM.Banking
     static class BankingClient
     {
         #region "mightBeUseful" variables
-        private static List<Position> _atmpos = new List<Position>()
-        {
+        private static readonly List<Position> _atmpos =
+        [
             new Position(-717.651f, -915.619f, 19.215f),
             new Position(147.657f, -1035.346f, 29.343f),
             new Position(146.091f, -1035.148f, 29.343f),
@@ -98,13 +98,13 @@ namespace FreeRoamProject.FREEROAM.Banking
             new Position(-302.408f, -829.945f, 32.417f),
             new Position(5.134f, -919.949f, 29.557f),
             new Position(89.69f, 2.38f, 68.31f)
-        };
+        ];
 
-        public static List<Vector3> bankCoordsVaults = new List<Vector3>() { new Vector3(-105.929f, 6477.292f, 31.626f), new Vector3(254.509f, 225.887f, 101.875f), new Vector3(-2957.678f, 480.944f, 15.706f), new Vector3(146.997f, -1045.069f, 29.368f) };
+        public static List<Vector3> bankCoordsVaults = [new Vector3(-105.929f, 6477.292f, 31.626f), new Vector3(254.509f, 225.887f, 101.875f), new Vector3(-2957.678f, 480.944f, 15.706f), new Vector3(146.997f, -1045.069f, 29.368f)];
 
-        public static List<Vector3> cleanspotcoords = new List<Vector3>() { new Vector3(1274.053f, -1711.756f, 54.771f), new Vector3(-1096.847f, 4947.532f, 218.354f) };
+        public static List<Vector3> cleanspotcoords = [new Vector3(1274.053f, -1711.756f, 54.771f), new Vector3(-1096.847f, 4947.532f, 218.354f)];
 
-        private static List<ObjectHash> ATMs = new List<ObjectHash>() { ObjectHash.prop_atm_01, ObjectHash.prop_atm_02, ObjectHash.prop_atm_03, ObjectHash.prop_fleeca_atm };
+        private static readonly List<ObjectHash> ATMs = [ObjectHash.prop_atm_01, ObjectHash.prop_atm_02, ObjectHash.prop_atm_03, ObjectHash.prop_fleeca_atm];
         #endregion
         private static bool showFixed;
 
@@ -112,9 +112,9 @@ namespace FreeRoamProject.FREEROAM.Banking
         public static bool InterfaceOpen = false;
         public static bool MoneyHUDShowing { get; set; } = false;
         private static int transactionMoney = 0;
-        private static int currentAnimState = 0;
+        private static readonly int currentAnimState = 0;
         private static int iLocal_505 = -1;
-        private static bool stopAnim = true;
+        private static readonly bool stopAnim = true;
 
         public static void Init()
         {
@@ -230,14 +230,14 @@ namespace FreeRoamProject.FREEROAM.Banking
         {
         }
 
-        private static Scaleform atm = new Scaleform("ATM");
+        private static Scaleform atm = new("ATM");
         private static int _currentSelection;
         private static int _actualMenu;
         private static int iLocal_674;
         private static int iLocal_675;
         private static float fLocal_591 = -1f;
         private static float fLocal_592;
-        private static string _recipient;
+        private static readonly string _recipient;
 
         private static async void EnableBank()
         {
@@ -246,11 +246,11 @@ namespace FreeRoamProject.FREEROAM.Banking
             _actualMenu = 0;
             _currentSelection = 0;
             TryBankingNew(true, 0);
-            Main.InstructionalButtons.SetInstructionalButtons(new List<InstructionalButton>()
-            {
+            Main.InstructionalButtons.SetInstructionalButtons(
+            [
                 new InstructionalButton(Control.FrontendCancel, Game.GetGXTEntry("MPATM_BACK")),
                 new InstructionalButton(Control.FrontendSelect, Game.GetGXTEntry("MPATM_SELECT"))
-            });
+            ]);
             ClientMain.Instance.AddTick(BankControls);
             ClientMain.Instance.AddTick(AtmDraw);
             Vector3 coords = ClosestATM.Position;

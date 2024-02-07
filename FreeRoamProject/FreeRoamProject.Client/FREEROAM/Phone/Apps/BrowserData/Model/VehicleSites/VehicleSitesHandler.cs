@@ -663,14 +663,14 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model
 
     public static class VehicleSitesHandler
     {
-        private static int Global_75777 = GetHashKey("apa_mp_apa_yacht");
-        private static int Global_75778 = -994826917;
-        private static int Global_75779 = 886151985;
-        private static int Global_75780 = -1242692076;
-        private static int Global_75781 = -451225720;
-        private static bool Global_77390 = false;
+        private static readonly int Global_75777 = GetHashKey("apa_mp_apa_yacht");
+        private static readonly int Global_75778 = -994826917;
+        private static readonly int Global_75779 = 886151985;
+        private static readonly int Global_75780 = -1242692076;
+        private static readonly int Global_75781 = -451225720;
+        private static readonly bool Global_77390 = false;
         private static int Global_77389 = 0;
-        public static List<int> Vehicles = new List<int>();
+        public static List<int> Vehicles = [];
 
         public static void InitVehs(eWebsiteDynamic currentSite, Apps.WebBrowser parent)
         {
@@ -704,7 +704,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model
             int iVar0;
             int iVar1;
             int iVar2;
-            VehiclePriceData iVar3 = new VehiclePriceData();
+            VehiclePriceData iVar3 = new();
             int iVar9;
             int iVar10;
             bool bVar11;

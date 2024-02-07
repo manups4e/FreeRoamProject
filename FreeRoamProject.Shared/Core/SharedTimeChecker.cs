@@ -11,7 +11,7 @@
     {
         private long Timer = 0;
         private readonly long _awaitable = 0;
-        private TimerType timerType;
+        private readonly TimerType timerType;
         public event TimerTickEvent TimerTickEvent;
 
         public bool IsPassed

@@ -11,23 +11,23 @@ namespace FreeRoamProject.Client.Handlers
         /// <summary>
         /// Ticks that are activated only when ped is on foot
         /// </summary>
-        public static List<Func<Task>> TickOnFoot = new();
+        public static List<Func<Task>> TickOnFoot = [];
         /// <summary>
         /// Ticks that are activated only when ped is in a vehicle (wether it's a driver or a passenger)
         /// </summary>
-        public static List<Func<Task>> TickOnVehicle = new();
+        public static List<Func<Task>> TickOnVehicle = [];
         /// <summary>
         /// Ticks that are activated only when ped is instanced (when GetInteriorFromEntity(ped) != 0)
         /// </summary>
-        public static List<Func<Task>> TickApartments = new();
+        public static List<Func<Task>> TickApartments = [];
         /// <summary>
         /// Ticks relative to HUD and OnScreen elements, (usually always active)
         /// </summary>
-        public static List<Func<Task>> TickHUD = new();
+        public static List<Func<Task>> TickHUD = [];
         /// <summary>
         /// Ticks for all purposes, always active
         /// </summary>
-        public static List<Func<Task>> TickGenerics = new();
+        public static List<Func<Task>> TickGenerics = [];
         public static void Init()
         {
             AccessingEvents.OnFreeRoamSpawn += Spawned;

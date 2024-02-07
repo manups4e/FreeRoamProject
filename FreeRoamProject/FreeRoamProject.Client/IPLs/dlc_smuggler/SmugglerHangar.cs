@@ -76,8 +76,8 @@ namespace FreeRoamProject.Client.IPLs.dlc_smuggler
 
     public class HFloor
     {
-        public HStyle Style = new HStyle();
-        public HDecals Decals = new HDecals();
+        public HStyle Style = new();
+        public HDecals Decals = new();
     }
     public class HStyle
     {
@@ -176,14 +176,14 @@ namespace FreeRoamProject.Client.IPLs.dlc_smuggler
 
     public class HBedroom
     {
-        public BStyle Style = new BStyle();
-        public BBlinds Blinds = new BBlinds();
+        public BStyle Style = new();
+        public BBlinds Blinds = new();
     }
     public class BStyle
     {
-        public List<string> None = new List<string>() { "" };
-        public List<string> Modern = new List<string>() { "set_bedroom_modern", "set_bedroom_tint" };
-        public List<string> Traditional = new List<string>() { "set_bedroom_traditional", "set_bedroom_tint" };
+        public List<string> None = [""];
+        public List<string> Modern = ["set_bedroom_modern", "set_bedroom_tint"];
+        public List<string> Traditional = ["set_bedroom_traditional", "set_bedroom_tint"];
         public void Set(List<string> style, HangarColors color, bool refresh = true)
         {
             Clear(false);
@@ -223,9 +223,9 @@ namespace FreeRoamProject.Client.IPLs.dlc_smuggler
     }
     public class HLighting
     {
-        public FakeLight FakeLights = new FakeLight();
-        public Ceilings Ceiling = new Ceilings();
-        public Wall Walls = new Wall();
+        public FakeLight FakeLights = new();
+        public Ceilings Ceiling = new();
+        public Wall Walls = new();
     }
 
     public class FakeLight

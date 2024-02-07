@@ -3816,7 +3816,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
         }
         internal static void GetHouseInteriorDetails(ref PropertyData propertyDetails, PropertiesEnum iProperty)
         {
-            Position tempStruct = new Position();
+            Position tempStruct = new();
             PropertiesEnum iBaseProperty = (PropertiesEnum)(-1);
             switch (iProperty)
             {
@@ -4432,7 +4432,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
         }
         internal static void GetMpHouseInteriorBounds(ref MPPropertyNonAxis[] bounds, PropertiesEnum iProperty)
         {
-            Position tempStruct = new Position();
+            Position tempStruct = new();
             switch (iProperty)
             {
                 case PropertiesEnum.PROPERTY_HIGH_APT_1:
@@ -4776,7 +4776,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
         }
         internal static Position GetBaseYachtInteriorLocation(int iYachtID = -1)
         {
-            Position tempStruct = new Position();
+            Position tempStruct = new();
             tempStruct = iYachtID switch
             {
                 0 => new(-3555.1155f, 1473.0128f, 9.7027f, 0f, 0f, 57.0f),
@@ -5393,7 +5393,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
         }
         internal static Position GetBaseElementLocation(int iElement, PropertiesEnum iBaseProperty = (PropertiesEnum)(-1))
         {
-            Position sBaseElementReturn = new Position();
+            Position sBaseElementReturn = new();
             ElementLockBlock sPropMetadataInfo = 0;
             bool bMetadataBlockValid = false;
             if (GetMetadataBlockForApartment(iBaseProperty, ref sPropMetadataInfo))
@@ -6078,7 +6078,7 @@ namespace FreeRoamProject.Client.FREEROAM.Properties
         {
             float fSin = Sin(fZRot);
             float fCos = Cos(fZRot);
-            Vector3 vNew = new Vector3(vToRotate.X * fCos - vToRotate.Y * fSin, vToRotate.X * fSin + vToRotate.Y * fCos, vToRotate.Z);
+            Vector3 vNew = new(vToRotate.X * fCos - vToRotate.Y * fSin, vToRotate.X * fSin + vToRotate.Y * fCos, vToRotate.Z);
             return vNew;
         }
         internal static PropertiesEnum GetBasePropertyFromProperty(PropertiesEnum iProperty)
