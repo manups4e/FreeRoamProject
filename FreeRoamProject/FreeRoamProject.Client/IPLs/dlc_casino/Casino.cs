@@ -12,10 +12,10 @@ namespace FreeRoamProject.Client.IPLs.dlc_casino
         private Prop platformHandle;
         private string _currentScreen;
 
-        private string SCREEN_DIAMONDS = "CASINO_DIA_PL";
-        private string SCREEN_SKULLS = "CASINO_HLW_PL";
-        private string SCREEN_SNOW = "CASINO_SNWFLK_PL";
-        private string SCREEN_WIN = "CASINO_WIN_PL";
+        private readonly string SCREEN_DIAMONDS = "CASINO_DIA_PL";
+        private readonly string SCREEN_SKULLS = "CASINO_HLW_PL";
+        private readonly string SCREEN_SNOW = "CASINO_SNWFLK_PL";
+        private readonly string SCREEN_WIN = "CASINO_WIN_PL";
 
         public Prop Wheel, Base, Lights1, Lights2, Arrow1, Arrow2;
 
@@ -23,8 +23,8 @@ namespace FreeRoamProject.Client.IPLs.dlc_casino
         private int renderTarget = 0;
 
         public int InteriorId = 275201;
-        public List<string> Building = new()
-        {
+        public List<string> Building =
+        [
             "hei_dlc_casino_aircon",
             "hei_dlc_casino_aircon_lod",
             "hei_dlc_casino_door",
@@ -42,7 +42,7 @@ namespace FreeRoamProject.Client.IPLs.dlc_casino
             "vw_casino_billboard_lod",
             "vw_int_placement_vw",
             "ch_h3_casino_cameras"
-        };
+        ];
         public string Main = "vw_casino_main";
         public string Garage = "vw_casino_garage";
         public string Carpark = "vw_casino_carpark";

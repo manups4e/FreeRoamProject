@@ -3,8 +3,8 @@
     public class FranklinAunt
     {
         public static int InteriorId = 197889;
-        public FranklinAuntStyle Style = new FranklinAuntStyle();
-        public FranklinAuntDetails Details = new FranklinAuntDetails();
+        public FranklinAuntStyle Style = new();
+        public FranklinAuntDetails Details = new();
         private bool enabled;
         public bool Enabled
         {

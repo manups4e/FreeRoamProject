@@ -86,9 +86,9 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model
         public int GunLockerCost = 0;
         public int[] TransportationCost = [0, 0];
 
-        public int[] StyleSaleCost = new int[2] { -1, -1 };
+        public int[] StyleSaleCost = [-1, -1];
         public int QuartersSaleCost = -1;
-        public int[] FiringRangeSaleCost = new int[2] { -1, -1 };
+        public int[] FiringRangeSaleCost = [-1, -1];
         public int GunLockerSaleCost = -1;
         public int[] TransportationSaleCost = [-1, -1];
 

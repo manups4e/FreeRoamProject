@@ -7,12 +7,12 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
 {
     static class Beds
     {
-        private static BedMid BedMid = new BedMid();
-        private static BedLow BedLow = new BedLow();
-        private static BedHigh BedHigh = new BedHigh();
+        private static readonly BedMid BedMid = new();
+        private static readonly BedLow BedLow = new();
+        private static readonly BedHigh BedHigh = new();
 
-        private static Vector3 coord = new Vector3();
-        private static Vector3 rot = new Vector3();
+        private static Vector3 coord = new();
+        private static Vector3 rot = new();
 
         public static void Init()
         {
@@ -158,11 +158,11 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
         public string sLocal_335 = "f_getin_l_bighouse";
         public string sLocal_336 = "f_sleep_l_loop_bighouse";
         public string sLocal_337 = "f_getout_l_bighouse";
-        public Vector3 vLocal_338 = new Vector3(349.9853f, -997.8344f, -99.1952f);
-        public Vector3 vLocal_342 = new Vector3(349f, -997.3587f, -100.5f);
-        public Vector3 vLocal_345 = new Vector3(351.74f, -997.3587f, -97f);
-        public Vector3 vLocal_348 = new Vector3(349.66f, -996.183f, -99.764f);
-        public Vector3 vLocal_351 = new Vector3(0f, 0f, -3.96f);
+        public Vector3 vLocal_338 = new(349.9853f, -997.8344f, -99.1952f);
+        public Vector3 vLocal_342 = new(349f, -997.3587f, -100.5f);
+        public Vector3 vLocal_345 = new(351.74f, -997.3587f, -97f);
+        public Vector3 vLocal_348 = new(349.66f, -996.183f, -99.764f);
+        public Vector3 vLocal_351 = new(0f, 0f, -3.96f);
         public int uLocal_331 = 0;
         public int uLocal_332 = 0;
         public float fLocal_341 = 43.8287f;
@@ -173,7 +173,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
             Ped playerPed = Cache.PlayerCache.MyClient.Ped;
             RequestAnimDict("mp_bedmid");
             while (!HasAnimDictLoaded("mp_bedmid")) await BaseScript.Delay(0);
-            Vector3 vVar0 = new Vector3(1.5f);
+            Vector3 vVar0 = new(1.5f);
             Vector3 vVar3;
             if (GetFollowPedCamViewMode() == 4)
                 SetFollowPedCamViewMode(1);
@@ -240,12 +240,12 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
         public string sLocal_334 = "f_getin_l_bighouse";
         public string sLocal_335 = "f_sleep_l_loop_bighouse";
         public string sLocal_336 = "f_getout_l_bighouse";
-        public Vector3 vLocal_337 = new Vector3(262.9207f, -1002.98f, -100.0086f);
-        public Vector3 vLocal_340 = new Vector3(261.0173f, -1002.98f, -98.0086f);
-        public Vector3 vLocal_343 = new Vector3(261.8297f, -1002.928f, -99.0062f);
+        public Vector3 vLocal_337 = new(262.9207f, -1002.98f, -100.0086f);
+        public Vector3 vLocal_340 = new(261.0173f, -1002.98f, -98.0086f);
+        public Vector3 vLocal_343 = new(261.8297f, -1002.928f, -99.0062f);
         public float fLocal_346 = 230.5943f;
-        public Vector3 vLocal_347 = new Vector3(262.74f, -1004.344f, -99.575f);
-        public Vector3 vLocal_350 = new Vector3(0f, 0f, -162.36f);
+        public Vector3 vLocal_347 = new(262.74f, -1004.344f, -99.575f);
+        public Vector3 vLocal_350 = new(0f, 0f, -162.36f);
         public int uLocal_330 = 0;
         public int uLocal_331 = 0;
         public bool ABed = false;
@@ -256,7 +256,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
             RequestAnimDict("mp_bedmid");
             while (!HasAnimDictLoaded("mp_bedmid")) await BaseScript.Delay(0);
             playerPed.Weapons.Select(WeaponHash.Unarmed);
-            Vector3 vVar0 = new Vector3(1.5f);
+            Vector3 vVar0 = new(1.5f);
             Vector3 vVar3;
             if (GetFollowPedCamViewMode() == 4)
                 SetFollowPedCamViewMode(1);
@@ -321,17 +321,17 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
 
         public class BedsCoordsAnim
         {
-            public Vector3 Left1 = new Vector3(0);
-            public Vector3 Left2 = new Vector3(0);
-            public Vector3 CoordsAnimStaticRight = new Vector3(0);
-            public Vector3 RotAnimStaticRight = new Vector3(0);
-            public Vector3 CoordsAnimStaticLeft = new Vector3(0);
-            public Vector3 RotAnimStaticLeft = new Vector3(0);
-            public Vector3 Right1 = new Vector3(0);
-            public Vector3 Right2 = new Vector3(0);
-            public Vector3 CoordAnim = new Vector3(0);
-            public Vector3 RotAnim = new Vector3(0);
-            public Vector3 vLocal_438 = new Vector3(0);
+            public Vector3 Left1 = new(0);
+            public Vector3 Left2 = new(0);
+            public Vector3 CoordsAnimStaticRight = new(0);
+            public Vector3 RotAnimStaticRight = new(0);
+            public Vector3 CoordsAnimStaticLeft = new(0);
+            public Vector3 RotAnimStaticLeft = new(0);
+            public Vector3 Right1 = new(0);
+            public Vector3 Right2 = new(0);
+            public Vector3 CoordAnim = new(0);
+            public Vector3 RotAnim = new(0);
+            public Vector3 vLocal_438 = new(0);
 
             public float fLocal_402;
 
@@ -339,15 +339,15 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
             public int uLocal_410;
         }
 
-        public List<BedsCoordsAnim> Lista = new List<BedsCoordsAnim>()
-        {
+        public List<BedsCoordsAnim> Lista =
+        [
             new BedsCoordsAnim(), new BedsCoordsAnim(), new BedsCoordsAnim(), new BedsCoordsAnim(),
             new BedsCoordsAnim(), new BedsCoordsAnim(), new BedsCoordsAnim(), new BedsCoordsAnim(),
             new BedsCoordsAnim(), new BedsCoordsAnim(), new BedsCoordsAnim(), new BedsCoordsAnim(),
             new BedsCoordsAnim(), new BedsCoordsAnim(), new BedsCoordsAnim(), new BedsCoordsAnim(),
             new BedsCoordsAnim(), new BedsCoordsAnim(), new BedsCoordsAnim(), new BedsCoordsAnim(),
             new BedsCoordsAnim(), new BedsCoordsAnim(), new BedsCoordsAnim(), new BedsCoordsAnim(),
-        };
+        ];
 
         public BedHigh()
         {

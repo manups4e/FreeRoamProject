@@ -9,7 +9,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
 {
     class Snapmatic : App
     {
-        ScaleformWideScreen camera = new ScaleformWideScreen("CAMERA_GALLERY");
+        readonly ScaleformWideScreen camera = new("CAMERA_GALLERY");
         private int iLocal_60;
         private int iLocal_61;
 
@@ -24,11 +24,11 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
         private float fLocal_37;
         private bool grid = false;
         private int currentGesture = 0;
-        private bool doingGesture = false;
-        private int sequenceId = 0;
+        private readonly bool doingGesture = false;
+        private readonly int sequenceId = 0;
         private bool focusLocked = false;
         private bool playAction = false;
-        private List<string> gestureDicts = [
+        private readonly List<string> gestureDicts = [
             "None",
             "anim@mp_player_intselfieblow_kiss",
             "anim@mp_player_intselfiedock",
@@ -38,17 +38,17 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             "anim@mp_player_intselfiewank"
         ];
         InteractionAnimation currentAnimation = null;
-        string[] moods = ["No_Expression", "mood_Aiming_1", "mood_Happy_1", "mood_smug_1", "mood_Injured_1", "mood_sulk_1", "mood_Angry_1"];
-        string[] borders = ["No_Border", "frame1", "frame2", "frame3", "frame4", "frame5", "frame6", "frame7", "frame8", "frame9", "frame10", "frame11", "frame12"];
-        string[] filters = ["No_Filter", "phone_cam1", "phone_cam2", "phone_cam3", "phone_cam4", "phone_cam5", "phone_cam6", "phone_cam7", "phone_cam8", "phone_cam9", "phone_cam10", "phone_cam11", "phone_cam12"];
+        readonly string[] moods = ["No_Expression", "mood_Aiming_1", "mood_Happy_1", "mood_smug_1", "mood_Injured_1", "mood_sulk_1", "mood_Angry_1"];
+        readonly string[] borders = ["No_Border", "frame1", "frame2", "frame3", "frame4", "frame5", "frame6", "frame7", "frame8", "frame9", "frame10", "frame11", "frame12"];
+        readonly string[] filters = ["No_Filter", "phone_cam1", "phone_cam2", "phone_cam3", "phone_cam4", "phone_cam5", "phone_cam6", "phone_cam7", "phone_cam8", "phone_cam9", "phone_cam10", "phone_cam11", "phone_cam12"];
         private bool frontCam = false;
         private int DofModeEnabled = 0;
         private int currentMood = 0;
         private int currentFrame = 0;
         private int currentFilter = 0;
         private int iLocal_63 = 0; // camera zoom sound
-        private string gestureDir = "anim@mp_player_intselfieblow_kiss";
-        private List<InstructionalButton> IB_FrontCam = [
+        private readonly string gestureDir = "anim@mp_player_intselfieblow_kiss";
+        private readonly List<InstructionalButton> IB_FrontCam = [
             new InstructionalButton(Control.PhoneCancel, Game.GetGXTEntry("CELL_281")),
             new InstructionalButton(Control.PhoneSelect, Game.GetGXTEntry("CELL_280")),
             new InstructionalButton(Control.PhoneRight, Game.GetGXTEntry("CELL_ACCYC")),
@@ -61,7 +61,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             new InstructionalButton(Control.PhoneUp, Game.GetGXTEntry("CELL_BORDER")),
         ];
 
-        private List<InstructionalButton> IB_RearCam = [
+        private readonly List<InstructionalButton> IB_RearCam = [
             new InstructionalButton(Control.PhoneCancel, Game.GetGXTEntry("CELL_281")),
             new InstructionalButton(Control.PhoneSelect, Game.GetGXTEntry("CELL_280")),
             new InstructionalButton(Control.PhoneCameraSelfie, Game.GetGXTEntry("CELL_SP_1NP_XB")),
@@ -73,7 +73,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
             new InstructionalButton(Control.PhoneCameraFocusLock, Game.GetGXTEntry("CELL_FOCUS")),
         ];
 
-        private List<InstructionalButton> IB_PhotoSaving = [
+        private readonly List<InstructionalButton> IB_PhotoSaving = [
             new InstructionalButton(Control.PhoneSelect, Game.GetGXTEntry("CELL_GALSAVE")),
             new InstructionalButton(Control.PhoneCancel, Game.GetGXTEntry("CELL_277")),
         ];
@@ -219,7 +219,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
                 {
                     if (iLocal_60 >= iLocal_61)
                     {
-                        Main.Warning.ShowWarningWithButtons(Game.GetGXTEntry("CELL_CAM_ALERT"), Game.GetGXTEntry("CELL_CAM_FW_1"), Game.GetGXTEntry("CELL_CAM_FW_2"), new List<InstructionalButton>() { new(Control.FrontendAccept, "OK") });
+                        Main.Warning.ShowWarningWithButtons(Game.GetGXTEntry("CELL_CAM_ALERT"), Game.GetGXTEntry("CELL_CAM_FW_1"), Game.GetGXTEntry("CELL_CAM_FW_2"), [new(Control.FrontendAccept, "OK")]);
                         Main.Warning.OnButtonPressed += (button) =>
                         {
                             if (button.Text == "OK")

@@ -37,11 +37,11 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Managers
 
     public class STRUCT_WalkInGarage
     {
-        public SceneTool_Pan[] mPans = new SceneTool_Pan[(int)WalkInGaragePans.WalkInGarage_PAN_MAX] { new() };
-        public SceneTool_Cut[] mCuts = new SceneTool_Cut[(int)WalkInGarageCuts.WalkInGarage_CUT_MAX] { new() };
-        public SceneTool_Marker[] mMarkers = new SceneTool_Marker[(int)WalkInGarageMarkers.WalkInGarage_MARKER_MAX] { new(), new(), new() };
-        public SceneTool_Placer[] mPlacers = new SceneTool_Placer[(int)WalkInGaragePlacers.WalkInGarage_PLACER_MAX] { new(), new() };
-        public SceneTool_AngArea[] mAngAreas = new SceneTool_AngArea[(int)WalkInGarageAngArea.WalkInGarage_ANGAREA_MAX] { new() };
+        public SceneTool_Pan[] mPans = [new()];
+        public SceneTool_Cut[] mCuts = [new()];
+        public SceneTool_Marker[] mMarkers = [new(), new(), new()];
+        public SceneTool_Placer[] mPlacers = [new(), new()];
+        public SceneTool_AngArea[] mAngAreas = [new()];
 
         public bool[] bEnablePans = new bool[(int)WalkInGaragePans.WalkInGarage_PAN_MAX];
         public float fExitDelay { get; set; }

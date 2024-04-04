@@ -97,7 +97,7 @@ namespace FreeRoamProject.Client.Core.Ingresso
             await BaseScript.Delay(1000);
             if (PlayerCache.MyClient.User.Character.Position is not null)
             {
-                Vector3 newVec = new Vector3();
+                Vector3 newVec = new();
                 Position coords = PlayerCache.MyClient.User.Character.Position;
                 SetFocusPosAndVel(coords.X, coords.Y, coords.Z, 0, 0, 0);
                 RequestCollisionAtCoord(coords.X, coords.Y, coords.Z);

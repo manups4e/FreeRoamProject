@@ -4,8 +4,8 @@ namespace FreeRoamProject.Client.IPLs
 {
     public class IPL
     {
-        private List<string> Ipls = new();
-        private string Ipl = "";
+        private readonly List<string> Ipls = [];
+        private readonly string Ipl = "";
         private bool enabled;
         public Vector3 Position;
         public int Hash = -1;

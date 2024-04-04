@@ -8,7 +8,7 @@ namespace FreeRoamProject.Client.Handlers.Animations
     public class AnimationQueue
     {
         private int Entity { get; }
-        private List<Animation> Queue { get; } = new List<Animation>();
+        private List<Animation> Queue { get; } = [];
         private bool PlayingQueue { get; set; }
         private Animation LastPlayed { get; set; }
 

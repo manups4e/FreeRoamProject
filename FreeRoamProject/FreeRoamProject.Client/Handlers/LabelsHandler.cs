@@ -8,7 +8,7 @@ namespace FreeRoamProject.Client.Handlers
 {
     public class LabelsHandler
     {
-        public static List<GameLabel> CustomGameLabels = new List<GameLabel>();
+        public static List<GameLabel> CustomGameLabels = [];
 
         /// <summary>
         /// Reload all the custom labels into the current Language

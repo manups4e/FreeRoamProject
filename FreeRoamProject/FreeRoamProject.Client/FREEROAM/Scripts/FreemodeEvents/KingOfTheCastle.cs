@@ -11,8 +11,8 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
         private Blip icon;
         private Vector3 CurrentPlace;
         TimeSpan TempoCastello = TimeSpan.Zero;
-        private List<Vector3> places = new List<Vector3>()
-        {
+        private readonly List<Vector3> places =
+        [
             new Vector3(-429.50573730469f, 1109.7385253906f, 327.68228149414f),
             new Vector3(2747.3190917969f, 1524.2060546875f, 42.893901824951f),
             new Vector3(-1806.5964355469f, 443.03262329102f, 128.50791931152f),
@@ -28,7 +28,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.EventiFreemode
             new Vector3(1665.9049072266f, -15.893600463867f, 173.77449035645f),
             new Vector3(-367.48580932617f, 6076.2182617188f, 31.478071212769f),
             new Vector3(-531.49578857422f, 5322.77734375f, 91.377044677734f),
-        };
+        ];
 
         public KingOfTheCastle(int id, string name, double countdownTime, double seconds) : base(id, name, countdownTime, seconds, false, "KOTC_KLLALL", (PlayerStats)(-1), isTimeEvent: true)
         {

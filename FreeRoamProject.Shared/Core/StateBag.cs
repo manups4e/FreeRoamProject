@@ -33,7 +33,7 @@ namespace FreeRoamProject.Shared
 
     public class PlayerStateBag<T>
     {
-        private Player _player;
+        private readonly Player _player;
 
         public string Name { get; set; }
         public bool Replicated { get; set; } = true;
@@ -218,7 +218,7 @@ namespace FreeRoamProject.Shared
         public string? Instance { get; set; }
 
         /// <summary>
-        /// Istanza generica
+        /// Generic instance
         /// </summary>
         public void InstancePlayer()
         {
@@ -230,12 +230,12 @@ namespace FreeRoamProject.Shared
 #endif
             IsOwner = true;
             Instance = string.Empty;
-            InstanceBag bag = new InstanceBag(Instanced, ServerIdOwner, IsOwner, Instance);
+            InstanceBag bag = new(Instanced, ServerIdOwner, IsOwner, Instance);
             _instanceBag.State = bag;
         }
 
         /// <summary>
-        /// Istanza generica specificando quale Istanza
+        /// Generic Instance specifying which Instance
         /// </summary>
         public void InstancePlayer(string instance)
         {
@@ -247,12 +247,12 @@ namespace FreeRoamProject.Shared
 #endif
             IsOwner = true;
             this.Instance = instance;
-            InstanceBag bag = new InstanceBag(Instanced, ServerIdOwner, IsOwner, Instance);
+            InstanceBag bag = new(Instanced, ServerIdOwner, IsOwner, Instance);
             _instanceBag.State = bag;
         }
 
         /// <summary>
-        /// Istanza specifica
+        /// Specific instance
         /// </summary>
         public void InstancePlayer(int ServerId, string instance)
         {
@@ -260,12 +260,12 @@ namespace FreeRoamProject.Shared
             ServerIdOwner = ServerId;
             IsOwner = true;
             this.Instance = instance;
-            InstanceBag bag = new InstanceBag(Instanced, ServerIdOwner, IsOwner, Instance);
+            InstanceBag bag = new(Instanced, ServerIdOwner, IsOwner, Instance);
             _instanceBag.State = bag;
         }
 
         /// <summary>
-        /// Rimuovi da istanza
+        /// Remove from instance
         /// </summary>
         public void RemoveInstance()
         {
@@ -273,14 +273,14 @@ namespace FreeRoamProject.Shared
             ServerIdOwner = 0;
             IsOwner = false;
             Instance = string.Empty;
-            InstanceBag bag = new InstanceBag(Instanced, ServerIdOwner, IsOwner, Instance);
+            InstanceBag bag = new(Instanced, ServerIdOwner, IsOwner, Instance);
             _instanceBag.State = bag;
         }
 
         /// <summary>
-        /// Cambia Istanza con una nuova (es. casa e garage)
+        /// Change Instance to a new one (e.g., house and garage)
         /// </summary>
-        /// <param name="instance">Specifica quale istanza</param>
+        /// <param name="instance">Specifies which instance</param>
         public void CambiaIstanza(string instance)
         {
             if (Instanced)
@@ -288,23 +288,23 @@ namespace FreeRoamProject.Shared
                 if (Instance != instance)
                 {
                     Instance = instance;
-                    InstanceBag bag = new InstanceBag(Instanced, ServerIdOwner, IsOwner, Instance);
+                    InstanceBag bag = new(Instanced, ServerIdOwner, IsOwner, Instance);
                     _instanceBag.State = bag;
                 }
             }
         }
 
         /// <summary>
-        /// Cambia Proprietario dell'istanza
+        /// Change Instance Owner
         /// </summary>
-        /// <param name="netId">networkId del proprietario</param>
+        /// <param name="netId">networkId of the owner</param>
         public void CambiaIstanza(int netId)
         {
             if (Instanced)
             {
                 if (ServerIdOwner != netId)
                 {
-                    ServerIdOwner = netId; InstanceBag bag = new InstanceBag(Instanced, ServerIdOwner, IsOwner, Instance);
+                    ServerIdOwner = netId; InstanceBag bag = new(Instanced, ServerIdOwner, IsOwner, Instance);
                     _instanceBag.State = bag;
                 }
             }

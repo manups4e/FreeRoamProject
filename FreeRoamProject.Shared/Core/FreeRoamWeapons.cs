@@ -6,7 +6,7 @@ namespace FreeRoamProject.Shared.Core.FREEROAM
     public static class FreeRoamWeapons
     {
         #region Weapons
-        public static Dictionary<string, Weapon> Weapons = new Dictionary<string, Weapon>()
+        public static Dictionary<string, Weapon> Weapons = new()
         {
             ["WEAPON_KNIFE"] = new(),
             ["WEAPON_NIGHTSTICK"] = new(),
@@ -671,8 +671,8 @@ namespace FreeRoamProject.Shared.Core.FREEROAM
     public class Weapon
     {
         public string? name;
-        public List<Components> components = new List<Components>();
-        public List<Tints> tints = new List<Tints>();
+        public List<Components> components = [];
+        public List<Tints> tints = [];
         public Weapon() { }
         public Weapon(string _name, List<Components> _comp, List<Tints> _tints)
         {

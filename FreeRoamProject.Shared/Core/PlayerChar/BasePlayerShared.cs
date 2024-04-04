@@ -37,7 +37,7 @@ namespace FreeRoamProject.Shared.PlayerChar
             set => character = value;
 
         }
-        public List<PlayerScore> PlayerScores { get; set; } = new();
+        public List<PlayerScore> PlayerScores { get; set; } = [];
         public BasePlayerShared() { }
     }
 

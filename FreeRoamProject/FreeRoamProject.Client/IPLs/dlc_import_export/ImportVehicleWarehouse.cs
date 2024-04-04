@@ -5,8 +5,8 @@ namespace FreeRoamProject.Client.IPLs.dlc_import_export
 {
     public class ImportVehicleWarehouse
     {
-        public VehUpper Upper = new VehUpper();
-        public VehLower Lower = new VehLower();
+        public VehUpper Upper = new();
+        public VehLower Lower = new();
         private bool enabled;
         public bool Enabled
         {
@@ -55,8 +55,8 @@ namespace FreeRoamProject.Client.IPLs.dlc_import_export
             }
         }
 
-        public UpperStyle Style = new UpperStyle(InteriorId);
-        public UpperDetails Details = new UpperDetails(InteriorId);
+        public UpperStyle Style = new(InteriorId);
+        public UpperDetails Details = new(InteriorId);
     }
 
     public class VehLower
@@ -74,13 +74,13 @@ namespace FreeRoamProject.Client.IPLs.dlc_import_export
             }
         }
 
-        public LowerDetails Details = new LowerDetails(InteriorId);
+        public LowerDetails Details = new(InteriorId);
     }
     public class LowerDetails
     {
-        private int interiorId;
+        private readonly int interiorId;
         public LowerDetails(int interior) { interiorId = interior; }
-        public DPumps Pumps = new DPumps();
+        public DPumps Pumps = new();
         public void Enable(string detail, bool state = true, bool refresh = true)
         {
             IplManager.SetIplPropState(interiorId, detail, state, refresh);
@@ -101,7 +101,7 @@ namespace FreeRoamProject.Client.IPLs.dlc_import_export
 
     public class UpperStyle
     {
-        private int interiorId;
+        private readonly int interiorId;
         public string Basic = "basic_style_set";
         public string Branded = "branded_style_set";
         public string Urban = "urban_style_set";
@@ -120,7 +120,7 @@ namespace FreeRoamProject.Client.IPLs.dlc_import_export
 
     public class UpperDetails
     {
-        private int interiorId;
+        private readonly int interiorId;
         public string FloorHatch = "car_floor_hatch";
         public string DoorBlocker = "door_blocker";       // Invisible wall
         public UpperDetails(int interior) { interiorId = interior; }

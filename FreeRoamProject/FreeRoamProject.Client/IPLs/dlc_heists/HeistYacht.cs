@@ -6,8 +6,8 @@ namespace FreeRoamProject.Client.IPLs.dlc_heists
     public class HeistYacht
     {
         private bool _enabled = false;
-        public List<string> ipl = new List<string>()
-        {
+        public List<string> ipl =
+        [
             "hei_yacht_heist",
             "hei_yacht_heist_bar",
             "hei_yacht_heist_bar_lod",
@@ -21,9 +21,9 @@ namespace FreeRoamProject.Client.IPLs.dlc_heists
             "hei_yacht_heist_lounge",
             "hei_yacht_heist_lounge_lod",
             "hei_yacht_heist_slod"
-        };
+        ];
 
-        public YacthWater Water = new YacthWater(new Vector4(-2023.773f, -1038.0f, 5.40f, 5.0f));
+        public YacthWater Water = new(new Vector4(-2023.773f, -1038.0f, 5.40f, 5.0f));
 
         public bool Enabled
         {
@@ -37,7 +37,7 @@ namespace FreeRoamProject.Client.IPLs.dlc_heists
     }
     public class YacthWater
     {
-        int modelHash = API.GetHashKey("apa_mp_apa_yacht_jacuzzi_ripple1");
+        readonly int modelHash = API.GetHashKey("apa_mp_apa_yacht_jacuzzi_ripple1");
         Vector4 Position = Vector4.Zero;
         public YacthWater(Vector4 pos)
         {

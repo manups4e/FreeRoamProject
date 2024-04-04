@@ -17,13 +17,13 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
                 IplManager.EnableIpl(ipl, _enabled);
             }
         }
-        public CounterfaitPrinter Printer = new CounterfaitPrinter();
-        public CounterfaitSecurity Security = new CounterfaitSecurity();
-        public CounterfaitDryer Dryer1 = new CounterfaitDryer("dryera_on", "dryera_off", "dryera_open");
-        public CounterfaitDryer Dryer2 = new CounterfaitDryer("dryerb_on", "dryerb_off", "dryerb_open");
-        public CounterfaitDryer Dryer3 = new CounterfaitDryer("dryerc_on", "dryerc_off", "dryerc_open");
-        public CounterfaitDryer Dryer4 = new CounterfaitDryer("dryerd_on", "dryerd_off", "dryerd_open");
-        public CounterfaitDetails Details = new CounterfaitDetails();
+        public CounterfaitPrinter Printer = new();
+        public CounterfaitSecurity Security = new();
+        public CounterfaitDryer Dryer1 = new("dryera_on", "dryera_off", "dryera_open");
+        public CounterfaitDryer Dryer2 = new("dryerb_on", "dryerb_off", "dryerb_open");
+        public CounterfaitDryer Dryer3 = new("dryerc_on", "dryerc_off", "dryerc_open");
+        public CounterfaitDryer Dryer4 = new("dryerd_on", "dryerd_off", "dryerd_open");
+        public CounterfaitDetails Details = new();
 
         public void LoadDefault()
         {
@@ -104,9 +104,9 @@ namespace FreeRoamProject.Client.IPLs.dlc_bikers
 
     public class CounterfaitDetails
     {
-        public List<string> Cash10 = new List<string>() { "counterfeit_cashpile10a", "counterfeit_cashpile10b", "counterfeit_cashpile10c", "counterfeit_cashpile10d" };
-        public List<string> Cash20 = new List<string>() { "counterfeit_cashpile20a", "counterfeit_cashpile20b", "counterfeit_cashpile20c", "counterfeit_cashpile20d" };
-        public List<string> Cash100 = new List<string>() { "counterfeit_cashpile100a", "counterfeit_cashpile100b", "counterfeit_cashpile100c", "counterfeit_cashpile100d" };
+        public List<string> Cash10 = ["counterfeit_cashpile10a", "counterfeit_cashpile10b", "counterfeit_cashpile10c", "counterfeit_cashpile10d"];
+        public List<string> Cash20 = ["counterfeit_cashpile20a", "counterfeit_cashpile20b", "counterfeit_cashpile20c", "counterfeit_cashpile20d"];
+        public List<string> Cash100 = ["counterfeit_cashpile100a", "counterfeit_cashpile100b", "counterfeit_cashpile100c", "counterfeit_cashpile100d"];
         public string Chairs = "special_chairs";
         public string Cutter = "money_cutter";
         public string Fornitures = "conunterfeit_setup";

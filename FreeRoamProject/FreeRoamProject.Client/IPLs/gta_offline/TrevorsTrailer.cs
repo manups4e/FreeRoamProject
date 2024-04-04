@@ -5,8 +5,8 @@ namespace FreeRoamProject.Client.IPLs.gtav
     public class TrevorsTrailer
     {
         public static int InteriorId = 2562;
-        public TrevorsInterior Interior = new TrevorsInterior();
-        public TrevorsDetails Details = new TrevorsDetails();
+        public TrevorsInterior Interior = new();
+        public TrevorsDetails Details = new();
         private bool enabled;
         public bool Enabled
         {

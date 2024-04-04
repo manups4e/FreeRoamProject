@@ -22,10 +22,10 @@ namespace FreeRoamProject.Shared
     {
         public int Cash;
         public int NthRank;
-        public EventReward Reward = new EventReward();
+        public EventReward Reward = new();
         public float Radius;
-        public List<CratesWeapon> Weapons = new List<CratesWeapon>();
-        public List<CrateLocations> Locations = new List<CrateLocations>();
+        public List<CratesWeapon> Weapons = [];
+        public List<CrateLocations> Locations = [];
     }
 
     public class CratesWeapon
@@ -38,7 +38,7 @@ namespace FreeRoamProject.Shared
     public class CrateLocations
     {
         public float[] Blip = new float[3];
-        public List<float[]> Positions = new List<float[]>();
+        public List<float[]> Positions = [];
     }
 
 
@@ -46,10 +46,10 @@ namespace FreeRoamProject.Shared
     {
         public int Time;
         public float Radius;
-        public List<HeadHunterTarget> Targets = new List<HeadHunterTarget>();
-        public List<string> Weapons = new List<string>();
+        public List<HeadHunterTarget> Targets = [];
+        public List<string> Weapons = [];
         public int WantedLevel;
-        public AssetRecoveryRewards Rewards = new AssetRecoveryRewards();
+        public AssetRecoveryRewards Rewards = new();
     }
 
     public class HeadHunterTarget
@@ -62,7 +62,7 @@ namespace FreeRoamProject.Shared
     public class AssetRecoveryMissionSettings
     {
         public int Time;
-        public List<AssetRecoveryVariant> Variants = new List<AssetRecoveryVariant>();
+        public List<AssetRecoveryVariant> Variants = [];
         public float DropRadius;
     }
 
@@ -75,8 +75,8 @@ namespace FreeRoamProject.Shared
 
     public class AssetRecoveryRewards
     {
-        public AssetRecoveryReward Cash = new AssetRecoveryReward();
-        public AssetRecoveryReward Exp = new AssetRecoveryReward();
+        public AssetRecoveryReward Cash = new();
+        public AssetRecoveryReward Exp = new();
     }
 
     public class AssetRecoveryReward
@@ -90,7 +90,7 @@ namespace FreeRoamProject.Shared
     public class MostWantedSettings
     {
         public int Time;
-        public MostWantedRewards Rewards = new MostWantedRewards();
+        public MostWantedRewards Rewards = new();
     }
 
     public class MostWantedRewards
@@ -106,16 +106,16 @@ namespace FreeRoamProject.Shared
         public int PrepationTime;
         public int DriveTime;
         public int DetonationTime;
-        public List<float[]> Locations = new List<float[]>();
+        public List<float[]> Locations = [];
         public int MinSpeed;
-        public VelocityMissionRewards Rewards = new VelocityMissionRewards();
+        public VelocityMissionRewards Rewards = new();
     }
 
 
     public class VelocityMissionRewards
     {
-        public VelocityMissionReward Cash = new VelocityMissionReward();
-        public VelocityMissionReward Exp = new VelocityMissionReward();
+        public VelocityMissionReward Cash = new();
+        public VelocityMissionReward Exp = new();
     }
 
 
@@ -130,21 +130,21 @@ namespace FreeRoamProject.Shared
     public class HeistMissionSettings
     {
         public int Time;
-        public List<float[]> Places = new List<float[]>();
+        public List<float[]> Places = [];
         public float Radius;
-        public HeistTake Take = new HeistTake();
+        public HeistTake Take = new();
     }
 
 
     public class HeistTake
     {
         public int Inverval;
-        public HeistRate Rate = new HeistRate();
+        public HeistRate Rate = new();
     }
 
     public class HeistRate
     {
-        public HeistCash Cash = new HeistCash();
+        public HeistCash Cash = new();
         public float Exp;
     }
 
@@ -161,13 +161,13 @@ namespace FreeRoamProject.Shared
         public string MissionName;
         public int Time;
         public int WantedLevel;
-        public EventReward RewardPerPlayer = new EventReward();
+        public EventReward RewardPerPlayer = new();
         public float DeliveryRadius;
-        public List<string> Goods = new List<string>();
-        public List<MissionCrate> Crates = new List<MissionCrate>();
-        public List<string> Vehicles = new List<string>();
-        public List<CargoMissionLocation> Locations = new List<CargoMissionLocation>();
-        public List<float[]> WareHouses = new List<float[]>();
+        public List<string> Goods = [];
+        public List<MissionCrate> Crates = [];
+        public List<string> Vehicles = [];
+        public List<CargoMissionLocation> Locations = [];
+        public List<float[]> WareHouses = [];
     }
 
 
@@ -183,16 +183,16 @@ namespace FreeRoamProject.Shared
     {
         public string Name;
         public int Price;
-        public EventReward Reward = new EventReward();
+        public EventReward Reward = new();
     }
 
 
     public class MissionsSettings
     {
         public int ResetTimeInterval;
-        public List<float[]> Places = new List<float[]>();
-        public EventReward FailedRewards = new EventReward();
-        public EventReward FactionRewards = new EventReward();
+        public List<float[]> Places = [];
+        public EventReward FailedRewards = new();
+        public EventReward FactionRewards = new();
     }
 
 
@@ -205,7 +205,7 @@ namespace FreeRoamProject.Shared
 
     public class AmmunationRefillingWeaponsSettings
     {
-        public List<string> Weapons = new List<string>();
+        public List<string> Weapons = [];
         public int Ammo;
         public int Price;
     }
@@ -215,62 +215,62 @@ namespace FreeRoamProject.Shared
         public int Duration;
         public int Lives;
         public int TargetLandmarks;
-        public List<float[]> Landmarks = new List<float[]>();
+        public List<float[]> Landmarks = [];
         public float Radius;
-        public BeastRewardsSettings Rewards = new BeastRewardsSettings();
+        public BeastRewardsSettings Rewards = new();
     }
 
     public class BeastRewardsSettings
     {
-        public EventReward BeastLandmark = new EventReward();
-        public EventReward Killer = new EventReward();
+        public EventReward BeastLandmark = new();
+        public EventReward Killer = new();
     }
 
 
     public class HotPropertySettings
     {
         public int Duration;
-        public List<float[]> Places = new List<float[]>();
-        public EventRewards Rewards = new EventRewards();
+        public List<float[]> Places = [];
+        public EventRewards Rewards = new();
     }
 
 
     public class KingOfTheCastleSettings
     {
         public int Duration;
-        public List<float[]> Places = new List<float[]>();
+        public List<float[]> Places = [];
         public float Radius;
-        public EventRewards Rewards = new EventRewards();
+        public EventRewards Rewards = new();
     }
 
 
     public class SharpShooterSettings
     {
         public int Duration;
-        public EventRewards Rewards = new EventRewards();
+        public EventRewards Rewards = new();
     }
 
 
     public class StockPilingSettings
     {
         public int Duration;
-        public List<float[]> CheckPoints = new List<float[]>();
+        public List<float[]> CheckPoints = [];
         public float Radius;
-        public EventRewards Rewards = new EventRewards();
+        public EventRewards Rewards = new();
     }
 
 
     public class GunSettings
     {
         public int Duration;
-        public List<string> Categories = new List<string>();
-        public EventRewards Rewards = new EventRewards();
+        public List<string> Categories = [];
+        public EventRewards Rewards = new();
     }
 
     public class EventRewards
     {
-        public List<EventReward> Top = new List<EventReward>();
-        public EventReward Point = new EventReward();
+        public List<EventReward> Top = [];
+        public EventReward Point = new();
     }
 
     public class EventReward
@@ -303,12 +303,12 @@ namespace FreeRoamProject.Shared
 
     public class SettingsSpawn
     {
-        public List<float[]> SpawnPoints = new List<float[]>();
+        public List<float[]> SpawnPoints = [];
         public int DeathTime;
         public int Timeout;
         public int RespawnFasterPerControlPressed;
         public int TryCount;
-        public SpawnRadius Radius = new SpawnRadius();
+        public SpawnRadius Radius = new();
     }
 
 

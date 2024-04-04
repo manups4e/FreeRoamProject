@@ -92,8 +92,8 @@ namespace FreeRoamProject.Client.IPLs.dlc_doomsday
     public class DExterior
     {
         private bool _enabled = false;
-        public List<string> ipl = new List<string>()
-            {
+        public List<string> ipl =
+            [
                 "xm_hatch_01_cutscene",         // 1286.924 2846.06 49.39426
 				"xm_hatch_02_cutscene",         // 18.633 2610.834 86.0
 				"xm_hatch_03_cutscene",         // 2768.574 3919.924 45.82
@@ -108,7 +108,7 @@ namespace FreeRoamProject.Client.IPLs.dlc_doomsday
 				"xm_bunkerentrance_door",       // Bunker entrance closed door: 2050.85 2950.0 47.75
 				"xm_hatches_terrain",           // Terrain adjustments for facilities (all) + silo
 				"xm_hatches_terrain_lod",
-            };
+            ];
         public bool Enabled
         {
             get { return _enabled; }
@@ -208,8 +208,8 @@ namespace FreeRoamProject.Client.IPLs.dlc_doomsday
     {
         public static int ControlModelHash = Functions.HashInt("xm_prop_x17_tem_control_01");
 
-        public PGBedRoom BedRoom = new PGBedRoom();
-        public PGLounge Lounge = new PGLounge();
+        public PGBedRoom BedRoom = new();
+        public PGLounge Lounge = new();
     }
 
     public class PGBedRoom
@@ -244,8 +244,8 @@ namespace FreeRoamProject.Client.IPLs.dlc_doomsday
         }
         public class Controls
         {
-            Vector3 Position = new Vector3(372.115f, 4827.504f, -58.47f);
-            Vector3 Rotation = new Vector3(0);
+            Vector3 Position = new(372.115f, 4827.504f, -58.47f);
+            Vector3 Rotation = new(0);
 
             public async void Enable(bool state)
             {
@@ -274,20 +274,20 @@ namespace FreeRoamProject.Client.IPLs.dlc_doomsday
                 }
             }
         }
-        public Controls Control = new Controls();
+        public Controls Control = new();
     }
 
     public class PGLounge
     {
 
-        public List<Glass> Glasses = new List<Glass>()
-                {
+        public List<Glass> Glasses =
+                [
                     new Glass(Functions.HashInt("xm_prop_x17_l_door_glass_01"), Functions.HashInt("xm_prop_x17_l_door_frame_01"), new Vector3(359.22f, 4846.043f, -58.85f)),
                     new Glass(Functions.HashInt("xm_prop_x17_l_door_glass_01"), Functions.HashInt("xm_prop_x17_l_door_frame_01"), new Vector3(369.066f, 4846.273f, -58.85f)),
                     new Glass(Functions.HashInt("xm_prop_x17_l_glass_01"), Functions.HashInt("xm_prop_x17_l_frame_01"), new Vector3(358.843f, 4845.103f, -60.0f)),
                     new Glass(Functions.HashInt("xm_prop_x17_l_glass_02"), Functions.HashInt("xm_prop_x17_l_frame_02"), new Vector3(366.309f, 4847.281f, -60.0f)),
                     new Glass(Functions.HashInt("xm_prop_x17_l_glass_03"), Functions.HashInt("xm_prop_x17_l_frame_03"), new Vector3(371.194f, 4841.27f, -60.0f)),
-                };
+                ];
 
         public async void Enable(bool state)
         {
@@ -326,7 +326,7 @@ namespace FreeRoamProject.Client.IPLs.dlc_doomsday
             }
         }
 
-        public Controls Control = new Controls();
+        public Controls Control = new();
     }
     public class Glass
     {
@@ -343,8 +343,8 @@ namespace FreeRoamProject.Client.IPLs.dlc_doomsday
 
     public class Controls
     {
-        Vector3 Position = new Vector3(367.317f, 4846.729f, -58.448f);
-        Vector3 Rotation = new Vector3(0, 0, -16f);
+        Vector3 Position = new(367.317f, 4846.729f, -58.448f);
+        Vector3 Rotation = new(0, 0, -16f);
 
         public async void Enable(bool state)
         {
@@ -376,15 +376,15 @@ namespace FreeRoamProject.Client.IPLs.dlc_doomsday
 
     public class DDetailsFacility
     {
-        public List<string> KhanjaliParts = new List<string>() { "Set_Int_02_Parts_Panther1", "Set_Int_02_Parts_Panther2", "Set_Int_02_Parts_Panther3" };
-        public List<string> RiotParts = new List<string>() { "Set_Int_02_Parts_Riot1", "Set_Int_02_Parts_Riot2", "Set_Int_02_Parts_Riot3" };
-        public List<string> ChenoParts = new List<string>() { "Set_Int_02_Parts_Cheno1", "Set_Int_02_Parts_Cheno2", "Set_Int_02_Parts_Cheno3" };
-        public List<string> ThrusterParts = new List<string>() { "Set_Int_02_Parts_Thruster1", "Set_Int_02_Parts_Thruster2", "Set_Int_02_Parts_Thruster3" };
-        public List<string> AvengerParts = new List<string>() { "Set_Int_02_Parts_Avenger1", "Set_Int_02_Parts_Avenger2", "Set_Int_02_Parts_Avenger3" };
-        public Outfit Outfits = new Outfit();
-        public Trophiess Trophies = new Trophiess();
+        public List<string> KhanjaliParts = ["Set_Int_02_Parts_Panther1", "Set_Int_02_Parts_Panther2", "Set_Int_02_Parts_Panther3"];
+        public List<string> RiotParts = ["Set_Int_02_Parts_Riot1", "Set_Int_02_Parts_Riot2", "Set_Int_02_Parts_Riot3"];
+        public List<string> ChenoParts = ["Set_Int_02_Parts_Cheno1", "Set_Int_02_Parts_Cheno2", "Set_Int_02_Parts_Cheno3"];
+        public List<string> ThrusterParts = ["Set_Int_02_Parts_Thruster1", "Set_Int_02_Parts_Thruster2", "Set_Int_02_Parts_Thruster3"];
+        public List<string> AvengerParts = ["Set_Int_02_Parts_Avenger1", "Set_Int_02_Parts_Avenger2", "Set_Int_02_Parts_Avenger3"];
+        public Outfit Outfits = new();
+        public Trophiess Trophies = new();
 
-        public Clutters Clutter = new Clutters();
+        public Clutters Clutter = new();
         public string CrewEmblem = "set_int_02_crewemblem";
 
         public void Enable(List<string> detail, bool state = true, bool refresh = true)

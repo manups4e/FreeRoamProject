@@ -170,7 +170,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone
 
     public class Phone
     {
-        public ScaleformWideScreen Scaleform = new ScaleformWideScreen("CELLPHONE_IFRUIT");
+        public ScaleformWideScreen Scaleform = new("CELLPHONE_IFRUIT");
         public bool Visible = false;
         public bool SleepMode = false;
         public List<App> apps;
@@ -189,7 +189,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone
         internal Vector3 PositionLean = Vector3.Zero;
         internal Vector3 RotationHorizontal = Vector3.Zero;
         internal Vector3 RotationVertical = Vector3.Zero;
-        private bool firstOpen = true;
+        private readonly bool firstOpen = true;
         internal int iLocal18;
         public Phone()
         {
@@ -199,12 +199,12 @@ namespace FreeRoamProject.Client.FREEROAM.Phone
             snapmatic, web, securoserv,
             */
 
-            apps = new List<App>()
-            {
+            apps =
+            [
                 new Emails(this), new Messages(this), new Contacts(this),
                 new QuickJoin(this), new JobList(this), new Apps.Settings(this),
                 new Snapmatic(this), new Apps.WebBrowser(this), new Securoserv(this)
-        };
+        ];
             MainMenu = new MainMenu(this, apps);
             Callscreen = new CallScreen(this);
             RotationHidden = new Vector3(-90f, -130f, 0f);

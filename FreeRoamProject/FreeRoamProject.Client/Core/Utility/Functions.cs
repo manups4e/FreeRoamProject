@@ -51,7 +51,7 @@ namespace FreeRoamProject.Client.Core.Utility
 
     internal static class Functions
     {
-        private static Random random;
+        private static readonly Random random;
         static Functions()
         {
             random = new Random(DateTime.UtcNow.Millisecond);
@@ -406,8 +406,8 @@ namespace FreeRoamProject.Client.Core.Utility
             Vector3 inDirection = GetOffsetFromEntityInWorldCoords(ped, 0.0f, 5.0f, 0.0f);
             int rayHandle = CastRayPointToPoint(coords.X, coords.Y, coords.Z, inDirection.X, inDirection.Y, inDirection.Z, 10, ped, 0);
             bool a = false;
-            Vector3 b = new Vector3();
-            Vector3 c = new Vector3();
+            Vector3 b = new();
+            Vector3 c = new();
             int vehicle = 0;
             GetRaycastResult(rayHandle, ref a, ref b, ref c, ref vehicle);
 
@@ -421,20 +421,20 @@ namespace FreeRoamProject.Client.Core.Utility
 
         public static async Task<Vehicle> SpawnVehicle(string modelName, Vector3 coords, float heading)
         {
-            Model a = new Model(modelName);
+            Model a = new(modelName);
             return await SpawnVehicle(a, coords, heading);
         }
 
         public static async Task<Vehicle> SpawnVehicle(int modelName, Vector3 coords, float heading)
         {
-            Model a = new Model(modelName);
+            Model a = new(modelName);
             return await SpawnVehicle(a, coords, heading);
 
         }
 
         public static async Task<Vehicle> SpawnVehicle(VehicleHash modelName, Vector3 coords, float heading)
         {
-            Model a = new Model(modelName);
+            Model a = new(modelName);
             return await SpawnVehicle(a, coords, heading);
         }
 
@@ -484,19 +484,19 @@ namespace FreeRoamProject.Client.Core.Utility
         #region spawnaOutside
         public static async Task<Vehicle> SpawnVehicleNoPlayerInside(int modelName, Vector3 coords, float heading)
         {
-            Model a = new Model(modelName);
+            Model a = new(modelName);
             return await SpawnVehicleNoPlayerInside(a, coords, heading);
         }
 
         public static async Task<Vehicle> SpawnVehicleNoPlayerInside(string modelName, Vector3 coords, float heading)
         {
-            Model a = new Model(modelName);
+            Model a = new(modelName);
             return await SpawnVehicleNoPlayerInside(a, coords, heading);
         }
 
         public static async Task<Vehicle> SpawnVehicleNoPlayerInside(VehicleHash modelName, Vector3 coords, float heading)
         {
-            Model a = new Model(modelName);
+            Model a = new(modelName);
             return await SpawnVehicleNoPlayerInside(a, coords, heading);
         }
 
@@ -537,19 +537,19 @@ namespace FreeRoamProject.Client.Core.Utility
         #region spawnaLocal
         public static async Task<Vehicle> SpawnLocalVehicle(int vehicleModel, Vector3 coords, float heading)
         {
-            Model a = new Model(vehicleModel);
+            Model a = new(vehicleModel);
             return await SpawnLocalVehicle(a, coords, heading);
         }
 
         public static async Task<Vehicle> SpawnLocalVehicle(string vehicleModel, Vector3 coords, float heading)
         {
-            Model a = new Model(vehicleModel);
+            Model a = new(vehicleModel);
             return await SpawnLocalVehicle(a, coords, heading);
         }
 
         public static async Task<Vehicle> SpawnLocalVehicle(VehicleHash vehicleModel, Vector3 coords, float heading)
         {
-            Model a = new Model(vehicleModel);
+            Model a = new(vehicleModel);
             return await SpawnLocalVehicle(a, coords, heading);
         }
 
@@ -561,7 +561,7 @@ namespace FreeRoamProject.Client.Core.Utility
             if (!IsSpawnPointClear(coords, 2f))
                 ClearArea(coords.X, coords.Y, coords.Z, 2f, true, false, false, true);
 
-            Vehicle vehicle = new Vehicle(CreateVehicle((uint)vehicleModel.Hash, coords.X, coords.Y, coords.Z, heading, false, false));
+            Vehicle vehicle = new(CreateVehicle((uint)vehicleModel.Hash, coords.X, coords.Y, coords.Z, heading, false, false));
             while (!vehicle.Exists()) await BaseScript.Delay(0);
             vehicle.IsPersistent = true;
             vehicle.NeedsToBeHotwired = false;
@@ -583,19 +583,19 @@ namespace FreeRoamProject.Client.Core.Utility
 
         public static async Task<Prop> CreateProp(int modelName, Vector3 coords, Vector3 rot, bool placeOnGround = true, bool clearArea = false)
         {
-            Model a = new Model(modelName);
+            Model a = new(modelName);
             return await CreateProp(a, coords, rot, placeOnGround);
         }
 
         public static async Task<Prop> CreateProp(string modelName, Vector3 coords, Vector3 rot, bool placeOnGround = true, bool clearArea = false)
         {
-            Model a = new Model(modelName);
+            Model a = new(modelName);
             return await CreateProp(a, coords, rot, placeOnGround);
         }
 
         public static async Task<Prop> CreateProp(ObjectHash modelName, Vector3 coords, Vector3 rot, bool placeOnGround = true, bool clearArea = false)
         {
-            Model a = new Model((int)modelName);
+            Model a = new((int)modelName);
             return await CreateProp(a, coords, rot, placeOnGround);
         }
 
@@ -680,21 +680,21 @@ namespace FreeRoamProject.Client.Core.Utility
         /// <remarks>returns <c>null</c> if the <see cref="Ped"/> could not be spawned</remarks>
         public static async Task<Ped> SpawnPed(int model, Position position, PedTypes pedType = PedTypes.Mission)
         {
-            Model a = new Model(model);
+            Model a = new(model);
             return await SpawnPed(a, position, pedType);
 
         }
 
         public static async Task<Ped> SpawnPed(string model, Position position, PedTypes pedType = PedTypes.Mission)
         {
-            Model a = new Model(model);
+            Model a = new(model);
             return await SpawnPed(a, position, pedType);
 
         }
 
         public static async Task<Ped> SpawnPed(PedHash model, Position position, PedTypes pedType = PedTypes.Mission)
         {
-            Model a = new Model(model);
+            Model a = new(model);
             return await SpawnPed(a, position, pedType);
         }
 
@@ -722,7 +722,7 @@ namespace FreeRoamProject.Client.Core.Utility
         /// <param name="position">The position to spawn the <see cref="Ped"/> at.</param>
         public static async Task<Ped> SpawnRandomPed(Vector3 position)
         {
-            Ped ped = new Ped(CreateRandomPed(position.X, position.Y, position.Z));
+            Ped ped = new(CreateRandomPed(position.X, position.Y, position.Z));
             while (!ped.Exists()) await BaseScript.Delay(0);
             return ped;
         }
@@ -862,9 +862,9 @@ namespace FreeRoamProject.Client.Core.Utility
             Vector3 modelMin = new(), modelMax = new();
             GetModelDimensions(model, ref modelMin, ref modelMax);
 
-            Vector3 tempFrontTopLeft = new Vector3(modelMin.X, modelMax.Y, modelMax.Z);
+            Vector3 tempFrontTopLeft = new(modelMin.X, modelMax.Y, modelMax.Z);
             Vector3 tempFrontTopRight = modelMax;
-            Vector3 tempBackTopLeft = new Vector3(modelMin.X, modelMin.Y, modelMax.Z);
+            Vector3 tempBackTopLeft = new(modelMin.X, modelMin.Y, modelMax.Z);
             Vector3 tempBackTopRight = new(modelMax.X, modelMin.Y, modelMax.Z);
 
             FrontTopLeft = GetOffsetFromEntityInWorldCoords(entity, tempFrontTopLeft.X, tempFrontTopLeft.Y, tempFrontTopLeft.Z);
@@ -881,7 +881,7 @@ namespace FreeRoamProject.Client.Core.Utility
             // |/  |/
             // *---*
 
-            Vector3 modelMin = new Vector3(), modelMax = new Vector3();
+            Vector3 modelMin = new(), modelMax = new();
             GetModelDimensions(model, ref modelMin, ref modelMax);
 
             Vector3 tempFrontBottomLeft = new(modelMin.X, modelMax.Y, modelMin.Z);

@@ -2,9 +2,9 @@
 {
     public class UFO
     {
-        public UFOHippie Hippie = new UFOHippie();
-        public UFOChiliad Chiliad = new UFOChiliad();
-        public UFOZancudo Zancudo = new UFOZancudo();
+        public UFOHippie Hippie = new();
+        public UFOChiliad Chiliad = new();
+        public UFOZancudo Zancudo = new();
     }
 
     public class UFOHippie

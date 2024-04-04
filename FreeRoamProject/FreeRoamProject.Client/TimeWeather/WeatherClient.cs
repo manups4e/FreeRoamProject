@@ -7,7 +7,7 @@ namespace FreeRoamProject.Client.TimeWeather
         public static SharedWeather Weather { get; set; }
         public static int OldWeather;
         public static bool Transitioning = false;
-        private static float _windCostantDirectRad = 51.4285714286f;
+        private static readonly float _windCostantDirectRad = 51.4285714286f;
         private static ParticleEffectsAssetNetworked snowFx;
 
         public static void Init()

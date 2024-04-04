@@ -8,13 +8,13 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
 {
     internal static class VendingMachines
     {
-        private static string anim = "MINI@SPRUNK@FIRST_PERSON";
-        private static string AudioBank = "VENDING_MACHINE";
-        private static float MachineRange = 1.375f;
+        private static readonly string anim = "MINI@SPRUNK@FIRST_PERSON";
+        private static readonly string AudioBank = "VENDING_MACHINE";
+        private static readonly float MachineRange = 1.375f;
         private static Prop VendingMachineClosest;
-        private static Prop Can = new Prop((int)ObjectHash.prop_ld_can_01b);
-        private static List<ObjectHash> VendingHashes = new List<ObjectHash>()
-        {
+        private static Prop Can = new((int)ObjectHash.prop_ld_can_01b);
+        private static readonly List<ObjectHash> VendingHashes =
+        [
             ObjectHash.prop_vend_coffe_01,
             ObjectHash.prop_vend_soda_01,
             ObjectHash.prop_vend_soda_02,
@@ -22,7 +22,7 @@ namespace FreeRoamProject.Client.FREEROAM.Interactions
             ObjectHash.prop_vend_fags_01,
             ObjectHash.prop_vend_snak_01,
             ObjectHash.prop_vend_water_01
-        };
+        ];
 
         public static void Init()
         {

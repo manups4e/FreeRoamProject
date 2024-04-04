@@ -9,11 +9,11 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.Negozi
     //THE OTHER ONE IS A WORK IN PROGRESS TRYING TO EMULATE GTA:O SHOPS CAMERA AND WEAPONS
     static class WeaponShops
     {
-        private static string anim = "random@shop_gunstore";
-        private static string granadesProp = "lr2_prop_gc_grenades_02";
-        private static string v_gun2_wall = "ch_prop_board_wpnwall_01a";
-        private static string v_gun_wall = "ch_prop_board_wpnwall_02a";
-        private static string lightProp = "v_lirg_gunlight";
+        private static readonly string anim = "random@shop_gunstore";
+        private static readonly string granadesProp = "lr2_prop_gc_grenades_02";
+        private static readonly string v_gun2_wall = "ch_prop_board_wpnwall_01a";
+        private static readonly string v_gun_wall = "ch_prop_board_wpnwall_02a";
+        private static readonly string lightProp = "v_lirg_gunlight";
         private static Prop Walls;
         private static Prop Weaps;
         private static Ped spawned_shopkeeper;
@@ -24,12 +24,12 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.Negozi
         private static int ShopId = -1;
         private static int CurrentWeaponIndex;
         private static WeaponInfo CurrentWeaponSelected;
-        private static List<WeaponInfo> WeaponsObjects = new();
-        private static List<InputController> inputs = new();
+        private static readonly List<WeaponInfo> WeaponsObjects = [];
+        private static readonly List<InputController> inputs = [];
         public static List<SharedWeapon> Weapons;
-        private static List<Blip> blips = new();
-        private static List<Position> negozi = new()
-        {
+        private static readonly List<Blip> blips = [];
+        private static readonly List<Position> negozi =
+        [
             new(21.852f, -1106.65f, 29.61f),
             new(1693.4f, 3759.5f, 33.7f),
             new(252.3f, -50.0f, 68.9f),
@@ -41,7 +41,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.Negozi
             new(-3172.317f, 1087.959f, 20.83873f),
             new(2567.6f, 294.3f, 107.7f),
             new(810.2f, -2157.3f, 28.6f),
-        };
+        ];
 
         private static int neutralToIdle;
         private static int greetingToIdle;
@@ -52,8 +52,8 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.Negozi
         private static int positive_a;
 
 
-        private static List<Vector3> Entrances = new()
-        {
+        private static readonly List<Vector3> Entrances =
+        [
             new(17.6804f, -1114.288f, 28.797f),
             new(1697.979f, 3753.2f, 33.7053f),
             new(245.2711f, -45.8126f, 68.941f),
@@ -65,7 +65,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.Negozi
             new(-3165.231f, 1082.855f, 19.8438f),
             new(2569.612f, 302.576f, 107.7349f),
             new(811.8699f, -2149.102f, 28.6363f)
-        };
+        ];
         private static Camera ArmCam;
 
         public static float Global_4534055;
@@ -81,7 +81,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.Negozi
         private static bool iLocal_1089;
         private static int iLocal_1087;
         private static bool iLocal_1088;
-        private static bool some_unkown_bool;
+        private static readonly bool some_unkown_bool;
 
         public static async void Init()
         {
@@ -380,7 +380,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.Negozi
             Prop armaObj = null;
             UIMenu armeria = new("", "", new PointF(20, 20), new KeyValuePair<string, string>("ShopUI_Title_GunClub", "ShopUI_Title_GunClub"));
             Position coords = PlayerCache.MyClient.Position;
-            Prop pp = new Prop(GetClosestObjectOfType(coords.X, coords.Y, coords.Z, 10, 1948561556, false, true, true));
+            Prop pp = new(GetClosestObjectOfType(coords.X, coords.Y, coords.Z, 10, 1948561556, false, true, true));
             Vector3 left = pp.Position + (pp.RightVector * 0.6f) + (pp.UpVector * 0.2f);
             armeria.InstructionalButtons.Add(new(InputGroup.INPUTGROUP_FRONTEND_DPAD_LR, "Scegli arma"));
 
@@ -397,7 +397,7 @@ namespace FreeRoamProject.Client.GameMode.FREEROAM.Scripts.Negozi
                     armaObj.Delete();
                 RequestWeaponAsset(Weapons[b].UintHash, 31, 0);
                 while (!HasWeaponAssetLoaded(Weapons[b].UintHash)) await BaseScript.Delay(0);
-                Vector3 pos = new Vector3(-662.4155f, -934.2104f, pp.Position.Z);
+                Vector3 pos = new(-662.4155f, -934.2104f, pp.Position.Z);
                 armaObj = new Prop(CreateWeaponObject(Weapons[b].UintHash, 50, pos.X, pos.Y, left.Z, true, 1.0f, 0));
                 armaObj.PositionNoOffset = pos;
                 RemoveWeaponAsset(Weapons[b].UintHash);

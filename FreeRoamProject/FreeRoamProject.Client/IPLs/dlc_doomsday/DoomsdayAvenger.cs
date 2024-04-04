@@ -23,11 +23,11 @@ namespace FreeRoamProject.Client.IPLs.dlc_doomsday
             }
         }
 
-        public DWalls Walls = new DWalls();
-        public DTurret Turret = new DTurret();
-        public DWeaponsMod WeaponsMod = new DWeaponsMod();
-        public DVehicleMod VehicleMod = new DVehicleMod();
-        public DDetailsAvenger Details = new DDetailsAvenger();
+        public DWalls Walls = new();
+        public DTurret Turret = new();
+        public DWeaponsMod WeaponsMod = new();
+        public DVehicleMod VehicleMod = new();
+        public DDetailsAvenger Details = new();
 
         public void LoadDefault()
         {

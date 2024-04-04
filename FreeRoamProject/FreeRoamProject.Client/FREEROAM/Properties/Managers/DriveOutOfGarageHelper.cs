@@ -52,10 +52,10 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Managers
     internal class DriveOutOfGarageHelper
     {
 
-        static int DRIVE_OUT_FAKE_PEDS = 4;
-        static int FAKE_CAR_EXIT_GARAGE_WARP_POSSIBLE = 0;
-        static int FAKE_CAR_EXIT_GARAGE_WARP_DONE = 1;
-        static int FAKE_CAR_EXIT_GARAGE_ADDED_CUST_SPAWN = 2;
+        static readonly int DRIVE_OUT_FAKE_PEDS = 4;
+        static readonly int FAKE_CAR_EXIT_GARAGE_WARP_POSSIBLE = 0;
+        static readonly int FAKE_CAR_EXIT_GARAGE_WARP_DONE = 1;
+        static readonly int FAKE_CAR_EXIT_GARAGE_ADDED_CUST_SPAWN = 2;
 
         public static bool Get_DriveOutGarage(BuildingsEnum iBuildingID, ref STRUCT_DriveOut scene)
         {

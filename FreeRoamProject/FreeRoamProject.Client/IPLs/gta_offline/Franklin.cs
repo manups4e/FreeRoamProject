@@ -6,9 +6,9 @@ namespace FreeRoamProject.Client.IPLs.gtav
     public class Franklin
     {
         public static int InteriorId = 206849;
-        public FranklinStyle Style = new FranklinStyle();
-        public FranklinGlassDoor GlassDoor = new FranklinGlassDoor();
-        public FranklinDetails Details = new FranklinDetails();
+        public FranklinStyle Style = new();
+        public FranklinGlassDoor GlassDoor = new();
+        public FranklinDetails Details = new();
         private bool enabled;
         public bool Enabled
         {
@@ -36,7 +36,7 @@ namespace FreeRoamProject.Client.IPLs.gtav
     {
         public string Empty = "";
         public string Unpacking = "franklin_unpacking";
-        public List<string> Settled = new List<string>() { "franklin_unpacking", "franklin_settled" };
+        public List<string> Settled = ["franklin_unpacking", "franklin_settled"];
         public string CardBoxes = "showhome_only";
 
         public void Set(string style, bool refresh = true)

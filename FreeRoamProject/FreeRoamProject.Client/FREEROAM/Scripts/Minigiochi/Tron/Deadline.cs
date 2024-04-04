@@ -10,7 +10,7 @@ namespace Client.Scripts.Minigiochi.Tron
         {
 
         }
-        static Vector4[] posList = new Vector4[99];
+        static readonly Vector4[] posList = new Vector4[99];
 
         public static async Task OnTick()
         {
@@ -35,9 +35,9 @@ namespace Client.Scripts.Minigiochi.Tron
                     for (int i = 0; i < 99; i++)
                     {
                         //Debug.WriteLine(i.ToString());
-                        Vector3 pos = new Vector3(posList[i].X, posList[i].Y, posList[i].Z);
+                        Vector3 pos = new(posList[i].X, posList[i].Y, posList[i].Z);
                         float rot = MathUtil.DegreesToRadians(posList[i].W);
-                        Vector3 pos2 = new Vector3(posList[i + 1].X, posList[i + 1].Y, posList[i + 1].Z);
+                        Vector3 pos2 = new(posList[i + 1].X, posList[i + 1].Y, posList[i + 1].Z);
                         float rot2 = MathUtil.DegreesToRadians(posList[i + 1].W);
 
                         Vector3 ul = pos + new Vector3(0f, 0f, 0.4f);

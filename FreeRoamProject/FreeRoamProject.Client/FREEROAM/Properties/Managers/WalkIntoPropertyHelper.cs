@@ -30,10 +30,10 @@ namespace FreeRoamProject.Client.FREEROAM.Properties.Managers
 
     public class STRUCT_WalkIn
     {
-        public SceneTool_Pan[] mPans = new SceneTool_Pan[(int)WalkInPans.WalkIn_PAN_MAX] { new() };
-        public SceneTool_Cut[] mCuts = new SceneTool_Cut[(int)WalkInCuts.WalkIn_CUT_MAX] { new() };
-        public SceneTool_Marker[] mMarkers = new SceneTool_Marker[(int)WalkInMarkers.WalkIn_MARKER_MAX] { new(), new(), new() };
-        public SceneTool_Placer[] mPlacers = new SceneTool_Placer[(int)WalkInPlacers.WalkIn_PLACER_MAX] { new() };
+        public SceneTool_Pan[] mPans = [new()];
+        public SceneTool_Cut[] mCuts = [new()];
+        public SceneTool_Marker[] mMarkers = [new(), new(), new()];
+        public SceneTool_Placer[] mPlacers = [new()];
         public bool[] bEnablePans = new bool[(int)WalkInPans.WalkIn_PAN_MAX];
         public float fExitDelay { get; set; }
     }

@@ -15,7 +15,7 @@ namespace FreeRoamProject.Shared
 {
     public static class Extensions
     {
-        private static Log Logger = new();
+        private static readonly Log Logger = new();
 
         public static async Task ForEachAsync<T>(this List<T> list, Func<T, Task> Funzioni)
         {
@@ -28,8 +28,8 @@ namespace FreeRoamProject.Shared
         public static T GetVal<T>(this IDictionary<string, object> dict, string key, T defaultVal)
         {
             if (dict.ContainsKey(key))
-                if (dict[key] is T)
-                    return (T)dict[key];
+                if (dict[key] is T t)
+                    return t;
             return defaultVal;
         }
 
@@ -80,7 +80,7 @@ namespace FreeRoamProject.Shared
             float result = -199f;
             try
             {
-                float[] groundCheckHeight = new float[] { -100.0f, -50.0f, 0.0f, 50.0f, 100.0f, 150.0f, 200.0f, 250.0f, 300.0f, 350.0f, 400.0f, 450.0f, 500.0f, 550.0f, 600.0f, 650.0f, 700.0f, 750.0f, 800.0f };
+                float[] groundCheckHeight = [-100.0f, -50.0f, 0.0f, 50.0f, 100.0f, 150.0f, 200.0f, 250.0f, 300.0f, 350.0f, 400.0f, 450.0f, 500.0f, 550.0f, 600.0f, 650.0f, 700.0f, 750.0f, 800.0f];
 
                 foreach (float h in groundCheckHeight)
                 {
@@ -169,7 +169,7 @@ namespace FreeRoamProject.Shared
         }
 
         /// <summary>
-        /// Carica la zona dove la telecamera � stata creata (anche se il ped � lontano). Si resetta con ClearFocus().
+        /// Loads the area where the camera was created (even if the ped is far away). It is reset with ClearFocus().
         /// </summary>
         /// <param name="pos"></param>
         public static void SetFocus(this Vector3 pos)
@@ -178,7 +178,7 @@ namespace FreeRoamProject.Shared
         }
 
         /// <summary>
-        /// Carica la zona dove la telecamera � stata creata (anche se il ped � lontano). Si resetta con ClearFocus().
+        /// Loads the area where the camera was created (even if the ped is far away). It is reset with ClearFocus().
         /// </summary>
         /// <param name="pos"></param>
         public static void SetFocus(this Vector4 pos)
@@ -187,7 +187,7 @@ namespace FreeRoamProject.Shared
         }
 
         /// <summary>
-        /// Carica la zona dove la telecamera � stata creata (anche se il ped � lontano). Si resetta con ClearFocus().
+        /// Loads the area where the camera was created (even if the ped is far away). It is reset with ClearFocus().
         /// </summary>
         /// <param name="pos"></param>
         public static void SetFocus(this Position pos)

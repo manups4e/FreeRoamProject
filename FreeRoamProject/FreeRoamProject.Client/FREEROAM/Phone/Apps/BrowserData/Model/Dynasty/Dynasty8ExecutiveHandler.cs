@@ -11,21 +11,21 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.WebBrowser.Model.Dynasty
    static var AGENCY_DATA_START_INDEX = 8;
    static var AGENCY_DATA_END_INDEX = 11;*/
 
-        public static List<Office> Offices = new List<Office>()
-        {
+        public static List<Office> Offices =
+        [
             new Office(3, 87),
             new Office(4, 88),
             new Office(5, 89),
             new Office(6, 90),
-        };
+        ];
 
-        public static List<Agency> Agencies = new List<Agency>()
-        {
+        public static List<Agency> Agencies =
+        [
             new Agency(8, 1),
             new Agency(9, 2),
             new Agency(10, 3),
             new Agency(11, 4),
-        };
+        ];
 
         public static async void LoadOffices(Apps.WebBrowser parent)
         {

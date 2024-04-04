@@ -7,9 +7,9 @@ namespace FreeRoamProject.Client.IPLs.dlc_executive
     {
         public int CurrentInteriorId = -1;
         public StyleExec Style { get; set; }
-        public MainStyle Strip = new MainStyle("Apart_Hi_Strip_A", "Apart_Hi_Strip_B", "Apart_Hi_Strip_C");
-        public MainStyle Booze = new MainStyle("Apart_Hi_Booze_A", "Apart_Hi_Booze_B", "Apart_Hi_Booze_C");
-        public MainStyle Smoke = new MainStyle("Apart_Hi_Smokes_A", "Apart_Hi_Smokes_B", "Apart_Hi_Smokes_C");
+        public MainStyle Strip = new("Apart_Hi_Strip_A", "Apart_Hi_Strip_B", "Apart_Hi_Strip_C");
+        public MainStyle Booze = new("Apart_Hi_Booze_A", "Apart_Hi_Booze_B", "Apart_Hi_Booze_C");
+        public MainStyle Smoke = new("Apart_Hi_Smokes_A", "Apart_Hi_Smokes_B", "Apart_Hi_Smokes_C");
         private bool enabled;
         public bool Enabled
         {

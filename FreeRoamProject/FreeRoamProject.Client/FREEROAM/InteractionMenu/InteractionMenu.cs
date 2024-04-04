@@ -17,7 +17,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
         // TODO: IN THE PERSONAL MENU EVENTS, ADD THE SPAWNED EVENT AND RE-APPLY EVERY SETTING BEFORE THE PLAYER CAN SEE IT
 
-        public static List<dynamic> chars = new List<dynamic>();
+        public static List<dynamic> chars = [];
         public static float interactionDistance = 3.5f;
         public static int lockDistance = 25;
         public static string itemgps = "None";
@@ -27,7 +27,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
         public static bool enabled = false;
         public static bool CinematicGrain = false;
         private static bool open = false;
-        private static float fuelint = 0;
+        private static readonly float fuelint = 0;
         public static UIMenu MainMenu = null;
         public static UIMenu GangsMenu = null;
         public static UIMenu ObjectivesMenu = null;
@@ -39,7 +39,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
         public static UIMenu HighlightPlayerMenu = null;
 
         #region to be saved in char data
-        public static int[] SavedHelmet = new int[2] { 16, 0 };
+        public static int[] SavedHelmet = [16, 0];
         public static bool VisorUp = true;
         public static int VisorUpDown = 0;
         public static int AutoShowHelmet = 1;
@@ -61,8 +61,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
         // TODO: THE QUICK GPS MUST BE HANDLED ON MENU BUILDING.. SO THAT WE CAN CHECK WHAT TO ADD AND WHAT NOT
         // FOR EXAMPLE GARAGES, PERSONAL VEHICLES, SIMEON, LESTER, HOME, ETC
-        public static List<dynamic> gps = new List<dynamic>()
-        {
+        public static List<dynamic> gps =
+        [
             Game.GetGXTEntry("PIM_QGPS_PROP5"), // "Home 5",
             Game.GetGXTEntry("PIM_QGPS_PROP5B"), // "Garage 5",
             Game.GetGXTEntry("PIM_QGPS_PROP6"), // "Home 6",
@@ -113,10 +113,10 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             Game.GetGXTEntry("PIM_QGPS28"), // Lamar
             Game.GetGXTEntry("PIM_QGPSC"), // Capture Objective
             Game.GetGXTEntry("PIM_QGPSDO"), // Destination
-        };
+        ];
 
-        private static List<dynamic> portiere = new List<dynamic>()
-        {
+        private static readonly List<dynamic> portiere =
+        [
             Game.GetGXTEntry("PM_DPV1"),
             Game.GetGXTEntry("PM_DPV2"),
             Game.GetGXTEntry("PM_DPV3"),
@@ -124,8 +124,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             Game.GetGXTEntry("PM_DPV5"),
             Game.GetGXTEntry("PM_DPV6"),
             Game.GetGXTEntry("PM_DPV7"),
-        };
-        private static List<dynamic> chiusure = new List<dynamic>() { "Locked", "Unlocked" };
+        ];
+        private static readonly List<dynamic> chiusure = ["Locked", "Unlocked"];
         public static Blip b;
         public static bool blipFound = false;
 
@@ -143,7 +143,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             safeSize = 10 - safeSize;
             float height = safeSize * 5.4f;
             float width = safeSize * ((x / y) * 5.4f);
-            PointF pos = new PointF(width, height);
+            PointF pos = new(width, height);
             MainMenu = new UIMenu(Game.Player.Name, Game.GetGXTEntry("PIM_TITLE1"), pos, "commonmenu", "interaction_bgd", true, true, 0);
             MainMenu.EnableAnimation = false;
             MainMenu.Enabled3DAnimations = false;
@@ -237,9 +237,9 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             // TODO: UNCENSORED IS SO ESX... WE WANT A GANG NAME BUT ALSO A SIMPLE CHECK IsBoss true/false...
             if (PlayerCache.MyClient.User.Character.Gang.Name == "Uncensored")
             {
-                UIMenuItem becomeBoss = new UIMenuItem("Become a gang boss!");
-                List<dynamic> job = new List<dynamic>() { Game.GetGXTEntry("FE_HLP31"), Game.GetGXTEntry("FE_HLP29") };
-                UIMenuListItem lookingForJob = new UIMenuListItem("Looking for a \"Job\"", job, 0, GetLabelText("PIM_MAGH0D"));
+                UIMenuItem becomeBoss = new("Become a gang boss!");
+                List<dynamic> job = [Game.GetGXTEntry("FE_HLP31"), Game.GetGXTEntry("FE_HLP29")];
+                UIMenuListItem lookingForJob = new("Looking for a \"Job\"", job, 0, GetLabelText("PIM_MAGH0D"));
                 GangsMenu.AddItem(becomeBoss);
                 GangsMenu.AddItem(lookingForJob);
                 // GB_BECOMEB = You are now the CEO of ~a~~s~
@@ -276,11 +276,11 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             {
                 if (PlayerCache.MyClient.User.Character.Gang.Grade > 4)
                 {
-                    UIMenuItem hireItem = new UIMenuItem("Recruit members");
+                    UIMenuItem hireItem = new("Recruit members");
                     UIMenu hire = new("Recruit members", Game.GetGXTEntry("PIM_TITLE1"));
-                    UIMenuItem manageItem = new UIMenuItem("Gang management");
+                    UIMenuItem manageItem = new("Gang management");
                     UIMenu manage = new("Gang management", Game.GetGXTEntry("PIM_TITLE1"));
-                    UIMenuItem featuresBossItem = new UIMenuItem("Boss's features");
+                    UIMenuItem featuresBossItem = new("Boss's features");
                     UIMenu featuresBoss = new("Boss's features", Game.GetGXTEntry("PIM_TITLE1"));
                     hireItem.BindItemToMenu(hire);
                     manageItem.BindItemToMenu(manage);
@@ -290,7 +290,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     GangsMenu.AddItem(featuresBossItem);
 
 
-                    UIMenuItem retire = new UIMenuItem("Retire", "Warning.. you won't be able to set up a new gang before 6 hours!");
+                    UIMenuItem retire = new("Retire", "Warning.. you won't be able to set up a new gang before 6 hours!");
                     GangsMenu.AddItem(retire);
                     retire.Activated += (menu, item) =>
                     {
@@ -303,7 +303,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 }
                 else
                 {
-                    UIMenuItem retire = new UIMenuItem("Retire", "Stop working for your current boss");
+                    UIMenuItem retire = new("Retire", "Stop working for your current boss");
                     GangsMenu.AddItem(retire);
                     retire.Activated += (menu, item) =>
                     {
@@ -319,7 +319,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             #region Objectives
 
-            UIMenuItem objectives = new UIMenuItem(Game.GetGXTEntry("PIM_TDOBJ"), Game.GetGXTEntry("PIM_HDOBJ"));
+            UIMenuItem objectives = new(Game.GetGXTEntry("PIM_TDOBJ"), Game.GetGXTEntry("PIM_HDOBJ"));
             objectives.Enabled = false;
             objectives.Description = "Feature not yet available, stay tuned for when this feature will be enabled!!";
             objectives.BindItemToMenu(ObjectivesMenu);
@@ -329,22 +329,22 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             #region Inventory
 
-            UIMenuItem inventory = new UIMenuItem(Game.GetGXTEntry("PIM_TINVE"), Game.GetGXTEntry("PIM_HINVE"));
-            UIMenu inventoryMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_TITLE2"));
+            UIMenuItem inventory = new(Game.GetGXTEntry("PIM_TINVE"), Game.GetGXTEntry("PIM_HINVE"));
+            UIMenu inventoryMenu = new(playerName, Game.GetGXTEntry("PIM_TITLE2"));
             inventory.BindItemToMenu(inventoryMenu);
             MainMenu.AddItem(inventory);
 
-            UIMenuItem radioStationItem = new UIMenuItem(Game.GetGXTEntry("PIM_FAV_RS"), Game.GetGXTEntry("PIM_FAV_RS_TT"));
-            UIMenu radioStationMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_FAV_RS_U"));
+            UIMenuItem radioStationItem = new(Game.GetGXTEntry("PIM_FAV_RS"), Game.GetGXTEntry("PIM_FAV_RS_TT"));
+            UIMenu radioStationMenu = new(playerName, Game.GetGXTEntry("PIM_FAV_RS_U"));
 
-            UIMenuItem phoneContactsItem = new UIMenuItem(Game.GetGXTEntry("PIM_FAV_CONT"), Game.GetGXTEntry("PIM_FAV_CONT_TT"));
-            UIMenu phoneContactsMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_FAV_CONT_U"));
+            UIMenuItem phoneContactsItem = new(Game.GetGXTEntry("PIM_FAV_CONT"), Game.GetGXTEntry("PIM_FAV_CONT_TT"));
+            UIMenu phoneContactsMenu = new(playerName, Game.GetGXTEntry("PIM_FAV_CONT_U"));
 
-            UIMenuItem cashItem = new UIMenuItem(Game.GetGXTEntry("PIM_TCASH"), Game.GetGXTEntry("PIM_HCASH"));
-            UIMenu cashMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_TITLE50"));
+            UIMenuItem cashItem = new(Game.GetGXTEntry("PIM_TCASH"), Game.GetGXTEntry("PIM_HCASH"));
+            UIMenu cashMenu = new(playerName, Game.GetGXTEntry("PIM_TITLE50"));
 
-            UIMenuItem bodyArmorItem = new UIMenuItem(Game.GetGXTEntry("PIM_TARMOR"), Game.GetGXTEntry("PIM_HARMOR"));
-            UIMenu bodyArmorMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_UARMOR"));
+            UIMenuItem bodyArmorItem = new(Game.GetGXTEntry("PIM_TARMOR"), Game.GetGXTEntry("PIM_HARMOR"));
+            UIMenu bodyArmorMenu = new(playerName, Game.GetGXTEntry("PIM_UARMOR"));
 
             /* TODO: Handle snacks subtitles
                 "PIM_HSNAC": "Look through and use held snacks, drinks, and smokes.",
@@ -352,11 +352,11 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 "PIM_HSNAE": "Snacks are unavailable while wearing Ballistic Equipment.",
                 "PIM_HSNAJ": "Snacks are unavailable during this Job.",
              */
-            UIMenuItem snacksItem = new UIMenuItem(Game.GetGXTEntry("PIM_TSNAC"), Game.GetGXTEntry("PIM_HSNAC"));
-            UIMenu snacksMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_USNAC"));
+            UIMenuItem snacksItem = new(Game.GetGXTEntry("PIM_TSNAC"), Game.GetGXTEntry("PIM_HSNAC"));
+            UIMenu snacksMenu = new(playerName, Game.GetGXTEntry("PIM_USNAC"));
 
-            UIMenuItem ammoItem = new UIMenuItem(Game.GetGXTEntry("PIM_TAMMOW"), Game.GetGXTEntry("PIM_HAMMOW"));
-            UIMenu ammoMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_UAMMOW"));
+            UIMenuItem ammoItem = new(Game.GetGXTEntry("PIM_TAMMOW"), Game.GetGXTEntry("PIM_HAMMOW"));
+            UIMenu ammoMenu = new(playerName, Game.GetGXTEntry("PIM_UAMMOW"));
 
             /* label to be changed on selection
              "PIM_DISWLAY": Disable Custom Weapon Loadout
@@ -370,7 +370,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 "PIM_WEAPLAY_D_4": "Disable your customized weapon loadout.",
                 "PIM_WEAPLAY_D_5": "Custom Weapon Loadout is not currently available.",
              */
-            UIMenuItem customWeaponLayout = new UIMenuItem(Game.GetGXTEntry("PIM_DISWLAY"), Game.GetGXTEntry("PIM_WEAPLAY_D_4"));
+            UIMenuItem customWeaponLayout = new(Game.GetGXTEntry("PIM_DISWLAY"), Game.GetGXTEntry("PIM_WEAPLAY_D_4"));
 
             /* available descriptions (default is d_1)
               "PIM_BALLIS_D_1": "Ballistic Equipment Services options.",
@@ -378,8 +378,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
               "PIM_BALLIS_D_3": "Remove Ballistic Equipment",
               "PIM_BALLIS_D_4": "You do not currently own the Ballistic Equipment. Purchase it at www.warstock-cache-and-carry.com.",
              */
-            UIMenuItem ballisticEqItem = new UIMenuItem(Game.GetGXTEntry("PIM_BALLIS"), Game.GetGXTEntry("PIM_BALLIS_D_1"));
-            UIMenu ballisticEqMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_TBALLI"));
+            UIMenuItem ballisticEqItem = new(Game.GetGXTEntry("PIM_BALLIS"), Game.GetGXTEntry("PIM_BALLIS_D_1"));
+            UIMenu ballisticEqMenu = new(playerName, Game.GetGXTEntry("PIM_TBALLI"));
 
             /* available descriptions (default is PIM_DRONEPUR or PIM_DRONSTAR)
               "PIM_DRONAMISO": "Nano Drone is not available while active on this mission.",
@@ -390,8 +390,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
               "PIM_DRONEUNV": "Nano Drone unavailable while in a vehicle.",
               "PIM_DRONSTAR": "Deploy your Nano Drone.",
              */
-            UIMenuItem nanoDroneItem = new UIMenuItem(Game.GetGXTEntry("PIM_REQDRONE"), Game.GetGXTEntry("PIM_DRONEPUR"));
-            UIMenu nanoDroneMenu = new UIMenu(playerName, Game.GetGXTEntry("")); // disabled in my game..
+            UIMenuItem nanoDroneItem = new(Game.GetGXTEntry("PIM_REQDRONE"), Game.GetGXTEntry("PIM_DRONEPUR"));
+            UIMenu nanoDroneMenu = new(playerName, Game.GetGXTEntry("")); // disabled in my game..
             //TODO: BUY A NANO DRONE ONLINE.
 
             // Collectibles (to be collected all around)
@@ -428,7 +428,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             #region Style
 
-            UIMenuItem style = new UIMenuItem(Game.GetGXTEntry("PIM_TSTYL"), Game.GetGXTEntry("PIM_HSTYL"));
+            UIMenuItem style = new(Game.GetGXTEntry("PIM_TSTYL"), Game.GetGXTEntry("PIM_HSTYL"));
             style.BindItemToMenu(StyleMenu);
             MainMenu.AddItem(style);
 
@@ -465,7 +465,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
               "PIM_FCHAP9_11": "You have changed your appearance too often, the option will be available again in ~1~:~1~.",
               "PIM_FCHAP10": "The option to change your appearance will unlock when you reach Rank ~1~.",
              */
-            UIMenuItem changeAppear = new UIMenuItem(Game.GetGXTEntry("PIM_TCHAP"), Game.GetGXTEntry("PIM_HCHAP"));
+            UIMenuItem changeAppear = new(Game.GetGXTEntry("PIM_TCHAP"), Game.GetGXTEntry("PIM_HCHAP"));
             changeAppear.SetRightLabel(Game.GetGXTEntry("ITEM_COST").Replace("~1~", "100000"));
             changeAppear.Activated += (item, index) =>
             {
@@ -482,21 +482,21 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
               "PIM_HACCEO": "Accessories are unavailable at this time.",
               "PIM_HACCEP": "Accessories are unavailable during this Job.",
              */
-            UIMenuItem accessoriesItem = new UIMenuItem(Game.GetGXTEntry("PIM_TACCE"), Game.GetGXTEntry("PIM_HACCE"));
-            UIMenu accessoriesMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_UACCE"));
+            UIMenuItem accessoriesItem = new(Game.GetGXTEntry("PIM_TACCE"), Game.GetGXTEntry("PIM_HACCE"));
+            UIMenu accessoriesMenu = new(playerName, Game.GetGXTEntry("PIM_UACCE"));
 
-            UIMenuItem parachuteItem = new UIMenuItem(Game.GetGXTEntry("PIM_TCHUTE"), Game.GetGXTEntry("PIM_HCHUTE"));
-            UIMenu parachuteMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_PARAT"));
+            UIMenuItem parachuteItem = new(Game.GetGXTEntry("PIM_TCHUTE"), Game.GetGXTEntry("PIM_HCHUTE"));
+            UIMenu parachuteMenu = new(playerName, Game.GetGXTEntry("PIM_PARAT"));
 
             /* description and confirmation
               "PIM_HOUTF": "Select a saved outfit to wear.",
               "PIM_HOUTFD": "Confirm to delete the selected outfit.",
              */
-            List<dynamic> savedOutfits = new List<dynamic>() { Game.GetGXTEntry("PIM_NOUTF") };
-            UIMenuListItem outfit = new UIMenuListItem(Game.GetGXTEntry("PIM_TOUTF"), savedOutfits, 0, Game.GetGXTEntry("PIM_HOUTF"));
+            List<dynamic> savedOutfits = [Game.GetGXTEntry("PIM_NOUTF")];
+            UIMenuListItem outfit = new(Game.GetGXTEntry("PIM_TOUTF"), savedOutfits, 0, Game.GetGXTEntry("PIM_HOUTF"));
 
-            List<dynamic> racingOutfits = new List<dynamic>() { Game.GetGXTEntry("PIM_NRAO") };
-            UIMenuListItem racingOutfit = new UIMenuListItem(Game.GetGXTEntry("PIM_TRAO"), racingOutfits, 0, Game.GetGXTEntry("PIM_HRAO"));
+            List<dynamic> racingOutfits = [Game.GetGXTEntry("PIM_NRAO")];
+            UIMenuListItem racingOutfit = new(Game.GetGXTEntry("PIM_TRAO"), racingOutfits, 0, Game.GetGXTEntry("PIM_HRAO"));
 
             //TODO: SAVE IT AND RELOAD ON LOGIN :D
             string prop = $"HE_FM{(PlayerCache.Character.Skin.Sex == "Male" ? "M" : "F")}_{SavedHelmet[1]}_{SavedHelmet[0]}";
@@ -598,7 +598,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             });
 
 
-            List<dynamic> autoShowBikeHelmetList = new List<dynamic>() { Game.GetGXTEntry("PIM_AHLM0"), Game.GetGXTEntry("PIM_AHLM1") };
+            List<dynamic> autoShowBikeHelmetList = [Game.GetGXTEntry("PIM_AHLM0"), Game.GetGXTEntry("PIM_AHLM1")];
             UIMenuDynamicListItem autoShowBikeHelmet = new(Game.GetGXTEntry("PIM_TAHLM"), Game.GetGXTEntry("PIM_HAHLM"), Game.GetGXTEntry($"PIM_AHLM{AutoShowHelmet}"), async (item, direction) =>
             {
                 AutoShowHelmet += direction == ChangeDirection.Left ? -1 : 1;
@@ -628,7 +628,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
               "PIM_HANIM5": "The selected Quickplay Action requires a Horror Pumpkin Mask to be equipped. Press or hold the Quickplay Action buttons to perform the action.",
              */
             string currentAction = Game.GetGXTEntry("IAP_NONE");
-            UIMenuDynamicListItem action = new UIMenuDynamicListItem(Game.GetGXTEntry(VehicleChecker.IsInVehicle ? "PIM_TANIMP" : "PIM_TANIMF"), Game.GetGXTEntry("PIM_HANIM"), currentAction, async (sender, direction) =>
+            UIMenuDynamicListItem action = new(Game.GetGXTEntry(VehicleChecker.IsInVehicle ? "PIM_TANIMP" : "PIM_TANIMF"), Game.GetGXTEntry("PIM_HANIM"), currentAction, async (sender, direction) =>
             {
                 // items in game are hanlded like a dynamiclistitem via a function with a check if the ped is in vehicle and the current index i think..
                 SavedAction = direction == ChangeDirection.Left ? SavedAction - 1 : SavedAction + 1;
@@ -751,7 +751,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
               "PIM_HILLUN": "Set the type of glow applied to illuminated clothing items.",
               "PIM_HILLUNM": "This feature is not available on this mode.",
              */
-            UIMenuDynamicListItem illuminatedClothing = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TILLUN"), Game.GetGXTEntry("PIM_HILLUN"), Game.GetGXTEntry($"PM_ILLU_{SavedGlowIndex}"), async (item, direction) =>
+            UIMenuDynamicListItem illuminatedClothing = new(Game.GetGXTEntry("PIM_TILLUN"), Game.GetGXTEntry("PIM_HILLUN"), Game.GetGXTEntry($"PM_ILLU_{SavedGlowIndex}"), async (item, direction) =>
             {
                 // SHOP_CONTROLLER.C
                 // here we take the loaded param..
@@ -787,18 +787,18 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
               "PIM_HCHOOD2": "You cannot set your Character's hood style while wearing this outfit.",
               "PIM_HCHOOD3": "You are able to set your Character's hood style while wearing certain hoods.",
              */
-            List<dynamic> hoodList = new List<dynamic>()
-            {
+            List<dynamic> hoodList =
+            [
                Game.GetGXTEntry("PM_CHOOD_0"), // "Down",
                Game.GetGXTEntry("PM_CHOOD_1"), // "Up",
                Game.GetGXTEntry("PM_CHOOD_2"), // "Tucked",
-            };
+            ];
 
             //TODO: SOLVE FUNCTION func_867 IN AM_PI_MENU.. WITHOUT IT WE CAN'T GO ON....
             //also func_1072 is the one that sets the player hood
 
             int choodSelection = PlayerCache.Character.Stats.CurrentHoodSetting;
-            UIMenuDynamicListItem hood = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TCHOOD"), Game.GetGXTEntry("PIM_HCHOOD"), Game.GetGXTEntry($"PM_CHOOD_{choodSelection}"), async (item, direction) =>
+            UIMenuDynamicListItem hood = new(Game.GetGXTEntry("PIM_TCHOOD"), Game.GetGXTEntry("PIM_HCHOOD"), Game.GetGXTEntry($"PM_CHOOD_{choodSelection}"), async (item, direction) =>
             {
                 choodSelection += direction == ChangeDirection.Left ? -1 : 1;
                 if (choodSelection > 2)
@@ -818,11 +818,11 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 "PIM_HCJACK2": "You cannot set the style of this jacket.",
                 "PIM_HCJACK3": "You are able to set your Character's jacket style while wearing a jacket.",
              */
-            List<dynamic> jacketList = new List<dynamic>()
-            {
+            List<dynamic> jacketList =
+            [
                Game.GetGXTEntry("PM_CJACK_0"), // Open
                Game.GetGXTEntry("PM_CJACK_1"), // Closed
-            };
+            ];
             //TODO: SOLVE FUNCTION func_867 IN AM_PI_MENU.. WITHOUT IT WE CAN'T GO ON....
             //also func_1031 is the one that sets the player jacket
             int savedJacket = 1;
@@ -978,7 +978,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             #region Vehicles
             // also PIM_HVEHIUNAVIL for when inside the Moblie Operations Center
-            UIMenuItem vehContrItem = new UIMenuItem(Game.GetGXTEntry("PIM_TVEHI"), Game.GetGXTEntry("PIM_HVEHI"));
+            UIMenuItem vehContrItem = new(Game.GetGXTEntry("PIM_TVEHI"), Game.GetGXTEntry("PIM_HVEHI"));
             vehContrItem.BindItemToMenu(VehContr);
             MainMenu.AddItem(vehContrItem);
 
@@ -1005,7 +1005,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                "PIM_HRPV98": "Your Personal Vehicle is already in the LS Car Meet. Return it to Storage via the Vehicles section of the Interaction Menu if you wish to request another vehicle.",
                "PIM_HRPV99": "This vehicle is not allowed inside the LS Car Meet.",
              */
-            UIMenuDynamicListItem reqPersonalVeh = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TRPV"), Game.GetGXTEntry("PIM_HRPV1"), "", async (item, direction) =>
+            UIMenuDynamicListItem reqPersonalVeh = new(Game.GetGXTEntry("PIM_TRPV"), Game.GetGXTEntry("PIM_HRPV1"), "", async (item, direction) =>
             {
                 return "";
             });
@@ -1032,7 +1032,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
               "PIM_HRPA18": "This vehicle is being delivered to your Hangar.",
               "PIM_HRPA98": "Your Personal Vehicle is already in the LS Car Meet. Return it to Storage via the Vehicles section of the Interaction Menu if you wish to request another vehicle.",
             */
-            UIMenuDynamicListItem reqPersonalAir = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TRPA"), Game.GetGXTEntry("PIM_HRPA1"), "", async (item, direction) =>
+            UIMenuDynamicListItem reqPersonalAir = new(Game.GetGXTEntry("PIM_TRPA"), Game.GetGXTEntry("PIM_HRPA1"), "", async (item, direction) =>
             {
                 return "";
             });
@@ -1058,7 +1058,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 "PIM_HRSV99": "This vehicle is not allowed inside the LS Car Meet.",
              */
             int currentSpecialVehicle = 0;
-            UIMenuDynamicListItem reqSpecialVeh = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TRSV"), Game.GetGXTEntry("PIM_HRSV1"), Game.GetGXTEntry($"PIM_SV{currentSpecialVehicle}"), async (item, direction) =>
+            UIMenuDynamicListItem reqSpecialVeh = new(Game.GetGXTEntry("PIM_TRSV"), Game.GetGXTEntry("PIM_HRSV1"), Game.GetGXTEntry($"PIM_SV{currentSpecialVehicle}"), async (item, direction) =>
             {
                 currentSpecialVehicle += direction == ChangeDirection.Left ? -1 : 1;
                 if (currentSpecialVehicle < 0)
@@ -1091,7 +1091,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
               "PIM_TRAIL99": "This vehicle is not allowed inside the LS Car Meet.",
              */
             // hummmm.. should this maybe be only a simple UIMenuItem?... can't say... i think yeah.. i live it like this for now.. 
-            UIMenuDynamicListItem reqAntiAirTrailer = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TRAIL"), Game.GetGXTEntry("PIM_TRAIL1"), "", async (item, direction) =>
+            UIMenuDynamicListItem reqAntiAirTrailer = new(Game.GetGXTEntry("PIM_TRAIL"), Game.GetGXTEntry("PIM_TRAIL1"), "", async (item, direction) =>
             {
                 return "";
             });
@@ -1106,7 +1106,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
               "PIM_RET5": "Unavailable while your Personal Vehicle is in mid-air.",
               "PIM_RET6": "Unavailable while your Personal Vehicle is impounded.",
              */
-            UIMenuItem returnPersVehStorage = new UIMenuItem(Game.GetGXTEntry("PIM_RET"), Game.GetGXTEntry("PIM_RET4"));
+            UIMenuItem returnPersVehStorage = new(Game.GetGXTEntry("PIM_RET"), Game.GetGXTEntry("PIM_RET4"));
             returnPersVehStorage.Enabled = false;
 
             /* available descriptions (default: PIM_HEMV0)
@@ -1114,11 +1114,11 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
               "PIM_HEMV1": "You are not using your Personal Vehicle.",
               "PIM_HEMV2": "You need to stop to kick players from your Personal Vehicle.",
             */
-            UIMenuItem emptyPersVeh = new UIMenuItem(Game.GetGXTEntry("PIM_TEMV"), Game.GetGXTEntry("PIM_HEMV1"));
+            UIMenuItem emptyPersVeh = new(Game.GetGXTEntry("PIM_TEMV"), Game.GetGXTEntry("PIM_HEMV1"));
             emptyPersVeh.Enabled = false;
 
             int vehicleAccessSetting = 0;
-            UIMenuDynamicListItem vehAccess = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TAPV"), Game.GetGXTEntry("PIM_HAPV"), Game.GetGXTEntry($"PM_APV{vehicleAccessSetting}"), async (item, direction) =>
+            UIMenuDynamicListItem vehAccess = new(Game.GetGXTEntry("PIM_TAPV"), Game.GetGXTEntry("PIM_HAPV"), Game.GetGXTEntry($"PM_APV{vehicleAccessSetting}"), async (item, direction) =>
             {
                 vehicleAccessSetting += direction == ChangeDirection.Left ? -1 : 1;
                 if (vehicleAccessSetting > 5)
@@ -1156,7 +1156,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
               "PIM_HDPVNPC": "You cannot control the doors of your Personal Vehicle while with an NPC.",
               "PIM_HDPVW": "You cannot use this feature when your Personal Vehicle is underwater.",
              */
-            UIMenuDynamicListItem vehDoors = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TDPV"), Game.GetGXTEntry("PIM_HDPV8"), "", async (item, direction) =>
+            UIMenuDynamicListItem vehDoors = new(Game.GetGXTEntry("PIM_TDPV"), Game.GetGXTEntry("PIM_HDPV8"), "", async (item, direction) =>
             {
                 /* these are all the available doors.. if the item is disabled.. don't show anything..
                   "PM_DPV_LP": "Left Panel",
@@ -1184,7 +1184,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             vehDoors.Enabled = false;
 
             int pvRoof = 0;
-            UIMenuDynamicListItem vehRoof = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_PV_ROOF"), Game.GetGXTEntry("PIM_PV_ROOF_D"), Game.GetGXTEntry($"PIM_PV_ROOF{pvRoof}"), async (item, direction) =>
+            UIMenuDynamicListItem vehRoof = new(Game.GetGXTEntry("PIM_PV_ROOF"), Game.GetGXTEntry("PIM_PV_ROOF_D"), Game.GetGXTEntry($"PIM_PV_ROOF{pvRoof}"), async (item, direction) =>
             {
                 pvRoof += direction == ChangeDirection.Left ? -1 : 1;
                 if (pvRoof < 0)
@@ -1200,7 +1200,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 "PIM_PV_STNC_NA": "Unavailable for your current Personal Vehicle.",
              */
             int pvStance = 0;
-            UIMenuDynamicListItem vehStance = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_PV_STANCE"), Game.GetGXTEntry("PIM_PV_STNC_NA"), Game.GetGXTEntry($"PIM_PV_STANCE{pvStance}"), async (item, direction) =>
+            UIMenuDynamicListItem vehStance = new(Game.GetGXTEntry("PIM_PV_STANCE"), Game.GetGXTEntry("PIM_PV_STNC_NA"), Game.GetGXTEntry($"PIM_PV_STANCE{pvStance}"), async (item, direction) =>
             {
                 pvStance += direction == ChangeDirection.Left ? -1 : 1;
                 if (pvStance < 0)
@@ -1216,7 +1216,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
               "PIM_PV_HYDR_NA": "You do not have hydraulics installed for this vehicle.",
              */
             int pvHydr = 0;
-            UIMenuDynamicListItem vehHydr = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_PV_HYDR"), Game.GetGXTEntry("PIM_PV_HYDR_NA"), Game.GetGXTEntry($"PIM_PV_HYDR{pvHydr}"), async (item, direction) =>
+            UIMenuDynamicListItem vehHydr = new(Game.GetGXTEntry("PIM_PV_HYDR"), Game.GetGXTEntry("PIM_PV_HYDR_NA"), Game.GetGXTEntry($"PIM_PV_HYDR{pvHydr}"), async (item, direction) =>
             {
                 pvStance += direction == ChangeDirection.Left ? -1 : 1;
                 if (pvStance < 0)
@@ -1234,8 +1234,8 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 "PIM_HDPVEO10": "You cannot use this feature when your Personal Vehicle is stored in a garage.",
                 "PIM_HDPVEO10B": "You cannot use this feature when your Personal Vehicle is stored in a Bunker.",
              */
-            UIMenuItem vehRemoteFuncItem = new UIMenuItem(Game.GetGXTEntry("PIM_PVEO"), Game.GetGXTEntry("PIM_HDPVEO6"));
-            UIMenu vehRemoteFuncMenu = new UIMenu(playerName, Game.GetGXTEntry("PIM_PCEO_T"));
+            UIMenuItem vehRemoteFuncItem = new(Game.GetGXTEntry("PIM_PVEO"), Game.GetGXTEntry("PIM_HDPVEO6"));
+            UIMenu vehRemoteFuncMenu = new(playerName, Game.GetGXTEntry("PIM_PCEO_T"));
             vehRemoteFuncItem.BindItemToMenu(vehRemoteFuncMenu);
             vehRemoteFuncItem.Enabled = false;
 
@@ -1245,7 +1245,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 "PIM_BOMB_HELP3": "This option is currently unavailable.",
              */
             int bombControlSetting = 0;
-            UIMenuDynamicListItem vehBombControl = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_BOMB_TITLE"), Game.GetGXTEntry("PIM_BOMB_HELP"), Game.GetGXTEntry($"PIM_B_CONTROL_{bombControlSetting}"), async (item, direction) =>
+            UIMenuDynamicListItem vehBombControl = new(Game.GetGXTEntry("PIM_BOMB_TITLE"), Game.GetGXTEntry("PIM_BOMB_HELP"), Game.GetGXTEntry($"PIM_B_CONTROL_{bombControlSetting}"), async (item, direction) =>
             {
                 bombControlSetting += direction == ChangeDirection.Left ? -1 : 1;
                 if (bombControlSetting < 0)
@@ -1256,7 +1256,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             });
 
             int countermeasureControlSetting = 0;
-            UIMenuDynamicListItem countermeasureControl = new UIMenuDynamicListItem(Game.GetGXTEntry("PIMCOUNTERTIT"), Game.GetGXTEntry("PIMCOUNTHELP"), Game.GetGXTEntry($"PIM_B_CONTROL_{countermeasureControlSetting}"), async (item, direction) =>
+            UIMenuDynamicListItem countermeasureControl = new(Game.GetGXTEntry("PIMCOUNTERTIT"), Game.GetGXTEntry("PIMCOUNTHELP"), Game.GetGXTEntry($"PIM_B_CONTROL_{countermeasureControlSetting}"), async (item, direction) =>
             {
                 countermeasureControlSetting += direction == ChangeDirection.Left ? -1 : 1;
                 if (countermeasureControlSetting < 0)
@@ -1285,14 +1285,14 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             #region Services
             // PIM_HSERVICES for not having... PIM_HSERVICES2 for when unlocked
-            UIMenuItem services = new UIMenuItem("Services", Game.GetGXTEntry("PIM_HSERVICES"));
+            UIMenuItem services = new("Services", Game.GetGXTEntry("PIM_HSERVICES"));
             services.BindItemToMenu(ServicesMenu);
             MainMenu.AddItem(services);
 
             #endregion
 
             #region MapBlipOptions
-            UIMenuItem mapBlipOpt = new UIMenuItem(Game.GetGXTEntry("PIM_THIDE"), Game.GetGXTEntry("PIM_HHIDS"));
+            UIMenuItem mapBlipOpt = new(Game.GetGXTEntry("PIM_THIDE"), Game.GetGXTEntry("PIM_HHIDS"));
             mapBlipOpt.BindItemToMenu(MapBlipOptMenu);
             MainMenu.AddItem(mapBlipOpt);
 
@@ -1300,7 +1300,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             #region ImpromptuRace
 
-            UIMenuItem impromptuRace = new UIMenuItem(Game.GetGXTEntry("PIM_TITLE11"), Game.GetGXTEntry("PIM_HR2P"));
+            UIMenuItem impromptuRace = new(Game.GetGXTEntry("PIM_TITLE11"), Game.GetGXTEntry("PIM_HR2P"));
             impromptuRace.BindItemToMenu(ImpromptuRaceMenu);
             MainMenu.AddItem(impromptuRace);
 
@@ -1309,7 +1309,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             #region Highlight player
 
             // TODO: FIND CORRECT DESCRIPTION IN GTA:O
-            UIMenuItem highlightPlayer = new UIMenuItem(Game.GetGXTEntry("PIM_THIGH"), Game.GetGXTEntry("PIM_HHIGH"));
+            UIMenuItem highlightPlayer = new(Game.GetGXTEntry("PIM_THIGH"), Game.GetGXTEntry("PIM_HHIGH"));
             highlightPlayer.BindItemToMenu(HighlightPlayerMenu);
             MainMenu.AddItem(highlightPlayer);
 
@@ -1325,16 +1325,16 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             "PM_CHT5X0": "Gang",
             "PM_CHT5X1": "Motorcycle Club",
              */
-            List<dynamic> voices = new List<dynamic>()
-            {
+            List<dynamic> voices =
+            [
                 Game.GetGXTEntry("PM_CHT0"),
                 Game.GetGXTEntry("PM_CHT1"),
                 Game.GetGXTEntry("PM_CHT2"),
                 Game.GetGXTEntry("PM_CHT3"),
                 Game.GetGXTEntry("PM_CHT4"),
-            };
+            ];
 
-            UIMenuListItem voiceChat = new UIMenuListItem(Game.GetGXTEntry("PIM_TCHT"), voices, 0, Game.GetGXTEntry("PIM_HCHT"));
+            UIMenuListItem voiceChat = new(Game.GetGXTEntry("PIM_TCHT"), voices, 0, Game.GetGXTEntry("PIM_HCHT"));
             MainMenu.AddItem(voiceChat);
 
             #endregion
@@ -1343,12 +1343,12 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             // TODO: add spawn locations... maybe this item is avail only when properties are purchased? if not.. we can choose only last one or random..
             // TODO: SAVE, APPLY AND REAPPLY ON JOIN
-            List<dynamic> spawnLocsList = new List<dynamic>()
-            {
+            List<dynamic> spawnLocsList =
+            [
                 Game.GetGXTEntry("PM_SPAWN_LL"),
                 Game.GetGXTEntry("PM_SPAWN_R")
-            };
-            UIMenuListItem spawnLoc = new UIMenuListItem(Game.GetGXTEntry("PIM_TSPL"), spawnLocsList, 0, Game.GetGXTEntry("PIM_HSPL").Replace("GTA Online", "The Last Galaxy"));
+            ];
+            UIMenuListItem spawnLoc = new(Game.GetGXTEntry("PIM_TSPL"), spawnLocsList, 0, Game.GetGXTEntry("PIM_HSPL").Replace("GTA Online", "The Last Galaxy"));
             MainMenu.AddItem(spawnLoc);
 
             #endregion
@@ -1356,12 +1356,12 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             #region Player Targeting mode
 
             // TODO: SAVE, APPLY AND REAPPLY ON JOIN
-            List<dynamic> targetingList = new List<dynamic>()
-            {
+            List<dynamic> targetingList =
+            [
                 Game.GetGXTEntry("PIM_AAF0"),// "Everyone",
                 Game.GetGXTEntry("PIM_AAF1"),// "Strangers",
                 Game.GetGXTEntry("PIM_AAF2"),// "Attackers",
-            };
+            ];
 
             // TODO IN THE INDEXCHANGED EVENT.. UPDATE DESCRIPTION BASED ON THE SELECTION
             /*
@@ -1371,15 +1371,15 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             */
 
 
-            UIMenuListItem playerTargeting = new UIMenuListItem(Game.GetGXTEntry("PIM_TAAF"), targetingList, 0, Game.GetGXTEntry("PIM_HSPL").Replace("GTA Online", "The Last Galaxy"));
+            UIMenuListItem playerTargeting = new(Game.GetGXTEntry("PIM_TAAF"), targetingList, 0, Game.GetGXTEntry("PIM_HSPL").Replace("GTA Online", "The Last Galaxy"));
             MainMenu.AddItem(playerTargeting);
 
             #endregion
 
             #region Animations and style
 
-            List<dynamic> moods = new List<dynamic>()
-                {
+            List<dynamic> moods =
+                [
                 "Determined",
                 "Sad",
                 "Depressed",
@@ -1389,9 +1389,9 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 "Moody",
                 "Stressed",
                 "Lazy"
-                };
-            List<dynamic> attitude = new List<dynamic>()
-            {
+                ];
+            List<dynamic> attitude =
+            [
                 "Fierce",
                 "Bad",
                 "Gangster",
@@ -1404,9 +1404,9 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 "Aggressive",
                 "Imposing",
                 "Exhibitionist"
-            };
-            List<dynamic> feminine = new List<dynamic>()
-            {
+            ];
+            List<dynamic> feminine =
+            [
                 "Arrogant",
                 "Classy",
                 "Fragile",
@@ -1417,7 +1417,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 "Sexy",
                 "With butt fat",
                 "Fierce"
-            };
+            ];
 
             UIMenuItem AnimAndStyleItem = new("Animations and Style");
             UIMenu AnimAndStyle = new("Animations and Style", Game.GetGXTEntry("PIM_TITLE1"));
@@ -1428,10 +1428,10 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             MainMenu.AddItem(AnimAndStyleItem);
             AnimAndStyle.AddItem(moodItem);
 
-            UIMenuListItem Item1 = new UIMenuListItem("Moods", moods, 0, "How your character feels today?");
-            UIMenuListItem Item2 = new UIMenuListItem("Style", attitude, 0, "What attitude does your character have??");
-            UIMenuListItem Item3 = new UIMenuListItem("Feminine", feminine, 0, "Because we care about the fairer sex!");
-            UIMenuItem Item4 = new UIMenuItem("~r~Reset", "Why pose when you can walk normally?", SColor.HUD_Reddark, SColor.HUD_Red);
+            UIMenuListItem Item1 = new("Moods", moods, 0, "How your character feels today?");
+            UIMenuListItem Item2 = new("Style", attitude, 0, "What attitude does your character have??");
+            UIMenuListItem Item3 = new("Feminine", feminine, 0, "Because we care about the fairer sex!");
+            UIMenuItem Item4 = new("~r~Reset", "Why pose when you can walk normally?", SColor.HUD_Reddark, SColor.HUD_Red);
             mood.AddItem(Item1);
             mood.AddItem(Item2);
             mood.AddItem(Item3);
@@ -1556,23 +1556,23 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     Notifications.ShowNotification("You're hurt! you can't perform this action!", NotificationColor.Red, true);
                 }
             };
-            UIMenuItem animMenuItem = new UIMenuItem("Animations", "~g~When RolePlay also becomes fun");
-            UIMenuItem animMenu1Item = new UIMenuItem("Party", "~g~To have fun");
+            UIMenuItem animMenuItem = new("Animations", "~g~When RolePlay also becomes fun");
+            UIMenuItem animMenu1Item = new("Party", "~g~To have fun");
             UIMenu animMenu = new("Animations", Game.GetGXTEntry("PIM_TITLE1"));
             UIMenu animMenu1 = new("Party", Game.GetGXTEntry("PIM_TITLE1"));
             animMenuItem.BindItemToMenu(animMenu);
             animMenu1Item.BindItemToMenu(animMenu1);
             AnimAndStyle.AddItem(animMenuItem);
             animMenu.AddItem(animMenu1Item);
-            UIMenuItem item1 = new UIMenuItem("Playing");
-            UIMenuItem item2 = new UIMenuItem("Dj");
-            UIMenuItem item3 = new UIMenuItem("Drink a beverage");
-            UIMenuItem item4 = new UIMenuItem("Drink a beer");
-            UIMenuItem item5 = new UIMenuItem("Air Guitar");
-            UIMenuItem item6 = new UIMenuItem("Air Shagging");
-            UIMenuItem item7 = new UIMenuItem("Rock 'n Roll");
-            UIMenuItem item8 = new UIMenuItem("Smoking a joint");
-            UIMenuItem item9 = new UIMenuItem("Drunk");
+            UIMenuItem item1 = new("Playing");
+            UIMenuItem item2 = new("Dj");
+            UIMenuItem item3 = new("Drink a beverage");
+            UIMenuItem item4 = new("Drink a beer");
+            UIMenuItem item5 = new("Air Guitar");
+            UIMenuItem item6 = new("Air Shagging");
+            UIMenuItem item7 = new("Rock 'n Roll");
+            UIMenuItem item8 = new("Smoking a joint");
+            UIMenuItem item9 = new("Drunk");
             animMenu1.OnItemSelect += (_menu, _item, _index) =>
             {
                 if (!PlayerCache.MyClient.Status.PlayerStates.InVehicle && playerPed.IsAlive)
@@ -1609,14 +1609,14 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             animMenu1.AddItem(item7);
             animMenu1.AddItem(item8);
             animMenu1.AddItem(item9);
-            UIMenuItem animMenu2Item = new UIMenuItem("Greetings");
+            UIMenuItem animMenu2Item = new("Greetings");
             UIMenu animMenu2 = new("Greetings", Game.GetGXTEntry("PIM_TITLE1"));
             animMenu2Item.BindItemToMenu(animMenu2);
             animMenu.AddItem(animMenu2Item);
-            UIMenuItem item10 = new UIMenuItem("Greeting");
-            UIMenuItem item11 = new UIMenuItem("Greetings between friends");
-            UIMenuItem item12 = new UIMenuItem("Greeting in Gang");
-            UIMenuItem item13 = new UIMenuItem("Military salute");
+            UIMenuItem item10 = new("Greeting");
+            UIMenuItem item11 = new("Greetings between friends");
+            UIMenuItem item12 = new("Greeting in Gang");
+            UIMenuItem item13 = new("Military salute");
             animMenu2.AddItem(item10);
             animMenu2.AddItem(item11);
             animMenu2.AddItem(item12);
@@ -1638,27 +1638,27 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     Notifications.ShowNotification("You can't use this animation at the moment!!", NotificationColor.Red);
                 }
             };
-            UIMenuItem animMenu3Item = new UIMenuItem("Jobs", "~g~RolePlay is not only a game!");
+            UIMenuItem animMenu3Item = new("Jobs", "~g~RolePlay is not only a game!");
             UIMenu animMenu3 = new("Jobs", Game.GetGXTEntry("PIM_TITLE1"));
             animMenu3Item.BindItemToMenu(animMenu3);
             animMenu.AddItem(animMenu3Item);
-            UIMenuItem item14 = new UIMenuItem("Surrender to the police");
-            UIMenuItem item15 = new UIMenuItem("Fisherman");
-            UIMenuItem item16 = new UIMenuItem("Farmer - Harvest");
-            UIMenuItem item17 = new UIMenuItem("Mechanic - Repair vehicle");
-            UIMenuItem item18 = new UIMenuItem("Mechanic - Repair the engine");
-            UIMenuItem item19 = new UIMenuItem("Police - Manage Traffic");
-            UIMenuItem item20 = new UIMenuItem("Police - Investigate");
-            UIMenuItem item21 = new UIMenuItem("Binoculars");
-            UIMenuItem item22 = new UIMenuItem("Doctor - Check the patient");
-            UIMenuItem item23 = new UIMenuItem("Taxi - Talking to the customer");
-            UIMenuItem item24 = new UIMenuItem("Taxi - Give the bill");
-            UIMenuItem item25 = new UIMenuItem("Grocery store - give the stuff");
-            UIMenuItem item26 = new UIMenuItem("Photographer");
-            UIMenuItem item27 = new UIMenuItem("Annotate");
-            UIMenuItem item28 = new UIMenuItem("Hammering");
-            UIMenuItem item29 = new UIMenuItem("Begging");
-            UIMenuItem item30 = new UIMenuItem("Make the Statue");
+            UIMenuItem item14 = new("Surrender to the police");
+            UIMenuItem item15 = new("Fisherman");
+            UIMenuItem item16 = new("Farmer - Harvest");
+            UIMenuItem item17 = new("Mechanic - Repair vehicle");
+            UIMenuItem item18 = new("Mechanic - Repair the engine");
+            UIMenuItem item19 = new("Police - Manage Traffic");
+            UIMenuItem item20 = new("Police - Investigate");
+            UIMenuItem item21 = new("Binoculars");
+            UIMenuItem item22 = new("Doctor - Check the patient");
+            UIMenuItem item23 = new("Taxi - Talking to the customer");
+            UIMenuItem item24 = new("Taxi - Give the bill");
+            UIMenuItem item25 = new("Grocery store - give the stuff");
+            UIMenuItem item26 = new("Photographer");
+            UIMenuItem item27 = new("Annotate");
+            UIMenuItem item28 = new("Hammering");
+            UIMenuItem item29 = new("Begging");
+            UIMenuItem item30 = new("Make the Statue");
             //UIMenuItem item31 = new UIMenuItem();
             animMenu3.AddItem(item14);
             animMenu3.AddItem(item15);
@@ -1720,25 +1720,25 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     Notifications.ShowNotification("You can't use this animation at the moment!!", NotificationColor.Red);
                 }
             };
-            UIMenuItem animMenu4Item = new UIMenuItem("Mood", "~g~What you want to say with your body?");
+            UIMenuItem animMenu4Item = new("Mood", "~g~What you want to say with your body?");
             UIMenu animMenu4 = new("Mood", Game.GetGXTEntry("PIM_TITLE1"));
             animMenu4Item.BindItemToMenu(animMenu3);
             animMenu.AddItem(animMenu4Item);
-            UIMenuItem item31 = new UIMenuItem("Congratulate");
-            UIMenuItem item32 = new UIMenuItem("Super");
-            UIMenuItem item33 = new UIMenuItem("Indicate");
-            UIMenuItem item34 = new UIMenuItem("What do you want?");
-            UIMenuItem item35 = new UIMenuItem("I fucking knew it!");
-            UIMenuItem item36 = new UIMenuItem("Facepalm");
-            UIMenuItem item37 = new UIMenuItem("Calm down");
-            UIMenuItem item38 = new UIMenuItem("Fright");
-            UIMenuItem item39 = new UIMenuItem("Submit");
-            UIMenuItem item40 = new UIMenuItem("Get ready");
-            UIMenuItem item41 = new UIMenuItem("It's not possible!");
-            UIMenuItem item42 = new UIMenuItem("Hug");
-            UIMenuItem item43 = new UIMenuItem("Middle Finger");
-            UIMenuItem item44 = new UIMenuItem("Wanker");
-            UIMenuItem item45 = new UIMenuItem("Suicide");
+            UIMenuItem item31 = new("Congratulate");
+            UIMenuItem item32 = new("Super");
+            UIMenuItem item33 = new("Indicate");
+            UIMenuItem item34 = new("What do you want?");
+            UIMenuItem item35 = new("I fucking knew it!");
+            UIMenuItem item36 = new("Facepalm");
+            UIMenuItem item37 = new("Calm down");
+            UIMenuItem item38 = new("Fright");
+            UIMenuItem item39 = new("Submit");
+            UIMenuItem item40 = new("Get ready");
+            UIMenuItem item41 = new("It's not possible!");
+            UIMenuItem item42 = new("Hug");
+            UIMenuItem item43 = new("Middle Finger");
+            UIMenuItem item44 = new("Wanker");
+            UIMenuItem item45 = new("Suicide");
             animMenu4.AddItem(item31);
             animMenu4.AddItem(item32);
             animMenu4.AddItem(item33);
@@ -1793,15 +1793,15 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     Notifications.ShowNotification("You can't use this animation at the moment!!", NotificationColor.Red);
                 }
             };
-            UIMenuItem animMenu5Item = new UIMenuItem("Sports", "~g~Keeping yourself in shape..");
+            UIMenuItem animMenu5Item = new("Sports", "~g~Keeping yourself in shape..");
             UIMenu animMenu5 = new("Sports", Game.GetGXTEntry("PIM_TITLE1"));
             animMenu5Item.BindItemToMenu(animMenu3);
             animMenu.AddItem(animMenu5Item);
-            UIMenuItem item46 = new UIMenuItem("Show off your muscles");
-            UIMenuItem item47 = new UIMenuItem("Do weights");
-            UIMenuItem item48 = new UIMenuItem("Doing push-ups");
-            UIMenuItem item49 = new UIMenuItem("Doing sit-ups");
-            UIMenuItem item50 = new UIMenuItem("Yoga");
+            UIMenuItem item46 = new("Show off your muscles");
+            UIMenuItem item47 = new("Do weights");
+            UIMenuItem item48 = new("Doing push-ups");
+            UIMenuItem item49 = new("Doing sit-ups");
+            UIMenuItem item50 = new("Yoga");
             animMenu5.AddItem(item46);
             animMenu5.AddItem(item47);
             animMenu5.AddItem(item48);
@@ -1826,18 +1826,18 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     Notifications.ShowNotification("You can't use this animation at the moment!!", NotificationColor.Red);
                 }
             };
-            UIMenuItem animMenu6Item = new UIMenuItem("Various", "~g~For everyday life");
+            UIMenuItem animMenu6Item = new("Various", "~g~For everyday life");
             UIMenu animMenu6 = new("Various", Game.GetGXTEntry("PIM_TITLE1"));
             animMenu6Item.BindItemToMenu(animMenu3);
             animMenu.AddItem(animMenu6Item);
-            UIMenuItem item51 = new UIMenuItem("Drink a coffee");
-            UIMenuItem item52 = new UIMenuItem("Sit down");
-            UIMenuItem item53 = new UIMenuItem("Sit on the floor");
-            UIMenuItem item54 = new UIMenuItem("Lean against the wall");
-            UIMenuItem item55 = new UIMenuItem("Sunbathing");
-            UIMenuItem item56 = new UIMenuItem("Lying on your stomach");
-            UIMenuItem item57 = new UIMenuItem("Clean");
-            UIMenuItem item58 = new UIMenuItem("Take a selfie");
+            UIMenuItem item51 = new("Drink a coffee");
+            UIMenuItem item52 = new("Sit down");
+            UIMenuItem item53 = new("Sit on the floor");
+            UIMenuItem item54 = new("Lean against the wall");
+            UIMenuItem item55 = new("Sunbathing");
+            UIMenuItem item56 = new("Lying on your stomach");
+            UIMenuItem item57 = new("Clean");
+            UIMenuItem item58 = new("Take a selfie");
             animMenu6.AddItem(item51);
             animMenu6.AddItem(item52);
             animMenu6.AddItem(item53);
@@ -1871,21 +1871,21 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     Notifications.ShowNotification("You can't use this animation at the moment!!", NotificationColor.Red);
                 }
             };
-            UIMenuItem animMenu7Item = new UIMenuItem("Hard", "~g~Life can take unexpected turns in RolePlay");
+            UIMenuItem animMenu7Item = new("Hard", "~g~Life can take unexpected turns in RolePlay");
             UIMenu animMenu7 = new("Hard", Game.GetGXTEntry("PIM_TITLE1"));
             animMenu7Item.BindItemToMenu(animMenu3);
             animMenu.AddItem(animMenu7Item);
-            UIMenuItem item59 = new UIMenuItem("Man gets fucked in car", "Better than this!");
-            UIMenuItem item60 = new UIMenuItem("The woman gives a BJ in the car", "Thumbs UP! ..and not only that ;)");
-            UIMenuItem item61 = new UIMenuItem("Man sex in car", "Great!");
-            UIMenuItem item62 = new UIMenuItem("Woman sex in car", "Congratulations!");
-            UIMenuItem item63 = new UIMenuItem("Cougar?");
-            UIMenuItem item64 = new UIMenuItem("Being charming!");
-            UIMenuItem item65 = new UIMenuItem("How beautiful am I??");
-            UIMenuItem item66 = new UIMenuItem("Show breasts");
-            UIMenuItem item67 = new UIMenuItem("Strip Tease 1");
-            UIMenuItem item68 = new UIMenuItem("Strip Tease 2");
-            UIMenuItem item69 = new UIMenuItem("Strip Tease 3(On the ground)");
+            UIMenuItem item59 = new("Man gets fucked in car", "Better than this!");
+            UIMenuItem item60 = new("The woman gives a BJ in the car", "Thumbs UP! ..and not only that ;)");
+            UIMenuItem item61 = new("Man sex in car", "Great!");
+            UIMenuItem item62 = new("Woman sex in car", "Congratulations!");
+            UIMenuItem item63 = new("Cougar?");
+            UIMenuItem item64 = new("Being charming!");
+            UIMenuItem item65 = new("How beautiful am I??");
+            UIMenuItem item66 = new("Show breasts");
+            UIMenuItem item67 = new("Strip Tease 1");
+            UIMenuItem item68 = new("Strip Tease 2");
+            UIMenuItem item69 = new("Strip Tease 3(On the ground)");
             animMenu7.AddItem(item59);
             animMenu7.AddItem(item60);
             animMenu7.AddItem(item61);
@@ -1928,18 +1928,18 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                     Notifications.ShowNotification("You can't use this animation at the moment!!", NotificationColor.Red);
                 }
             };
-            UIMenuItem animMenu8Item = new UIMenuItem("New", "~g~Because we are evolving~w~");
+            UIMenuItem animMenu8Item = new("New", "~g~Because we are evolving~w~");
             UIMenu animMenu8 = new("New", Game.GetGXTEntry("PIM_TITLE1"));
             animMenu8Item.BindItemToMenu(animMenu3);
             animMenu.AddItem(animMenu8Item);
-            UIMenuItem item70 = new UIMenuItem("Facepalm", "Idiots' mom is always pregnant");
-            UIMenuItem item71 = new UIMenuItem("Cross your arms", "Serious!");
-            UIMenuItem item72 = new UIMenuItem("Damn");
-            UIMenuItem item73 = new UIMenuItem("Failure");
-            UIMenuItem item74 = new UIMenuItem("Cross your arms2", "Serious!");
-            UIMenuItem item75 = new UIMenuItem("clap your hands sarcastically");
-            UIMenuItem item76 = new UIMenuItem("Keep the crowd down", "calm down");
-            UIMenuItem item77 = new UIMenuItem("Hold the crowd2", "I said calm down");
+            UIMenuItem item70 = new("Facepalm", "Idiots' mom is always pregnant");
+            UIMenuItem item71 = new("Cross your arms", "Serious!");
+            UIMenuItem item72 = new("Damn");
+            UIMenuItem item73 = new("Failure");
+            UIMenuItem item74 = new("Cross your arms2", "Serious!");
+            UIMenuItem item75 = new("clap your hands sarcastically");
+            UIMenuItem item76 = new("Keep the crowd down", "calm down");
+            UIMenuItem item77 = new("Hold the crowd2", "I said calm down");
             animMenu7.OnItemSelect += (_menu, _item, _index) =>
             {
                 if (!PlayerCache.MyClient.Status.PlayerStates.InVehicle && playerPed.IsAlive)
@@ -2045,7 +2045,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
               "PIM_HPASI19": "Passive Mode is disabled as you have recently killed a player. It will be available in ~a~",
               "PIM_HPASI21": "Passive mode is disabled while using the Nerve Center.",
             */
-            UIMenuItem passive = new UIMenuItem(Game.GetGXTEntry("PM_SETTING_0"), Game.GetGXTEntry("PIM_HPASI0"));
+            UIMenuItem passive = new(Game.GetGXTEntry("PM_SETTING_0"), Game.GetGXTEntry("PIM_HPASI0"));
             MainMenu.AddItem(passive);
 
 

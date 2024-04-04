@@ -18,7 +18,7 @@ namespace FreeRoamProject.Client.FREEROAM.Phone.Apps
         int Time;
         Contact contact;
         internal CallState CallStatus = 0;
-        bool answered = false;
+        readonly bool answered = false;
         internal int SoundId;
         bool callEnded = false;
         /*

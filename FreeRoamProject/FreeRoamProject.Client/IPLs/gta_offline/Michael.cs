@@ -7,10 +7,10 @@ namespace FreeRoamProject.Client.IPLs.gtav
     {
         public static int InteriorId = 166657;
         public static int GarageId = 166401;
-        public MichaelStyle Style = new MichaelStyle();
-        public MichaelGarage Garage = new MichaelGarage();
-        public MichaelBed Bed = new MichaelBed();
-        public MichaelDetails Details = new MichaelDetails();
+        public MichaelStyle Style = new();
+        public MichaelGarage Garage = new();
+        public MichaelBed Bed = new();
+        public MichaelDetails Details = new();
         private bool enabled;
         public bool Enabled
         {
@@ -37,8 +37,8 @@ namespace FreeRoamProject.Client.IPLs.gtav
     }
     public class MichaelStyle
     {
-        public List<string> Normal = new List<string>() { "V_Michael_bed_tidy", "V_Michael_M_items", "V_Michael_D_items", "V_Michael_S_items", "V_Michael_L_Items" };
-        public List<string> Moved = new List<string>() { "V_Michael_bed_Messy", "V_Michael_M_moved", "V_Michael_D_Moved", "V_Michael_L_Moved", "V_Michael_S_items_swap", "V_Michael_M_items_swap" };
+        public List<string> Normal = ["V_Michael_bed_tidy", "V_Michael_M_items", "V_Michael_D_items", "V_Michael_S_items", "V_Michael_L_Items"];
+        public List<string> Moved = ["V_Michael_bed_Messy", "V_Michael_M_moved", "V_Michael_D_Moved", "V_Michael_L_Moved", "V_Michael_S_items_swap", "V_Michael_M_items_swap"];
 
         public void Set(List<string> style, bool refresh = true)
         {
