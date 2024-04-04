@@ -502,7 +502,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             string prop = $"HE_FM{(PlayerCache.Character.Skin.Sex == "Male" ? "M" : "F")}_{SavedHelmet[1]}_{SavedHelmet[0]}";
             UIMenuDynamicListItem bikeHelmet = new(Game.GetGXTEntry("PIM_TBIH"), Game.GetGXTEntry("PIM_HBIH"), Game.GetGXTEntry(prop), async (item, direction) =>
             {
-                if (direction == UIMenuDynamicListItem.ChangeDirection.Left)
+                if (direction == ChangeDirection.Left)
                 {
                     SavedHelmet[0]--;
                     if (SavedHelmet[0] < 0)
@@ -572,7 +572,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
              */
             UIMenuDynamicListItem bikeVisor = new(Game.GetGXTEntry("PIM_THELV"), Game.GetGXTEntry("PIM_HHELVN"), Game.GetGXTEntry($"PIM_HELV{VisorUpDown}"), async (item, direction) =>
             {
-                VisorUpDown += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                VisorUpDown += direction == ChangeDirection.Left ? -1 : 1;
                 if (VisorUpDown < 0) VisorUpDown = 1;
                 if (VisorUpDown > 1) VisorUpDown = 0;
 
@@ -601,7 +601,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             List<dynamic> autoShowBikeHelmetList = new List<dynamic>() { Game.GetGXTEntry("PIM_AHLM0"), Game.GetGXTEntry("PIM_AHLM1") };
             UIMenuDynamicListItem autoShowBikeHelmet = new(Game.GetGXTEntry("PIM_TAHLM"), Game.GetGXTEntry("PIM_HAHLM"), Game.GetGXTEntry($"PIM_AHLM{AutoShowHelmet}"), async (item, direction) =>
             {
-                AutoShowHelmet += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                AutoShowHelmet += direction == ChangeDirection.Left ? -1 : 1;
                 if (AutoShowHelmet < 0) AutoShowHelmet = 1;
                 if (AutoShowHelmet > 1) AutoShowHelmet = 0;
                 SetPedConfigFlag(playerPed.Handle, 380, AutoShowHelmet == 0);
@@ -612,7 +612,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             UIMenuDynamicListItem autoShowAircraftHelmet = new(Game.GetGXTEntry("PIM_TAAHLM"), Game.GetGXTEntry("PIM_HAAHLM"), Game.GetGXTEntry($"PIM_AAHLM{AutoShowAircraft}"), async (item, direction) =>
             {
-                AutoShowAircraft += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                AutoShowAircraft += direction == ChangeDirection.Left ? -1 : 1;
                 if (AutoShowAircraft < 0) AutoShowAircraft = 1;
                 if (AutoShowAircraft > 1) AutoShowAircraft = 0;
                 SetPedConfigFlag(playerPed.Handle, 381, AutoShowAircraft == 0);
@@ -631,7 +631,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             UIMenuDynamicListItem action = new UIMenuDynamicListItem(Game.GetGXTEntry(VehicleChecker.IsInVehicle ? "PIM_TANIMP" : "PIM_TANIMF"), Game.GetGXTEntry("PIM_HANIM"), currentAction, async (sender, direction) =>
             {
                 // items in game are hanlded like a dynamiclistitem via a function with a check if the ped is in vehicle and the current index i think..
-                SavedAction = direction == UIMenuDynamicListItem.ChangeDirection.Left ? SavedAction - 1 : SavedAction + 1;
+                SavedAction = direction == ChangeDirection.Left ? SavedAction - 1 : SavedAction + 1;
                 int currentSituation = 2;
                 int max = 66;
                 if (VehicleChecker.IsInVehicle)
@@ -705,7 +705,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             {
                 Ped ped = PlayerCache.MyClient.Ped;
 
-                SavedMood += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                SavedMood += direction == ChangeDirection.Left ? -1 : 1;
                 if (SavedMood < 0)
                     SavedMood = 7;
                 if (SavedMood > 7)
@@ -737,7 +737,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
 
             UIMenuDynamicListItem playerWalkStyle = new(Game.GetGXTEntry("PIM_TWALKN"), Game.GetGXTEntry("PIM_HWALKN"), Game.GetGXTEntry($"PM_WALK_{SavedWalkStyle}"), async (item, direction) =>
             {
-                SavedWalkStyle += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                SavedWalkStyle += direction == ChangeDirection.Left ? -1 : 1;
                 if (SavedWalkStyle < 0)
                     SavedWalkStyle = 5;
                 if (SavedWalkStyle > 5)
@@ -757,7 +757,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
                 // here we take the loaded param..
                 int ped = playerPed.Handle;
                 int hashName = GetHashNameForComponent(ped, 11, GetPedDrawableVariation(ped, 11), GetPedTextureVariation(ped, 11));
-                SavedGlowIndex += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                SavedGlowIndex += direction == ChangeDirection.Left ? -1 : 1;
                 if (SavedGlowIndex < 0)
                     SavedGlowIndex = 3;
                 if (SavedGlowIndex > 3)
@@ -800,7 +800,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             int choodSelection = PlayerCache.Character.Stats.CurrentHoodSetting;
             UIMenuDynamicListItem hood = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TCHOOD"), Game.GetGXTEntry("PIM_HCHOOD"), Game.GetGXTEntry($"PM_CHOOD_{choodSelection}"), async (item, direction) =>
             {
-                choodSelection += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                choodSelection += direction == ChangeDirection.Left ? -1 : 1;
                 if (choodSelection > 2)
                     choodSelection = 0;
                 if (choodSelection < 0)
@@ -828,7 +828,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             int savedJacket = 1;
             UIMenuDynamicListItem jacket = new(Game.GetGXTEntry("PIM_TCJACK"), Game.GetGXTEntry("PIM_HCJACK"), Game.GetGXTEntry($"PM_CJACK_{savedJacket}"), async (item, direction) =>
             {
-                savedJacket += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                savedJacket += direction == ChangeDirection.Left ? -1 : 1;
                 if (savedJacket > 3)
                     savedJacket = 0;
                 if (savedJacket < 0)
@@ -1060,7 +1060,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             int currentSpecialVehicle = 0;
             UIMenuDynamicListItem reqSpecialVeh = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TRSV"), Game.GetGXTEntry("PIM_HRSV1"), Game.GetGXTEntry($"PIM_SV{currentSpecialVehicle}"), async (item, direction) =>
             {
-                currentSpecialVehicle += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                currentSpecialVehicle += direction == ChangeDirection.Left ? -1 : 1;
                 if (currentSpecialVehicle < 0)
                     currentSpecialVehicle = 10;
                 if (currentSpecialVehicle > 10)
@@ -1120,7 +1120,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             int vehicleAccessSetting = 0;
             UIMenuDynamicListItem vehAccess = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_TAPV"), Game.GetGXTEntry("PIM_HAPV"), Game.GetGXTEntry($"PM_APV{vehicleAccessSetting}"), async (item, direction) =>
             {
-                vehicleAccessSetting += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                vehicleAccessSetting += direction == ChangeDirection.Left ? -1 : 1;
                 if (vehicleAccessSetting > 5)
                     vehicleAccessSetting = 0;
                 if (vehicleAccessSetting < 0)
@@ -1186,7 +1186,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             int pvRoof = 0;
             UIMenuDynamicListItem vehRoof = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_PV_ROOF"), Game.GetGXTEntry("PIM_PV_ROOF_D"), Game.GetGXTEntry($"PIM_PV_ROOF{pvRoof}"), async (item, direction) =>
             {
-                pvRoof += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                pvRoof += direction == ChangeDirection.Left ? -1 : 1;
                 if (pvRoof < 0)
                     pvRoof = 1;
                 if (pvRoof > 1)
@@ -1202,7 +1202,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             int pvStance = 0;
             UIMenuDynamicListItem vehStance = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_PV_STANCE"), Game.GetGXTEntry("PIM_PV_STNC_NA"), Game.GetGXTEntry($"PIM_PV_STANCE{pvStance}"), async (item, direction) =>
             {
-                pvStance += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                pvStance += direction == ChangeDirection.Left ? -1 : 1;
                 if (pvStance < 0)
                     pvStance = 1;
                 if (pvStance > 1)
@@ -1218,7 +1218,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             int pvHydr = 0;
             UIMenuDynamicListItem vehHydr = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_PV_HYDR"), Game.GetGXTEntry("PIM_PV_HYDR_NA"), Game.GetGXTEntry($"PIM_PV_HYDR{pvHydr}"), async (item, direction) =>
             {
-                pvStance += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                pvStance += direction == ChangeDirection.Left ? -1 : 1;
                 if (pvStance < 0)
                     pvStance = 3;
                 if (pvStance > 3)
@@ -1247,7 +1247,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             int bombControlSetting = 0;
             UIMenuDynamicListItem vehBombControl = new UIMenuDynamicListItem(Game.GetGXTEntry("PIM_BOMB_TITLE"), Game.GetGXTEntry("PIM_BOMB_HELP"), Game.GetGXTEntry($"PIM_B_CONTROL_{bombControlSetting}"), async (item, direction) =>
             {
-                bombControlSetting += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                bombControlSetting += direction == ChangeDirection.Left ? -1 : 1;
                 if (bombControlSetting < 0)
                     bombControlSetting = 1;
                 if (bombControlSetting > 1)
@@ -1258,7 +1258,7 @@ namespace TheLastPlanet.Client.GameMode.ROLEPLAY.Personale
             int countermeasureControlSetting = 0;
             UIMenuDynamicListItem countermeasureControl = new UIMenuDynamicListItem(Game.GetGXTEntry("PIMCOUNTERTIT"), Game.GetGXTEntry("PIMCOUNTHELP"), Game.GetGXTEntry($"PIM_B_CONTROL_{countermeasureControlSetting}"), async (item, direction) =>
             {
-                countermeasureControlSetting += direction == UIMenuDynamicListItem.ChangeDirection.Left ? -1 : 1;
+                countermeasureControlSetting += direction == ChangeDirection.Left ? -1 : 1;
                 if (countermeasureControlSetting < 0)
                     countermeasureControlSetting = 1;
                 if (countermeasureControlSetting > 1)

@@ -41,13 +41,13 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <PackageReference Include="CitizenFX.Core.Client" Version="1.0.7257" />
+    <PackageReference Include="CitizenFX.Core.Client" Version="1.0.7823" />
 	  <PackageReference Include="Confuser.MSBuild" Version="2.0.0-alpha-0191">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
 	  <PackageReference Include="FxEvents.FiveM.Client" Version="2.6.0" />
-    <PackageReference Include="ScaleformUI" Version="4.9.0" />
+    <PackageReference Include="ScaleformUI" Version="5.2.2" />
 	  <PackageReference Include="Newtonsoft.Json" Version="12.0.2" ExcludeAssets="Compile" GeneratePathProperty="true" />
 	  <Reference Include="Newtonsoft.Json">
 		  <HintPath>$(PkgNewtonsoft_Json)\lib\portable-net40+sl5+win8+wp8+wpa81\Newtonsoft.Json.dll</HintPath>

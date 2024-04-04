@@ -34,6 +34,15 @@ namespace FreeRoamProject.Shared
         }
 
 #if CLIENT
+
+        public static UIMenu AddSubMenu(this UIMenu parent, string label, string subtitle)
+        {
+            UIMenuItem item = new UIMenuItem(label, subtitle);
+            UIMenu child = new UIMenu(parent.Title, label.ToUpper());
+            item.Activated += async (a, b) => await parent.SwitchTo(child, 0, true);
+            parent.AddItem(item);
+            return child;
+        }
         public static void BindItemToMenu(this UIMenuItem item, UIMenu newmenu)
         {
             item.Activated += async (a, b) => await a.SwitchTo(newmenu, 0, true);
